@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fantasy 5 Predictions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #003366;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .section {
+            flex: 1;
+            min-width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #003366;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        .draw-number {
+            background-color: #e6f2ff;
+            border-radius: 50%;
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 5px;
+            font-weight: bold;
+        }
+        .prediction-number {
+            background-color: #ffdddd;
+            border-radius: 50%;
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 5px;
+            font-weight: bold;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #003366;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        .btn:hover {
+            background-color: #004080;
+        }
+        .navbar {
+            background-color: #003366;
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .navbar li {
+            float: left;
+        }
+        .navbar li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        .navbar li a:hover {
+            background-color: #004080;
+        }
+        .stats-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .stats-item {
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            flex: 1;
+            min-width: 100px;
+            margin: 5px;
+            text-align: center;
+        }
+        .stats-item h3 {
+            margin-top: 0;
+            font-size: 16px;
+        }
+        .stats-item p {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/generate">Generate Predictions</a></li>
+            <li><a href="/stats">Statistics</a></li>
+        </ul>
+    </div>
+
+    <h1>Georgia Fantasy 5 Predictions</h1>
+    
+    <div class="stats-bar">
+        <div class="stats-item">
+            <h3>Predictions</h3>
+            <p>{{ predictions|length }}</p>
+        </div>
+        <div class="stats-item">
+            <h3>Top Score</h3>
+            <p>{{ predictions[0].score|round(2) if predictions else 0 }}</p>
+        </div>
+        <div class="stats-item">
+            <h3>Filter Settings</h3>
+            <p>{{ filters.max_seq2 }}/{{ filters.max_seq3 }}/{{ filters.max_mod_tot }}</p>
+        </div>
+        <div class="stats-item">
+            <h3>Sum Range</h3>
+            <p>{{ filters.min_sum }}-{{ filters.max_sum }}</p>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="section">
+            <h2>Predicted Combinations</h2>
+            {% if predictions %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Numbers</th>
+                        <th>Score</th>
+                        <th>Sum</th>
+                        <th>E/O</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pred in predictions %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>
+                            {% for num in pred.combination %}
+                            <span class="prediction-number">{{ num }}</span>
+                            {% endfor %}
+                        </td>
+                        <td>{{ pred.score|round(2) }}</td>
+                        <td>{{ pred.sum }}</td>
+                        <td>{{ pred.stats.even }}/{{ pred.stats.odd }}</td>
+                        <td>
+                            <button class="btn" onclick="toggleDetails('details-{{ loop.index }}')">Show</button>
+                        </td>
+                    </tr>
+                    <tr id="details-{{ loop.index }}" style="display: none;">
+                        <td colspan="6">
+                            <div style="padding: 10px; background-color: #f0f0f0;">
+                                <h4>Detailed Statistics</h4>
+                                <div style="display: flex; flex-wrap: wrap;">
+                                    <div style="flex: 1; min-width: 150px; margin: 5px;">
+                                        <strong>Mean:</strong> {{ pred.stats.mean|round(2) }}<br>
+                                        <strong>Median:</strong> {{ pred.stats.median }}<br>
+                                        <strong>Sequential Pairs:</strong> {{ pred.stats.seq2 }}<br>
+                                        <strong>Sequential Triplets:</strong> {{ pred.stats.seq3 }}<br>
+                                    </div>
+                                    <div style="flex: 1; min-width: 150px; margin: 5px;">
+                                        <strong>Decade Distribution:</strong><br>
+                                        1-9: {{ pred.stats.d0 }}<br>
+                                        10-19: {{ pred.stats.d1 }}<br>
+                                        20-29: {{ pred.stats.d2 }}<br>
+                                        30-39: {{ pred.stats.d3 }}<br>
+                                    </div>
+                                    <div style="flex: 1; min-width: 150px; margin: 5px;">
+                                        <strong>Modular Total:</strong> {{ pred.stats.mod_total }}<br>
+                                        <strong>Sum:</strong> {{ pred.sum }}<br>
+                                        <strong>Even/Odd:</strong> {{ pred.stats.even }}/{{ pred.stats.odd }}<br>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <!-- Store the predictions data in a hidden element -->
+            <script id="predictions-data" type="application/json">
+                {{ predictions|tojson }}
+            </script>
+            
+            <div style="margin-top: 20px;">
+                <button type="button" class="btn" onclick="exportPredictions()">Export to CSV</button>
+                <a href="/" class="btn">Back to Home</a>
+            </div>
+            {% else %}
+            <p>No predictions generated. Try adjusting your filter settings.</p>
+            <a href="/" class="btn">Back to Home</a>
+            {% endif %}
+        </div>
+        
+        <div class="section">
+            <h2>Recent Draws</h2>
+            {% if last_draws %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Numbers</th>
+                        <th>Sum</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for draw in last_draws %}
+                    <tr>
+                        <td>{{ draw.date }}</td>
+                        <td>
+                            <span class="draw-number">{{ draw.b1 }}</span>
+                            <span class="draw-number">{{ draw.b2 }}</span>
+                            <span class="draw-number">{{ draw.b3 }}</span>
+                            <span class="draw-number">{{ draw.b4 }}</span>
+                            <span class="draw-number">{{ draw.b5 }}</span>
+                        </td>
+                        <td>{{ draw.sum }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>No historical draws available.</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <script>
+        function toggleDetails(id) {
+            const element = document.getElementById(id);
+            if (element.style.display === "none") {
+                element.style.display = "table-row";
+            } else {
+                element.style.display = "none";
+            }
+        }
+        
+        // Function to handle exporting predictions
+        function exportPredictions() {
+            try {
+                // Get predictions from the hidden element
+                const predictionsElement = document.getElementById('predictions-data');
+                
+                if (!predictionsElement) {
+                    console.error("Could not find predictions data element");
+                    alert("No prediction data available to export.");
+                    return false;
+                }
+                
+                let predictionsData = JSON.parse(predictionsElement.textContent);
+                
+                // Make sure we're working with valid data
+                if (!Array.isArray(predictionsData) || predictionsData.length === 0) {
+                    alert("No prediction data available to export.");
+                    return false;
+                }
+                
+                // Create a hidden form for submission
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/export';
+                form.style.display = 'none';
+                
+                // Create a hidden input for the predictions data
+                // Make sure to properly JSON stringify the data
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'predictions';
+                input.value = JSON.stringify(predictionsData);
+                
+                // Add input to form and form to document
+                form.appendChild(input);
+                document.body.appendChild(form);
+                
+                // Submit the form
+                form.submit();
+                
+                return true;
+            } catch (error) {
+                console.error("Error preparing export:", error);
+                alert("Error preparing data for export: " + error.message);
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>

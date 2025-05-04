@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Georgia Fantasy 5 - Statistical Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        h1, h2, h3 {
+            color: #003366;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .section {
+            flex: 1;
+            min-width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #fff;
+        }
+        th, td {
+            padding: 12px 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #003366;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #e9f0f8;
+        }
+        .number-ball {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            text-align: center;
+            line-height: 36px;
+            border-radius: 50%;
+            margin-right: 5px;
+            font-weight: bold;
+            color: #fff;
+        }
+        .hot-number {
+            background-color: #e53935;
+        }
+        .cold-number {
+            background-color: #1e88e5;
+        }
+        .draw-number {
+            background-color: #4caf50;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #003366;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #004c99;
+        }
+        .nav {
+            background-color: #003366;
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        .nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .nav li {
+            margin-right: 10px;
+        }
+        .nav a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 12px 18px;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .nav a:hover {
+            background-color: #004c99;
+        }
+        .chart-container {
+            height: 350px;
+            margin-bottom: 30px;
+        }
+        .tab-controls {
+            display: flex;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+        .tab-btn {
+            flex: 1;
+            background-color: #f1f1f1;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+        .tab-btn:hover {
+            background-color: #ddd;
+        }
+        .tab-btn.active {
+            background-color: #003366;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .filters {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #e9f0f8;
+            border-radius: 8px;
+        }
+        .filters label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .filters select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #fff;
+            font-size: 16px;
+        }
+        .stat-card {
+            background-color: #e9f0f8;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .stat-card h3 {
+            margin-top: 0;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+        }
+        .stat-item {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .stat-item h4 {
+            margin-top: 0;
+            color: #555;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #003366;
+        }
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/generate">Generate Predictions</a></li>
+            <li><a href="/stats">Statistics</a></li>
+        </ul>
+    </div>
+
+    <h1>Georgia Fantasy 5 Statistical Analysis</h1>
+    
+    <div class="filters">
+        <label for="timeRange">Time Period:</label>
+        <select id="timeRange" onchange="updateStats()">
+            <option value="30">Last 30 Days</option>
+            <option value="90">Last 90 Days</option>
+            <option value="180">Last 180 Days</option>
+            <option value="365" selected>Last Year</option>
+            <option value="0">All Time</option>
+        </select>
+    </div>
+    
+    <div class="tab-controls">
+        <button class="tab-btn active" onclick="openTab('frequency')">Number Frequency</button>
+        <button class="tab-btn" onclick="openTab('sums')">Sum Analysis</button>
+        <button class="tab-btn" onclick="openTab('patterns')">Pattern Analysis</button>
+        <button class="tab-btn" onclick="openTab('decades')">Decade Distribution</button>
+    </div>
+    
+    <!-- Frequency Tab -->
+    <div id="frequency" class="tab-content active">
+        <div class="section">
+            <h2>Number Frequency Analysis</h2>
+            <p>This chart shows the frequency of each number in the selected time period.</p>
+            
+            <div class="chart-container">
+                <canvas id="frequencyChart"></canvas>
+            </div>
+            
+            <div class="container">
+                <div class="section">
+                    <h3>Hot Numbers</h3>
+                    <p>Numbers that appear most frequently in the selected time period.</p>
+                    <table id="hotNumbersTable">
+                        <thead>
+                            <tr>
+                                <th>Number</th>
+                                <th>Frequency</th>
+                                <th>Last Drawn</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="number-ball hot-number">23</span></td>
+                                <td>12</td>
+                                <td>3 days ago</td>
+                            </tr>
+                            <tr>
+                                <td><span class="number-ball hot-number">7</span></td>
+                                <td>10</td>
+                                <td>1 day ago</td>
+                            </tr>
+                            <!-- More rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="section">
+                    <h3>Cold Numbers</h3>
+                    <p>Numbers that appear least frequently in the selected time period.</p>
+                    <table id="coldNumbersTable">
+                        <thead>
+                            <tr>
+                                <th>Number</th>
+                                <th>Frequency</th>
+                                <th>Last Drawn</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="number-ball cold-number">13</span></td>
+                                <td>1</td>
+                                <td>52 days ago</td>
+                            </tr>
+                            <tr>
+                                <td><span class="number-ball cold-number">36</span></td>
+                                <td>2</td>
+                                <td>35 days ago</td>
+                            </tr>
+                            <!-- More rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sum Analysis Tab -->
+    <div id="sums" class="tab-content">
+        <div class="section">
+            <h2>Sum Distribution Analysis</h2>
+            <p>This chart shows the distribution of the sum of winning numbers.</p>
+            
+            <div class="chart-container">
+                <canvas id="sumChart"></canvas>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Sum Statistics</h3>
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <h4>Average Sum</h4>
+                        <div class="stat-value" id="avgSum">100</div>
+                    </div>
+                    <div class="stat-item">
+                        <h4>Most Common Range</h4>
+                        <div class="stat-value" id="commonSumRange">95-105</div>
+                    </div>
+                    <div class="stat-item">
+                        <h4>Lowest Sum</h4>
+                        <div class="stat-value" id="minSum">75</div>
+                    </div>
+                    <div class="stat-item">
+                        <h4>Highest Sum</h4>
+                        <div class="stat-value" id="maxSum">125</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pattern Analysis Tab -->
+    <div id="patterns" class="tab-content">
+        <div class="section">
+            <h2>Pattern Analysis</h2>
+            
+            <div class="container">
+                <div class="section">
+                    <h3>Even/Odd Distribution</h3>
+                    <p>Distribution of even and odd numbers in winning combinations.</p>
+                    <div class="chart-container">
+                        <canvas id="evenOddChart"></canvas>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Even/Odd Statistics</h3>
+                        <div class="stat-grid">
+                            <div class="stat-item">
+                                <h4>Most Common Ratio</h4>
+                                <div class="stat-value" id="commonEvenOdd">3:2</div>
+                            </div>
+                            <div class="stat-item">
+                                <h4>Least Common Ratio</h4>
+                                <div class="stat-value" id="leastEvenOdd">5:0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3>Sequential Numbers</h3>
+                    <p>Frequency of sequential number patterns (e.g., 5-6-7) in winning combinations.</p>
+                    <div class="chart-container">
+                        <canvas id="sequentialChart"></canvas>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Sequential Statistics</h3>
+                        <div class="stat-grid">
+                            <div class="stat-item">
+                                <h4>Draws with Sequential Pairs</h4>
+                                <div class="stat-value" id="sequentialPairs">65%</div>
+                            </div>
+                            <div class="stat-item">
+                                <h4>Draws with Sequential Triplets</h4>
+                                <div class="stat-value" id="sequentialTriplets">12%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Decade Distribution Tab -->
+    <div id="decades" class="tab-content">
+        <div class="section">
+            <h2>Decade Distribution Analysis</h2>
+            <p>This chart shows how numbers are distributed across different ranges (1-9, 10-19, 20-29, 30-39).</p>
+            
+            <div class="chart-container">
+                <canvas id="decadeChart"></canvas>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Decade Statistics</h3>
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <h4>Most Common Decade</h4>
+                        <div class="stat-value" id="commonDecade">20-29</div>
+                    </div>
+                    <div class="stat-item">
+                        <h4>Least Common Decade</h4>
+                        <div class="stat-value" id="leastDecade">1-9</div>
+                    </div>
+                    <div class="stat-item">
+                        <h4>Typical Distribution</h4>
+                        <div class="stat-value" id="typicalDecadeDist">1-1-2-1</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Recent Draws</h2>
+        {% if last_draws %}
+        <div style="max-height: 400px; overflow-y: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Numbers</th>
+                        <th>Sum</th>
+                        <th>Even/Odd</th>
+                        <th>Sequences</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for draw in last_draws %}
+                    <tr>
+                        <td>{{ draw.date }}</td>
+                        <td>
+                            {% for num in [draw.b1, draw.b2, draw.b3, draw.b4, draw.b5] %}
+                            <span class="number-ball draw-number">{{ num }}</span>
+                            {% endfor %}
+                        </td>
+                        <td>{{ draw.sum }}</td>
+                        <td>
+                            {% set even_count = [0] %}
+                            {% for num in [draw.b1, draw.b2, draw.b3, draw.b4, draw.b5] %}
+                                {% if num is divisibleby 2 %}
+                                    {% set _ = even_count.append(even_count.pop() + 1) %}
+                                {% endif %}
+                            {% endfor %}
+                            {{ even_count[0] }}:{{ 5 - even_count[0] }}
+                        </td>
+                        <td>
+                            {% set seq = 0 %}
+                            {% set nums = [draw.b1, draw.b2, draw.b3, draw.b4, draw.b5]|sort %}
+                            {% for i in range(4) %}
+                                {% if nums[i+1] - nums[i] == 1 %}
+                                    {% set seq = seq + 1 %}
+                                {% endif %}
+                            {% endfor %}
+                            {{ seq }} pairs
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p>No historical draws available.</p>
+        {% endif %}
+    </div>
+    
+    <footer>
+        <p>Georgia Fantasy 5 Statistical Analysis - Data is for informational purposes only.</p>
+        <p>Disclaimer: The statistics provided do not guarantee winning combinations. Play responsibly.</p>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Chart objects
+        let frequencyChart, sumChart, evenOddChart, sequentialChart, decadeChart;
+        
+        // Initialize when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initCharts();
+            updateStats();
+        });
+        
+        // Tab functionality
+        function openTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
+            }
+            
+            // Remove active class from all tab buttons
+            const tabButtons = document.getElementsByClassName('tab-btn');
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove('active');
+            }
+            
+            // Show the selected tab content and activate its button
+            document.getElementById(tabName).classList.add('active');
+            
+            // Find the button that opened the tab and add active class
+            const buttons = document.querySelectorAll('.tab-btn');
+            for (let i = 0; i < buttons.length; i++) {
+                if (buttons[i].getAttribute('onclick').includes(tabName)) {
+                    buttons[i].classList.add('active');
+                }
+            }
+        }
+        
+        // Initialize all charts
+        function initCharts() {
+            // Frequency Chart
+            const frequencyCtx = document.getElementById('frequencyChart').getContext('2d');
+            frequencyChart = new Chart(frequencyCtx, {
+                type: 'bar',
+                data: {
+                    labels: Array.from({length: 39}, (_, i) => i + 1),
+                    datasets: [{
+                        label: 'Frequency',
+                        data: Array(39).fill(0),
+                        backgroundColor: 'rgba(0, 51, 102, 0.7)',
+                        borderColor: 'rgba(0, 51, 102, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    return 'Number ' + tooltipItems[0].label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Frequency'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Number'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Sum Chart
+            const sumCtx = document.getElementById('sumChart').getContext('2d');
+            sumChart = new Chart(sumCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['<80', '80-90', '91-100', '101-110', '111-120', '>120'],
+                    datasets: [{
+                        label: 'Count',
+                        data: [0, 0, 0, 0, 0, 0],
+                        backgroundColor: 'rgba(76, 175, 80, 0.7)',
+                        borderColor: 'rgba(76, 175, 80, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Count'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Sum Range'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Even/Odd Chart
+            const evenOddCtx = document.getElementById('evenOddChart').getContext('2d');
+            evenOddChart = new Chart(evenOddCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['0:5', '1:4', '2:3', '3:2', '4:1', '5:0'],
+                    datasets: [{
+                        label: 'Even:Odd Ratio',
+                        data: [0, 0, 0, 0, 0, 0],
+                        backgroundColor: [
+                            '#e53935',
+                            '#d81b60',
+                            '#8e24aa',
+                            '#3949ab',
+                            '#1e88e5',
+                            '#00acc1'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ' (Even:Odd): ' + context.raw + ' draws';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Sequential Numbers Chart
+            const sequentialCtx = document.getElementById('sequentialChart').getContext('2d');
+            sequentialChart = new Chart(sequentialCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['0 Pairs', '1 Pair', '2 Pairs', '3 Pairs', '4 Pairs'],
+                    datasets: [{
+                        label: 'Sequential Pairs',
+                        data: [0, 0, 0, 0, 0],
+                        backgroundColor: 'rgba(186, 104, 200, 0.7)',
+                        borderColor: 'rgba(186, 104, 200, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Count'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Sequential Pairs'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Decade Chart
+            const decadeCtx = document.getElementById('decadeChart').getContext('2d');
+            decadeChart = new Chart(decadeCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['1-9', '10-19', '20-29', '30-39'],
+                    datasets: [{
+                        label: 'Frequency',
+                        data: [0, 0, 0, 0],
+                        backgroundColor: 'rgba(30, 136, 229, 0.7)',
+                        borderColor: 'rgba(30, 136, 229, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Frequency'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Number Range'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Update all stats and charts based on the selected time range
+        function updateStats() {
+            const days = document.getElementById('timeRange').value;
+            
+            // Fetch and update frequency data
+            fetch(`/api/stats/frequency?days=${days}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Error fetching frequency data:', data.error);
+                        return;
+                    }
+                    
+                    updateFrequencyChart(data.data);
+                })
+                .catch(error => console.error('Error fetching frequency data:', error));
+            
+            // Fetch and update sum distribution
+            fetch(`/api/stats/sum_distribution?days=${days}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Error fetching sum data:', data.error);
+                        return;
+                    }
+                    
+                    updateSumChart(data.data);
+                })
+                .catch(error => console.error('Error fetching sum data:', error));
+            
+            // Fetch and update even/odd distribution
+            fetch(`/api/stats/even_odd?days=${days}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Error fetching even/odd data:', data.error);
+                        return;
+                    }
+                    
+                    updateEvenOddChart(data.data);
+                })
+                .catch(error => console.error('Error fetching even/odd data:', error));
+            
+            // Fetch and update decade distribution
+            fetch(`/api/stats/decade?days=${days}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Error fetching decade data:', data.error);
+                        return;
+                    }
+                    
+                    updateDecadeChart(data.data);
+                })
+                .catch(error => console.error('Error fetching decade data:', error));
+        }
+        
+        // Update frequency chart and tables
+        function updateFrequencyChart(data) {
+            // Sort data by ball number
+            data.sort((a, b) => a.ball - b.ball);
+            
+            // Update frequency chart
+            const frequencies = data.map(item => item.frequency);
+            frequencyChart.data.datasets[0].data = frequencies;
+            frequencyChart.update();
+            
+            // Sort data by frequency for hot/cold numbers
+            const sortedData = [...data].sort((a, b) => b.frequency - a.frequency);
+            
+            // Update hot numbers table
+            const hotNumbers = sortedData.slice(0, 5);
+            const hotTable = document.getElementById('hotNumbersTable').getElementsByTagName('tbody')[0];
+            hotTable.innerHTML = '';
+            
+            hotNumbers.forEach(item => {
+                const row = hotTable.insertRow();
+                
+                const numCell = row.insertCell(0);
+                numCell.innerHTML = `<span class="number-ball hot-number">${item.ball}</span>`;
+                
+                row.insertCell(1).textContent = item.frequency;
+                
+                // Last seen would require additional data from API
+                row.insertCell(2).textContent = 'N/A';
+            });
+            
+            // Update cold numbers table
+            const coldNumbers = sortedData.slice(-5).reverse();
+            const coldTable = document.getElementById('coldNumbersTable').getElementsByTagName('tbody')[0];
+            coldTable.innerHTML = '';
+            
+            coldNumbers.forEach(item => {
+                const row = coldTable.insertRow();
+                
+                const numCell = row.insertCell(0);
+                numCell.innerHTML = `<span class="number-ball cold-number">${item.ball}</span>`;
+                
+                row.insertCell(1).textContent = item.frequency;
+                
+                // Last seen would require additional data from API
+                row.insertCell(2).textContent = 'N/A';
+            });
+        }
+        
+        // Update sum chart and stats
+        function updateSumChart(data) {
+            const sumRanges = ['<80', '80-90', '91-100', '101-110', '111-120', '>120'];
+            const counts = Array(6).fill(0);
+            
+            // Map data to chart format
+            data.forEach(item => {
+                const index = sumRanges.indexOf(item.range);
+                if (index !== -1) {
+                    counts[index] = item.count;
+                }
+            });
+            
+            // Update chart
+            sumChart.data.datasets[0].data = counts;
+            sumChart.update();
+            
+            // Find most common sum range
+            let maxCount = 0;
+            let maxIndex = 0;
+            counts.forEach((count, i) => {
+                if (count > maxCount) {
+                    maxCount = count;
+                    maxIndex = i;
+                }
+            });
+            
+            // Update stats
+            document.getElementById('commonSumRange').textContent = sumRanges[maxIndex];
+            
+            // Calculate approximate average (using midpoints)
+            const midpoints = [75, 85, 95.5, 105.5, 115.5, 125];
+            let totalDraws = counts.reduce((sum, count) => sum + count, 0);
+            
+            if (totalDraws > 0) {
+                let weightedSum = 0;
+                counts.forEach((count, i) => {
+                    weightedSum += count * midpoints[i];
+                });
+                
+                const avgSum = Math.round(weightedSum / totalDraws);
+                document.getElementById('avgSum').textContent = avgSum;
+            }
+            
+            // Set min and max sum values (these would ideally come from API)
+            // For now, we'll use placeholder values
+            document.getElementById('minSum').textContent = '75';
+            document.getElementById('maxSum').textContent = '125';
+        }
+        
+        // Update even/odd chart and stats
+        function updateEvenOddChart(data) {
+            const ratios = ['0:5', '1:4', '2:3', '3:2', '4:1', '5:0'];
+            const counts = Array(6).fill(0);
+            
+            // Map data to chart format
+            data.forEach(item => {
+                counts[item.even] = item.count;
+            });
+            
+            // Update chart
+            evenOddChart.data.datasets[0].data = counts;
+            evenOddChart.update();
+            
+            // Find most common and least common ratios
+            let maxCount = 0;
+            let maxIndex = 0;
+            let minCount = Infinity;
+            let minIndex = 0;
+            
+            counts.forEach((count, i) => {
+                if (count > maxCount) {
+                    maxCount = count;
+                    maxIndex = i;
+                }
+                if (count < minCount && count > 0) {
+                    minCount = count;
+                    minIndex = i;
+                }
+            });
+            
+            // Update stats
+            document.getElementById('commonEvenOdd').textContent = ratios[maxIndex];
+            document.getElementById('leastEvenOdd').textContent = ratios[minIndex];
+            
+            // Update sequential chart with placeholder data
+            // This would ideally come from an API
+            const seqData = [25, 45, 20, 8, 2]; // Placeholder data
+            sequentialChart.data.datasets[0].data = seqData;
+            sequentialChart.update();
+            
+            // Update sequential stats with placeholder values
+            document.getElementById('sequentialPairs').textContent = '65%';
+            document.getElementById('sequentialTriplets').textContent = '12%';
+        }
+        
+        // Update decade chart and stats
+        function updateDecadeChart(data) {
+            const decadeRanges = ['1-9', '10-19', '20-29', '30-39'];
+            const counts = Array(4).fill(0);
+            
+            // Map data to chart format
+            data.forEach(item => {
+                const index = decadeRanges.indexOf(item.decade);
+                if (index !== -1) {
+                    counts[index] = item.count;
+                }
+            });
+            
+            // Update chart
+            decadeChart.data.datasets[0].data = counts;
+            decadeChart.update();
+            
+            // Find most common and least common decades
+            let maxCount = 0;
+            let maxIndex = 0;
+            let minCount = Infinity;
+            let minIndex = 0;
+            
+            counts.forEach((count, i) => {
+                if (count > maxCount) {
+                    maxCount = count;
+                    maxIndex = i;
+                }
+                if (count < minCount && count > 0) {
+                    minCount = count;
+                    minIndex = i;
+                }
+            });
+            
+            // Update stats
+            document.getElementById('commonDecade').textContent = decadeRanges[maxIndex];
+            document.getElementById('leastDecade').textContent = decadeRanges[minIndex];
+            
+            // Calculate typical distribution
+            // This would be the average number of balls from each decade in a draw
+            // For now, we'll use a placeholder
+            document.getElementById('typicalDecadeDist').textContent = '1-1-2-1';
+        }
+    </script>
+</body>
+</html>

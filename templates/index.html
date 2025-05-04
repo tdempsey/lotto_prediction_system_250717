@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Georgia Fantasy 5 Lottery Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #003366;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .section {
+            flex: 1;
+            min-width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #003366;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .draw-number {
+            background-color: #e6f2ff;
+            border-radius: 50%;
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 5px;
+            font-weight: bold;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #003366;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background-color: #004080;
+        }
+        .navbar {
+            background-color: #003366;
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .navbar li {
+            float: left;
+        }
+        .navbar li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        .navbar li a:hover {
+            background-color: #004080;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/generate">Generate Predictions</a></li>
+            <li><a href="/stats">Statistics</a></li>
+        </ul>
+    </div>
+
+    <h1>Georgia Fantasy 5 Lottery Predictor</h1>
+    
+    <div class="container">
+        <div class="section">
+            <h2>Generate Predictions</h2>
+            <form action="/generate" method="POST">
+                <div class="form-group">
+                    <label for="count">Number of Predictions:</label>
+                    <input type="number" id="count" name="count" min="1" max="50" value="10">
+                </div>
+                
+                <h3>Filter Settings</h3>
+                <div class="form-group">
+                    <label for="max_seq2">Max Sequential Pairs:</label>
+                    <input type="number" id="max_seq2" name="max_seq2" min="0" max="4" value="{{ filters.max_seq2 }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="max_seq3">Max Sequential Triplets:</label>
+                    <input type="number" id="max_seq3" name="max_seq3" min="0" max="3" value="{{ filters.max_seq3 }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="max_mod_tot">Max Modular Total:</label>
+                    <input type="number" id="max_mod_tot" name="max_mod_tot" min="0" max="5" value="{{ filters.max_mod_tot }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="min_sum">Minimum Sum:</label>
+                    <input type="number" id="min_sum" name="min_sum" min="70" max="130" value="{{ filters.min_sum }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="max_sum">Maximum Sum:</label>
+                    <input type="number" id="max_sum" name="max_sum" min="70" max="130" value="{{ filters.max_sum }}">
+                </div>
+                
+                <button type="submit" class="btn">Generate Predictions</button>
+            </form>
+        </div>
+        
+        <div class="section">
+            <h2>Recent Draws</h2>
+            {% if last_draws %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Numbers</th>
+                        <th>Sum</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for draw in last_draws %}
+                    <tr>
+                        <td>{{ draw.date }}</td>
+                        <td>
+                            <span class="draw-number">{{ draw.b1 }}</span>
+                            <span class="draw-number">{{ draw.b2 }}</span>
+                            <span class="draw-number">{{ draw.b3 }}</span>
+                            <span class="draw-number">{{ draw.b4 }}</span>
+                            <span class="draw-number">{{ draw.b5 }}</span>
+                        </td>
+                        <td>{{ draw.sum }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>No historical draws available.</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>About</h2>
+        <p>The Georgia Fantasy 5 Lottery Predictor uses statistical analysis and pattern recognition to generate potential winning combinations. The prediction algorithm considers:</p>
+        <ul>
+            <li>Historical frequency of numbers</li>
+            <li>Even/odd number distribution</li>
+            <li>Sum ranges of winning combinations</li>
+            <li>Sequential number patterns</li>
+            <li>Decade distribution (1-9, 10-19, etc.)</li>
+        </ul>
+        <p><strong>Disclaimer:</strong> This tool provides statistical analysis only and does not guarantee winning combinations. Play responsibly.</p>
+    </div>
+</body>
+</html>

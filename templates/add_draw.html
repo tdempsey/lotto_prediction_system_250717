@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add New Draw - Georgia Fantasy 5</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        h1 { color: #333; }
+        .card { background: #f9f9f9; border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input { padding: 8px; width: 100%; box-sizing: border-box; }
+        button { background: #4CAF50; color: white; padding: 10px 15px; border: none; cursor: pointer; }
+        button:hover { background: #45a049; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .button { background: #4CAF50; color: white; padding: 10px 15px; border: none; cursor: pointer; text-decoration: none; display: inline-block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Add New Draw</h1>
+            <a href="/" class="button">Back to Home</a>
+        </div>
+        
+        <div class="card">
+            <h2>Enter Latest Draw</h2>
+            <form action="/add_draw" method="post">
+                <div class="form-group">
+                    <label for="date">Draw Date:</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Numbers (in ascending order):</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="number" name="b1" min="1" max="39" placeholder="1st" required>
+                        <input type="number" name="b2" min="1" max="39" placeholder="2nd" required>
+                        <input type="number" name="b3" min="1" max="39" placeholder="3rd" required>
+                        <input type="number" name="b4" min="1" max="39" placeholder="4th" required>
+                        <input type="number" name="b5" min="1" max="39" placeholder="5th" required>
+                    </div>
+                </div>
+                
+                <button type="submit">Add Draw</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

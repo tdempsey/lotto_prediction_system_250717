@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Database Settings - Georgia Fantasy 5</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        h1 { color: #333; }
+        .card { background: #f9f9f9; border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input { padding: 8px; width: 100%; box-sizing: border-box; }
+        button { background: #4CAF50; color: white; padding: 10px 15px; border: none; cursor: pointer; }
+        button:hover { background: #45a049; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .button { background: #4CAF50; color: white; padding: 10px 15px; border: none; cursor: pointer; text-decoration: none; display: inline-block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Database Settings</h1>
+            <a href="/" class="button">Back to Generator</a>
+        </div>
+        
+        <div class="card">
+            <h2>MySQL Connection Settings</h2>
+            <form action="/settings" method="post">
+                <div class="form-group">
+                    <label for="db_host">Host:</label>
+                    <input type="text" id="db_host" name="db_host" value="{{ config.host }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="db_name">Database Name:</label>
+                    <input type="text" id="db_name" name="db_name" value="{{ config.database }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="db_user">Username:</label>
+                    <input type="text" id="db_user" name="db_user" value="{{ config.user }}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="db_password">Password:</label>
+                    <input type="password" id="db_password" name="db_password" value="{{ config.password }}">
+                </div>
+                
+                <button type="submit">Save Settings</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+            

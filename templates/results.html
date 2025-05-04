@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediction Results - Georgia Fantasy 5</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: #333; }
+        .card { background: #f9f9f9; border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .button { background: #4CAF50; color: white; padding: 10px 15px; border: none; cursor: pointer; text-decoration: none; display: inline-block; }
+        .button:hover { background: #45a049; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Georgia Fantasy 5 Prediction Results</h1>
+            <a href="/" class="button">Back to Generator</a>
+        </div>
+        
+        <div class="card">
+            <h2>Predictions Generated on {{ timestamp }}</h2>
+            <a href="/download/{{ temp_file }}" class="button">Download as CSV</a>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Combination</th>
+                        <th>Sum</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pred in predictions %}
+                    <tr>
+                        <td>{{ pred.number }}</td>
+                        <td>{{ pred.combination }}</td>
+                        <td>{{ pred.sum }}</td>
+                        <td>{{ pred.score }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+            

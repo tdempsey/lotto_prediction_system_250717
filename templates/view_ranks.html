@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rank Data - Georgia Fantasy 5</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: #333; }
+        .card { background: #f9f9f9; border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .button { background: #4CAF50; color: white; padding: 10px 15px; border: none; cursor: pointer; text-decoration: none; display: inline-block; }
+        .rank-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+        .rank-item { background-color: #f0f0f0; padding: 10px; border-radius: 5px; text-align: center; }
+        .rank-num { font-weight: bold; }
+        .rank-count { color: #4CAF50; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Rank Data</h1>
+            <a href="/" class="button">Back to Generator</a>
+        </div>
+        
+        <div class="card">
+            <h2>Rank Limits</h2>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                {% for limit in rank_limits %}
+                <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px; text-align: center; min-width: 40px;">
+                    <div style="font-weight: bold;">{{ loop.index0 }}</div>
+                    <div style="color: #4CAF50;">{{ limit }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Rank Counts</h2>
+            <div class="rank-grid">
+                {% for item in rank_data %}
+                <div class="rank-item">
+                    <div class="rank-num">Rank {{ item.rank }}</div>
+                    <div class="rank-count">{{ item.count }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        {% if col1_data %}
+        <div class="card">
+            <h2>Column 1 Distribution Data</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sum Range</th>
+                        <th>Even Count</th>
+                        <th>Odd Count</th>
+                        <th>Column 1 Values</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, values in col1_data.items() %}
+                    <tr>
+                        <td>{{ key[0] }}</td>
+                        <td>{{ key[1] }}</td>
+                        <td>{{ key[2] }}</td>
+                        <td>{{ values|join(', ') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

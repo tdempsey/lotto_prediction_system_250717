@@ -1,0 +1,41 @@
+In the Georgia Fantasy 5 Prediction System I created, the scores are calculated using a comprehensive approach that evaluates each combination based on multiple factors. Here's how the scoring works:
+
+### Scoring Components (0-100 scale)
+
+1. **Frequency Score (30% of total score)**
+   - Examines how often each number has appeared in draws over the last 30 days
+   - Numbers that appear more frequently receive higher scores
+   - This gives weight to "hot" numbers that might be trending
+
+2. **Even/Odd Distribution Score (15% of total score)**
+   - Measures how balanced the combination is between even and odd numbers
+   - Optimal balance is 2-3 or 3-2 (even-odd)
+   - Perfect balance gets maximum points, imbalanced combinations score lower
+
+3. **Decade Distribution Score (20% of total score)**
+   - Evaluates how well numbers are spread across decades (1-9, 10-19, 20-29, 30-39)
+   - Penalizes having more than 2 numbers from any single decade
+   - Also penalizes having no numbers from any decade
+   - Encourages a balanced distribution across the number range
+
+4. **Sequential Number Penalty (10% of total score)**
+   - Reduces score for combinations with sequential numbers
+   - Each sequential pair (like 15-16) reduces score by 5 points
+   - Each sequential triplet (like 15-16-17) reduces score by 15 points
+   - Based on your filter that limits sequential numbers
+
+5. **Sum Score (25% of total score)**
+   - Compares the combination's sum to the average sum of winning numbers over the past year
+   - Combinations with sums closer to this historical average receive higher scores
+   - This recognizes patterns in the total value of winning combinations
+
+The final score is calculated using this weighted formula:
+```
+score = (frequency_score × 0.30) + 
+        (even_odd_score × 0.15) + 
+        (decade_score × 0.20) - 
+        (sequential_penalty × 0.10) + 
+        (sum_score × 0.25)
+```
+
+This approach balances statistical frequency analysis with structural pattern analysis, closely matching your filtering parameters like seq2, mod_tot, and even/odd distribution.
