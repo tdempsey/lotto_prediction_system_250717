@@ -1,22 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, send_file
 import mysql.connector
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
+import argparse
 import json
-import os
-import tempfile
+import sys
 from itertools import combinations
-
-app = Flask(__name__)
-
-# Configure MySQL connection
-db_config = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': '',
-    'database': 'ga_f5_lotto'
-}
 
 class GeorgiaFantasy5Predictor:
     def __init__(self, config):
@@ -26,24 +15,31 @@ class GeorgiaFantasy5Predictor:
         Parameters:
         config (dict): MySQL database connection parameters
         """
-        self.conn = mysql.connector.connect(**config)
-        self.cursor = self.conn.cursor(dictionary=True)
+        print("Connecting to database...")
+        try:
+            self.conn = mysql.connector.connect(**config)
+            self.cursor = self.conn.cursor(dictionary=True)
+            print("Connected successfully!")
+        except mysql.connector.Error as e:
+            print(f"Error connecting to MySQL database: {e}")
+            sys.exit(1)
         
         # Georgia Fantasy 5 specifics
         self.num_range = range(1, 40)  # Numbers 1-39
         self.nums_per_draw = 5
         
-        # Filter settings (can be adjusted via web interface)
+        # Filter settings (can be adjusted via command line)
         self.max_seq2 = 1
         self.max_seq3 = 0
         self.max_mod_tot = 2
-        self.sum_range = (70, 139)
+        self.sum_range = (80, 120)
         
         # Load historical data
         self.load_historical_data()
     
     def load_historical_data(self):
         """Load historical draws from MySQL database"""
+        print("Loading historical data...")
         query = "SELECT * FROM ga_f5_draws ORDER BY date DESC"
         self.cursor.execute(query)
         results = self.cursor.fetchall()
@@ -226,6 +222,8 @@ class GeorgiaFantasy5Predictor:
         
         # Get position 1, 3, 5 candidates based on recent frequency (scaffolding approach)
         # This mimics the user's scaffolding approach where they first establish positions 1, 3, and 5
+        print("Finding position 1, 3, 5 candidates from recent draws...")
+        
         query = """
         SELECT b1, COUNT(*) as freq FROM ga_f5_draws 
         WHERE date >= DATE_SUB(NOW(), INTERVAL 30 DAY)
@@ -267,6 +265,7 @@ class GeorgiaFantasy5Predictor:
         scaffold_count = 0
         max_scaffolds = min(count * 10, 100)  # Cap at 100 scaffolds
         
+        print("Building combinations using scaffolding approach...")
         for pos1 in pos1_candidates[:5]:  # Limit to top 5 for position 1
             for pos3 in pos3_candidates[:5]:  # Limit to top 5 for position 3
                 for pos5 in pos5_candidates[:5]:  # Limit to top 5 for position 5
@@ -499,396 +498,115 @@ class GeorgiaFantasy5Predictor:
         
         return final_score
     
+    def display_predictions(self, predictions):
+        """Display predictions in a formatted way"""
+        print("\n============== GEORGIA FANTASY 5 PREDICTIONS ==============")
+        print(f"Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        print("==========================================================\n")
+        
+        for i, pred in enumerate(predictions, 1):
+            combo = pred['combination']
+            score = pred['score']
+            total = pred['sum']
+            
+            print(f"Prediction #{i}: {combo[0]}-{combo[1]}-{combo[2]}-{combo[3]}-{combo[4]}")
+            print(f"Sum: {total} | Score: {score:.2f}%")
+            print("----------------------------------------------------------")
+    
+    def save_predictions_to_csv(self, predictions, filename=None):
+        """Save predictions to a CSV file"""
+        if filename is None:
+            filename = f"ga_f5_predictions_{datetime.now().strftime('%Y%m%d')}.csv"
+        
+        # Create rows for DataFrame
+        rows = []
+        for i, pred in enumerate(predictions, 1):
+            combo = pred['combination']
+            row = {
+                'Prediction': i,
+                'Ball1': combo[0],
+                'Ball2': combo[1],
+                'Ball3': combo[2],
+                'Ball4': combo[3],
+                'Ball5': combo[4],
+                'Sum': pred['sum'],
+                'Score': pred['score'],
+                'Generated': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            }
+            rows.append(row)
+        
+        # Create and save DataFrame
+        df = pd.DataFrame(rows)
+        df.to_csv(filename, index=False)
+        
+        print(f"\nPredictions saved to {filename}")
+        return filename
+    
     def close(self):
         """Close database connection"""
         if self.conn:
             self.conn.close()
 
-
-# Initialize predictor with default settings
-predictor = None
-
-@app.route('/')
-def index():
-    global predictor
-    if predictor is None:
-        try:
-            predictor = GeorgiaFantasy5Predictor(db_config)
-        except Exception as e:
-            return render_template('error.html', error=str(e))
+def main():
+    # Set up command line arguments
+    parser = argparse.ArgumentParser(description='Georgia Fantasy 5 Prediction Generator')
     
-    # Get the latest draws for display
-    latest_draws = predictor.get_last_n_draws(5)
+    # Database connection settings
+    parser.add_argument('--host', default='localhost', help='MySQL host')
+    parser.add_argument('--user', default='root', help='MySQL username')
+    parser.add_argument('--password', default='', help='MySQL password')
+    parser.add_argument('--database', default='ga_f5_lotto', help='MySQL database name')
     
-    # Convert to list of dicts for easier template rendering
-    latest_draws_list = []
-    for _, row in latest_draws.iterrows():
-        latest_draws_list.append({
-            'date': row['date'].strftime('%Y-%m-%d') if isinstance(row['date'], datetime) else row['date'],
-            'numbers': [row['b1'], row['b2'], row['b3'], row['b4'], row['b5']],
-            'sum': row['sum']
-        })
+    # Filter settings
+    parser.add_argument('--seq2', type=int, default=1, help='Maximum sequential pairs allowed')
+    parser.add_argument('--seq3', type=int, default=0, help='Maximum sequential triplets allowed')
+    parser.add_argument('--mod_tot', type=int, default=2, help='Maximum modular total allowed')
+    parser.add_argument('--min_sum', type=int, default=80, help='Minimum sum allowed')
+    parser.add_argument('--max_sum', type=int, default=120, help='Maximum sum allowed')
     
-    return render_template('index.html', latest_draws=latest_draws_list)
-
-@app.route('/generate', methods=['POST'])
-def generate():
-    global predictor
+    # Output settings
+    parser.add_argument('--count', type=int, default=10, help='Number of predictions to generate')
+    parser.add_argument('--output', help='Output CSV filename (default: ga_f5_predictions_YYYYMMDD.csv)')
     
-    # Get filter settings from form
-    max_seq2 = int(request.form.get('max_seq2', 1))
-    max_seq3 = int(request.form.get('max_seq3', 0))
-    max_mod_tot = int(request.form.get('max_mod_tot', 2))
-    min_sum = int(request.form.get('min_sum', 80))
-    max_sum = int(request.form.get('max_sum', 120))
-    num_predictions = int(request.form.get('num_predictions', 10))
+    # Parse arguments
+    args = parser.parse_args()
+    
+    # Database configuration
+    db_config = {
+        'host': args.host,
+        'user': args.user,
+        'password': args.password,
+        'database': args.database
+    }
     
     try:
-        if predictor is None:
-            predictor = GeorgiaFantasy5Predictor(db_config)
+        # Initialize predictor
+        predictor = GeorgiaFantasy5Predictor(db_config)
         
-        # Update filter settings
-        predictor.max_seq2 = max_seq2
-        predictor.max_seq3 = max_seq3
-        predictor.max_mod_tot = max_mod_tot
-        predictor.sum_range = (min_sum, max_sum)
+        # Set filter settings
+        predictor.max_seq2 = args.seq2
+        predictor.max_seq3 = args.seq3
+        predictor.max_mod_tot = args.mod_tot
+        predictor.sum_range = (args.min_sum, args.max_sum)
         
         # Generate predictions
-        predictions = predictor.generate_predictions(count=num_predictions)
+        predictions = predictor.generate_predictions(count=args.count)
         
-        # Format predictions for display
-        formatted_predictions = []
-        for i, pred in enumerate(predictions, 1):
-            combo = pred['combination']
-            formatted_predictions.append({
-                'number': i,
-                'combination': '-'.join(str(num) for num in combo),
-                'sum': pred['sum'],
-                'score': f"{pred['score']:.2f}%"
-            })
+        # Display predictions
+        predictor.display_predictions(predictions)
         
-        # Store predictions in session for download
-        temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.json')
-        with open(temp_file.name, 'w') as f:
-            json.dump(predictions, f)
+        # Save predictions to CSV
+        predictor.save_predictions_to_csv(predictions, filename=args.output)
         
-        return render_template('results.html', 
-                               predictions=formatted_predictions, 
-                               timestamp=datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                               temp_file=os.path.basename(temp_file.name))
-    
     except Exception as e:
-        return render_template('error.html', error=str(e))
-
-@app.route('/download/<filename>')
-def download(filename):
-    # Load predictions from temp file
-    filepath = os.path.join(tempfile.gettempdir(), filename)
-    
-    if not os.path.exists(filepath):
-        return "File not found", 404
-    
-    with open(filepath, 'r') as f:
-        predictions = json.load(f)
-    
-    # Create CSV file
-    csv_temp = tempfile.NamedTemporaryFile(delete=False, suffix='.csv')
-    
-    # Create DataFrame
-    rows = []
-    for i, pred in enumerate(predictions, 1):
-        combo = pred['combination']
-        row = {
-            'Prediction': i,
-            'Ball1': combo[0],
-            'Ball2': combo[1],
-            'Ball3': combo[2],
-            'Ball4': combo[3],
-            'Ball5': combo[4],
-            'Sum': pred['sum'],
-            'Score': pred['score'],
-            'Generated': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        }
-        rows.append(row)
-        
-    df = pd.DataFrame(rows)
-    df.to_csv(csv_temp.name, index=False)
-    
-    return send_file(csv_temp.name, 
-                     mimetype='text/csv',
-                     as_attachment=True,
-                     download_name=f"ga_f5_predictions_{datetime.now().strftime('%Y%m%d')}.csv")
-
-@app.route('/settings', methods=['GET', 'POST'])
-def settings():
-    if request.method == 'POST':
-        # Update database settings
-        db_config['host'] = request.form.get('db_host', 'localhost')
-        db_config['user'] = request.form.get('db_user', 'root')
-        db_config['password'] = request.form.get('db_password', '')
-        db_config['database'] = request.form.get('db_name', 'ga_f5_lotto')
-        
-        # Reset predictor to apply new settings
-        global predictor
-        if predictor:
+        print(f"Error: {e}")
+        return 1
+    finally:
+        # Clean up
+        if 'predictor' in locals():
             predictor.close()
-        predictor = None
-        
-        return redirect(url_for('index'))
     
-    return render_template('settings.html', config=db_config)
+    return 0
 
-if __name__ == '__main__':
-    # Create templates directory if it doesn't exist
-    if not os.path.exists('templates'):
-        os.makedirs('templates')
-    
-    # Create basic templates if they don't exist
-    if not os.path.exists('templates/index.html'):
-        with open('templates/index.html', 'w') as f:
-            f.write('''
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Georgia Fantasy 5 Prediction System</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
-        .container { max-width: 900px; margin: 0 auto; }
-        h1 { color: #333; }
-        .card { background: #f9f9f9; border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input, select { padding: 8px; width: 100%; box-sizing: border-box; }
-        button { background: #4CAF50; color: white; padding: 10px 15px; border: none; cursor: pointer; }
-        button:hover { background: #45a049; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Georgia Fantasy 5 Prediction System</h1>
-            <a href="/settings">Database Settings</a>
-        </div>
-        
-        <div class="card">
-            <h2>Generate Predictions</h2>
-            <form action="/generate" method="post">
-                <div style="display: flex; gap: 20px;">
-                    <div style="flex: 1;">
-                        <div class="form-group">
-                            <label for="max_seq2">Max Sequential Pairs:</label>
-                            <input type="number" id="max_seq2" name="max_seq2" min="0" max="5" value="1">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="max_seq3">Max Sequential Triplets:</label>
-                            <input type="number" id="max_seq3" name="max_seq3" min="0" max="5" value="0">
-                        </div>
-                    </div>
-                    
-                    <div style="flex: 1;">
-                        <div class="form-group">
-                            <label for="max_mod_tot">Max Modular Total:</label>
-                            <input type="number" id="max_mod_tot" name="max_mod_tot" min="0" max="5" value="2">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="num_predictions">Number of Predictions:</label>
-                            <input type="number" id="num_predictions" name="num_predictions" min="1" max="100" value="10">
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="sum_range">Sum Range:</label>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="number" id="min_sum" name="min_sum" min="5" max="195" value="80" placeholder="Min">
-                        <span style="line-height: 35px;">to</span>
-                        <input type="number" id="max_sum" name="max_sum" min="5" max="195" value="120" placeholder="Max">
-                    </div>
-                </div>
-                
-                <button type="submit">Generate Predictions</button>
-            </form>
-        </div>
-        
-        <div class="card">
-            <h2>Latest Draws</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Numbers</th>
-                        <th>Sum</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for draw in latest_draws %}
-                    <tr>
-                        <td>{{ draw.date }}</td>
-                        <td>{{ draw.numbers|join('-') }}</td>
-                        <td>{{ draw.sum }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-</body>
-</html>
-            ''')
-    
-    if not os.path.exists('templates/results.html'):
-        with open('templates/results.html', 'w') as f:
-            f.write('''
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Prediction Results - Georgia Fantasy 5</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
-        .container { max-width: 900px; margin: 0 auto; }
-        h1 { color: #333; }
-        .card { background: #f9f9f9; border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .button { background: #4CAF50; color: white; padding: 10px 15px; border: none; cursor: pointer; text-decoration: none; display: inline-block; }
-        .button:hover { background: #45a049; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Georgia Fantasy 5 Prediction Results</h1>
-            <a href="/" class="button">Back to Generator</a>
-        </div>
-        
-        <div class="card">
-            <h2>Predictions Generated on {{ timestamp }}</h2>
-            <a href="/download/{{ temp_file }}" class="button">Download as CSV</a>
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Combination</th>
-                        <th>Sum</th>
-                        <th>Score</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for pred in predictions %}
-                    <tr>
-                        <td>{{ pred.number }}</td>
-                        <td>{{ pred.combination }}</td>
-                        <td>{{ pred.sum }}</td>
-                        <td>{{ pred.score }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-</body>
-</html>
-            ''')
-    
-    if not os.path.exists('templates/settings.html'):
-        with open('templates/settings.html', 'w') as f:
-            f.write('''
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Database Settings - Georgia Fantasy 5</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
-        .container { max-width: 600px; margin: 0 auto; }
-        h1 { color: #333; }
-        .card { background: #f9f9f9; border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input { padding: 8px; width: 100%; box-sizing: border-box; }
-        button { background: #4CAF50; color: white; padding: 10px 15px; border: none; cursor: pointer; }
-        button:hover { background: #45a049; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .button { background: #4CAF50; color: white; padding: 10px 15px; border: none; cursor: pointer; text-decoration: none; display: inline-block; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Database Settings</h1>
-            <a href="/" class="button">Back to Generator</a>
-        </div>
-        
-        <div class="card">
-            <h2>MySQL Connection Settings</h2>
-            <form action="/settings" method="post">
-                <div class="form-group">
-                    <label for="db_host">Host:</label>
-                    <input type="text" id="db_host" name="db_host" value="{{ config.host }}">
-                </div>
-                
-                <div class="form-group">
-                    <label for="db_name">Database Name:</label>
-                    <input type="text" id="db_name" name="db_name" value="{{ config.database }}">
-                </div>
-                
-                <div class="form-group">
-                    <label for="db_user">Username:</label>
-                    <input type="text" id="db_user" name="db_user" value="{{ config.user }}">
-                </div>
-                
-                <div class="form-group">
-                    <label for="db_password">Password:</label>
-                    <input type="password" id="db_password" name="db_password" value="{{ config.password }}">
-                </div>
-                
-                <button type="submit">Save Settings</button>
-            </form>
-        </div>
-    </div>
-</body>
-</html>
-            ''')
-    
-    if not os.path.exists('templates/error.html'):
-        with open('templates/error.html', 'w') as f:
-            f.write('''
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Error - Georgia Fantasy 5</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
-        .container { max-width: 600px; margin: 0 auto; }
-        h1 { color: #333; }
-        .card { background: #f9f9f9; border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
-        .error { color: #D8000C; background-color: #FFBABA; padding: 15px; border-radius: 5px; }
-        .button { background: #4CAF50; color: white; padding: 10px 15px; border: none; cursor: pointer; text-decoration: none; display: inline-block; margin-top: 20px; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Error</h1>
-        
-        <div class="card">
-            <div class="error">
-                <h3>An error occurred:</h3>
-                <p>{{ error }}</p>
-            </div>
-            
-            <a href="/" class="button">Back to Homepage</a>
-        </div>
-    </div>
-</body>
-</html>
-            ''')
-    
-    app.run(debug=True)
+if __name__ == "__main__":
+    sys.exit(main())

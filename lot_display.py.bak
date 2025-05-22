@@ -1,0 +1,678 @@
+from flask import Flask, render_template, request, redirect, url_for, jsonify
+import pandas as pd
+import numpy as np
+import random
+import os
+import csv
+from datetime import datetime
+
+class Fantasy5Predictor:
+    def __init__(self, scaffolding_file):
+        """
+        Initialize the Fantasy 5 Predictor with scaffolding data
+        
+        Parameters:
+        scaffolding_file (str): Path to the CSV file with scaffolding data
+        """
+        # Load the scaffolding data
+        try:
+            self.scaffolding = pd.read_csv(scaffolding_file)
+            
+            # Filter out rows with zeros in important positions
+            self.filtered_data = self.scaffolding[
+                (self.scaffolding['b1'] > 0) & 
+                (self.scaffolding['b5'] > 0)
+            ].copy()
+            
+            print(f"Loaded {len(self.filtered_data)} valid scaffolding records")
+        except Exception as e:
+            print(f"Error loading scaffolding data: {e}")
+            # Create empty dataframe with necessary columns
+            self.scaffolding = pd.DataFrame(columns=['b1', 'b2', 'b3', 'b4', 'b5', 'sum', 'even', 'odd'])
+            self.filtered_data = self.scaffolding.copy()
+            print("Created empty scaffolding data")
+        
+        # Create lookup tables
+        self.create_lookup_tables()
+        
+    def create_lookup_tables(self):
+        """Create lookup tables for pattern matching"""
+        # Group by sum, even, odd counts
+        self.sum_even_odd_groups = {}
+        self.sum_groups = {}
+        self.even_odd_groups = {}
+        
+        if len(self.filtered_data) == 0:
+            print("No data available for lookup tables")
+            return
+        
+        for _, row in self.filtered_data.iterrows():
+            # Handle sum, even, odd groups
+            if 'sum' in row and 'even' in row and 'odd' in row:
+                key = (row['sum'], row['even'], row['odd'])
+                if key not in self.sum_even_odd_groups:
+                    self.sum_even_odd_groups[key] = []
+                    
+                # Store b1, b3 (if available), and b5 values
+                pattern = {
+                    'b1': row['b1'],
+                    'b5': row['b5']
+                }
+                
+                # Include b3 if it's available and valid
+                if 'b3' in row and row['b3'] > 0:
+                    pattern['b3'] = row['b3']
+                
+                self.sum_even_odd_groups[key].append(pattern)
+            
+            # Handle sum groups
+            if 'sum' in row:
+                sum_val = row['sum']
+                if sum_val not in self.sum_groups:
+                    self.sum_groups[sum_val] = []
+                
+                self.sum_groups[sum_val].append({'b1': row['b1'], 'b5': row['b5']})
+            
+            # Handle even/odd groups
+            if 'even' in row and 'odd' in row:
+                even_odd = (row['even'], row['odd'])
+                if even_odd not in self.even_odd_groups:
+                    self.even_odd_groups[even_odd] = []
+                
+                self.even_odd_groups[even_odd].append({'b1': row['b1'], 'b5': row['b5']})
+    
+    def get_pattern_by_sum_even_odd(self, target_sum, even_count, odd_count):
+        """
+        Get a pattern based on sum and even/odd distribution
+        
+        Parameters:
+        target_sum (int): Sum of the 5 numbers
+        even_count (int): Count of even numbers
+        odd_count (int): Count of odd numbers
+        
+        Returns:
+        dict: Pattern with b1, b3 (optional), b5 values
+        """
+        key = (target_sum, even_count, odd_count)
+        
+        # Exact match
+        if key in self.sum_even_odd_groups and self.sum_even_odd_groups[key]:
+            return random.choice(self.sum_even_odd_groups[key])
+        
+        # If no exact match, try matching by sum only
+        if target_sum in self.sum_groups and self.sum_groups[target_sum]:
+            return random.choice(self.sum_groups[target_sum])
+        
+        # If still no match, try by even/odd distribution
+        even_odd_key = (even_count, odd_count)
+        if even_odd_key in self.even_odd_groups and self.even_odd_groups[even_odd_key]:
+            return random.choice(self.even_odd_groups[even_odd_key])
+        
+        # Last resort - find the closest sum in the scaffolding data
+        if self.sum_groups:
+            closest_sum = min(self.sum_groups.keys(), key=lambda x: abs(x - target_sum))
+            if closest_sum in self.sum_groups and self.sum_groups[closest_sum]:
+                return random.choice(self.sum_groups[closest_sum])
+        
+        # Ultimate fallback if nothing else works
+        return {'b1': random.randint(1, 15), 'b5': random.randint(25, 39)}
+    
+    def find_middle_values(self, b1, b5, target_sum, even_target):
+        """
+        Find middle values (b2, b3, b4) to complete a combination
+        
+        Parameters:
+        b1, b5 (int): First and last ball values
+        target_sum (int): Target sum for the combination
+        even_target (int): Target count of even numbers
+        
+        Returns:
+        list: Complete 5-number combination [b1, b2, b3, b4, b5]
+        """
+        current_sum = b1 + b5
+        remaining_sum = target_sum - current_sum
+        
+        # Count even numbers in b1 and b5
+        current_even = (b1 % 2 == 0) + (b5 % 2 == 0)
+        even_needed = even_target - current_even
+        
+        # We need to find b2, b3, b4 that:
+        # 1. Are in ascending order between b1 and b5
+        # 2. Sum to the remaining sum
+        # 3. Have the required number of even digits
+        
+        valid_combinations = []
+        
+        # Define the range for middle values
+        min_b2 = b1 + 1
+        max_b4 = b5 - 1
+        
+        # Brute force approach for small range
+        for b2 in range(min_b2, max_b4 - 1):
+            for b3 in range(b2 + 1, max_b4):
+                for b4 in range(b3 + 1, max_b4 + 1):
+                    # Check if they sum to the remaining sum
+                    if b2 + b3 + b4 == remaining_sum:
+                        # Check if they have the right number of even digits
+                        b2_even = b2 % 2 == 0
+                        b3_even = b3 % 2 == 0
+                        b4_even = b4 % 2 == 0
+                        middle_even_count = b2_even + b3_even + b4_even
+                        
+                        if middle_even_count == even_needed:
+                            valid_combinations.append([b1, b2, b3, b4, b5])
+        
+        if valid_combinations:
+            return random.choice(valid_combinations)
+        
+        # If we couldn't find an exact match, find the closest match
+        closest_combinations = []
+        min_diff = float('inf')
+        
+        for b2 in range(min_b2, max_b4 - 1):
+            for b3 in range(b2 + 1, max_b4):
+                for b4 in range(b3 + 1, max_b4 + 1):
+                    # Calculate how close this combination is to our targets
+                    sum_diff = abs((b2 + b3 + b4) - remaining_sum)
+                    
+                    b2_even = b2 % 2 == 0
+                    b3_even = b3 % 2 == 0
+                    b4_even = b4 % 2 == 0
+                    middle_even_count = b2_even + b3_even + b4_even
+                    even_diff = abs(middle_even_count - even_needed)
+                    
+                    # Combined difference (prioritize sum)
+                    total_diff = (sum_diff * 10) + even_diff
+                    
+                    # Update best match if this is better
+                    if total_diff < min_diff:
+                        min_diff = total_diff
+                        closest_combinations = [[b1, b2, b3, b4, b5]]
+                    elif total_diff == min_diff:
+                        closest_combinations.append([b1, b2, b3, b4, b5])
+        
+        if closest_combinations:
+            return random.choice(closest_combinations)
+        
+        # Ultimate fallback if no valid combinations found
+        # Just pick random middle values
+        b2 = random.randint(min_b2, min(min_b2 + 5, max_b4 - 2))
+        b3 = random.randint(b2 + 1, min(b2 + 10, max_b4 - 1))
+        b4 = random.randint(b3 + 1, max_b4)
+        
+        return [b1, b2, b3, b4, b5]
+    
+    def generate_predictions(self, count=10, sum_range=(85, 120), even_range=(2, 3)):
+        """
+        Generate lottery number predictions
+        
+        Parameters:
+        count (int): Number of predictions to generate
+        sum_range (tuple): Range of sums to consider (min, max)
+        even_range (tuple): Range of even number counts to consider (min, max)
+        
+        Returns:
+        list: List of prediction combinations
+        """
+        predictions = []
+        min_sum, max_sum = sum_range
+        
+        # Print debug info
+        print(f"Generating {count} predictions with sum range {min_sum}-{max_sum} and even range {even_range}")
+        
+        for _ in range(count):
+            # Set target values
+            # If min_sum equals max_sum, use that exact value
+            if min_sum == max_sum:
+                target_sum = min_sum
+            else:
+                target_sum = random.randint(min_sum, max_sum)
+                
+            # Set target even count
+            target_even = random.randint(even_range[0], even_range[1])
+            target_odd = 5 - target_even
+            
+            # Get pattern from scaffolding data
+            pattern = self.get_pattern_by_sum_even_odd(target_sum, target_even, target_odd)
+            
+            # Extract b1 and b5 from pattern
+            b1 = pattern['b1']
+            b5 = pattern['b5']
+            
+            # Complete the combination
+            combination = self.find_middle_values(b1, b5, target_sum, target_even)
+            
+            # Check if the sum matches exactly when min_sum equals max_sum
+            actual_sum = sum(combination)
+            if min_sum == max_sum and actual_sum != min_sum:
+                # If not, try to adjust one of the middle values
+                diff = min_sum - actual_sum
+                # Adjust b3 if possible
+                if 1 <= combination[2] + diff <= 39:
+                    combination[2] += diff
+                # Or adjust b2 or b4 if needed
+                elif 1 <= combination[1] + diff <= 39:
+                    combination[1] += diff
+                elif 1 <= combination[3] + diff <= 39:
+                    combination[3] += diff
+            
+            # Double-check the combination is valid (in ascending order)
+            if not all(combination[i] < combination[i+1] for i in range(4)):
+                # If not, sort it
+                combination.sort()
+            
+            # Count even and odd numbers
+            even_count = sum(1 for num in combination if num % 2 == 0)
+            odd_count = 5 - even_count
+            
+            predictions.append({
+                'combination': combination,
+                'sum': sum(combination),
+                'even': even_count,
+                'odd': odd_count
+            })
+        
+        return predictions
+    
+    def export_to_csv(self, predictions, filename='fantasy5_predictions.csv'):
+        """
+        Export predictions to CSV
+        
+        Parameters:
+        predictions (list): List of prediction dictionaries
+        filename (str): Output filename
+        """
+        rows = []
+        for i, pred in enumerate(predictions, 1):
+            rows.append({
+                'Prediction': i,
+                'Combination': '-'.join(str(n) for n in pred['combination']),
+                'Sum': pred['sum'],
+                'Even': pred['even'],
+                'Odd': pred['odd']
+            })
+        
+        df = pd.DataFrame(rows)
+        df.to_csv(filename, index=False)
+        print(f"Predictions exported to {filename}")
+        return df
+
+class LotteryDataManager:
+    def __init__(self, csv_path):
+        """
+        Initialize the lottery data manager
+        
+        Parameters:
+        csv_path (str): Path to the CSV file with lottery data
+        """
+        self.csv_path = csv_path
+        self.data = None
+        self.load_data()
+        
+    def load_data(self):
+        """Load data from CSV file"""
+        try:
+            if os.path.exists(self.csv_path) and os.path.getsize(self.csv_path) > 0:
+                self.data = pd.read_csv(self.csv_path)
+                
+                # Check if required columns exist
+                required_columns = ['Date', 'b1', 'b2', 'b3', 'b4', 'b5']
+                if not all(col in self.data.columns for col in required_columns):
+                    raise ValueError(f"CSV file missing required columns: {required_columns}")
+                
+                # Add a date column if it doesn't exist
+                if 'Date' not in self.data.columns:
+                    self.data['Date'] = pd.to_datetime('today').strftime('%Y-%m-%d')
+                
+                # Convert Date to string format if it's not already
+                if not isinstance(self.data['Date'].iloc[0], str):
+                    self.data['Date'] = self.data['Date'].astype(str)
+                
+                # Calculate sum, even, odd if not present
+                if 'Sum' not in self.data.columns:
+                    self.data['Sum'] = self.data['b1'] + self.data['b2'] + self.data['b3'] + self.data['b4'] + self.data['b5']
+                
+                if 'Even' not in self.data.columns:
+                    self.data['Even'] = self.data.apply(lambda row: sum(1 for b in ['b1', 'b2', 'b3', 'b4', 'b5'] if row[b] % 2 == 0), axis=1)
+                
+                if 'Odd' not in self.data.columns:
+                    self.data['Odd'] = 5 - self.data['Even']
+                
+                # Initialize statistical columns if they don't exist
+                stat_columns = ['Average', 'Median', 'Harmean', 'Geomean', 'Quart1', 'Quart2', 'Quart3', 'Stdev', 'Var', 'AveDev', 'Kurt', 'Skew', 'Y1', 'WA']
+                for col in stat_columns:
+                    if col not in self.data.columns:
+                        self.data[col] = 0.0
+                        
+                # Calculate stats for each row
+                self.calculate_stats()
+                    
+                print(f"Loaded {len(self.data)} lottery data records")
+            else:
+                # File doesn't exist or is empty, create a new DataFrame
+                self.data = pd.DataFrame(columns=['Date', 'b1', 'b2', 'b3', 'b4', 'b5', 'Sum', 'Even', 'Odd', 
+                                                 'Average', 'Median', 'Harmean', 'Geomean', 'Quart1', 'Quart2', 
+                                                 'Quart3', 'Stdev', 'Var', 'AveDev', 'Kurt', 'Skew', 'Y1', 'WA'])
+                print("Created new empty data file")
+        except Exception as e:
+            print(f"Error loading data: {e}")
+            # Create empty dataframe with required columns
+            self.data = pd.DataFrame(columns=['Date', 'b1', 'b2', 'b3', 'b4', 'b5', 'Sum', 'Even', 'Odd', 
+                                             'Average', 'Median', 'Harmean', 'Geomean', 'Quart1', 'Quart2', 
+                                             'Quart3', 'Stdev', 'Var', 'AveDev', 'Kurt', 'Skew', 'Y1', 'WA'])
+            print("Created new empty data file after error")
+    
+    def calculate_stats(self):
+        """Calculate statistical measures for each draw"""
+        for idx, row in self.data.iterrows():
+            try:
+                balls = [row['b1'], row['b2'], row['b3'], row['b4'], row['b5']]
+                
+                # Average
+                self.data.at[idx, 'Average'] = sum(balls) / 5
+                
+                # Median
+                self.data.at[idx, 'Median'] = sorted(balls)[2]
+                
+                # Other statistical measures could be calculated here
+                # For now we'll set them to placeholder values
+                self.data.at[idx, 'Harmean'] = 0.0
+                self.data.at[idx, 'Geomean'] = 0.0
+                self.data.at[idx, 'Quart1'] = 0.0
+                self.data.at[idx, 'Quart2'] = 0.0
+                self.data.at[idx, 'Quart3'] = 0.0
+                self.data.at[idx, 'Stdev'] = 0.0
+                self.data.at[idx, 'Var'] = 0.0
+                self.data.at[idx, 'AveDev'] = 0.0
+                self.data.at[idx, 'Kurt'] = 0.0
+                self.data.at[idx, 'Skew'] = 0.0
+                self.data.at[idx, 'Y1'] = 0.0
+                self.data.at[idx, 'WA'] = 0.0
+            except Exception as e:
+                print(f"Error calculating stats for row {idx}: {e}")
+    
+    def get_data(self, limit=None, sort_by=None, ascending=True):
+        """
+        Get lottery data, optionally limited and sorted
+        
+        Parameters:
+        limit (int): Maximum number of records to return
+        sort_by (str): Column to sort by
+        ascending (bool): Sort order
+        
+        Returns:
+        pd.DataFrame: Filtered and sorted data
+        """
+        if self.data is None or len(self.data) == 0:
+            return pd.DataFrame()
+        
+        result = self.data.copy()
+        
+        # Sort if requested
+        if sort_by and sort_by in result.columns:
+            result = result.sort_values(by=sort_by, ascending=ascending)
+        
+        # Limit if requested
+        if limit and limit > 0:
+            result = result.head(limit)
+        
+        return result
+    
+    def get_numbers_frequency(self, limit=None):
+        """
+        Get frequency of each number in the dataset
+        
+        Parameters:
+        limit (int): Only count in the last 'limit' draws
+        
+        Returns:
+        dict: Number frequencies
+        """
+        if self.data is None or len(self.data) == 0:
+            return {i: 0 for i in range(1, 40)}
+        
+        data = self.data
+        if limit and limit > 0 and len(data) > limit:
+            data = data.tail(limit)
+        
+        # Flatten all ball numbers into a single series
+        all_numbers = pd.concat([
+            data['b1'], data['b2'], data['b3'], data['b4'], data['b5']
+        ]).reset_index(drop=True)
+        
+        # Count frequencies
+        frequencies = all_numbers.value_counts().to_dict()
+        
+        # Make sure we have all numbers from 1 to 39
+        for i in range(1, 40):
+            if i not in frequencies:
+                frequencies[i] = 0
+        
+        return {k: frequencies[k] for k in sorted(frequencies.keys())}
+    
+    def add_draw(self, date, b1, b2, b3, b4, b5):
+        """
+        Add a new draw to the dataset
+        
+        Parameters:
+        date (str): Date of the draw
+        b1, b2, b3, b4, b5 (int): Ball numbers
+        
+        Returns:
+        bool: Success status
+        """
+        try:
+            # Convert inputs to appropriate types
+            try:
+                b1, b2, b3, b4, b5 = int(b1), int(b2), int(b3), int(b4), int(b5)
+            except (TypeError, ValueError):
+                print("Error converting ball numbers to integers")
+                return False
+            
+            # Check if all numbers are in the valid range
+            if not all(1 <= b <= 39 for b in [b1, b2, b3, b4, b5]):
+                print("Ball numbers must be between 1 and 39")
+                return False
+            
+            # Check if numbers are unique
+            if len(set([b1, b2, b3, b4, b5])) != 5:
+                print("Ball numbers must be unique")
+                return False
+            
+            # Sort the numbers
+            balls = sorted([b1, b2, b3, b4, b5])
+            
+            # Calculate sum, even, odd
+            ball_sum = sum(balls)
+            even_count = sum(1 for b in balls if b % 2 == 0)
+            odd_count = 5 - even_count
+            
+            # Create a new row
+            new_row = {
+                'Date': date,
+                'b1': balls[0],
+                'b2': balls[1],
+                'b3': balls[2],
+                'b4': balls[3],
+                'b5': balls[4],
+                'Sum': ball_sum,
+                'Even': even_count,
+                'Odd': odd_count,
+                'Average': ball_sum / 5,
+                'Median': balls[2],
+            }
+            
+            # Add placeholder values for other stats
+            for col in ['Harmean', 'Geomean', 'Quart1', 'Quart2', 'Quart3', 'Stdev', 'Var', 'AveDev', 'Kurt', 'Skew', 'Y1', 'WA']:
+                new_row[col] = 0.0
+            
+            # Add the new row to the data
+            if self.data is None:
+                self.data = pd.DataFrame([new_row])
+            else:
+                self.data = pd.concat([self.data, pd.DataFrame([new_row])], ignore_index=True)
+            
+            # Save the updated data
+            self.save_data()
+            
+            return True
+        except Exception as e:
+            print(f"Error adding draw: {e}")
+            return False
+    
+    def save_data(self):
+        """Save data to CSV file"""
+        try:
+            # Create directory if it doesn't exist
+            os.makedirs(os.path.dirname(self.csv_path), exist_ok=True)
+            
+            self.data.to_csv(self.csv_path, index=False)
+            return True
+        except Exception as e:
+            print(f"Error saving data: {e}")
+            return False
+
+def create_sample_data(csv_path, num_records=30):
+    """
+    Create sample lottery data for testing
+    
+    Parameters:
+    csv_path (str): Path to save the CSV file
+    num_records (int): Number of sample records to create
+    """
+    if os.path.exists(csv_path):
+        print(f"File {csv_path} already exists, skipping sample data creation")
+        return
+    
+    # Create directory if it doesn't exist
+    os.makedirs(os.path.dirname(csv_path), exist_ok=True)
+    
+    # Create sample data
+    data = []
+    for i in range(num_records):
+        # Generate 5 unique random numbers between 1 and 39
+        balls = sorted(random.sample(range(1, 40), 5))
+        
+        # Calculate sum and even/odd counts
+        ball_sum = sum(balls)
+        even_count = sum(1 for b in balls if b % 2 == 0)
+        odd_count = 5 - even_count
+        
+        # Create row
+        row = {
+            'Date': (datetime.now() - pd.Timedelta(days=num_records-i)).strftime('%Y-%m-%d'),
+            'b1': balls[0],
+            'b2': balls[1],
+            'b3': balls[3],
+            'b4': balls[3],
+            'b5': balls[4],
+            'Sum': ball_sum,
+            'Even': even_count,
+            'Odd': odd_count,
+            'Average': ball_sum / 5,
+            'Median': balls[2],
+            'Harmean': 0.0,
+            'Geomean': 0.0,
+            'Quart1': 0.0,
+            'Quart2': 0.0,
+            'Quart3': 0.0,
+            'Stdev': 0.0,
+            'Var': 0.0,
+            'AveDev': 0.0,
+            'Kurt': 0.0,
+            'Skew': 0.0,
+            'Y1': 0.0,
+            'WA': 0.0
+        }
+        
+        data.append(row)
+    
+    # Create DataFrame and save to CSV
+    df = pd.DataFrame(data)
+    df.to_csv(csv_path, index=False)
+    print(f"Created sample data with {num_records} records at {csv_path}")
+
+def create_sample_scaffolding(csv_path, num_records=100):
+    """
+    Create sample scaffolding data for testing
+    
+    Parameters:
+    csv_path (str): Path to save the CSV file
+    num_records (int): Number of sample records to create
+    """
+    if os.path.exists(csv_path):
+        print(f"File {csv_path} already exists, skipping sample scaffolding creation")
+        return
+    
+    # Create directory if it doesn't exist
+    os.makedirs(os.path.dirname(csv_path), exist_ok=True)
+    
+    # Create sample data
+    data = []
+    for i in range(num_records):
+        # Generate 5 unique random numbers between 1 and 39
+        balls = sorted(random.sample(range(1, 40), 5))
+        
+        # Calculate sum and even/odd counts
+        ball_sum = sum(balls)
+        even_count = sum(1 for b in balls if b % 2 == 0)
+        odd_count = 5 - even_count
+        
+        # Create row
+        row = {
+            'Date': (datetime.now() - pd.Timedelta(days=num_records-i)).strftime('%Y-%m-%d'),
+            'b1': balls[0],
+            'b2': balls[1],
+            'b3': balls[2],
+            'b4': balls[3],
+            'b5': balls[4],
+            'sum': ball_sum,
+            'even': even_count,
+            'odd': odd_count
+        }
+        
+        data.append(row)
+    
+    # Create DataFrame and save to CSV
+    df = pd.DataFrame(data)
+    df.to_csv(csv_path, index=False)
+    print(f"Created sample scaffolding data with {num_records} records at {csv_path}")
+
+def main():
+    """Main function to run the application"""
+    # Define file paths
+    data_dir = 'data'
+    os.makedirs(data_dir, exist_ok=True)
+    
+    data_file = os.path.join(data_dir, 'georgia_fantasy5_data.csv')
+    scaffolding_file = os.path.join(data_dir, 'fantasy5_scaffolding.csv')
+    
+    # Create sample data if files don't exist
+    create_sample_data(data_file, num_records=30)
+    create_sample_scaffolding(scaffolding_file, num_records=100)
+    
+    # Initialize data manager
+    data_manager = LotteryDataManager(data_file)
+    
+    # Initialize predictor
+    predictor = Fantasy5Predictor(scaffolding_file)
+    
+    # Generate predictions
+    print("\nGenerating predictions...")
+    predictions = predictor.generate_predictions(count=10, sum_range=(110, 110), even_range=(2, 3))
+    
+    # Display predictions
+    print("\nFantasy 5 Predictions:")
+    print("-" * 50)
+    for i, pred in enumerate(predictions, 1):
+        combo_str = '-'.join(str(n) for n in pred['combination'])
+        print(f"Prediction #{i}: {combo_str} (Sum: {pred['sum']}, Even/Odd: {pred['even']}/{pred['odd']})")
+    
+    # Export to CSV
+    predictions_file = os.path.join(data_dir, 'fantasy5_predictions.csv')
+    predictor.export_to_csv(predictions, predictions_file)
+    
+    print("\nApplication completed successfully!")
+
+if __name__ == "__main__":
+    main()

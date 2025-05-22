@@ -152,12 +152,12 @@
                 
                 <div class="form-group">
                     <label for="min_sum">Minimum Sum:</label>
-                    <input type="number" id="min_sum" name="min_sum" min="70" max="110" value="{{ filters.min_sum }}">
+                    <input type="number" id="min_sum" name="min_sum" min="70" max="130" value="{{ filters.min_sum }}">
                 </div>
                 
                 <div class="form-group">
                     <label for="max_sum">Maximum Sum:</label>
-                    <input type="number" id="max_sum" name="max_sum" min="70" max="110" value="{{ filters.max_sum }}">
+                    <input type="number" id="max_sum" name="max_sum" min="70" max="130" value="{{ filters.max_sum }}">
                 </div>
                 
                 <button type="submit" class="btn">Generate Predictions</button>

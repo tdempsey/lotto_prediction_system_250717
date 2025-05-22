@@ -1,0 +1,41 @@
+Files Created:
+
+lot_display.py: Standalone script for generating predictions
+app.py: Flask web application that offers a user-friendly interface
+Templates: HTML templates for the web interface
+
+Installation Instructions:
+
+Install Required Dependencies:
+pip install flask pandas numpy
+
+Create Directory Structure:
+Create the following directories in your project folder:
+mkdir -p data static templates
+
+Run the Application:
+Option 1: Standalone Script
+python lot_display.py
+This will generate predictions and save them to a CSV file in the data directory.
+Option 2: Web Application
+python app.py
+Then open your browser and navigate to: http://127.0.0.1:5000/
+
+Using the Web Application:
+The web application provides four main functions:
+
+Home Page: Overview of the application
+View Draws: See past lottery draws with filtering options
+Add Draw: Record new lottery draw results
+Generate Predictions: Create new number predictions based on parameters
+
+The system will create sample data on first run, which you can replace with actual Georgia Fantasy 5 data over time.
+About the Solution:
+This implementation follows the same pattern-based prediction logic shown in your original file. It:
+
+Uses historical draws to identify patterns
+Matches patterns based on sum and even/odd distribution
+Fills middle numbers algorithmically
+Provides customizable parameters for prediction generation
+
+The error you encountered was likely due to trying to access data that didn't exist. The updated code includes robust error handling and better initialization to prevent these issues.

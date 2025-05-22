@@ -1,3 +1,5 @@
+import pdb; pdb.set_trace()  # Add this line where you want to start debugging
+
 from flask import Flask, render_template, request, redirect, url_for, send_file, jsonify, g
 import mysql.connector
 import pandas as pd

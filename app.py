@@ -81,7 +81,7 @@ class GeorgiaFantasy5Predictor:
             self.max_seq2 = 1
             self.max_seq3 = 0
             self.max_mod_tot = 2
-            self.sum_range = (80, 120)
+            self.sum_range = (70, 139)
             
             # Load rank data
             self.rank_limits = load_rank_limits()
