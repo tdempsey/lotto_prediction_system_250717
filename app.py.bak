@@ -24,41 +24,131 @@ db_config = {
 }
 
 # Function to load rank limit data
-def load_rank_limits(file_path='rank_limit_100.csv'):
+def load_rank_limits(conn=None, cursor=None):
     """
-    Load rank limits from CSV file. These limits specify 
+    Load rank limits from MySQL database. These limits specify 
     the maximum number of ranks to use for each frequency distribution.
+    
+    Parameters:
+    conn (mysql.connector.connection): Database connection
+    cursor (mysql.connector.cursor): Database cursor
+    
+    Returns:
+    list: List of rank limits
     """
     try:
-        with open(file_path, 'r') as f:
-            csv_reader = csv.reader(f)
-            # First row is headers
-            headers = next(csv_reader)
-            # Second row is values
-            limit_data = next(csv_reader)
-            return [int(limit) for limit in limit_data]
+        # If connection and cursor are provided, use them
+        if conn and cursor:
+            # Query to get rank limits from ga_f5_rank_limits table
+            query = "SELECT rank_limit FROM ga_f5_rank_limits ORDER BY rank_id"
+            cursor.execute(query)
+            results = cursor.fetchall()
+            
+            # Extract values from results
+            if results:
+                # If we're getting dictionary results
+                if isinstance(results[0], dict):
+                    return [int(row['rank_limit']) for row in results]
+                # If we're getting tuple results
+                else:
+                    return [int(row[0]) for row in results]
+            else:
+                # No results found, use default values
+                print("No rank limit data found in database, using defaults")
+                return [1, 1, 2, 3, 2, 3, 1, 1]
+        else:
+            # No connection provided, try to open a new one
+            try:
+                temp_conn = mysql.connector.connect(**db_config)
+                temp_cursor = temp_conn.cursor(dictionary=True)
+                
+                query = "SELECT rank_limit FROM ga_f5_rank_limits ORDER BY rank_id"
+                temp_cursor.execute(query)
+                results = temp_cursor.fetchall()
+                
+                # Extract values from results
+                if results:
+                    rank_limits = [int(row['rank_limit']) for row in results]
+                    temp_cursor.close()
+                    temp_conn.close()
+                    return rank_limits
+                else:
+                    # No results found, use default values
+                    temp_cursor.close()
+                    temp_conn.close()
+                    print("No rank limit data found in database, using defaults")
+                    return [1, 1, 2, 3, 2, 3, 1, 1]
+            except mysql.connector.Error as e:
+                print(f"Database connection error when loading rank limits: {e}")
+                # Use default values if database connection fails
+                return [1, 1, 2, 3, 2, 3, 1, 1]
     except Exception as e:
         print(f"Error loading rank limits: {e}")
-        # Default fallback values if file can't be loaded
+        # Default fallback values
         return [1, 1, 2, 3, 2, 3, 1, 1]
 
 # Function to load rank count data
-def load_rank_counts(file_path='rank_count_100.csv'):
+def load_rank_counts(conn=None, cursor=None):
     """
-    Load rank counts from CSV file. These values represent 
+    Load rank counts from MySQL database. These values represent 
     the frequency distribution counts for each rank.
+    
+    Parameters:
+    conn (mysql.connector.connection): Database connection
+    cursor (mysql.connector.cursor): Database cursor
+    
+    Returns:
+    list: List of rank counts
     """
     try:
-        with open(file_path, 'r') as f:
-            csv_reader = csv.reader(f)
-            # First row is headers
-            headers = next(csv_reader)
-            # Second row is data
-            count_data = next(csv_reader)
-            return [int(count) for count in count_data]
+        # If connection and cursor are provided, use them
+        if conn and cursor:
+            # Query to get rank counts from ga_f5_rank_counts table
+            query = "SELECT rank_count FROM ga_f5_rank_counts ORDER BY rank_id"
+            cursor.execute(query)
+            results = cursor.fetchall()
+            
+            # Extract values from results
+            if results:
+                # If we're getting dictionary results
+                if isinstance(results[0], dict):
+                    return [int(row['rank_count']) for row in results]
+                # If we're getting tuple results
+                else:
+                    return [int(row[0]) for row in results]
+            else:
+                # No results found, use default values
+                print("No rank count data found in database, using defaults")
+                return [5, 5, 2, 1, 3, 5, 3, 5, 5, 5, 5, 4, 2, 5, 5, 3, 5, 4, 0, 4, 5, 2, 4, 5, 3, 5, 5, 0, 4, 3, 2, 1, 4, 5, 3, 5, 1, 4, 3, 3, 2, 5]
+        else:
+            # No connection provided, try to open a new one
+            try:
+                temp_conn = mysql.connector.connect(**db_config)
+                temp_cursor = temp_conn.cursor(dictionary=True)
+                
+                query = "SELECT rank_count FROM ga_f5_rank_counts ORDER BY rank_id"
+                temp_cursor.execute(query)
+                results = temp_cursor.fetchall()
+                
+                # Extract values from results
+                if results:
+                    rank_counts = [int(row['rank_count']) for row in results]
+                    temp_cursor.close()
+                    temp_conn.close()
+                    return rank_counts
+                else:
+                    # No results found, use default values
+                    temp_cursor.close()
+                    temp_conn.close()
+                    print("No rank count data found in database, using defaults")
+                    return [5, 5, 2, 1, 3, 5, 3, 5, 5, 5, 5, 4, 2, 5, 5, 3, 5, 4, 0, 4, 5, 2, 4, 5, 3, 5, 5, 0, 4, 3, 2, 1, 4, 5, 3, 5, 1, 4, 3, 3, 2, 5]
+            except mysql.connector.Error as e:
+                print(f"Database connection error when loading rank counts: {e}")
+                # Use default values if database connection fails
+                return [5, 5, 2, 1, 3, 5, 3, 5, 5, 5, 5, 4, 2, 5, 5, 3, 5, 4, 0, 4, 5, 2, 4, 5, 3, 5, 5, 0, 4, 3, 2, 1, 4, 5, 3, 5, 1, 4, 3, 3, 2, 5]
     except Exception as e:
         print(f"Error loading rank counts: {e}")
-        # Default fallback values based on the file you provided
+        # Default fallback values
         return [5, 5, 2, 1, 3, 5, 3, 5, 5, 5, 5, 4, 2, 5, 5, 3, 5, 4, 0, 4, 5, 2, 4, 5, 3, 5, 5, 0, 4, 3, 2, 1, 4, 5, 3, 5, 1, 4, 3, 3, 2, 5]
 
 class GeorgiaFantasy5Predictor:
@@ -74,7 +164,7 @@ class GeorgiaFantasy5Predictor:
             self.cursor = self.conn.cursor(dictionary=True)
             
             # Georgia Fantasy 5 specifics
-            self.num_range = range(1, 40)  # Numbers 1-39
+            self.num_range = range(1, 42)  # Numbers 1-39
             self.nums_per_draw = 5
             
             # Filter settings (can be adjusted via web interface)
@@ -84,8 +174,8 @@ class GeorgiaFantasy5Predictor:
             self.sum_range = (70, 139)
             
             # Load rank data
-            self.rank_limits = load_rank_limits()
-            self.rank_counts = load_rank_counts()
+            self.rank_limits = load_rank_limits(self.conn, self.cursor)
+            self.rank_counts = load_rank_counts(self.conn, self.cursor)
             
             # Load column 1 distribution data
             self.col1_data = self.load_col1_data()

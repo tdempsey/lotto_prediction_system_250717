@@ -25,7 +25,7 @@ class GeorgiaFantasy5Predictor:
             sys.exit(1)
         
         # Georgia Fantasy 5 specifics
-        self.num_range = range(1, 40)  # Numbers 1-39
+        self.num_range = range(1, 42)  # Numbers 1-39
         self.nums_per_draw = 5
         
         # Filter settings (can be adjusted via command line)
@@ -249,7 +249,7 @@ class GeorgiaFantasy5Predictor:
         pos5_candidates = [row['b5'] for row in self.cursor.fetchall()]
         
         # Fill in any missing candidates if we don't have enough
-        all_nums = list(range(1, 40))
+        all_nums = list(range(1, 42))
         if len(pos1_candidates) < 10:
             pos1_candidates.extend([n for n in all_nums if n not in pos1_candidates][:10-len(pos1_candidates)])
         if len(pos3_candidates) < 10:
@@ -328,7 +328,7 @@ class GeorgiaFantasy5Predictor:
             frequency = {row['ball']: row['freq'] for row in freq_results}
             
             # Fill in any missing numbers with a default frequency of 0
-            for num in range(1, 40):
+            for num in range(1, 42):
                 if num not in frequency:
                     frequency[num] = 0
             
@@ -352,7 +352,7 @@ class GeorgiaFantasy5Predictor:
                     combo = sorted(np.random.choice(weighted_nums, self.nums_per_draw, replace=False))
                 else:
                     # Otherwise, use pure random selection from all numbers
-                    combo = sorted(np.random.choice(range(1, 40), self.nums_per_draw, replace=False))
+                    combo = sorted(np.random.choice(range(1, 42), self.nums_per_draw, replace=False))
                 
                 combo_tuple = tuple(combo)
                 if combo_tuple in checked_combos:

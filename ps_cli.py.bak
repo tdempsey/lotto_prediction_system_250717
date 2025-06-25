@@ -25,14 +25,14 @@ class GeorgiaFantasy5Predictor:
             sys.exit(1)
         
         # Georgia Fantasy 5 specifics
-        self.num_range = range(1, 40)  # Numbers 1-39
+        self.num_range = range(1, 42)  # Numbers 1-39
         self.nums_per_draw = 5
         
         # Filter settings (can be adjusted via command line)
         self.max_seq2 = 1
         self.max_seq3 = 0
         self.max_mod_tot = 2
-        self.sum_range = (80, 120)
+        self.sum_range = (70, 139)
         
         # Load historical data
         self.load_historical_data()

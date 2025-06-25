@@ -315,7 +315,7 @@ def create_sample_scaffolding(csv_path, num_records=100):
     data = []
     for i in range(num_records):
         # Generate 5 unique random numbers between 1 and 39
-        balls = sorted(random.sample(range(1, 40), 5))
+        balls = sorted(random.sample(range(1, 42), 5))
         
         # Calculate sum and even/odd counts
         ball_sum = sum(balls)

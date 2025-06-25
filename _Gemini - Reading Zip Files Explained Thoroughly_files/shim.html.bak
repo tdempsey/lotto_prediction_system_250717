@@ -636,7 +636,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                         <li><strong>Inside `GeorgiaFantasy5Predictor.__init__`:</strong>
                             <ul class="list-circle ml-6">
                                 <li>Establish a connection to the MySQL database.</li>
-                                <li>Define lottery specifics (numbers 1-42, 5 numbers per draw).</li>
+                                <li>Define lottery specifics (numbers 1-39, 5 numbers per draw).</li>
                                 <li>Set initial filter parameters (e.g., `max_seq2`, `max_seq3`, `max_mod_tot`, `sum_range`).</li>
                                 <li><strong>Load Rank Limits:</strong> Call `load_rank_limits()` to fetch rank limits from `ga_f5_rank_limits` table. If database connection fails or no data, use hardcoded defaults.</li>
                                 <li><strong>Load Rank Counts:</strong> Call `load_rank_counts()` to fetch rank counts from `ga_f5_rank_counts` table. If database connection fails or no data, use hardcoded defaults.</li>
@@ -1059,7 +1059,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                         <li>Fetch all results from the database cursor.</li>
                         <li>Format the results into a list of dictionaries suitable for JSON serialization.</li>
                         <li>Handle any `decimal.Decimal` types by converting them to floats or integers.</li>
-                        <li>For frequency stats, fill in missing ball numbers with a frequency of 0 to ensure all balls from 1-42 are represented.</li>
+                        <li>For frequency stats, fill in missing ball numbers with a frequency of 0 to ensure all balls from 1-39 are represented.</li>
                     </ul>
                 </li>
                 <li class="step-item"><strong>Output:</strong> JSON response containing the statistical data (e.g., `{'data': [...]}`). If an error occurs, a JSON error message with an appropriate HTTP status code is returned.</li>

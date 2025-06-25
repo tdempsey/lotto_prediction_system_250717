@@ -17,7 +17,7 @@ class GeorgiaFantasy5Predictor:
         self.cursor = self.conn.cursor(dictionary=True)
         
         # Georgia Fantasy 5 specifics
-        self.num_range = range(1, 40)  # Numbers 1-39
+        self.num_range = range(1, 42)  # Numbers 1-39
         self.nums_per_draw = 5
         
         # Load historical data
@@ -204,7 +204,7 @@ class GeorgiaFantasy5Predictor:
         recent_draws = self.cursor.fetchall()
         
         # Count frequency of each number
-        freq = {num: 0 for num in range(1, 40)}
+        freq = {num: 0 for num in range(1, 42)}
         
         for draw in recent_draws:
             for i in range(1, 6):

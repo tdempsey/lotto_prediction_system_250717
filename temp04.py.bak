@@ -280,3 +280,121 @@ class GeorgiaFantasy5Predictor:
     
     # Remove the old load_col1_data method since we're generating dynamically
     # def load_col1_data(self, file_path='draws_col1.csv'):  # DELETE THIS METHOD
+	
+	Based on the dynamic system I provided, here's how col1 values are populated for each draw:
+
+## **Col1 Population Process for Each Draw**
+
+### **1. Target Parameters Determined**
+For each prediction being generated, the system first determines:
+- **Target sum** (e.g., 110)
+- **Even count** (e.g., 3 even numbers)
+- **Odd count** (e.g., 2 odd numbers)
+
+### **2. Database Query for Historical Matches**
+The `generate_col1_data_for_sumeo()` method queries the database:
+
+```sql
+SELECT b1, b2, b3, b4, b5, sum 
+FROM ga_f5_draws 
+WHERE date >= DATE_SUB(NOW(), INTERVAL 365 DAY)
+ORDER BY date DESC
+```
+
+### **3. Analysis of Historical Draws**
+For each historical draw, the system:
+- Calculates the even/odd counts
+- Determines which sum range it falls into
+- Checks if it matches the target criteria
+
+### **4. Three-Tier Matching Priority**
+
+**Tier 1: Exact Matches (Highest Priority)**
+```python
+# Example: Looking for sum=110, even=3, odd=2
+if draw_sum == 110 and even_count == 3 and odd_count == 2:
+    exact_sum_matches.append(b1)  # Add the first number from this draw
+```
+
+**Tier 2: Range Matches (Medium Priority)**
+```python
+# Example: Sum range 106-115, even=3, odd=2
+if draw_range == "106-115" and even_count == 3 and odd_count == 2:
+    range_matches.append(b1)
+```
+
+**Tier 3: Even/Odd Matches (Lower Priority)**
+```python
+# Example: Any sum, but even=3, odd=2
+if even_count == 3 and odd_count == 2:
+    even_odd_matches.append(b1)
+```
+
+### **5. Col1 Value Selection**
+Returns the best available matches:
+1. If **exact matches** exist → Use those first numbers
+2. Else if **range matches** exist → Use those first numbers  
+3. Else if **even/odd matches** exist → Use those first numbers
+4. Else → Use fallback range `[1, 2, 3, ..., 15]`
+
+### **6. Example Walkthrough**
+
+**Scenario**: Generating prediction with sum=110, even=3, odd=2
+
+**Step 1**: Query finds these historical draws:
+```
+Date        B1  B2  B3  B4  B5  Sum  Even  Odd
+2024-01-15   5  12  18  25  30  110   3     2   ← Exact match!
+2024-01-10   3  14  22  28  35  112   3     2   ← Range match
+2024-01-05   7  16  20  30  32  105   3     2   ← Range match
+2023-12-20   2  11  19  24  36  92    3     2   ← Even/odd match
+```
+
+**Step 2**: Categorize first numbers (B1):
+- **Exact matches**: [5] (sum=110, even=3, odd=2)
+- **Range matches**: [3, 7] (sum 106-115, even=3, odd=2)  
+- **Even/odd matches**: [2] (any sum, even=3, odd=2)
+
+**Step 3**: Return col1 candidates = `[5]` (exact matches take priority)
+
+### **7. Integration with Prediction Generation**
+
+In `generate_predictions()`, col1 values are used in two ways:
+
+**Method A: Forced Iteration**
+```python
+col1_candidates = self.get_col1_candidates(target_sum, even_count, odd_count)
+for forced_col1 in col1_candidates:
+    # Force this col1 value and build rest of combination
+    combo = [forced_col1, pos2, pos3, pos4, pos5]
+```
+
+**Method B: Round-Robin Selection**
+```python
+next_col1 = self.get_next_col1(target_sum, even_count, odd_count)
+# Uses cyclers to rotate through available col1 values
+```
+
+### **8. Dynamic Updates**
+
+**Automatic**: Col1 patterns update when:
+- App restarts (generates fresh data)
+- `refresh_col1_data()` is called
+- `force_refresh=True` is used
+
+**Manual**: You can refresh via:
+```python
+predictor.refresh_col1_data(180)  # Use last 180 days
+```
+
+## **Key Points:**
+
+• **Historical evidence-based**: Col1 values come from actual winning combinations
+• **Context-aware**: Selection depends on target sum and even/odd distribution  
+• **Recency-weighted**: More recent draws have higher influence
+• **Tiered fallback**: Multiple levels of matching ensure col1 values are always available
+• **Dynamic**: Patterns evolve automatically as new lottery results are added
+
+**The system essentially asks: "What first numbers have historically worked for combinations with similar sums and even/odd distributions?"**
+
+This creates col1 values that are statistically informed by actual lottery history rather than random selection!
