@@ -164,7 +164,7 @@ class GeorgiaFantasy5Predictor:
             self.cursor = self.conn.cursor(dictionary=True)
             
             # Georgia Fantasy 5 specifics
-            self.num_range = range(1, 42)  # Numbers 1-39
+            self.num_range = range(1, 43)  # Numbers 1-42
             self.nums_per_draw = 5
             
             # Filter settings (can be adjusted via web interface)
@@ -659,7 +659,7 @@ class GeorgiaFantasy5Predictor:
             # Generate some random combinations if no historical data
             filtered_combinations = []
             for _ in range(count * 5):  # Generate more than needed to ensure we have enough
-                combo = sorted(random.sample(range(1, 42), 5))
+                combo = sorted(random.sample(range(1, 43), 5))
                 stats = self._calculate_stats(combo)
                 filtered_combinations.append({
                     'combination': combo,
@@ -699,7 +699,7 @@ class GeorgiaFantasy5Predictor:
                 print(f"Error getting position 3 candidates: {e}")
         
         # Fill in any missing candidates for position 3 if needed
-        all_nums = list(range(1, 42))
+        all_nums = list(range(1, 43))
         if len(pos3_candidates) < 10:
             pos3_candidates.extend([n for n in all_nums if n not in pos3_candidates][:10-len(pos3_candidates)])
         
@@ -812,7 +812,7 @@ class GeorgiaFantasy5Predictor:
             print("Could not generate any filtered combinations. Using random combinations.")
             random_combinations = []
             for _ in range(count * 2):  # Generate more than needed
-                combo = sorted(random.sample(range(1, 42), 5))
+                combo = sorted(random.sample(range(1, 43), 5))
                 if self.filter_combination(combo):
                     stats = self._calculate_stats(combo)
                     score = self._calculate_score(combo, stats)
@@ -883,7 +883,7 @@ class GeorgiaFantasy5Predictor:
             print("No valid combinations found. Using random combinations.")
             random_combinations = []
             for _ in range(count * 2):
-                combo = sorted(random.sample(range(1, 42), 5))
+                combo = sorted(random.sample(range(1, 43), 5))
                 if self.filter_combination(combo):
                     stats = self._calculate_stats(combo)
                     score = self._calculate_score(combo, stats)
@@ -945,7 +945,7 @@ class GeorgiaFantasy5Predictor:
             print("No valid combinations found after all attempts. Using completely random combinations.")
             random_combinations = []
             for _ in range(count):
-                combo = sorted(random.sample(range(1, 42), 5))
+                combo = sorted(random.sample(range(1, 43), 5))
                 stats = self._calculate_stats(combo)
                 random_combinations.append({
                     'combination': combo,
@@ -1597,7 +1597,7 @@ def get_frequency_stats():
             frequency_data.append({'ball': ball, 'frequency': freq})
         
         # Fill in missing balls with zero frequency
-        all_balls = set(range(1, 42))
+        all_balls = set(range(1, 43))
         existing_balls = set(item['ball'] for item in frequency_data)
         missing_balls = all_balls - existing_balls
         

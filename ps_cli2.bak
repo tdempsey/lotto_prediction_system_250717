@@ -91,7 +91,7 @@ def main():
         pos5_candidates.append(int(row['b5']))
     
     # Fill in any missing candidates
-    all_nums = list(range(1, 40))
+    all_nums = list(range(1, 42))
     if len(pos1_candidates) < 10:
         pos1_candidates.extend([n for n in all_nums if n not in pos1_candidates][:10-len(pos1_candidates)])
     if len(pos3_candidates) < 10:
@@ -295,7 +295,7 @@ def main():
             frequency[ball] = convert_decimal(row['freq'])
         
         # Fill in missing numbers
-        for num in range(1, 40):
+        for num in range(1, 42):
             if num not in frequency:
                 frequency[num] = 0
         

@@ -198,7 +198,7 @@ class GeorgiaFantasy5Predictor:
             self.cursor = self.conn.cursor(dictionary=True)
             
             # Georgia Fantasy 5 specifics
-            self.num_range = range(1, 42)
+            self.num_range = range(1, 43)
             self.nums_per_draw = 5
             
             # Filter settings

@@ -430,7 +430,7 @@ class LotteryDataManager:
         dict: Number frequencies
         """
         if self.data is None or len(self.data) == 0:
-            return {i: 0 for i in range(1, 40)}
+            return {i: 0 for i in range(1, 42)}
         
         data = self.data
         if limit and limit > 0 and len(data) > limit:
@@ -445,7 +445,7 @@ class LotteryDataManager:
         frequencies = all_numbers.value_counts().to_dict()
         
         # Make sure we have all numbers from 1 to 39
-        for i in range(1, 40):
+        for i in range(1, 42):
             if i not in frequencies:
                 frequencies[i] = 0
         
@@ -552,7 +552,7 @@ def create_sample_data(csv_path, num_records=30):
     data = []
     for i in range(num_records):
         # Generate 5 unique random numbers between 1 and 39
-        balls = sorted(random.sample(range(1, 40), 5))
+        balls = sorted(random.sample(range(1, 42), 5))
         
         # Calculate sum and even/odd counts
         ball_sum = sum(balls)
@@ -612,7 +612,7 @@ def create_sample_scaffolding(csv_path, num_records=100):
     data = []
     for i in range(num_records):
         # Generate 5 unique random numbers between 1 and 39
-        balls = sorted(random.sample(range(1, 40), 5))
+        balls = sorted(random.sample(range(1, 42), 5))
         
         # Calculate sum and even/odd counts
         ball_sum = sum(balls)
