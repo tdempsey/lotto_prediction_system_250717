@@ -532,8 +532,10 @@ class GeorgiaFantasy5Predictor:
                 d2 += 1
             elif 30 <= num <= 39:
                 d3 += 1
+            else:                   ###250626 ###
+                d4 += 1             ###250626 ###
         
-        return d0, d1, d2, d3
+        return d0, d1, d2, d3, d4   ###250626 ###
     
     def calculate_duplicates_from_previous(self, numbers, max_draws=10):
         """
@@ -610,8 +612,8 @@ class GeorgiaFantasy5Predictor:
             return False
             
         # Decade distribution check
-        d0, d1, d2, d3 = self.calculate_decade_distribution(combination)
-        if d0 > 2 or d1 > 2 or d2 > 2 or d3 > 2:
+        d0, d1, d2, d3, d4 = self.calculate_decade_distribution(combination)
+        if d0 > 2 or d1 > 2 or d2 > 2 or d3 > 2 or d4 > 2:  ### 250626 ###
             return False
             
         # Duplicate check from previous draws
@@ -966,7 +968,7 @@ class GeorgiaFantasy5Predictor:
         odd_count = len(numbers) - even_count
         
         # Decade distribution
-        d0, d1, d2, d3 = self.calculate_decade_distribution(numbers)
+        d0, d1, d2, d3, d4 = self.calculate_decade_distribution(numbers)    ### 250626 ###
         
         # Sequential checks
         seq2, seq3 = self.count_sequential_numbers(numbers)
@@ -990,6 +992,7 @@ class GeorgiaFantasy5Predictor:
             'd1': d1,
             'd2': d2,
             'd3': d3,
+            'd4': d4,
             'seq2': seq2,
             'seq3': seq3,
             'mod_total': mod_total,
@@ -1057,7 +1060,7 @@ class GeorgiaFantasy5Predictor:
         
         # Decade distribution score (0-100)
         decade_balance = 100
-        for count in [stats['d0'], stats['d1'], stats['d2'], stats['d3']]:
+        for count in [stats['d0'], stats['d1'], stats['d2'], stats['d3'], stats['d4']]:
             if count > 2:
                 decade_balance -= 25
             elif count == 0:
@@ -1197,7 +1200,7 @@ class GeorgiaFantasy5Predictor:
         with open(file_path, 'w', newline='') as csvfile:
             # Define CSV fields
             fieldnames = ['Combination', 'Score', 'Sum', 'Even', 'Odd', 'Mean', 'Median', 
-                          'D0', 'D1', 'D2', 'D3', 'Seq2', 'Seq3', 'ModTotal']
+                          'D0', 'D1', 'D2', 'D3', 'D4', 'Seq2', 'Seq3', 'ModTotal']
             
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
@@ -1218,6 +1221,7 @@ class GeorgiaFantasy5Predictor:
                     'D1': stats['d1'],
                     'D2': stats['d2'],
                     'D3': stats['d3'],
+                    'D4': stats['d4'],
                     'Seq2': stats['seq2'],
                     'Seq3': stats['seq3'],
                     'ModTotal': stats['mod_total']

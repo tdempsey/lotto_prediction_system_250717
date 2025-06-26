@@ -74,7 +74,7 @@ class GeorgiaFantasy5Predictor:
     
     def calculate_decade_distribution(self, numbers):
         """Calculate how many numbers fall in each decade (1-9, 10-19, 20-29, 30-39)"""
-        d0, d1, d2, d3 = 0, 0, 0, 0
+        d0, d1, d2, d3, d4 = 0, 0, 0, 0
         
         for num in numbers:
             if 1 <= num <= 9:
@@ -85,8 +85,10 @@ class GeorgiaFantasy5Predictor:
                 d2 += 1
             elif 30 <= num <= 39:
                 d3 += 1
+            else:
+                d4 += 1
         
-        return d0, d1, d2, d3
+        return d0, d1, d2, d3, d4
     
     def calculate_duplicates_from_previous(self, numbers, max_draws=10):
         """
@@ -273,8 +275,8 @@ class GeorgiaFantasy5Predictor:
             return False
             
         # Decade distribution check
-        d0, d1, d2, d3 = self.calculate_decade_distribution(combination)
-        if d0 > 2 or d1 > 2 or d2 > 2 or d3 > 2:
+        d0, d1, d2, d3, d4 = self.calculate_decade_distribution(combination)
+        if d0 > 2 or d1 > 2 or d2 > 2 or d3 > 2 or d4 > 2:
             return False
             
         # Duplicate check from previous draws
@@ -417,11 +419,11 @@ class GeorgiaFantasy5Predictor:
         eo_balance_score = 100 - abs(even_count - (self.nums_per_draw/2)) * 20
         
         # Decade distribution score
-        d0, d1, d2, d3 = self.calculate_decade_distribution(combination)
+        d0, d1, d2, d3, d4 = self.calculate_decade_distribution(combination)
         decade_score = 80
-        if d0 > 3 or d1 > 3 or d2 > 3 or d3 > 3:
+        if d0 > 3 or d1 > 3 or d2 > 3 or d3 > 3 or d4 > 3:
             decade_score -= 20
-        if d0 == 0 or d1 == 0 or d2 == 0 or d3 == 0:
+        if d0 == 0 or d1 == 0 or d2 == 0 or d3 == 0 or d4 == 0:
             decade_score -= 20
             
         # Composite score (weighted average)

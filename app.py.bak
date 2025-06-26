@@ -1,5 +1,3 @@
-import pdb; pdb.set_trace()  # Add this line where you want to start debugging
-
 from flask import Flask, render_template, request, redirect, url_for, send_file, jsonify, g
 import mysql.connector
 import pandas as pd
@@ -164,7 +162,7 @@ class GeorgiaFantasy5Predictor:
             self.cursor = self.conn.cursor(dictionary=True)
             
             # Georgia Fantasy 5 specifics
-            self.num_range = range(1, 42)  # Numbers 1-39
+            self.num_range = range(1, 43)  # Numbers 1-42
             self.nums_per_draw = 5
             
             # Filter settings (can be adjusted via web interface)
@@ -534,8 +532,10 @@ class GeorgiaFantasy5Predictor:
                 d2 += 1
             elif 30 <= num <= 39:
                 d3 += 1
+            else:       ###250626 ###
+                d4 += 1 ###250626 ###
         
-        return d0, d1, d2, d3
+        return d0, d1, d2, d3, d4   ###250626 ###
     
     def calculate_duplicates_from_previous(self, numbers, max_draws=10):
         """
@@ -612,8 +612,8 @@ class GeorgiaFantasy5Predictor:
             return False
             
         # Decade distribution check
-        d0, d1, d2, d3 = self.calculate_decade_distribution(combination)
-        if d0 > 2 or d1 > 2 or d2 > 2 or d3 > 2:
+        d0, d1, d2, d3, d4 = self.calculate_decade_distribution(combination)
+        if d0 > 2 or d1 > 2 or d2 > 2 or d3 > 2 or d4 > 2:  ### 250626 ###
             return False
             
         # Duplicate check from previous draws
@@ -659,7 +659,7 @@ class GeorgiaFantasy5Predictor:
             # Generate some random combinations if no historical data
             filtered_combinations = []
             for _ in range(count * 5):  # Generate more than needed to ensure we have enough
-                combo = sorted(random.sample(range(1, 42), 5))
+                combo = sorted(random.sample(range(1, 43), 5))
                 stats = self._calculate_stats(combo)
                 filtered_combinations.append({
                     'combination': combo,
@@ -699,7 +699,7 @@ class GeorgiaFantasy5Predictor:
                 print(f"Error getting position 3 candidates: {e}")
         
         # Fill in any missing candidates for position 3 if needed
-        all_nums = list(range(1, 42))
+        all_nums = list(range(1, 43))
         if len(pos3_candidates) < 10:
             pos3_candidates.extend([n for n in all_nums if n not in pos3_candidates][:10-len(pos3_candidates)])
         
@@ -812,7 +812,7 @@ class GeorgiaFantasy5Predictor:
             print("Could not generate any filtered combinations. Using random combinations.")
             random_combinations = []
             for _ in range(count * 2):  # Generate more than needed
-                combo = sorted(random.sample(range(1, 42), 5))
+                combo = sorted(random.sample(range(1, 43), 5))
                 if self.filter_combination(combo):
                     stats = self._calculate_stats(combo)
                     score = self._calculate_score(combo, stats)
@@ -883,7 +883,7 @@ class GeorgiaFantasy5Predictor:
             print("No valid combinations found. Using random combinations.")
             random_combinations = []
             for _ in range(count * 2):
-                combo = sorted(random.sample(range(1, 42), 5))
+                combo = sorted(random.sample(range(1, 43), 5))
                 if self.filter_combination(combo):
                     stats = self._calculate_stats(combo)
                     score = self._calculate_score(combo, stats)
@@ -945,7 +945,7 @@ class GeorgiaFantasy5Predictor:
             print("No valid combinations found after all attempts. Using completely random combinations.")
             random_combinations = []
             for _ in range(count):
-                combo = sorted(random.sample(range(1, 42), 5))
+                combo = sorted(random.sample(range(1, 43), 5))
                 stats = self._calculate_stats(combo)
                 random_combinations.append({
                     'combination': combo,
@@ -968,7 +968,7 @@ class GeorgiaFantasy5Predictor:
         odd_count = len(numbers) - even_count
         
         # Decade distribution
-        d0, d1, d2, d3 = self.calculate_decade_distribution(numbers)
+        d0, d1, d2, d3, d4 = self.calculate_decade_distribution(numbers)    ### 250626 ###
         
         # Sequential checks
         seq2, seq3 = self.count_sequential_numbers(numbers)
@@ -992,6 +992,7 @@ class GeorgiaFantasy5Predictor:
             'd1': d1,
             'd2': d2,
             'd3': d3,
+            'd4': d4,
             'seq2': seq2,
             'seq3': seq3,
             'mod_total': mod_total,
@@ -1059,7 +1060,7 @@ class GeorgiaFantasy5Predictor:
         
         # Decade distribution score (0-100)
         decade_balance = 100
-        for count in [stats['d0'], stats['d1'], stats['d2'], stats['d3']]:
+        for count in [stats['d0'], stats['d1'], stats['d2'], stats['d3'], stats['d4']]:
             if count > 2:
                 decade_balance -= 25
             elif count == 0:
@@ -1199,7 +1200,7 @@ class GeorgiaFantasy5Predictor:
         with open(file_path, 'w', newline='') as csvfile:
             # Define CSV fields
             fieldnames = ['Combination', 'Score', 'Sum', 'Even', 'Odd', 'Mean', 'Median', 
-                          'D0', 'D1', 'D2', 'D3', 'Seq2', 'Seq3', 'ModTotal']
+                          'D0', 'D1', 'D2', 'D3', 'D4', 'Seq2', 'Seq3', 'ModTotal']
             
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
@@ -1220,6 +1221,7 @@ class GeorgiaFantasy5Predictor:
                     'D1': stats['d1'],
                     'D2': stats['d2'],
                     'D3': stats['d3'],
+                    'D4': stats['d4'],
                     'Seq2': stats['seq2'],
                     'Seq3': stats['seq3'],
                     'ModTotal': stats['mod_total']
@@ -1597,7 +1599,7 @@ def get_frequency_stats():
             frequency_data.append({'ball': ball, 'frequency': freq})
         
         # Fill in missing balls with zero frequency
-        all_balls = set(range(1, 42))
+        all_balls = set(range(1, 43))
         existing_balls = set(item['ball'] for item in frequency_data)
         missing_balls = all_balls - existing_balls
         

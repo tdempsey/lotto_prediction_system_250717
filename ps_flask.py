@@ -94,7 +94,7 @@ class GeorgiaFantasy5Predictor:
     
     def calculate_decade_distribution(self, numbers):
         """Calculate how many numbers fall in each decade (1-9, 10-19, 20-29, 30-39)"""
-        d0, d1, d2, d3 = 0, 0, 0, 0
+        d0, d1, d2, d3, d4 = 0, 0, 0, 0
         
         for num in numbers:
             if 1 <= num <= 9:
@@ -105,8 +105,10 @@ class GeorgiaFantasy5Predictor:
                 d2 += 1
             elif 30 <= num <= 39:
                 d3 += 1
+            else:
+                d4 += 1
         
-        return d0, d1, d2, d3
+        return d0, d1, d2, d3, d4
     
     def calculate_duplicates_from_previous(self, numbers, max_draws=10):
         """
