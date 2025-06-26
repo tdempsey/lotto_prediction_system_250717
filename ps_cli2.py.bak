@@ -142,7 +142,7 @@ def main():
         return mod_total, mod_x
     
     def calculate_decade_distribution(numbers):
-        d0, d1, d2, d3 = 0, 0, 0, 0
+        d0, d1, d2, d3, d4 = 0, 0, 0, 0, 0
         
         for num in numbers:
             if 1 <= num <= 9:
@@ -155,8 +155,8 @@ def main():
                 d3 += 1
             else:
                 d4 += 1
-        
-        return d0, d1, d2, d3
+
+        return d0, d1, d2, d3, d4
     
     def check_duplicates_from_previous(numbers, recent_draws, max_draws=3):
         dup_counts = []
@@ -214,8 +214,8 @@ def main():
             return False
             
         # Decade distribution check
-        d0, d1, d2, d3 = calculate_decade_distribution(combination)
-        if d0 > 2 or d1 > 2 or d2 > 2 or d3 > 2:
+        d0, d1, d2, d3, d4 = calculate_decade_distribution(combination)
+        if d0 > 2 or d1 > 2 or d2 > 2 or d3 > 2 or d4 > 2:
             return False
             
         # Duplicate check from previous draws
