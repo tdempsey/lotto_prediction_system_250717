@@ -142,7 +142,7 @@ def main():
         return mod_total, mod_x
     
     def calculate_decade_distribution(numbers):
-        d0, d1, d2, d3, d4 = 0, 0, 0, 0
+        d0, d1, d2, d3, d4 = 0, 0, 0, 0, 0
         
         for num in numbers:
             if 1 <= num <= 9:
