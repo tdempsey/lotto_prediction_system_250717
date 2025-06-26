@@ -520,7 +520,7 @@ class GeorgiaFantasy5Predictor:
         return mod_total, mod_x
     
     def calculate_decade_distribution(self, numbers):
-        """Calculate how many numbers fall in each decade (1-9, 10-19, 20-29, 30-39)"""
+        """Calculate how many numbers fall in each decade (1-9, 10-19, 20-29, 30-39, 40-42)"""
         d0, d1, d2, d3 = 0, 0, 0, 0
         
         for num in numbers:

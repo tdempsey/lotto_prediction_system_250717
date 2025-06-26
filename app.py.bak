@@ -532,8 +532,8 @@ class GeorgiaFantasy5Predictor:
                 d2 += 1
             elif 30 <= num <= 39:
                 d3 += 1
-            else:       ###250626 ###
-                d4 += 1 ###250626 ###
+            else:                   ###250626 ###
+                d4 += 1             ###250626 ###
         
         return d0, d1, d2, d3, d4   ###250626 ###
     

@@ -249,12 +249,12 @@ class Fantasy5Predictor:
                 # If not, try to adjust one of the middle values
                 diff = min_sum - actual_sum
                 # Adjust b3 if possible
-                if 1 <= combination[2] + diff <= 39:
+                if 1 <= combination[2] + diff <= 42:
                     combination[2] += diff
                 # Or adjust b2 or b4 if needed
-                elif 1 <= combination[1] + diff <= 39:
+                elif 1 <= combination[1] + diff <= 42:
                     combination[1] += diff
-                elif 1 <= combination[3] + diff <= 39:
+                elif 1 <= combination[3] + diff <= 42:
                     combination[3] += diff
             
             # Double-check the combination is valid (in ascending order)
@@ -471,8 +471,8 @@ class LotteryDataManager:
                 return False
             
             # Check if all numbers are in the valid range
-            if not all(1 <= b <= 39 for b in [b1, b2, b3, b4, b5]):
-                print("Ball numbers must be between 1 and 39")
+            if not all(1 <= b <= 42 for b in [b1, b2, b3, b4, b5]):
+                print("Ball numbers must be between 1 and 42")
                 return False
             
             # Check if numbers are unique
