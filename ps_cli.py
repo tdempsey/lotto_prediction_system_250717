@@ -88,13 +88,8 @@ class GeorgiaFantasy5Predictor:
         return mod_total, mod_x
     
     def calculate_decade_distribution(self, numbers):
-<<<<<<< HEAD
-        """Calculate how many numbers fall in each decade (1-9, 10-19, 20-29, 30-42)"""
-        d0, d1, d2, d3, d4 = 0, 0, 0, 0, 0
-=======
         """Calculate how many numbers fall in each decade (1-9, 10-19, 20-29, 30-39, 40-42)"""
-        d0, d1, d2, d3, d4 = 0, 0, 0, 0
->>>>>>> d578328 (update d4 logic 05)
+        d0, d1, d2, d3, d4 = 0, 0, 0, 0, 0
         
         for num in numbers:
             if 1 <= num <= 9:
@@ -397,7 +392,7 @@ class GeorgiaFantasy5Predictor:
         odd_count = len(numbers) - even_count
         
         # Decade distribution
-        d0, d1, d2, d3 = self.calculate_decade_distribution(numbers)
+        d0, d1, d2, d3, d4 = self.calculate_decade_distribution(numbers)
         
         # Sequential checks
         seq2, seq3 = self.count_sequential_numbers(numbers)

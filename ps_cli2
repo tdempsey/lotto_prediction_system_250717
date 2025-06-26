@@ -214,8 +214,8 @@ def main():
             return False
             
         # Decade distribution check
-        d0, d1, d2, d3 = calculate_decade_distribution(combination)
-        if d0 > 2 or d1 > 2 or d2 > 2 or d3 > 2:
+        d0, d1, d2, d3, d4 = calculate_decade_distribution(combination)
+        if d0 > 2 or d1 > 2 or d2 > 2 or d3 > 2 or d4 > 2:
             return False
             
         # Duplicate check from previous draws
