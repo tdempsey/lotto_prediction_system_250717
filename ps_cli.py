@@ -88,8 +88,13 @@ class GeorgiaFantasy5Predictor:
         return mod_total, mod_x
     
     def calculate_decade_distribution(self, numbers):
+<<<<<<< HEAD
         """Calculate how many numbers fall in each decade (1-9, 10-19, 20-29, 30-42)"""
         d0, d1, d2, d3, d4 = 0, 0, 0, 0, 0
+=======
+        """Calculate how many numbers fall in each decade (1-9, 10-19, 20-29, 30-39, 40-42)"""
+        d0, d1, d2, d3, d4 = 0, 0, 0, 0
+>>>>>>> d578328 (update d4 logic 05)
         
         for num in numbers:
             if 1 <= num <= 9:
@@ -178,8 +183,8 @@ class GeorgiaFantasy5Predictor:
             return False
             
         # Decade distribution check
-        d0, d1, d2, d3 = self.calculate_decade_distribution(combination)
-        if d0 > 2 or d1 > 2 or d2 > 2 or d3 > 2:
+        d0, d1, d2, d3, d4 = self.calculate_decade_distribution(combination)
+        if d0 > 2 or d1 > 2 or d2 > 2 or d3 > 2 or d4 > 2:
             return False
             
         # Duplicate check from previous draws
@@ -409,6 +414,7 @@ class GeorgiaFantasy5Predictor:
             'd1': d1,
             'd2': d2,
             'd3': d3,
+            'd4': d4,
             'seq2': seq2,
             'seq3': seq3,
             'mod_total': mod_total,
