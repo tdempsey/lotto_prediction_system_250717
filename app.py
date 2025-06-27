@@ -755,7 +755,7 @@ class GeorgiaFantasy5Predictor:
                         continue
                     
                     # Get a wide range of pos5 candidates
-                    pos5_candidates = list(range(20, 40))  # Position 5 can be 20-39
+                    pos5_candidates = list(range(20, 43))  # Position 5 can be 20-42
                     random.shuffle(pos5_candidates)  # Thoroughly randomize
                     
                     # Try different pos5 values to ensure diversity
@@ -844,7 +844,7 @@ class GeorgiaFantasy5Predictor:
                         pos2 = random.randint(col1_value + 1, 25)
                         pos3 = random.randint(pos2 + 1, 30)
                         pos4 = random.randint(pos3 + 1, 35)
-                        pos5 = random.randint(pos4 + 1, 39)
+                        pos5 = random.randint(pos4 + 1, 42)
                         
                         combo = [col1_value, pos2, pos3, pos4, pos5]
                         
