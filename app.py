@@ -968,6 +968,7 @@ class GeorgiaFantasy5Predictor:
         odd_count = len(numbers) - even_count
         
         # Decade distribution
+        d0, d1, d2, d3, d4 = self.calculate_decade_distribution(numbers)
         # Sequential checks
         seq2, seq3 = self.count_sequential_numbers(numbers)
         
