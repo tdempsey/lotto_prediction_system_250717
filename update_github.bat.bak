@@ -1,0 +1,24 @@
+@echo off
+setlocal
+
+REM --- Set your project path ---
+cd /d C:\Users\tomde\projects\lotto_prediction_system_250717
+
+REM --- Stage all changes ---
+git add .
+
+REM --- Create timestamped commit message ---
+for /f %%i in ('powershell -command "Get-Date -Format yyyy-MM-dd_HH:mm:ss"') do set timestamp=%%i
+git commit -m "Update on %timestamp%"
+
+REM --- Push to GitHub ---
+git push
+
+echo.
+echo ✅ GitHub updated successfully on %timestamp%
+echo ---------------------------------------------
+echo Press Ctrl+C to exit or just close the window.
+echo ---------------------------------------------
+:loop
+timeout /t 99999 >nul
+goto loop
