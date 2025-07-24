@@ -15,7 +15,7 @@ REM --- Push to GitHub ---
 git push
 
 echo.
-echo ✅ GitHub updated successfully on %timestamp%
+echo GitHub updated successfully on %timestamp%
 echo ---------------------------------------------
 echo Press Ctrl+C to exit or just close the window.
 echo ---------------------------------------------
