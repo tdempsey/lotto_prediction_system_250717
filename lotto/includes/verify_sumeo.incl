@@ -1,0 +1,272 @@
+<?php		
+		#########################################################################################
+		
+		print("<a name=\"$limit\"><H3>(16) Lotto Verify Sumeo - $game_name - Limit $limit</H3></a>\n");
+		
+		//start table
+		print("<TABLE BORDER=\"1\">\n");
+	
+		//create header row
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20 nowrap>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=150>Pass (2/3)</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=100>Pass %</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=150>Fail (~2/3)</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail %</TD>\n");
+		print("</B></TR>\n");
+
+		$today_unix = time ();
+
+		#echo "today_unix = $today_unix<br>";
+
+		$date_temp_seconds = $last_draw_unix - (86400*($limit-4));	
+					
+		// Start date 
+		$date_temp = date('Y/m/d', $date_temp_seconds); 
+
+		$temp1 = 0;
+		$temp2 = 0;
+
+		// get count draw table
+		$query7 = "SELECT * FROM ga_f5_draws ";
+		$query7 .= "WHERE date >= '$date_temp_30' ";
+		$query7 .= "ORDER BY date DESC ";
+
+		#echo "$query7<br>";
+	
+		$mysqli_result7 = mysqli_query($mysqli_link, $query7) or die (mysqli_error($mysqli_link));
+
+		while($row7 = mysqli_fetch_array($mysqli_result7))
+		{
+			$sum_eo = fmod($row7[6],2); # 0 equals even
+
+			#echo "sum_eo = $sum_eo<br>";
+			#echo "row7[7] = $row7[7]<br>";
+			
+			if ($sum_eo > 0 AND $row7[7] == 2)
+			{
+				$temp2++;
+			} elseif ($sum_eo == 0 AND $row7[7] == 3) {
+				$temp2++;
+			} else {
+				$temp1++;
+			}
+		}
+	
+		$temp3 = number_format((($temp2/$limit)*100),2);
+
+		$temp4 = number_format((($temp1/$limit)*100),2);
+
+		print("<TR>\n");
+		
+		print("<TD align=center>&nbsp;</TD>\n");
+		print("<TD align=center nowrap>$temp2</TD>\n");
+		print("<TD align=center>$temp3 %</TD>\n");
+		print("<TD align=center>$temp1</TD>\n");
+		print("<TD align=center>$temp4 %</TD>\n");
+		print("</B></TR>\n");
+
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20 nowrap>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=150>Pass (Sumeo 2/3)</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=100>Pass %</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=150>Fail (Sumeo 2/3)</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail %</TD>\n");
+		print("</B></TR>\n");
+
+		//end table
+		print("</TABLE>\n");
+		
+		echo "<br>";
+
+		if ($temp1)
+		{
+			//start table
+			print("<TABLE BORDER=\"1\">\n");
+			
+			print("<TR><B>\n");
+			print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=150 nowrap>&nbsp;&nbsp;Date&nbsp;&nbsp;</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Sum</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Even</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Odd</TD>\n");
+			print("</B></TR>\n");
+			
+			// get count draw table
+			$query7 = "SELECT * FROM ga_f5_draws ";
+			$query7 .= "WHERE date >= '$date_temp_30' ";
+			$query7 .= "ORDER BY date DESC ";
+
+			#echo "$query7<br>";
+		
+			$mysqli_result7 = mysqli_query($mysqli_link, $query7) or die (mysqli_error($mysqli_link));
+
+			while($row7 = mysqli_fetch_array($mysqli_result7))
+			{
+				$sum_eo = fmod($row7[6],2); # 0 equals even
+
+				if ($sum_eo > 0 AND $row7[7] == 2)
+				{
+					continue;
+				} elseif ($sum_eo == 0 AND $row7[7] == 3) {
+					continue;
+				} else {
+					print("<TR><B>\n");
+					print("<TD width=20>&nbsp;</TD>\n");
+					print("<TD align=center width=150 nowrap>$row7[0]</TD>\n");
+					print("<TD align=center width=50>$row7[6]</TD>\n");
+					print("<TD align=center width=50>$row7[7]</TD>\n");
+					print("<TD align=center width=50>$row7[8]</TD>\n");
+					print("</B></TR>\n");
+				}
+			}
+			
+			print("<TR><B>\n");
+			print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50 nowrap>&nbsp;&nbsp;Date&nbsp;&nbsp;</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Sum</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Even</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Odd</TD>\n");
+			print("</B></TR>\n");
+
+			//end table
+			print("</TABLE>\n");
+		}
+
+		echo "<br>";
+
+		###############################################################################################
+
+		//start table
+		print("<TABLE BORDER=\"1\">\n");
+	
+		//create header row
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20 nowrap>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=150>Pass (Sumeo 2/3)</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=100>Pass %</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=150>Fail (Sumeo 2/3)</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail %</TD>\n");
+		print("</B></TR>\n");
+
+		$today_unix = time ();
+
+		#echo "today_unix = $today_unix<br>";
+
+		$date_temp_seconds = $last_draw_unix - (86400*($limit-4));	
+					
+		// Start date 
+		$date_temp = date('Y/m/d', $date_temp_seconds); 
+
+		$temp1 = 0;
+		$temp2 = 0;
+
+		// get count draw table
+		$query7 = "SELECT * FROM ga_f5_draws ";
+		$query7 .= "WHERE date >= '$date_temp_30' ";
+		$query7 .= "ORDER BY date DESC ";
+
+		#echo "$query7<br>";
+	
+		$mysqli_result7 = mysqli_query($mysqli_link, $query7) or die (mysqli_error($mysqli_link));
+
+		while($row7 = mysqli_fetch_array($mysqli_result7))
+		{
+			$sum_eo = fmod($row7[6],2); # 0 equals even
+
+			#echo "sum_eo = $sum_eo<br>";
+			#echo "row7[7] = $row7[7]<br>";
+			
+			if ($sum_eo > 0 AND $row7[7] == 2)
+			{
+				$temp2++;
+			} elseif ($sum_eo == 0 AND $row7[7] == 3) {
+				$temp2++;
+			} else {
+				$temp1++;
+			}
+		}
+	
+		$temp3 = number_format((($temp2/$limit)*100),2);
+
+		$temp4 = number_format((($temp1/$limit)*100),2);
+
+		print("<TR>\n");
+		
+		print("<TD align=center>&nbsp;</TD>\n");
+		print("<TD align=center>$temp2</TD>\n");
+		print("<TD align=center>$temp3 %</TD>\n");
+		print("<TD align=center>$temp1</TD>\n");
+		print("<TD align=center>$temp4 %</TD>\n");
+		print("</B></TR>\n");
+
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20 nowrap>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=150>Pass (Sumeo 2/3)</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=100>Pass %</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=150>Fail (Sumeo 2/3)</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail %</TD>\n");
+		print("</B></TR>\n");
+
+		//end table
+		print("</TABLE>\n");
+		
+		echo "<br>";
+
+		if ($temp1)
+		{
+			//start table
+			print("<TABLE BORDER=\"1\">\n");
+			
+			print("<TR><B>\n");
+			print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=150 nowrap>Date</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Sum</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Even</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Odd</TD>\n");
+			print("</B></TR>\n");
+			
+			// get count draw table
+			$query7 = "SELECT * FROM ga_f5_draws ";
+			$query7 .= "WHERE date >= '$date_temp_30' ";
+			$query7 .= "ORDER BY date DESC ";
+
+			#echo "$query7<br>";
+		
+			$mysqli_result7 = mysqli_query($mysqli_link, $query7) or die (mysqli_error($mysqli_link));
+
+			while($row7 = mysqli_fetch_array($mysqli_result7))
+			{
+				$sum_eo = fmod($row7[6],2); # 0 equals even
+				
+				if ($sum_eo > 0 AND $row7[7] == 2)
+				{
+					continue;
+				} elseif ($sum_eo == 0 AND $row7[7] == 3) {
+					continue;
+				} else {
+					print("<TR><B>\n");
+					print("<TD width=20>&nbsp;</TD>\n");
+					print("<TD align=center width=150 nowrap>$row7[0]</TD>\n");
+					print("<TD align=center width=50>$row7[6]</TD>\n");
+					print("<TD align=center width=50>$row7[7]</TD>\n");
+					print("<TD align=center width=50>$row7[8]</TD>\n");
+					print("</B></TR>\n");
+				}
+			}
+			
+			print("<TR><B>\n");
+			print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50 nowrap>Date</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Sum</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Even</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Odd</TD>\n");
+			print("</B></TR>\n");
+
+			//end table
+			print("</TABLE>\n");
+		}
+		#######################################################################################################
+
+
+?>

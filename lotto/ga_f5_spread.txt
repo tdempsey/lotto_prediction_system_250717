@@ -1,0 +1,90 @@
+Georgia Fantasy 5 Spread
+
+1) The games - statistics
+	- sum
+	- EO50	
+	- Even/odd
+	- Dup
+	- Rank
+	- Combo
+	- Draws
+
+What will play?
+	- generic
+		- Sum
+		- Even/Odd
+		- D501/2
+		- Seq2/3
+		- Mod/X
+		- Draw
+		- Combo
+		- Dup
+
+	- anomolies
+		- Sum
+		- Even/Odd
+		- D501/2
+		- Seq2/3
+		- Mod/X
+		- Draw
+		- Combo
+		- Dup
+
+	- Expected	
+		- Sum
+		- Even/Odd
+		- D501/2
+		- Seq2/3
+		- Mod/X
+		- Draw
+		- Combo
+		- Dup
+
+	
+Trends
+	- generic
+		- Sum (build limits)
+		- Even/Odd
+		- D501/2
+		- Seq2/3
+		- Mod/X
+		- Draw
+		- Combo
+		- Dup
+
+	- DNA
+		- sum
+		- balls
+		- all
+
+	- anomolies
+		- Sum
+		- Even/Odd
+		- D501/2
+		- Seq2/3
+		- Mod/X
+		- Draw
+		- Combo
+		- Dup
+
+	- Expected	
+		- Sum
+		- Even/Odd
+		- D501/2
+		- Seq2/3
+		- Mod/X
+		- Draw
+		- Combo
+		- Dup
+
+Historical
+	- tables
+
+Exclusions
+	- tables of bad pair/trip/quad
+	- table of combos to fail (WA)
+
+Plan
+	 - use b1/b2
+	 - use b1/b5
+	 - use b1/b3/b4/b5

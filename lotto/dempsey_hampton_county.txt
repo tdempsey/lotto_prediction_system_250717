@@ -1,0 +1,738 @@
+Name	Events	Relationships
+Luda Joseph Dempsey
+GM6Y-DH6
+
+birth:	15 July 1903, Hampton, South Carolina, United States
+residence:	20 Nov 1952, Early Branch
+death:	17 October 1967, Beaufort, Beaufort, South Carolina, United States
+father:	George Fredrick Dempsey
+K42X-K13
+
+mother:	Delia Pink Murdaugh Padgett
+KCJW-SB9
+
+spouse:	Clara Mae Mixson
+GMFM-2RM
+
+Charles Spurgeon Dempsey
+LRD5-3C5
+
+birth:	7 July 1862, South Carolina, United States
+residence:	1910, Peeples, Hampton, South Carolina, United States
+death:	12 October 1915, Peeples, Hampton, South Carolina, United States
+father:	Derrill Robert Dempsey
+LR8W-CND
+
+mother:	Sarai Elizabeth Young
+LR8W-Z39
+
+spouse:	Susan Evelyn Searson
+9KDC-28G
+
+George Garris Dempsey
+L1L5-FY1
+
+birth:	10 Aug 1903, South Carolina, United States
+death:	5 July 1978, Charleston, South Carolina
+residence:	05 Jul 1978, Charleston, South Carolina
+father:	Jacob Iziah Dempsey
+LL4F-P76
+
+mother:	Mary Ann Hutto
+LL78-J81
+
+spouse:	Inez Sineath
+GHSL-C3H
+
+Marion Presler Dempsey
+949Z-1CW
+
+birth:	January 1861, South Carolina, United States
+residence:	1910, Peeples, Hampton, South Carolina, United States
+death:	13 APR 1919
+father:	Robert Dempsey
+9K2P-7FN
+
+mother:	Elizabeth Yound
+9K2P-7NR
+
+spouse:	Derrill Robert Dempsey
+LR8W-CND
+
+H C Dempsey
+GC7Y-8NN
+
+birth:	1901, South Carolina
+death:	
+residence:	1920, Hampton, South Carolina, United States
+father:	Charles Spurgeon Dempsey
+LRD5-3C5
+
+mother:	Susan Evelyn Searson
+9KDC-28G
+
+Curtis Methicus Dempsey
+GMFM-MPN
+
+birth:	11 July 1857, South Carolina, United States
+residence:	1920, Columbia Ward 4, Richland, South Carolina, United States
+death:	6 March 1923, Columbia, Richland, South Carolina, United States
+father:	Derrill Robert Dempsey
+LR8W-CND
+
+mother:	Sarai Elizabeth Young
+LR8W-Z39
+
+spouse:	Lydia Ann Wessinger
+L5NH-N9R
+
+John Henry Dempsey
+GM6Y-3JZ
+
+birth:	2 October 1905, South Carolina, United States
+residence:	17 Oct 1967, Early Branch
+death:	20 January 1981, South Carolina, United States
+father:	George Fredrick Dempsey
+K42X-K13
+
+mother:	Delia Pink Murdaugh Padgett
+KCJW-SB9
+
+spouse:	Minnie Cartrett
+GMFM-GJG
+
+Curtis Monroe Dempsey
+GS4J-6L9
+
+birth:	22 October 1893, Varnville, Hampton, South Carolina, United States
+death:	27 January 1984, Jacksonville, Duval, Florida, United States
+residence:	28 January 1984, Jacksonville, Duval, Florida, United States
+father:	Simeon Aldrech Dempsey
+GS4J-L7Q
+
+mother:	Cynthia Rosella Tuten
+M1ZN-RMC
+
+spouse:	Thelma Idel Mixson
+LYS2-R4M
+
+Simeon Aldrech Dempsey
+GS4J-L7Q
+
+birth:	7 August 1861, Hampton, South Carolina, United States
+residence:	1900, Peeples Township (south part), Hampton, South Carolina, United States
+death:	23 November 1918, Hampton, South Carolina, United States
+father:	Robert Dempsey
+GS4J-N62
+
+mother:	Martha Mathis
+GS4J-KP5
+
+spouse:	Cynthia Rosella Tuten
+M1ZN-RMC
+
+Wilber Dempsey
+G3Y7-KHD
+
+birth:	1914, Hampton, South Carolina, United States
+residence:	1920, Peeples, Hampton, South Carolina, United States
+death:	17 October 1920, Peeples, Hampton, South Carolina, United States
+father:	Simeon Aldrech Dempsey
+GS4J-L7Q
+
+mother:	Millie Nettie Mixon
+G3TP-QPP
+
+spouse:	Simeon Aldrich Dempsey
+L1YG-7SH
+
+Name	Events	Relationships
+Simeon Otto Dempsey
+G3Y7-2T2
+
+birth:	28 September 1908, Hampton, South Carolina, United States
+residence:	1940, St. Michael and St. Philip Township, Charleston, South Carolina, United States
+death:	13 May 1991, Charleston, South Carolina, United States
+father:	Simeon Aldrech Dempsey
+GS4J-L7Q
+
+mother:	Millie Nettie Mixon
+G3TP-QPP
+
+spouse:	Gladys W
+G3Y7-PXQ
+
+Andrew Norman Dempsey
+G3Y7-G92
+
+birth:	18 October 1910, South Carolina, United States
+death:	5 June 1990, Nueces, Texas, United States
+residence:	Richmond, Henrico, Virginia
+father:	Simeon Aldrech Dempsey
+GS4J-L7Q
+
+mother:	Millie Nettie Mixon
+G3TP-QPP
+
+spouse:	Marguerite Elizabeth Lawson
+G4X7-81F
+
+Herman Francis Dempsey
+GM6Y-6ZB
+
+birth:	10 September 1907, South Carolina, United States
+residence:	17 Oct 1967, Plant City, Florida
+death:	20 November 1979, Hillsborough, Florida, United States
+father:	George Fredrick Dempsey
+K42X-K13
+
+mother:	Delia Pink Murdaugh Padgett
+KCJW-SB9
+
+spouse:	Dessie Hamrick
+GMFM-JGX
+
+Frank Burrell Dempsey
+M6SM-TS4
+
+birth:	19 May 1898, Cummings, Hampton, South Carolina, United States
+death:	19 November 1952, Hampton, South Carolina, United States
+residence:	21 Nov 1952, Early Branch
+father:	George Fredrick Dempsey
+K42X-K13
+
+mother:	Delia Pink Murdaugh Padgett
+KCJW-SB9
+
+spouse:	Alma Peeples
+M6SM-TSK
+
+Melvin Laverne DEMPSEY
+G3RD-SY1
+
+birth:	11 Sep 1950, Hampton County, South Carolina, USA
+residence:	24 Aug 1954, Varnville, South Carolina
+death:	25 Jun 2009, Mobile, Mobile, Alabama, USA
+father:	Melvin Frederick DEMPSEY
+G3R8-YJN
+
+mother:	Erma Nell Mixson
+GFSL-5TX
+
+Melvin Frederick DEMPSEY
+G3R8-YJN
+
+birth:	23 Apr 1922, South Carolina, USA
+death:	23 Aug 1954, Richland County, South Carolina, USA
+residence:	23 Aug 1954, Varnville
+father:	Frank Burrell Dempsey
+M6SM-TS4
+
+mother:	Alma Peeples
+M6SM-TSK
+
+spouse:	Erma Nell Mixson
+GFSL-5TX
+
+James Wesley Dempsey
+G85Y-38T
+
+birth:	1937
+residence:	21 Nov 1952, Early Branch
+death:	16 October 1995, Charleston, South Carolina, United States
+father:	Frank Burrell Dempsey
+M6SM-TS4
+
+mother:	Thelma Freeman
+G464-NHD
+
+spouse:	Linda Lou Freeman
+G85T-LV4
+
+William Edward Dempsey
+G9Q4-PGX
+
+birth:	January 1897, Hampton, South Carolina, United States
+death:	
+residence:	1900, Peeples Township (south part), Hampton, South Carolina, United States
+father:	Simeon Aldrech Dempsey
+GS4J-L7Q
+
+mother:	Cynthia Rosella Tuten
+M1ZN-RMC
+
+spouse:	Rachel Beatrice Jackson
+G9Q4-G7Y
+
+Herbert Aldrich Dempsey
+G3TP-SVJ
+
+birth:	5 May 1900, Varnville, Hampton, South Carolina, United States
+residence:	1920, Peeples, Hampton, South Carolina, United States
+death:	16 June 1993, Charleston, South Carolina, United States
+father:	Simeon Aldrech Dempsey
+GS4J-L7Q
+
+mother:	Millie Nettie Mixon
+G3TP-QPP
+
+spouse:	Simeon Aldrich Dempsey
+L1YG-7SH
+
+L S Dempsey
+GC7Y-J4M
+
+birth:	1893, South Carolina
+death:	
+residence:	1910, Peeples, Hampton, South Carolina, United States
+father:	Charles Spurgeon Dempsey
+LRD5-3C5
+
+mother:	Susan Evelyn Searson
+9KDC-28G
+
+Name	Events	Relationships
+Julius Wilder Dempsey
+GCFG-9K7
+
+birth:	18 September 1895, South Carolina, United States
+residence:	05 Aug 1945, Beaufort
+death:	16 January 1968, Beaufort, South Carolina, United States
+father:	Charles Spurgeon Dempsey
+LRD5-3C5
+
+mother:	Susan Evelyn Searson
+9KDC-28G
+
+spouse:	Rose Nell Stone
+GCFG-CQ5
+
+Dennis Dempsey Jr
+KZV8-3ZD
+
+birth:	18 January 1926, Augusta, Richmond, Georgia, United States
+death:	14 August 1965, Orangeburg, Orangeburg, South Carolina, United States
+residence:	14 Aug 1965, Charleston, South Carolina
+father:	Dennis Dempsey
+G3MH-V7G
+
+mother:	Julia Mosley
+G3MH-L8V
+
+spouse:	Alma Louise Wilson
+GWYP-31J
+
+Walter B Dempsey
+G3TY-ZK5
+
+birth:	June 1891, South Carolina, United States
+residence:	1900, Peeples Township (south part), Hampton, South Carolina, United States
+death:	4 August 1904, Hampton, South Carolina, United States
+father:	Simeon Aldrech Dempsey
+GS4J-L7Q
+
+mother:	Cynthia Rosella Tuten
+M1ZN-RMC
+
+spouse:	Simeon Aldrech Dempsey
+GS4J-L7Q
+
+Thomas Robert Dempsey
+G7B5-C9D
+
+birth:	12 August 1895, South Carolina
+death:	9 January 1945, Charleston, South Carolina, United States
+residence:	10 Jan 1945, Charleston
+father:	Marion Presler Dempsey
+949Z-1CW
+
+mother:	Fannie Augustus Pye
+949Z-1CR
+
+spouse:	Flossie Virginia Kinard
+G7B5-QH7
+
+James Milas Dempsey
+L51D-4CS
+
+birth:	1935, Texas, United States
+death:	
+residence:	13 Sep 2006, Seminole
+father:	James Milas Dempsey
+LTZ7-L4S
+
+mother:	Josie Adeline Mauldin
+L51D-357
+
+spouse:	Jackie Faye Bearden
+LRFN-65P
+
+George Fredrick Dempsey
+K42X-K13
+
+birth:	October 1862, South Carolina, United States
+death:	Peeples, Hampton, South Carolina, United States
+residence:	1920, Peeples, Hampton, South Carolina, United States
+father:	Derrill Robert Dempsey
+LR8W-CND
+
+mother:	Sarai Elizabeth Young
+LR8W-Z39
+
+spouse:	Delia Pink Murdaugh Padgett
+KCJW-SB9
+
+Joseph Morris Dempsey Jr
+LYQ5-8L3
+
+birth:	9 November 1912, New Orleans, Orleans, Louisiana, United States
+death:	19 May 1974, Baton Rouge, East Baton Rouge, Louisiana, United States
+residence:	New Orleans, Orleans, Louisiana
+father:	Joseph Morris Dempsey Sr
+K8LL-KYG
+
+mother:	Louise Violet Luhring
+KCXN-4V2
+
+spouse:	Violet Cope
+LYQB-VBP
+
+Dennis Dempsey
+G3MH-V7G
+
+birth:	10 March 1902, Hampton, South Carolina, United States
+residence:	4 April 1950, Orangeburg, Orangeburg, South Carolina, United States
+death:	10 feb 1994, Orangeburg, South Carolina, United States
+father:	Marion Presler Dempsey
+949Z-1CW
+
+mother:	Fannie Augustus Pye
+949Z-1CR
+
+spouse:	Julia Mosley
+G3MH-L8V
+
+Jack Dempsey
+L195-ZFD
+
+birth:	10 November 1927, Augusta, Richmond, Georgia, United States
+residence:	16 Oct 2006, Orangeburg, South Carolina
+death:	27 December 2011, Orangeburg, South Carolina, United States
+father:	Dennis Dempsey
+G3MH-V7G
+
+mother:	Julia Mosley
+G3MH-L8V
+
+spouse:	Marie Gartman
+LBC5-71D
+
+Porter Dempsey
+KZNM-6JT
+
+birth:	1805, South Carolina, United States
+death:	
+residence:	1805, South Carolina, United States
+father:	Cornelius Dempsey
+K84P-CML
+
+mother:	Elizabeth Braswell
+K8SW-CRP
+
+spouse:	Cornelius Dempsey
+K84P-CML
+Name	Events	Relationships
+John Macauley Cuthbert Dempsey
+GMFM-MPX
+
+birth:	25 August 1854, South Carolina, United States
+residence:	1870, South Carolina, United States
+death:	31 December 1896
+father:	Derrill Robert Dempsey
+LR8W-CND
+
+mother:	Sarai Elizabeth Young
+LR8W-Z39
+
+spouse:	Derrill Robert Dempsey
+LR8W-CND
+
+Luke Dempsey
+K423-6S1
+
+birth:	1807, South Carolina, United States
+death:	
+residence:	1807, South Carolina, United States
+father:	Cornelius Dempsey
+K84P-CML
+
+mother:	Elizabeth Braswell
+K8SW-CRP
+
+spouse:	Linda Cantrell
+KJ4Q-ZJX
+
+James Dempsey
+K86M-STX
+
+birth:	1803, South Carolina, United States
+death:	
+residence:	1803, South Carolina, United States
+father:	Cornelius Dempsey
+K84P-CML
+
+mother:	Elizabeth Braswell
+K8SW-CRP
+
+spouse:	Cornelius Dempsey
+K84P-CML
+
+Robert Lee Dempsey
+G73M-8V5
+
+birth:	1962
+death:	
+residence:	4 June 1989, South Carolina, United States
+father:	Robert Leonard Dempsey
+LB1D-TQT
+
+mother:	Delys Ayers
+G7S1-517
+
+spouse:	Cheryl V Hunt
+G73M-HHT
+
+Marvin Edison Dempsey
+LKTR-4WT
+
+birth:	1927, South Carolina, United States
+residence:	1930, Pocotaligo, Hampton, South Carolina
+death:	27 October 1932, Hampton, South Carolina, United States
+father:	Thaddeus Frederick Dempsy
+LKTR-WGY
+
+mother:	Mary Elizabeth Peeples
+LKTR-WPB
+
+spouse:	Thaddeus Frederick Dempsy
+LKTR-WGY
+
+James Earl Dempsey
+LKTR-WRZ
+
+birth:	13 September 1924, Hampton, South Carolina, United States
+residence:	02 Jan 1980, Early Branch
+death:	2 June 1997, Hampton, South Carolina, United States
+father:	Thaddeus Frederick Dempsy
+LKTR-WGY
+
+mother:	Mary Elizabeth Peeples
+LKTR-WPB
+
+spouse:	Sarah Frances Heape
+G4BC-PB2
+
+Raymond Thaddeus DEMPSEY
+G3PH-CYC
+
+birth:	14 Mar 1921, Early Branch, Hampton, South Carolina, USA
+residence:	02 Jan 1980, Varnville
+death:	5 Sep 1996, Richmond County, Georgia, USA
+father:	Thaddeus Frederick Dempsy
+LKTR-WGY
+
+mother:	Mary Elizabeth Peeples
+LKTR-WPB
+
+spouse:	Ellen Louise Mixon
+G3PH-FST
+
+Thaddeus Frederick Dempsy
+LKTR-WGY
+
+birth:	12 August 1895, Hampton, South Carolina, United States
+death:	12 September 1956, Varnsville, Hampton, South Carolina, United States
+residence:	13 Sep 1956, Hampton County
+father:	George Fredrick Dempsey
+K42X-K13
+
+mother:	Delia Pink Murdaugh Padgett
+KCJW-SB9
+
+spouse:	Mary Elizabeth Peeples
+LKTR-WPB
+
+Wilson Dempsy
+G3Y7-L9C
+
+birth:	1919, South Carolina, United States
+death:	
+residence:	1920, Peeples, Hampton, South Carolina, United States
+father:	Simeon Aldrech Dempsey
+GS4J-L7Q
+
+mother:	Millie Nettie Mixon
+G3TP-QPP
+
+spouse:	Simeon Aldrech Dempsey
+GS4J-L7Q
+
+John Joseph Dempsey
+GW4G-L9W
+
+birth:	22 June 1879, White Haven, Luzerne, Pennsylvania, United States
+death:	11 Mar 1958, Washington, District of Columbia, United States
+residence:	12 Mar 1958, United States
+father:	William Dempsey
+M7W9-3FN
+
+mother:	Mary Elizabeth McNally
+M7W9-3P2
+
+spouse:	Catherine Teresa McCarthy
+GMP8-GJH
+
+Name	Events	Relationships
+William Dennis "Billy" Dempsey Jr.
+G4V1-VH3
+
+birth:	15 August 1933, Louisville, Jefferson, Kentucky, United States
+death:	1 January 2013, Frankfort, Franklin, Kentucky, United States
+residence:	01 Jan 2013, United States
+father:	William Dennis "Willie" Dempsey Sr.
+G4V1-138
+
+mother:	Ada Katherine West
+9JHL-F74
+
+spouse:	William Dennis "Willie" Dempsey Sr.
+G4V1-138
+
+John Joseph Dempsey
+9NJ3-VX1
+
+birth:	2 March 1876, Manistee, Manistee, Michigan, United States
+death:	13 November 1945, Tacoma, Pierce, Washington, United States
+residence:	Tacoma, Pierce, Wash.
+father:	James Dempsey
+MPMR-5D8
+
+mother:	Mary Tracey Mullen
+MPMR-5F6
+
+spouse:	Margaret Danaher
+L52W-DTX
+
+Albert Clarence Dempsey
+LDQK-85R
+
+birth:	24 July 1923, St. Paul, Ramsey, Minnesota, United States
+death:	14 November 1997, Forest Lake, Washington, Minnesota, United States
+residence:	White Bear Lake, Ramsey, Minnesota, United States
+father:	Leo Frank Dempsey
+L4QP-2T4
+
+mother:	Mary Otilia Boeltl
+978G-1HD
+
+spouse:	Beverly Marie Conlin
+LFLK-CJV
+
+Luthur Dempsey
+LK1Y-C3F
+
+birth:	December 1895, Florida, United States
+death:	
+residence:	1910, Election Precinct 3 Airline, Lafayette, Florida, United States
+father:	William Anderson Dempsey
+KLP7-4TG
+
+mother:	Theresa Halwell
+GD6L-837
+
+spouse:	William Anderson Dempsey
+KLP7-4TG
+
+Franklin Eugene Dempsey
+L5X5-75R
+
+birth:	11 April 1899, Missouri, United States
+death:	28 April 1960, Happy Valley, Clackamas, Oregon Territory, United States
+residence:	Peculiar, Missouri
+father:	Dempsey
+G65V-W4W
+
+spouse:	Lola Faye Murphy
+LVYJ-1DX
+
+John Wesley Dempsey
+L6S7-117
+
+birth:	18 January 1883, Guilford, North Carolina, United States
+death:	13 June 1952, Greensboro, Guilford, North Carolina, United States
+residence:	13 Jun 1952, United States
+father:	William Anderson Dempsey
+KNQ7-79D
+
+mother:	Kevie A. Faucett
+GSY8-PBZ
+
+spouse:	William Anderson Dempsey
+KNQ7-79D
+
+Rufus Halwell Dempsey
+LK1Y-HLX
+
+birth:	19 November 1889, Branford, Suwannee, Florida, United States
+death:	27 December 1936, Branford, Suwannee, Florida, United States
+residence:	Branford, Suwannee, Florida, United States
+father:	William Anderson Dempsey
+KLP7-4TG
+
+mother:	Theresa Halwell
+GD6L-837
+
+spouse:	William Anderson Dempsey
+KLP7-4TG
+
+Robert (Bobby Gene) Eugene Dempsey
+9V3Q-MN3
+
+birth:	15 FEB 1928, Carrier Mills, Saline, Illinois, USA
+death:	16 DEC 1954, Carrier Mills, Saline, Illinois, USA
+residence:	17 Dec 1954, United States
+father:	Kenneth Duane Sr. Dempsey
+9V3Q-MN7
+
+mother:	Lillian Ray
+9V3Q-MNW
+
+spouse:	Mary Louise (Lou)
+GC2T-2SX
+
+Virgil Luke Dempsey
+LRK8-M8P
+
+birth:	10 November 1893, Keytesville, Chariton, Missouri, United States
+death:	09 Mar 1963
+residence:	St Denver, Colorado
+father:	Luther N Dempsey
+LR8C-BSZ
+
+mother:	Catherine Rosella Smith
+LRK8-MRH
+
+Lynn J Dempsey
+MG89-BRK
+
+birth:	7 October 1899, Washtucna, Adams, Washington, United States
+death:	15 September 1971, Portland, Multnomah, Oregon, United States
+residence:	Portland, Oregon, Lincoln St
+father:	Isaac Arthur Dempsey
+L6K2-YBT
+
+mother:	Nancy Jane Davis
+KZLW-XQQ
+
+spouse:	Blanche May Groshens
+L5B6-8PS

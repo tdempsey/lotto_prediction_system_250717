@@ -1,0 +1,46 @@
+	#	Name	Type	Collation	Attributes	Null	Default	Comments	Extra	Action
+	1	date PrimaryIndex	date			No	None			Change Change	Drop Drop	
+	2	b1	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	3	b2	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	4	b3	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	5	b4	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	6	b5	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	7	sum	smallint		UNSIGNED	No	0			Change Change	Drop Drop	
+	8	even	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	9	odd	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	10	eo50_wa	float(4,2)		UNSIGNED	No	0.00			Change Change	Drop Drop	
+	11	draw0	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	12	draw1	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	13	draw2	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	14	draw3	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	15	draw4	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	16	rank0	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	17	rank1	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	18	rank2	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	19	rank3	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	20	rank4	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	21	rank5	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	22	rank6	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	23	pair_sum	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	24	draw_average	float(4,2)		UNSIGNED	No	0.00			Change Change	Drop Drop	
+	25	median	float(4,2)		UNSIGNED	No	0.00			Change Change	Drop Drop	
+	26	harmean	float(4,2)		UNSIGNED	No	0.00			Change Change	Drop Drop	
+	27	geomean	float(4,2)		UNSIGNED	No	0.00			Change Change	Drop Drop	
+	28	quart1	float(4,2)		UNSIGNED	No	0.00			Change Change	Drop Drop	
+	29	quart2	float(4,2)		UNSIGNED	No	0.00			Change Change	Drop Drop	
+	30	quart3	float(4,2)		UNSIGNED	No	0.00			Change Change	Drop Drop	
+	31	stdev	float(4,2)		UNSIGNED	No	0.00			Change Change	Drop Drop	
+	32	variance	float(6,2)		UNSIGNED	No	0.00			Change Change	Drop Drop	
+	33	avedev	float(4,2)		UNSIGNED	No	0.00			Change Change	Drop Drop	
+	34	kurt	float(4,2)			No	0.00			Change Change	Drop Drop	
+	35	skew	float(4,2)			No	0.00			Change Change	Drop Drop	
+	36	devsq	float(7,2)		UNSIGNED	No	0.00			Change Change	Drop Drop	
+	37	nums_total_2	smallint		UNSIGNED	No	0			Change Change	Drop Drop	
+	38	combo_total_2	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	39	nums_total_3	smallint		UNSIGNED	No	0			Change Change	Drop Drop	
+	40	combo_total_3	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	41	nums_total_4	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	42	combo_total_4	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	43	s1510	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	44	s61510	tinyint		UNSIGNED	No	0			Change Change	Drop Drop	
+	45	last_updated	date			No	1962-08-17			Change Change	Drop Drop	

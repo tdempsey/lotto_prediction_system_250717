@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Lotto SumEO Get</title>
+</head>
+<body>
+<h1>Lotto SumEO Get</h1>
+
+<form action="http://localhost:81/lotto/lot_sumeo_get.php" method="get">
+  <fieldset>
+    <legend>Enter SumEO Parameters:</legend>
+    <div>
+      <label for="sum">Sum:</label>
+      <input type="number" id="sum" name="sum" value="103" required>
+    </div>
+    <div>
+      <label for="even">Even Numbers:</label>
+      <input type="number" id="even" name="even" value="4" required>
+    </div>
+    <div>
+      <label for="odd">Odd Numbers:</label>
+      <input type="number" id="odd" name="odd" value="1" required>
+    </div>
+  </fieldset>
+
+  <button type="submit">Submit</button>
+</form>
+
+</body>
+</html>

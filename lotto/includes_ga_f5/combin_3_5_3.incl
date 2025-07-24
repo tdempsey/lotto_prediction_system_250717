@@ -1,0 +1,139 @@
+<?php
+	$temp_array = array_fill(0,4,0);
+
+	for ($s = 1; $s <= $balls_drawn; $s++)
+	{
+		$temp_array[$s] = $row[$s];
+	}
+	
+	sort ($temp_array);
+
+	for ($s = 1; $s <= $balls_drawn; $s++)
+	{
+		$row[$s] = $temp_array[$s];
+	}
+
+	for ($c = 1; $c <= 3; $c++)
+	{
+		switch ($c) 
+		{ 
+		   case 1: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[3];
+			   break; 
+		   case 2: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[4];
+			   break; 
+		   case 3: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[5];
+			   break; 
+		   case 4: 
+			   $d1 = $row[1];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   break;
+		   case 5: 
+			   $d1 = $row[1];
+			   $d2 = $row[3];
+			   $d3 = $row[5];
+			   break; 
+		   case 6: 
+			   $d1 = $row[1];
+			   $d2 = $row[4];
+			   $d3 = $row[5];
+			   break;
+		   case 7: 
+			   $d1 = $row[2];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   break;
+		   case 8: 
+			   $d1 = $row[2];
+			   $d2 = $row[3];
+			   $d3 = $row[5];
+			   break;
+		   case 9: 
+			   $d1 = $row[2];
+			   $d2 = $row[4];
+			   $d3 = $row[5];
+			   break;
+		   case 10: 
+			   $d1 = $row[3];
+			   $d2 = $row[4];
+			   $d3 = $row[5];
+			   break;
+		} 
+
+		$sum = $d1 + $d2 + $d3;
+
+		$draw_sum = $row[1] + $row[2] + $row[3] + $row[4] + $row[5]; 
+
+		$query3 = "Insert INTO $table_temp ";
+		$query3 .= "VALUES ( '0', ";
+		$query3 .= "         '$row[0]', "; ########## 0
+		$query3 .= "         $d1, ";
+		$query3 .= "	     $d2, ";
+		$query3 .= "	     $d3, ";
+		$query3 .= "	     $sum, ";
+		$query3 .= "	     $draw_sum, ";
+		$query3 .= "	     $c, "; #combo position
+		$query3 .= "	     '1', ";
+		$query3 .= "	     '1', ";
+		$query3 .= "	     '0') "; 
+
+		#print "$query3<p>";
+	
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+	
+		$query2 = "SELECT d1, d2, d3 FROM $table_temp ";
+		$query2 .= "WHERE d1 = $d1 "; 
+		$query2 .= "AND d2 = $d2 "; 
+		$query2 .= "AND d3 = $d3 ";  
+		$query2 .= "AND hml = 0 ";
+
+		$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+
+		$num_rows = mysqli_num_rows($mysqli_result2);
+
+		if ($num_rows > 1)
+		{
+			$query_update = "UPDATE $table_temp ";
+			$query_update .= "SET nums_count = $num_rows ";
+			$query_update .= "WHERE d1 = $d1 ";
+			$query_update .= "AND d2 = $d2 ";
+			$query_update .= "AND d3 = $d3 ";
+			$query_update .= "AND hml = 0 ";
+
+			$mysqli_result_update = mysqli_query ($mysqli_link, $query_update) or die (mysqli_error($mysqli_link));
+		}
+
+		$query2 = "SELECT d1, d2, d3, combo FROM $table_temp ";
+		$query2 .= "WHERE d1 = $d1 "; 
+		$query2 .= "AND d2 = $d2 "; 
+		$query2 .= "AND d3 = $d3 ";  
+		$query2 .= "AND combo = $c ";
+		$query2 .= "AND hml = 0 ";
+
+		$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+
+		$num_rows = mysqli_num_rows($mysqli_result2);
+		
+		if ($num_rows > 1)
+		{
+			$query_update = "UPDATE $table_temp ";
+			$query_update .= "SET combo_count = $num_rows ";
+			$query_update .= "WHERE d1 = $d1 ";
+			$query_update .= "AND d2 = $d2 ";
+			$query_update .= "AND d3 = $d3 ";
+			$query_update .= "AND combo = $c ";
+			$query_update .= "AND hml = 0 ";
+
+			$mysqli_result_update = mysqli_query ($mysqli_link, $query_update) or die (mysqli_error($mysqli_link));
+		}
+	}
+?>

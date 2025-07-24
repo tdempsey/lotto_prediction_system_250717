@@ -1,0 +1,39 @@
+<?php
+$col1_low = 9;
+$col1_high = 20;
+$col2_low = 20;
+$col2_high = 30;
+$col3_low = 25;
+$col3_high = 33;
+$col4_low = 27;
+$col4_high = 35;
+$col5_low = 33;
+$col5_high = 36;
+
+$even_low = 1;
+$even_high = 4; 
+$odd_low = 1;
+$odd_high = 4;
+
+$range501_low = 0; 
+$range501_high = 1;
+$range502_low = 4; 
+$range502_high = 5;
+
+$draw_range[0][0] = 0; 
+$draw_range[0][1] = 1;
+$draw_range[1][0] = 0;
+$draw_range[1][1] = 1;
+$draw_range[2][0] = 0; 
+$draw_range[2][1] = 4;
+$draw_range[3][0] = 1;
+$draw_range[3][1] = 3; 
+
+$draw_table[0][0] = 1; 
+$draw_table[0][1] = 1;
+$draw_table[0][2] = 0;
+$draw_table[0][3] = 0;
+$draw_table[1][0] = 1;
+
+$width_limit = 14; 
+?>

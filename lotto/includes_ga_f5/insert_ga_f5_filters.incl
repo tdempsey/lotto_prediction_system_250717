@@ -1,0 +1,141 @@
+<?php
+	$query1 = "SELECT * FROM `ga_f5_filters`";
+	$query1 .= "ORDER BY id ASC";
+
+	#print("$query1<br>");
+	$mysqli_result1 = mysqli_query($mysqli_link, $query1) or die (mysqli_error($mysqli_link));
+
+	while($row1 = mysqli_fetch_array($mysqli_result1))
+	{
+		$query2 = "INSERT INTO ga_f5_filters ";
+		$query2 .= "VALUES ('0', ";
+		
+		switch ($row1[filters_id]):
+			case 1:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$fsum, ";
+				break;
+			case 2:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$feven, ";
+				break;
+			case 3:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$fodd, ";
+				break;
+			case 4:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$feox, ";
+				break;
+			case 5:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$fseq2, ";
+				break;
+			case 6:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$fseq3, ";
+				break;
+			case 7:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$fmod, ";
+				break;
+			case 8:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$fmodx, ";
+				break;
+			case 9:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$fcombin2, ";
+				break;
+			case 10:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$fcombin3, ";
+				break;
+			case 11:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$fcombin4, ";
+				break;
+			case 12:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$fcombin5, ";
+				break;
+			case 13:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$fsum, ";
+				break;
+			case 14:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$feven, ";
+				break;
+			case 15:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$fodd, ";
+				break;
+			case 16:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$feox, ";
+				break;
+			case 17:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$fseq2, ";
+				break;
+			case 18:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$fseq3, ";
+				break;
+			case 19:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$fmod, ";
+				break;
+			case 20:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$fmodx, ";
+				break;
+			case 21:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$fcombin2, ";
+				break;
+			case 22:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$fcombin3, ";
+				break;
+			case 23:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$fcombin4, ";
+				break;
+			case 24:
+				$query2 .= "'$draw_id', ";
+				$query2 .= "$row1[filters_id], ";
+				$query2 .= "$fcombin5, ";
+				break;
+			default:
+				exit ('<h1><font color="#ff0000">No function selected in function insert_ga_f5_functions.incl</font></h1>');
+		endswitch;
+
+		#print("$query2<br>");
+		$mysqli_result = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+	}
+?>

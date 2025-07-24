@@ -1,0 +1,65 @@
+<?php
+
+class DatabaseManager {
+
+    private $game;
+    private $mysqli;
+
+    public function __construct($game) {
+        $this->game = $game;
+    }
+
+    public function connect() {
+        switch ($this->game) {
+            case 1:
+                $this->mysqli = new mysqli("localhost", "root", "", "ga_f5_lotto");
+                break;
+            case 2:
+                $this->mysqli = new mysqli("localhost", "root", "wef5esuv", "megamillions");
+                break;
+            case 3:
+                $this->mysqli = new mysqli("localhost", "root", "wef5esuv", "ga_jumbo_bucks");
+                break;
+            case 4:
+                $this->mysqli = mysqli_connect("localhost", "root", "") or die ('Not connected : ' . mysqli_error());
+                mysqli_select_db("florida_cash3", $this->mysqli) or die ('Can\'t use startgate: ' . mysqli_error()); 
+                break;
+            case 5:
+                $this->mysqli = mysqli_connect("localhost", "root", "") or die ('Not connected : ' . mysqli_error());
+                mysqli_select_db("florida_cash3", $this->mysqli) or die ('Can\'t use startgate: ' . mysqli_error()); 
+                break;
+            case 6:
+                $this->mysqli = new mysqli("localhost", "root", "wef5esuv", "fl_lotto");
+                break;
+            case 7:
+                $this->mysqli = new mysqli("localhost", "root", "wef5esuv", "powerball");
+                break;
+            // add additional cases for games 8-30 as needed
+            default:
+                $this->mysqli = mysqli_connect("localhost", "root", "") or die ('Not connected : ' . mysqli_error());
+                mysqli_select_db("florida", $this->mysqli) or die ('Can\'t use startgate: ' . mysqli_error()); 
+        }
+
+        if ($this->mysqli->connect_errno) {
+            printf("Connect failed: %s\n", $this->mysqli->connect_error);
+            exit();
+        }
+    }
+
+    public function getMysqli() {
+        return $this->mysqli;
+    }
+
+    // Add other methods as needed, such as executeQuery(string $query)
+
+}
+
+// Usage example
+$game = 2; // Set your game here
+$databaseManager = new DatabaseManager($game);
+$databaseManager->connect();
+$mysqli = $databaseManager->getMysqli();
+
+// Use $mysqli object for your database queries
+
+?>

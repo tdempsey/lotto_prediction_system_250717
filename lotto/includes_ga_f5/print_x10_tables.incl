@@ -1,0 +1,49 @@
+<?php
+	//print x10_3 table
+	print("<TABLE BORDER=\"1\">\n");
+	
+	print("<TR>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\">X10_3</TD>\n");
+
+	for ($x = 0; $x < count($exclude_numbers_3); $x++)
+	{
+		print("<TD>$exclude_numbers_3[$x]</TD>\n");
+	}
+
+	print("</TR>\n");
+	print("</TABLE>\n");
+
+	print("<p>\n");
+
+	//print x10_2 table
+	print("<TABLE BORDER=\"1\">\n");
+	
+	print("<TR>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\">X10_2</TD>\n");
+
+	for ($x = 0; $x < count($exclude_numbers_2); $x++)
+	{
+		print("<TD>$exclude_numbers_2[$x]</TD>\n");
+	}
+
+	print("</TR>\n");
+	print("</TABLE>\n");
+
+	print("<p>\n");
+
+	//print x10_1 table
+	print("<TABLE BORDER=\"1\">\n");
+	
+	print("<TR>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\">X10_1</TD>\n");
+
+	for ($x = 0; $x < count($exclude_numbers_1); $x++)
+	{
+		print("<TD>$exclude_numbers_1[$x]</TD>\n");
+	}
+
+	print("</TR>\n");
+	print("</TABLE>\n");
+
+	print("<p>\n");
+?>

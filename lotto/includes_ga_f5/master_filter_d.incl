@@ -1,0 +1,333 @@
+<?php
+
+	$filter_letter = 'd';
+
+	$drop_tables = 0;
+
+	require ("includes/drop_filter_tables.incl");
+
+	$query = "TRUNCATE TABLE ga_f5_filter_limits_temp";
+
+	echo "$query<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	function lot_filter_d_col1 ()
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $combo_table, $game_includes;
+	
+		require ("includes/mysqli.php");
+		
+		print("<H2>Lotto Filter D - $game_name</H2>\n");
+
+		$curr_date = date("Y-m-d");
+		#$curr_date = '2013-04-25';
+	
+		$dcount = 0;
+
+		$next_draw_date = findNextDrawDateDash($game);
+		#$next_draw_date = "2013-05-07";
+
+		# set combo limits ---------------------------------------------------------------------------------------
+		$query_temp1 = "SELECT * FROM $draw_prefix";
+		$query_temp1 .= "2";
+		$query_temp1 .= "_";
+		$query_temp1 .= "$balls ";
+		$query_temp1 .= "ORDER BY combo DESC ";
+		$query_temp1 .= "LIMIT 1 ";
+
+		print "$query_temp1<p>";
+	
+		$mysqli_result_temp1 = mysqli_query($query_temp1, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row_comb2 = mysqli_fetch_array($mysqli_result_temp1);
+
+		$query_temp1 = "SELECT * FROM $draw_prefix";
+		$query_temp1 .= "3";
+		$query_temp1 .= "_";
+		$query_temp1 .= "$balls ";
+		$query_temp1 .= "ORDER BY combo DESC ";
+		$query_temp1 .= "LIMIT 1 ";
+
+		print "$query_temp1<p>";
+	
+		$mysqli_result_temp1 = mysqli_query($query_temp1, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row_comb3 = mysqli_fetch_array($mysqli_result_temp1);
+
+		$query_temp1 = "SELECT * FROM $draw_prefix";
+		$query_temp1 .= "4";
+		$query_temp1 .= "_";
+		$query_temp1 .= "$balls ";
+		$query_temp1 .= "ORDER BY combo DESC ";
+		$query_temp1 .= "LIMIT 1 ";
+
+		print "$query_temp1<p>";
+	
+		$mysqli_result_temp1 = mysqli_query($query_temp1, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row_comb4 = mysqli_fetch_array($mysqli_result_temp1);
+		### set combo limits end --------------------------------------------------------------------------------------------------
+
+		for ($hml = 60; $hml <= 149; $hml = $hml + 10) #------------------
+		{
+			for ($x = 1; $x <= 10; $x++)
+			{
+				$table_temp_c = $draw_prefix . "filter_c_";
+				$table_temp_d = $draw_prefix . "filter_d_";
+
+				if ($x < 10)
+				{
+					$table_temp_c .= "0$x";
+					$table_temp_d .= "0$x";
+				} else {
+					$table_temp_c .= "$x";
+					$table_temp_d .= "$x";
+				}
+
+				$comb_array_2_low = array_fill (0,$row_comb2[combo]-1,0);
+				$comb_array_3_low = array_fill (0,$row_comb3[combo]-1,0);
+				$comb_array_4_low = array_fill (0,$row_comb4[combo]-1,0);
+				$comb_array_2_high = array_fill (0,$row_comb2[combo]-1,0);
+				$comb_array_3_high = array_fill (0,$row_comb3[combo]-1,0);
+				$comb_array_4_high = array_fill (0,$row_comb4[combo]-1,0);
+
+				for ($y = 1; $y <= $row_comb2[combo]; $y++)
+				{
+					# ---- c2 ----
+					$query = "SELECT * FROM $draw_prefix";
+					$query .= "filter_limits ";
+					$query .= "WHERE col1 = $x "; 
+					$query .= "AND col_pos = $y ";
+					$query .= "AND date = '$next_draw_date' ";
+					$query .= "AND limit_type = 'c2' ";
+					$query .= "AND hml = '$hml' ";
+					$query .= "ORDER BY id DESC ";
+
+					print("<p>$query</p>");
+				
+					$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+					$num_rows_limit = mysqli_num_rows($mysqli_result);
+
+					if (!$num_rows_limit)
+					{
+						die ("No limit found - c2 - all");
+					}
+
+					$row_combo = mysqli_fetch_array($mysqli_result);
+
+					$comb_array_2_low[$y] = $row_combo[low];
+					$comb_array_2_high[$y] = $row_combo[high];
+					# ---- c2 end ----
+				}
+
+				for ($y = 1; $y <= $row_comb3[combo]; $y++)
+				{
+
+					# ---- c3 ----
+					$query = "SELECT * FROM $draw_prefix";
+					$query .= "filter_limits ";
+					$query .= "WHERE col1 = $x "; 
+					$query .= "AND col_pos = $y ";
+					$query .= "AND date = '$next_draw_date' ";
+					$query .= "AND limit_type = 'c3' ";
+					$query .= "AND hml = '$hml' ";
+					$query .= "ORDER BY id DESC ";
+
+					print("<p>$query</p>");
+				
+					$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+					$num_rows_limit = mysqli_num_rows($mysqli_result);
+
+					if (!$num_rows_limit)
+					{
+						die ("No limit found - c3 - all");
+					}
+
+					$row_combo = mysqli_fetch_array($mysqli_result);
+
+					$comb_array_3_low[$y] = $row_combo[low];
+					$comb_array_3_high[$y] = $row_combo[high];
+					# ---- c3 end ----
+				}
+
+				for ($y = 1; $y <= $row_comb4[combo]; $y++)
+				{
+					# ---- c4 ----
+					$query = "SELECT * FROM $draw_prefix";
+					$query .= "filter_limits ";
+					$query .= "WHERE col1 = $x "; 
+					$query .= "AND col_pos = $y ";
+					$query .= "AND date = '$next_draw_date' ";
+					$query .= "AND limit_type = 'c4' ";
+					$query .= "AND hml = '$hml' ";
+					$query .= "ORDER BY id DESC ";
+
+					print("<p>$query</p>");
+				
+					$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+					$num_rows_limit = mysqli_num_rows($mysqli_result);
+
+					if (!$num_rows_limit)
+					{
+						die ("No limit found - c4 - all");
+					}
+
+					$row_combo = mysqli_fetch_array($mysqli_result);
+
+					$comb_array_4_low[$y] = $row_combo[low];
+					$comb_array_4_high[$y] = $row_combo[high];
+					# ---- c4 end ----
+				}
+
+				$query = "SELECT * FROM $table_temp_c ";
+
+				print "$query<p>";
+			
+				$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+
+				while($row = mysqli_fetch_array($mysqli_result))
+				{
+					$flag = 1;
+
+					for ($z = 1; $z <= $row_comb2[combo]; $z++)
+					{
+						echo "<b>$row[1] - $row[2] - $row[3] - $row[4] - $row[5]</b><br>";
+
+						$query_temp2 = "SELECT * FROM $draw_prefix";
+						$query_temp2 .= "filter_limits_temp ";
+						$query_temp2 .= "WHERE limit_type = 'c2' ";
+						$query_temp2 .= "AND   col1 = '$x' ";
+						$query_temp2 .= "AND   col_pos = '$z' ";
+						#$query_temp2 .= "AND hml = '$hml' ";
+						require ("$game_includes/combo_2.incl");
+
+						#print "$query_temp2<p>";
+
+						$mysqli_result_temp2 = mysqli_query($query_temp2, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+						$row_temp2 = mysqli_fetch_array($mysqli_result_temp2);
+
+						$num_rows = mysqli_num_rows($mysqli_result_temp2);
+
+						#echo "temp - num_rows = $num_rows<p>";
+
+						if ($num_rows)
+						{
+							$comb_rows_2 = $row_temp2[count];
+						} else {
+							$query_temp2 = "SELECT * FROM $draw_prefix";
+							$query_temp2 .= "2";
+							$query_temp2 .= "_";
+							$query_temp2 .= "$balls ";
+							$query_temp2 .= "WHERE date < '$curr_date' ";
+							$query_temp2 .= "AND combo = $z ";
+							require ("$game_includes/combo_2.incl");
+
+							print "$query_temp2<br>";
+
+							$mysqli_result_temp2 = mysqli_query($query_temp2, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+							$row_temp2 = mysqli_fetch_array($mysqli_result_temp2);
+
+							$num_rows = mysqli_num_rows($mysqli_result_temp2);
+
+							#echo "num_rows = $num_rows<p>";
+
+							$comb_rows_2 = $num_rows;
+
+							$query5 = "INSERT INTO ga_f5_filter_limits_temp ";
+							$query5 .= "VALUES ('0', ";
+							require ("$game_includes/combo_2_limit.incl");
+							$query5 .= "'0',";
+							$query5 .= "'0',";
+							$query5 .= "'0',";
+							$query5 .= "'c2',";
+							$query5 .= "'$x',";
+							$query5 .= "'$z',";
+							$query5 .= "'$comb_rows_2')";
+
+							#print("<P>$query5<p>");
+					
+							$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+						}
+
+						echo "comb_rows_2 = $comb_rows_2, comb_array_2_low[$z] = $comb_array_2_low[$z], comb_array_2_high[$z] = $comb_array_2_high[$z]<br>";
+
+						if ($comb_rows_2 < $comb_array_2_low[$z]
+							OR $comb_rows_2 > $comb_array_2_high[$z])
+						{
+							$flag = 0;
+							echo "<font color=\"#ff0000\"><b>rejected</b></font><br>";
+							break;
+						}
+
+					}
+
+					if ($flag)
+					{
+						$query2 = "SELECT * FROM $table_temp_d ";
+						$query2 .= "WHERE id = $row[id] ";
+
+						print "$query2<p>";
+					
+						$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));	
+
+						$num_rows = mysqli_num_rows($mysqli_result2);
+
+						if ($num_rows)
+						{
+							echo "$row[id] rejected<p>";
+						} else {
+							$query5 = "INSERT INTO $table_temp_d SELECT * FROM $table_temp_c ";
+							$query5 .= "WHERE id = $row[id]";
+
+							print("<P>$query5<p>");
+					
+							$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+						}
+					}
+				}
+			}
+		}
+	}
+
+	function lot_filter_summary_d ($limit)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $combo_table;
+	
+		require ("includes/mysqli.php");
+
+		echo "<h3>{$draw_prefix}_filter_d</h3>";
+
+		for ($x = 1; $x <= $limit; $x++)
+		{
+			$query5 = "SELECT * FROM $draw_prefix";
+			$query5 .= "filter_d_";
+			if ($x < 10)
+			{
+				$query5 .= "0$x ";
+			} else {
+				$query5 .= "$x ";
+			}
+		
+			$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+			$num_rows_all = mysqli_num_rows($mysqli_result5);
+			
+			echo "$x = $num_rows_all<br>";
+		}
+
+	}
+
+
+	lot_filter_d_col1 (); # Florida Fantasy 5
+
+	#lot_filter_a (79,201); # Powerball
+
+	lot_filter_summary_d (10);
+
+?>

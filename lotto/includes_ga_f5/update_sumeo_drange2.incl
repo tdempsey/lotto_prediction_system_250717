@@ -1,0 +1,26 @@
+<?php
+	$sum_tot_temp_array = array_fill (0,16,0);
+	$sum_tot_array = array_fill (0,300,$sum_tot_temp_array);
+
+	#initialize date variables
+	require ("includes/unix.incl");
+
+	$draw = 1;
+
+	$query6 = "SELECT * FROM $draw_prefix";
+	$query6 .= "sumeo_drange2 ";
+	$query6 .= "WHERE month6 > 1 ";
+	$query6 .= "AND last_updated < '$curr_date_dash' ";
+	$query6 .= "ORDER BY id ASC  ";
+
+	print "$query6<p>";
+
+	$mysqli_result6 = mysqli_query($mysqli_link, $query6) or die (mysqli_error($mysqli_link));
+
+	$num_rows_all = mysqli_num_rows($mysqli_result6);
+	
+	while($row6 = mysqli_fetch_array($mysqli_result6))
+	{
+		require ("includes/sumeo_drange2_update.incl"); #201212
+	}
+?>

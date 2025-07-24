@@ -1,0 +1,27 @@
+12345
+
+1234
+1235
+
+1245
+
+1345
+
+2345
+
+-- a --
+
+3-4 pointers :: c = combin
+
+array (0..balls_drawn-1) (0,1,2,3,4)
+
+1 - first / beginning
+	- if (p1 + c) > array [balls_drawn] :: exit 
+
+2 - last / balls_drawn in c position
+	 - if (p2 - 1) < ball_drawn :: exit loop
+	 - (last - 1)-- , fill array (prev + 1), exit all if = balls_drawn
+
+3 - loop till > balls_drawn
+	- exit loop
+

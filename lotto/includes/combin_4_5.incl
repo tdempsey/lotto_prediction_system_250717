@@ -1,0 +1,156 @@
+<?php
+	$temp_array = array_fill(0,4,0);
+
+	for ($s = 1; $s <= $balls_drawn; $s++)
+	{
+		$temp_array[$s] = $row[$s];
+	}
+	
+	sort ($temp_array);
+
+	for ($s = 1; $s <= $balls_drawn; $s++)
+	{
+		$row[$s] = $temp_array[$s];
+	}
+
+	for ($c = 1; $c <= 5; $c++)
+	{
+		switch ($c) 
+		{ 
+		   case 1: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[3];
+			   $d4 = $row[4];
+			   $draw4 = array($row[1],$row[2],$row[3],$row[4]);	###231122
+			   break; 
+		   case 2: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[3];
+			   $d4 = $row[5];
+			   $draw4 = array($row[1],$row[2],$row[3],$row[5]);	###231122
+			   break; 
+		   case 3: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[4];
+			   $d4 = $row[5];
+			   $draw4 = array($row[1],$row[2],$row[4],$row[5]);	###231122
+			   break;
+		   case 4: 
+			   $d1 = $row[1];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   $d4 = $row[5];
+			   $draw4 = array($row[1],$row[3],$row[4],$row[5]);	###231122
+			   break; 
+		   case 5: 
+			   $d1 = $row[2];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   $d4 = $row[5];
+			   $draw4 = array($row[2],$row[3],$row[4],$row[5]);	###231122
+			   break;
+		} 
+		
+		$sum = $d1 + $d2 + $d3 + $d4;
+
+		$draw_sum = $row[1] + $row[2] + $row[3] + $row[4] + $row[5]; 
+
+		$even = 0;
+		$odd = 0;
+
+		foreach ($draw4 as $val) 
+		{ 
+			if(!is_int($val/2)) 
+			{ 
+				$odd++; 
+			} else { 
+				$even++; 
+			}
+		}
+		
+		$query4 = "Insert INTO $table_temp ";
+		$query4 .= "VALUES ( '0', ";
+		$query4 .= "         '$row[0]', "; 
+		$query4 .= "         $d1, ";
+		$query4 .= "	     $d2, ";
+		$query4 .= "	     $d3, ";
+		$query4 .= "	     $d4, ";
+		$query4 .= "	     $sum, ";
+		$query4 .= "	     $even, ";	###231122
+		$query4 .= "	     $odd, ";	###231122
+		$query4 .= "	     $draw_sum, ";
+		#$query4 .= "	     '0', ";
+		#$query4 .= "	     '0', ";
+		$query4 .= "	     $c, "; #combo position
+		$query4 .= "	     '1', ";
+		$query4 .= "	     '1', ";
+		$query4 .= "	     '0') "; 
+
+		echo "$query4<p>";
+
+		$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+	
+		$query2 = "SELECT * FROM $table_temp ";
+		$query2 .= "WHERE d1 = $d1 "; 
+		$query2 .= "AND d2 = $d2 "; 
+		$query2 .= "AND d3 = $d3 "; 
+		$query2 .= "AND d4 = $d4 "; 
+		$query2 .= "AND hml = 0 ";
+		$query2 .= "AND date >= '2015-10-01' ";
+
+		echo "$query2<p>";
+
+		$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+
+		$num_rows = mysqli_num_rows($mysqli_result2);
+		
+		if ($num_rows > 1)
+		{
+			$query_update = "UPDATE $table_temp ";
+			$query_update .= "SET nums_count = $num_rows ";
+			$query_update .= "WHERE d1 = $d1 ";
+			$query_update .= "AND d2 = $d2 ";
+			$query_update .= "AND d3 = $d3 ";
+			$query_update .= "AND d4 = $d4 ";
+			$query_update .= "AND hml = 0 ";
+
+			echo "$query_update<p>";
+
+			$mysqli_result_update = mysqli_query ($mysqli_link, $query_update) or die (mysqli_error($mysqli_link));
+		}
+
+		$query2 = "SELECT * FROM $table_temp ";
+		$query2 .= "WHERE d1 = $d1 "; 
+		$query2 .= "AND d2 = $d2 "; 
+		$query2 .= "AND d3 = $d3 "; 
+		$query2 .= "AND d4 = $d4 "; 
+		$query2 .= "AND combo = $c ";
+		$query2 .= "AND hml = 0 ";
+		$query2 .= "AND date >= '2015-10-01' ";
+
+		echo "$query2<p>";
+
+		$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+
+		$num_rows = mysqli_num_rows($mysqli_result2);
+		
+		if ($num_rows > 1)
+		{
+			$query_update = "UPDATE $table_temp ";
+			$query_update .= "SET combo_count = $num_rows ";
+			$query_update .= "WHERE d1 = $d1 ";
+			$query_update .= "AND d2 = $d2 ";
+			$query_update .= "AND d3 = $d3 ";
+			$query_update .= "AND d4 = $d4 ";
+			$query_update .= "AND combo = $c ";
+			$query_update .= "AND hml = 0 ";
+
+			echo "$query_update<p>";
+
+			$mysqli_result_update = mysqli_query ($mysqli_link, $query_update) or die (mysqli_error($mysqli_link));
+		}
+	}
+?>

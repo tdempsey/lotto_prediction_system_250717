@@ -1,0 +1,9 @@
+<?php
+	$weighted_average = (
+		#($sum_tot_array[1]/7*100*0.10) + #week1
+		($sum_tot_array[4]/90*100*0.10) + #month3
+		($sum_tot_array[5]/(365/2)*100*0.20) + #month6
+		($sum_tot_array[6]/365*100*0.50) + #year1
+		($sum_tot_array[8]/(365*3)*100*0.10) + #year3
+		($sum_tot_array[11]/(365*5)*100*0.10)); #year5
+?>

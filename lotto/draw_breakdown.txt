@@ -1,0 +1,8 @@
+Draw Breakdown
+
+- combo
+	- list each conbo for 2,3,...,n-1
+	- combo count - 5000
+
+- pairs
+	- list pair - count 26/5000

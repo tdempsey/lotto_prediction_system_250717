@@ -1,0 +1,409 @@
+{$foo}        <-- displaying a simple variable (non array/object)
+{$foo[4]}     <-- display the 5th element of a zero-indexed array
+{$foo.bar}    <-- display the "bar" key value of an array, similar to PHP $foo['bar']
+{$foo.$bar}   <-- display variable key value of an array, similar to PHP $foo[$bar]
+{$foo->bar}   <-- display the object property "bar"
+{$foo->bar()} <-- display the return value of object method "bar"
+{#foo#}       <-- display the config file variable "foo"
+{$smarty.config.foo} <-- synonym for {#foo#}
+{$foo[bar]}   <-- syntax only valid in a section loop, see {section}
+{assign var=foo value='baa'}{$foo} <--  displays "baa", see {assign}
+
+Many other combinations are allowed
+
+{$foo.bar.baz}
+{$foo.$bar.$baz}
+{$foo[4].baz}
+{$foo[4].$baz}
+{$foo.bar.baz[4]}
+{$foo->bar($baz,2,$bar)} <-- passing parameters
+{"foo"}       <-- static values are allowed
+
+{* display the server variable "SERVER_NAME" ($_SERVER['SERVER_NAME'])*}
+{$smarty.server.SERVER_NAME}
+
+Math and embedding tags:
+
+{$x+$y}                             // will output the sum of x and y.
+{assign var=foo value=$x+$y}        // in attributes 
+{$foo[$x+3]}                        // as array index
+{$foo={counter}+3}                  // tags within tags
+{$foo="this is message {counter}"}  // tags within double quoted strings
+
+Defining Arrays:
+
+{assign var=foo value=[1,2,3]}
+{assign var=foo value=['y'=>'yellow','b'=>'blue']}
+{assign var=foo value=[1,[9,8],3]}   // can be nested
+
+Short variable assignment:
+
+{$foo=$bar+2}
+{$foo = strlen($bar)}               // function in assignment
+{$foo = myfunct( ($x+$y)*3 )}       // as function parameter 
+{$foo.bar=1}                        // assign to specific array element
+{$foo.bar.baz=1}                    
+{$foo[]=1}                          // appending to an array
+
+Smarty "dot" syntax (note: embedded {} are used to address ambiguities):
+
+{$foo.a.b.c}        =>  $foo['a']['b']['c'] 
+{$foo.a.$b.c}       =>  $foo['a'][$b]['c']         // with variable index
+{$foo.a.{$b+4}.c}   =>  $foo['a'][$b+4]['c']       // with expression as index
+{$foo.a.{$b.c}}     =>  $foo['a'][$b['c']]         // with nested index
+
+PHP-like syntax, alternative to "dot" syntax:
+
+{$foo[1]}             // normal access
+{$foo['bar']}
+{$foo['bar'][1]}
+{$foo[$x+$x]}         // index may contain any expression
+{$foo[$bar[1]]}       // nested index
+{$foo[section_name]}  // smarty {section} access, not array access!
+
+Variable variables:
+
+$foo                     // normal variable
+$foo_{$bar}              // variable name containing other variable 
+$foo_{$x+$y}             // variable name containing expressions 
+$foo_{$bar}_buh_{$blar}  // variable name with multiple segments
+{$foo_{$x}}              // will output the variable $foo_1 if $x has a value of 1.
+
+Object chaining:
+
+{$object->method1($x)->method2($y)}
+
+Direct PHP function access:
+
+{time()}
+
+----------------------------------------------------------------------------------------------
+
+{config_load file="colors.conf"}
+
+{include file="header.tpl"}
+{insert file="banner_ads.tpl" title="My Site"}
+
+{if $logged_in}
+    Welcome, <span style="color:{#fontColor#}">{$name}!</span>
+{else}
+    hi, {$name}
+{/if}
+
+{include file="footer.tpl"}
+
+------------------------------------------------------------------------------------------------
+
+{$var=...}
+{append}
+{assign}
+{block}
+{call}
+{capture}
+{config_load}
+{debug}
+{extends}
+{for}
+{foreach},{foreachelse}
+@index
+@iteration
+@first
+@last
+@show
+@total
+{break}
+{continue}
+{function}
+{if},{elseif},{else}
+{include}
+{include_php}
+{insert}
+{ldelim},{rdelim}
+{literal}
+{nocache}
+{php}
+{section},{sectionelse}
+.index
+.index_prev
+.index_next
+.iteration
+.first
+.last
+.rownum
+.loop
+.show
+.total
+{setfilter}
+{strip}
+{while}
+
+----------------------------------------------------------------------------------------------------
+
+{include file="header.tpl"}
+
+{include file="header.tpl" nocache}  // is equivalent to nocache=true
+
+{include file="header.tpl" attrib_name="attrib value"}
+
+{include file=$includeFile}
+
+{include file=#includeFile# title="My Title"}
+
+{assign var=foo value={counter}}  // plugin result
+
+{assign var=foo value=substr($bar,2,5)}  // PHP function result
+
+{assign var=foo value=$bar|strlen}  // using modifier
+
+{assign var=foo value=$buh+$bar|strlen}  // more complex expression
+
+{html_select_date display_days=true}
+
+{mailto address="smarty@example.com"}
+
+<select name="company_id">
+  {html_options options=$companies selected=$company_id}
+</select>
+
+--------------------------------------------------------------------------------------------------------
+
+{func var="test $foo test"}              // sees $foo
+{func var="test $foo_bar test"}          // sees $foo_bar
+{func var="test `$foo[0]` test"}         // sees $foo[0]
+{func var="test `$foo[bar]` test"}       // sees $foo[bar]
+{func var="test $foo.bar test"}          // sees $foo (not $foo.bar)
+{func var="test `$foo.bar` test"}        // sees $foo.bar
+{func var="test `$foo.bar` test"|escape} // modifiers outside quotes!
+{func var="test {$foo|escape} test"}     // modifiers inside quotes!
+{func var="test {time()} test"}          // PHP function result
+{func var="test {counter} test"}         // plugin result
+{func var="variable foo is {if !$foo}not {/if} defined"} // Smarty block function
+
+---------------------------------------------------------------------------------------------------------
+
+date_format conversion specifiers:
+
+%a - abbreviated weekday name according to the current locale
+
+%A - full weekday name according to the current locale
+
+%b - abbreviated month name according to the current locale
+
+%B - full month name according to the current locale
+
+%c - preferred date and time representation for the current locale
+
+%C - century number (the year divided by 100 and truncated to an integer, range 00 to 99)
+
+%d - day of the month as a decimal number (range 01 to 31)
+
+%D - same as %m/%d/%y
+
+%e - day of the month as a decimal number, a single digit is preceded by a space (range 1 to 31)
+
+%g - Week-based year within century [00,99]
+
+%G - Week-based year, including the century [0000,9999]
+
+%h - same as %b
+
+%H - hour as a decimal number using a 24-hour clock (range 00 to 23)
+
+%I - hour as a decimal number using a 12-hour clock (range 01 to 12)
+
+%j - day of the year as a decimal number (range 001 to 366)
+
+%k - Hour (24-hour clock) single digits are preceded by a blank. (range 0 to 23)
+
+%l - hour as a decimal number using a 12-hour clock, single digits preceded by a space (range 1 to 12)
+
+%m - month as a decimal number (range 01 to 12)
+
+%M - minute as a decimal number
+
+%n - newline character
+
+%p - either `am' or `pm' according to the given time value, or the corresponding strings for the current locale
+
+%r - time in a.m. and p.m. notation
+
+%R - time in 24 hour notation
+
+%S - second as a decimal number
+
+%t - tab character
+
+%T - current time, equal to %H:%M:%S
+
+%u - weekday as a decimal number [1,7], with 1 representing Monday
+
+%U - week number of the current year as a decimal number, starting with the first Sunday as the first day of the first week
+
+%V - The ISO 8601:1988 week number of the current year as a decimal number, range 01 to 53, where week 1 is the first week that has at least 4 days in the current year, and with Monday as the first day of the week.
+
+%w - day of the week as a decimal, Sunday being 0
+
+%W - week number of the current year as a decimal number, starting with the first Monday as the first day of the first week
+
+%x - preferred date representation for the current locale without the time
+
+%X - preferred time representation for the current locale without the date
+
+%y - year as a decimal number without a century (range 00 to 99)
+
+%Y - year as a decimal number including the century
+
+%Z - time zone or name or abbreviation
+
+%% - a literal `%' character
+
+----------------------------------------------------------------------------------------------------
+
+11. Charset Encoding
+Charset Encoding
+12. Constants
+SMARTY_DIR
+13. Smarty Class Variables
+$allow_php_templates
+$auto_literal
+$autoload_filters
+$cache_dir
+$cache_id
+$cache_lifetime
+$cache_locking
+$cache_modified_check
+$caching
+$caching_type
+$compile_check
+$compile_dir
+$compile_id
+$compile_locking
+$compiler_class
+$config_booleanize
+$config_dir
+$config_overwrite
+$config_read_hidden
+$debug_tpl
+$debugging
+$debugging_ctrl
+$default_config_type
+$default_modifiers
+$default_resource_type
+$default_config_handler_func
+$default_template_handler_func
+$direct_access_security
+$error_reporting
+$escape_html
+$force_cache
+$force_compile
+$left_delimiter
+$locking_timeout
+$merge_compiled_includes
+$php_handling
+$plugins_dir
+$right_delimiter
+$smarty_debug_id
+$template_dir
+$trusted_dir
+$use_include_path
+$use_sub_dirs
+14. Smarty Class Methods
+addConfigDir() — add a directory to the list of directories where config files are stored
+addPluginsDir() — add a directory to the list of directories where plugins are stored
+addTemplateDir() — add a directory to the list of directories where templates are stored
+append() — append an element to an assigned array
+appendByRef() — append values by reference
+assign() — assign variables/objects to the templates
+assignByRef() — assign values by reference
+clearAllAssign() — clears the values of all assigned variables
+clearAllCache() — clears the entire template cache
+clearAssign() — clears the value of an assigned variable
+clearCache() — clears the cache for a specific template
+clearCompiledTemplate() — clears the compiled version of the specified template resource
+clearConfig() — clears assigned config variables
+compileAllConfig() — compiles all known config files
+compileAllTemplates() — compiles all known templates
+configLoad() — loads config file data and assigns it to the template
+createData() — creates a data object
+createTemplate() — returns a template object
+disableSecurity() — disables template security
+display() — displays the template
+enableSecurity() — enables template security
+fetch() — returns the template output
+getCacheDir() — return the directory where the rendered template's output is stored
+getCompileDir() — returns the directory where compiled templates are stored
+getConfigDir() — return the directory where config files are stored
+getConfigVars() — returns the given loaded config variable value
+getPluginsDir() — return the directory where plugins are stored
+getRegisteredObject() — returns a reference to a registered object
+getTags() — return tags used by template
+getTemplateDir() — return the directory where templates are stored
+getTemplateVars() — returns assigned variable value(s)
+isCached() — returns true if there is a valid cache for this template
+loadFilter() — load a filter plugin
+Smarty::muteExpectedErrors() — mutes expected warnings and notices deliberately generated by Smarty
+registerCacheResource() — dynamically register CacheResources
+registerClass() — register a class for use in the templates
+registerDefaultPluginHandler() — register a function which gets called on undefined tags
+registerFilter() — dynamically register filters
+registerPlugin() — dynamically register plugins
+registerObject() — register an object for use in the templates
+registerResource() — dynamically register resources
+setCacheDir() — set the directory where the rendered template's output is stored
+setCompileDir() — set the directory where compiled templates are stored
+setConfigDir() — set the directories where config files are stored
+setPluginsDir() — set the directories where plugins are stored
+setTemplateDir() — set the directories where templates are stored
+templateExists() — checks whether the specified template exists
+unregisterCacheResource() — dynamically unregister a CacheResource plugin
+unregisterFilter() — dynamically unregister a filter
+unregisterPlugin — dynamically unregister plugins
+unregisterObject() — dynamically unregister an object
+unregisterResource() — dynamically unregister a resource plugin
+testInstall() — checks Smarty installation
+15. Caching
+Setting Up Caching
+Multiple Caches Per Page
+Cache Groups
+Controlling Cacheability of Output
+Cacheability of Template Section
+Cacheability of Tags
+Cacheability of Variables
+Cacheability of Plugins
+Custom Cache Implementation
+16. Resources
+File Template Resources
+Templates from $template_dir
+Templates from a specific $template_dir
+Templates from any directory
+Windows Filepaths
+String Template Resources
+Stream Template Resources
+Extends Template Resources
+Custom Template Resources
+17. Advanced Features
+Security
+Changing settings by template
+Template Inheritance
+Streams
+Objects
+Static Classes
+Prefilters
+Postfilters
+Output Filters
+18. Extending Smarty With Plugins
+How Plugins Work
+Naming Conventions
+Writing Plugins
+Template Functions
+Modifiers
+Block Functions
+Compiler Functions
+Prefilters/Postfilters
+Output Filters
+Resources
+Inserts
+19. SmartyBC - Backwards Compatibility Wrapper
+SmartyBC class
+
+--------------------------------------------------------------------------------------------------

@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GA Fantasy 5 Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .card-header {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+        }
+        .stat-card {
+            border-left: 4px solid #007bff;
+        }
+        .btn-generate {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            border: none;
+        }
+        .progress-custom {
+            height: 25px;
+        }
+        .file-item {
+            transition: all 0.3s ease;
+        }
+        .file-item:hover {
+            background-color: #f8f9fa;
+        }
+        .analysis-card {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .number-hot {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .number-cold {
+            color: #007bff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-dice-d6 me-2"></i>GA Fantasy 5 Dashboard
+            </a>
+            <div class="navbar-nav ms-auto">
+                <span class="navbar-text">
+                    <i class="fas fa-clock me-1"></i><span id="currentTime"></span>
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Alert Messages -->
+        <div id="alertContainer"></div>
+
+        <!-- Filter Settings Card -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-sliders-h me-2"></i>Filter Settings</h5>
+            </div>
+            <div class="card-body">
+                <form id="settingsForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="count" class="form-label">Number of Draws</label>
+                                <input type="number" class="form-control" id="count" name="count" 
+                                       value="{{ settings.count }}" min="1" max="10000" required>
+                                <div class="form-text">Generate between 1 and 10,000 draws</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="max_seq2" class="form-label">Max Sequential Pairs</label>
+                                <input type="number" class="form-control" id="max_seq2" name="max_seq2" 
+                                       value="{{ settings.max_seq2 }}" min="0" max="4" required>
+                                <div class="form-text">Maximum consecutive number pairs (e.g., 5-6)</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="max_seq3" class="form-label">Max Sequential Triplets</label>
+                                <input type="number" class="form-control" id="max_seq3" name="max_seq3" 
+                                       value="{{ settings.max_seq3 }}" min="0" max="3" required>
+                                <div class="form-text">Maximum consecutive number triplets (e.g., 5-6-7)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="max_mod_tot" class="form-label">Max Modular Total</label>
+                                <input type="number" class="form-control" id="max_mod_tot" name="max_mod_tot" 
+                                       value="{{ settings.max_mod_tot }}" min="0" max="5" required>
+                                <div class="form-text">Numbers sharing same remainder ÷ 10</div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label for="sum_min" class="form-label">Sum Minimum</label>
+                                        <input type="number" class="form-control" id="sum_min" name="sum_min" 
+                                               value="{{ settings.sum_min }}" min="15" max="200" required>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label for="sum_max" class="form-label">Sum Maximum</label>
+                                        <input type="number" class="form-control" id="sum_max" name="sum_max" 
+                                               value="{{ settings.sum_max }}" min="15" max="200" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="include_scores" name="include_scores" 
+                                       {{ 'checked' if settings.include_scores else '' }}>
+                                <label class="form-check-label" for="include_scores">
+                                    Include Scoring & Ranking
+                                </label>
+                            </div>
+                            
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="load_historical" name="load_historical" 
+                                       {{ 'checked' if settings.load_historical else '' }}>
+                                <label class="form-check-label" for="load_historical">
+                                    Load Historical Data for Duplicate Filtering
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-12 d-flex gap-2">
+                            <button type="submit" class="btn btn-success btn-generate" id="generateBtn">
+                                <i class="fas fa-play me-2"></i>Generate Draws
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="saveSettingsBtn">
+                                <i class="fas fa-save me-2"></i>Save Settings
+                            </button>
+                            <button type="button" class="btn btn-outline-primary" id="resetSettingsBtn">
+                                <i class="fas fa-undo me-2"></i>Reset to Defaults
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                
+                <!-- Progress Bar -->
+                <div class="mt-3" id="progressContainer" style="display: none;">
+                    <div class="progress progress-custom">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                             role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <div class="text-center mt-2">
+                        <small id="progressText">Initializing...</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Generation Results -->
+        <div id="resultsContainer" style="display: none;">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Generation Results</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row" id="statsRow">
+                        <!-- Stats will be populated by JavaScript -->
+                    </div>
+                    <div class="mt-3">
+                        <h6>Generated Files:</h6>
+                        <ul id="generatedFiles" class="list-unstyled">
+                            <!-- Files will be listed here -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- File Management -->
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-folder-open me-2"></i>Generated Files</h5>
+                <button class="btn btn-sm btn-outline-light" id="refreshFilesBtn">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+            <div class="card-body">
+                <div id="filesContainer">
+                    <div class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2">Loading files...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analysis Panel -->
+        <div class="card" id="analysisContainer" style="display: none;">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i>Quick Analysis</h5>
+            </div>
+            <div class="card-body analysis-card">
+                <div id="analysisContent">
+                    <!-- Analysis will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Global variables
+        let currentFiles = [];
+        
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            updateClock();
+            setInterval(updateClock, 1000);
+            loadFiles();
+            
+            // Event listeners
+            document.getElementById('settingsForm').addEventListener('submit', generateDraws);
+            document.getElementById('saveSettingsBtn').addEventListener('click', saveSettings);
+            document.getElementById('resetSettingsBtn').addEventListener('click', resetSettings);
+            document.getElementById('refreshFilesBtn').addEventListener('click', loadFiles);
+        });
+
+        // Update clock
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = now.toLocaleString();
+        }
+
+        // Show alert message
+        function showAlert(message, type = 'info') {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            alertContainer.appendChild(alertDiv);
+            
+            // Auto-dismiss after 5 seconds
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.remove();
+                }
+            }, 5000);
+        }
+
+        // Generate draws
+        async function generateDraws(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const settings = {};
+            
+            // Convert form data to settings object
+            for (let [key, value] of formData.entries()) {
+                if (key === 'include_scores' || key === 'load_historical') {
+                    settings[key] = true;
+                } else if (!isNaN(value)) {
+                    settings[key] = parseInt(value);
+                } else {
+                    settings[key] = value;
+                }
+            }
+            
+            // Handle unchecked checkboxes
+            if (!formData.has('include_scores')) settings.include_scores = false;
+            if (!formData.has('load_historical')) settings.load_historical = false;
+            
+            // Show progress
+            showProgress(true);
+            const generateBtn = document.getElementById('generateBtn');
+            generateBtn.disabled = true;
+            
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(settings)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('Draws generated successfully!', 'success');
+                    displayResults(result);
+                    loadFiles(); // Refresh file list
+                } else {
+                    showAlert(`Error: ${result.error}`, 'danger');
+                }
+            } catch (error) {
+                showAlert(`Network error: ${error.message}`, 'danger');
+            } finally {
+                showProgress(false);
+                generateBtn.disabled = false;
+            }
+        }
+
+        // Show/hide progress bar
+        function showProgress(show, text = 'Generating draws...') {
+            const container = document.getElementById('progressContainer');
+            const progressText = document.getElementById('progressText');
+            
+            if (show) {
+                container.style.display = 'block';
+                progressText.textContent = text;
+            } else {
+                container.style.display = 'none';
+            }
+        }
+
+        // Display generation results
+        function displayResults(result) {
+            const container = document.getElementById('resultsContainer');
+            const statsRow = document.getElementById('statsRow');
+            const filesContainer = document.getElementById('generatedFiles');
+            
+            // Clear previous results
+            statsRow.innerHTML = '';
+            filesContainer.innerHTML = '';
+            
+            // Display statistics
+            const summary = result.summary;
+            const stats = [
+                { label: 'Total Draws', value: summary.total_draws, icon: 'fas fa-list-ol' },
+                { label: 'Average Sum', value: summary.avg_sum || 'N/A', icon: 'fas fa-plus' },
+                { label: 'Average Score', value: summary.avg_score || 'N/A', icon: 'fas fa-star' }
+            ];
+            
+            stats.forEach(stat => {
+                const col = document.createElement('div');
+                col.className = 'col-md-4';
+                col.innerHTML = `
+                    <div class="card stat-card">
+                        <div class="card-body text-center">
+                            <i class="${stat.icon} fa-2x text-primary mb-2"></i>
+                            <h5 class="card-title">${stat.value}</h5>
+                            <p class="card-text text-muted">${stat.label}</p>
+                        </div>
+                    </div>
+                `;
+                statsRow.appendChild(col);
+            });
+            
+            // Display generated files
+            Object.entries(summary.files).forEach(([type, filename]) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <i class="fas fa-file-${type === 'csv' ? 'csv' : 'code'} me-2"></i>
+                    <a href="/download/${filename}" class="text-decoration-none">
+                        ${filename}
+                    </a>
+                `;
+                filesContainer.appendChild(li);
+            });
+            
+            container.style.display = 'block';
+        }
+
+        // Save settings
+        async function saveSettings() {
+            const form = document.getElementById('settingsForm');
+            const formData = new FormData(form);
+            const settings = {};
+            
+            for (let [key, value] of formData.entries()) {
+                if (key === 'include_scores' || key === 'load_historical') {
+                    settings[key] = true;
+                } else if (!isNaN(value)) {
+                    settings[key] = parseInt(value);
+                } else {
+                    settings[key] = value;
+                }
+            }
+            
+            if (!formData.has('include_scores')) settings.include_scores = false;
+            if (!formData.has('load_historical')) settings.load_historical = false;
+            
+            try {
+                const response = await fetch('/api/settings', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(settings)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('Settings saved successfully!', 'success');
+                } else {
+                    showAlert(`Error: ${result.error}`, 'danger');
+                }
+            } catch (error) {
+                showAlert(`Network error: ${error.message}`, 'danger');
+            }
+        }
+
+        // Reset to default settings
+        function resetSettings() {
+            document.getElementById('count').value = 1000;
+            document.getElementById('max_seq2').value = 1;
+            document.getElementById('max_seq3').value = 0;
+            document.getElementById('max_mod_tot').value = 1;
+            document.getElementById('sum_min').value = 70;
+            document.getElementById('sum_max').value = 139;
+            document.getElementById('include_scores').checked = true;
+            document.getElementById('load_historical').checked = true;
+            
+            showAlert('Settings reset to defaults', 'info');
+        }
+
+        // Load files list
+        async function loadFiles() {
+            const container = document.getElementById('filesContainer');
+            
+            try {
+                const response = await fetch('/api/files');
+                const result = await response.json();
+                
+                if (result.files) {
+                    currentFiles = result.files;
+                    displayFiles(result.files);
+                } else {
+                    container.innerHTML = '<p class="text-muted">Error loading files</p>';
+                }
+            } catch (error) {
+                container.innerHTML = '<p class="text-danger">Network error loading files</p>';
+            }
+        }
+
+        // Display files
+        function displayFiles(files) {
+            const container = document.getElementById('filesContainer');
+            
+            if (files.length === 0) {
+                container.innerHTML = '<p class="text-muted">No files generated yet. Use the form above to generate draws.</p>';
+                return;
+            }
+            
+            container.innerHTML = `
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>File Name</th>
+                                <th>Size</th>
+                                <th>Modified</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${files.map(file => `
+                                <tr class="file-item">
+                                    <td>
+                                        <i class="fas fa-file-csv me-2 text-success"></i>
+                                        ${file.name}
+                                    </td>
+                                    <td>${formatFileSize(file.size)}</td>
+                                    <td>${file.modified}</td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="/download/${file.name}" class="btn btn-outline-primary" title="Download">
+                                                <i class="fas fa-download"></i>
+                                            </a>
+                                            <button class="btn btn-outline-info" onclick="analyzeFile('${file.name}')" title="Quick Analysis">
+                                                <i class="fas fa-chart-bar"></i>
+                                            </button>
+                                            <button class="btn btn-outline-danger" onclick="deleteFile('${file.name}')" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        // Format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+
+        // Analyze file
+        async function analyzeFile(filename) {
+            const analysisContainer = document.getElementById('analysisContainer');
+            const analysisContent = document.getElementById('analysisContent');
+            
+            analysisContent.innerHTML = `
+                <div class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Analyzing...</span>
+                    </div>
+                    <p class="mt-2">Analyzing ${filename}...</p>
+                </div>
+            `;
+            
+            analysisContainer.style.display = 'block';
+            
+            try {
+                const response = await fetch(`/api/analyze/${filename}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayAnalysis(result);
+                } else {
+                    analysisContent.innerHTML = `<div class="alert alert-danger">Error: ${result.error}</div>`;
+                }
+            } catch (error) {
+                analysisContent.innerHTML = `<div class="alert alert-danger">Network error: ${error.message}</div>`;
+            }
+        }
+
+        // Display analysis results
+        function displayAnalysis(result) {
+            const analysisContent = document.getElementById('analysisContent');
+            const analysis = result.analysis;
+            
+            let html = `
+                <h6><i class="fas fa-file me-2"></i>${result.filename}</h6>
+                <p class="text-muted mb-3">Total draws analyzed: ${result.total_draws}</p>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-plus me-2"></i>Sum Analysis</h6>
+                        <p><strong>Range:</strong> ${analysis.sums.range}</p>
+                        <p><strong>Average:</strong> ${analysis.sums.average}</p>
+                        <p><strong>Most Common:</strong></p>
+                        <ul class="list-unstyled ms-3">
+                            ${analysis.sums.most_common.map(item => 
+                                `<li>Sum ${item.sum}: ${item.count} times</li>`
+                            ).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-balance-scale me-2"></i>Even/Odd Distribution</h6>
+                        ${analysis.even_odd.distribution.map(item => 
+                            `<p>${item.even} even, ${item.odd} odd: ${item.count} draws (${item.percent})</p>`
+                        ).join('')}
+                    </div>
+                </div>
+                
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-fire me-2"></i>Hottest Numbers</h6>
+                        <div class="row">
+                            ${analysis.hottest_numbers.slice(0, 5).map(item => 
+                                `<div class="col-4"><span class="number-hot">${item.number}</span>: ${item.count}</div>`
+                            ).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-snowflake me-2"></i>Coldest Numbers</h6>
+                        <div class="row">
+                            ${analysis.coldest_numbers.slice(0, 5).map(item => 
+                                `<div class="col-4"><span class="number-cold">${item.number}</span>: ${item.count}</div>`
+                            ).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            if (analysis.scores) {
+                html += `
+                    <div class="mt-3">
+                        <h6><i class="fas fa-star me-2"></i>Score Analysis</h6>
+                        <p><strong>Range:</strong> ${analysis.scores.range}</p>
+                        <p><strong>Average:</strong> ${analysis.scores.average}</p>
+                    </div>
+                `;
+            }
+            
+            analysisContent.innerHTML = html;
+        }
+
+        // Delete file
+        async function deleteFile(filename) {
+            if (!confirm(`Are you sure you want to delete ${filename}?`)) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/delete/${filename}`, {
+                    method: 'DELETE'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert(`Deleted ${filename}`, 'success');
+                    loadFiles(); // Refresh file list
+                    
+                    // Hide analysis if it was showing the deleted file
+                    const analysisContainer = document.getElementById('analysisContainer');
+                    if (analysisContainer.style.display !== 'none') {
+                        analysisContainer.style.display = 'none';
+                    }
+                } else {
+                    showAlert(`Error deleting file: ${result.error}`, 'danger');
+                }
+            } catch (error) {
+                showAlert(`Network error: ${error.message}`, 'danger');
+            }
+        }
+    </script>
+</body>
+</html>

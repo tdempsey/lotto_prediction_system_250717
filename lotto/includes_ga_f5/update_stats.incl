@@ -1,0 +1,43 @@
+<?php
+	include_once 'C:\wamp\bin\mysql\mysql5.5.24\pear\Math\Stats.php';
+	require_once ("$game_includes/calc_devsq.php");
+
+	$s = new Math_Stats();
+	$s->setData($draw);
+	$stats = $s->calcBasic();
+
+	$draw_average = ($row[b1]+$row[b2]+$row[b3]+$row[b4]+$row[b5])/5;
+	$median = $row[b3];
+	$harmean = $s->harmonicMean();
+	$quart1 = ($row[b1]+$row[b2])/2;
+	$quart2 = ($row[b1]+$row[b2]+$row[b3])/2;
+	$quart3 = ($row[b1]+$row[b2]+$row[b3]+$row[b4])/2;
+	$stdev = $s->stDev();
+	$variance = $s->variance();
+	$avedev = $s->__calcAbsoluteDeviation();
+	$kurtosis = $s->kurtosis();
+	$skew = $s->skewness();
+	$geomean = $s->geometricMean();
+	$devsq = calc_devsq ($draw,$draw_average);
+
+	$query9 = "UPDATE $draw_table_name ";
+	$query9 .= "SET draw_average = $draw_average, ";
+	$query9 .= "    median = $median, ";
+	$query9 .= "    harmean = $harmean, ";
+	$query9 .= "    quart1 = $quart1, ";
+	$query9 .= "    quart2 = $quart2, ";
+	$query9 .= "    quart3 = $quart3, ";
+	$query9 .= "    stdev = $stdev, ";
+	$query9 .= "    variance = $variance, ";
+	$query9 .= "    avedev = $avedev, ";
+	$query9 .= "    kurt = $kurtosis, ";
+	$query9 .= "    skew = $skew, ";
+	$query9 .= "    geomean = $geomean, ";
+	$query9 .= "    devsq = $devsq ";
+	$query9 .= "WHERE date = '$row[0]' ";
+
+	#print "$query9<p>";
+	
+	$mysqli_result9 = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+
+?>

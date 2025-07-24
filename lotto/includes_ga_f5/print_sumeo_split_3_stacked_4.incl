@@ -1,0 +1,166 @@
+<?php
+	$table_temp = 'combo_4_' . $balls . '_' . $row3[numx] . '_' . $row3[even] . '_' . $row3[odd];
+
+	/*
+	print("<h3>Count - SumEO = $row3[numx],$row3[even],$row3[odd]</h3>\n");
+	#print("<P>");
+	print("<TABLE BORDER=\"1\">\n");
+
+	//create header row
+	print("<TR><B>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Combin</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b1</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b2</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b3</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b4</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b5</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Count</center></TD>\n");
+	print("</B></TR>\n");
+	*/
+
+	############################################################################################
+	$query9 = "SELECT DISTINCT combin,b1,b2,b3,b4,s61510 FROM $table_temp ";
+	$query9 .= "WHERE (b1 = $row8[b1] or b1 = $row8[b2] OR b1 = $row8[b3]) ";
+	$query9 .= "AND   (b2 = $row8[b1] or b2 = $row8[b2] or b2 = $row8[b3]) ";
+	$query9 .= "AND   (b3 = $row8[b1] or b3 = $row8[b2] or b3 = $row8[b3]) ";
+	$query9 .= "AND   (b4 = $row8[b1] or b4 = $row8[b2] or b4 = $row8[b3]) ";
+	$query9 .= "ORDER BY s61510 DESC ";
+	$query9 .= "LIMIT 10 ";
+
+	#echo "$query9<p>";
+
+	die();
+	
+	/*
+	$query9 .= "WHERE combin = $combin ";
+
+	switch ($combin) {
+		case 1:
+			$query9 .= "AND   b1 = $row8[b1] ";
+			$query9 .= "AND   b2 = $row8[b2] ";
+			$query9 .= "AND   b3 = $row8[b3] ";
+			break;
+		case 2:
+			$query9 .= "AND   b1 = $row8[b1] ";
+			$query9 .= "AND   b2 = $row8[b2] ";
+			$query9 .= "AND   b4 = $row8[b3] ";
+			break;
+		case 3:
+			$query9 .= "AND   b1 = $row8[b1] ";
+			$query9 .= "AND   b3 = $row8[b2] ";
+			$query9 .= "AND   b4 = $row8[b3] ";
+			break;
+		case 4:
+			$query9 .= "AND   b2 = $row8[b1] ";
+			$query9 .= "AND   b3 = $row8[b2] ";
+			$query9 .= "AND   b4 = $row8[b3] ";
+			break;
+		case 5:
+			$query9 .= "AND   b2 = $row8[b1] ";
+			$query9 .= "AND   b3 = $row8[b2] ";
+			$query9 .= "AND   b4 = $row8[b3] ";
+			break;
+		case 6:
+			$query9 .= "AND   b1 = $row8[b1] ";
+			$query9 .= "AND   b2 = $row8[b2] ";
+			$query9 .= "AND   b3 = $row8[b3] ";
+			break;
+		case 7:
+			$query9 .= "AND   b1 = $row8[b1] ";
+			$query9 .= "AND   b2 = $row8[b2] ";
+			$query9 .= "AND   b4 = $row8[b3] ";
+			break;
+		case 8:
+			$query9 .= "AND   b1 = $row8[b1] ";
+			$query9 .= "AND   b2 = $row8[b2] ";
+			#$query9 .= "AND   b3 = $row8[b3] ";
+			break;
+		case 9:
+			$query9 .= "AND   b1 = $row8[b1] ";
+			$query9 .= "AND   b2 = $row8[b2] ";
+			#$query9 .= "AND   b4 = $row8[b3] ";
+			break;
+		case 10:
+			$query9 .= "AND   b1 = $row8[b1] ";
+			$query9 .= "AND   b2 = $row8[b2] ";
+			#$query9 .= "AND   b4 = $row8[b3] ";
+			break;
+	}
+
+	#$query9 .= "AND   b1 = $row8[b1] ";
+	#$query9 .= "AND   b2 = $row8[b2] ";
+	#$query9 .= "AND   b3 = $row8[b3] ";
+	#$query9 .= "ORDER BY s61510 DESC ";
+	#$query9 .= "LIMIT 100 ";
+	*/
+	
+	#echo "$query9<p>";
+
+	$mysqli_result9 = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+
+	// get each row
+	while($row9 = mysqli_fetch_array($mysqli_result9))
+	{
+		print("<TR>\n");
+		print("<TD><center>$row9[combin]</center></TD>\n");
+
+		switch ($combin) {
+			case 1:
+				print("<TD ><center>$row9[b1]</center></TD>\n");
+				print("<TD ><center>$row9[b2]</center></TD>\n");
+				print("<TD ><center>$row9[b3]</center></TD>\n");
+				print("<TD ><center>$row9[b4]</center></TD>\n");
+				print("<TD ><center>-</center></TD>\n");
+				break;
+			case 2:
+				print("<TD ><center>$row9[b1]</center></TD>\n");
+				print("<TD ><center>$row9[b2]</center></TD>\n");
+				print("<TD ><center>-</center></TD>\n");
+				print("<TD ><center>$row9[b3]</center></TD>\n");
+				#print("<TD ><center>-</center></TD>\n");
+				print("<TD ><center>$row9[b4]</center></TD>\n");
+				break;
+			case 3:
+				print("<TD ><center>$row9[b1]</center></TD>\n");
+				print("<TD ><center>-</center></TD>\n");
+				print("<TD ><center>$row9[b2]</center></TD>\n");
+				print("<TD ><center>$row9[b3]</center></TD>\n");
+				print("<TD ><center>$row9[b4]</center></TD>\n");
+				break;
+			case 4:
+				print("<TD ><center>$row9[b1]</center></TD>\n");
+				print("<TD ><center>-</center></TD>\n");
+				print("<TD ><center>$row9[b2]</center></TD>\n");
+				print("<TD ><center>$row9[b3]</center></TD>\n");
+				print("<TD ><center>$row9[b4]</center></TD>\n");
+				break;
+			case 5:
+				print("<TD ><center>-</center></TD>\n");
+				print("<TD ><center>$row9[b1]</center></TD>\n");
+				print("<TD ><center>$row9[b2]</center></TD>\n");
+				print("<TD ><center>$row9[b3]</center></TD>\n");
+				print("<TD ><center>$row9[b4]</center></TD>\n");
+				break;
+		}
+
+		print("<TD align=center>$row9[s61510]</TD>\n");
+		print("</TR>\n");
+
+		require ("includes_ga_f5/print_sumeo_split_3_stacked_5.incl");
+	}
+	
+	/*
+	print("<TR><B>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Combin</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b1</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b2</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b3</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b4</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b5</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Count</center></TD>\n");
+	print("</B></TR>\n");
+	*/
+
+	//end table
+	#print("</TABLE>\n");
+?>

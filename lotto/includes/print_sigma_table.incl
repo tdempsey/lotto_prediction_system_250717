@@ -1,0 +1,94 @@
+<?php
+	/*
+	//start table
+	print("<P>");
+	print("<TABLE BORDER=\"1\">\n");
+
+	//create header row
+	print("<TR>\n");
+	print("<TD bgcolor=\"#CCCCCC\">Num1</TD>\n");
+	print("<TD bgcolor=\"#CCCCCC\">Num2</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Sigma</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n");
+	print("</TR>\n");
+
+	//end table
+	print("</TABLE>\n");
+	*/
+
+	print("<H2>Pair WA - $game_name - Limit $limit</H2>\n");
+
+	//start table
+	print("<P>");
+	print("<TABLE BORDER=\"1\">\n");
+
+	//create header row
+	print("<TR>\n");
+	print("<TD bgcolor=\"#CCCCCC\">Num1</TD>\n");
+	print("<TD bgcolor=\"#CCCCCC\">Num2</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Sigma</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n");
+	print("<TD bgcolor=\"#CCCCCC\">WA</TD>\n");
+	print("</TR>\n");
+	print("<TR>\n");
+
+	$query_sigma = "SELECT * ";
+	$query_sigma .= "FROM $draw_prefix";
+	$query_sigma .= "temp_pairs_5000 ";
+	$query_sigma .= "ORDER BY percent_wa DESC ";
+
+
+	$mysqli_result_sigma = mysqli_query($query_sigma, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+	$num_rows = mysqli_num_rows($mysqli_result_sigma);
+
+	$column_break = intval($num_rows/3);
+	$r_count = 0;
+
+	while($row_sigma = mysqli_fetch_array($mysqli_result_sigma))
+	{
+		$query_date = "SELECT * ";
+		$query_date .= "FROM $table_temp_pairs ";
+		$query_date .= "WHERE num1 = '$row_sigma[num1]' AND num2 = '$row_sigma[num2]' "; 
+		$query_date .= "ORDER BY last_date DESC ";
+		$query_date .= "LIMIT 1 ";
+
+		$mysqli_result_date = mysqli_query($query_date, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row_date = mysqli_fetch_array($mysqli_result_date);
+
+		if ($row_sigma[num1] < $row_sigma[num2])
+		{
+			#print("<TR>\n");
+			print("<TD align=center>$row_sigma[num1]</TD>\n");
+			print("<TD align=center>$row_sigma[num2]</TD>\n");
+			print("<TD align=center>$row_sigma[sigma]</TD>\n");
+			if ((strtotime ("$row_date[last_date]") - $year1) <= 0)
+			{
+				print("<TD nobreak><font color=\"#FF0000\"><b>$row_date[last_date]</b></font></TD>\n");
+			} elseif ((strtotime ("$row_date[last_date]") - $month6) <= 0) {
+				print("<TD nobreak><font color=\"#FF6633\">$row_date[last_date]</font></TD>\n");
+			} else {
+				print("<TD nobreak >$row_date[last_date]</TD>\n");
+			}
+			print("<TD align=center>$row_date[percent_wa]</TD>\n");
+		}
+
+		if ($r_count == $column_break || $r_count == ($column_break*2))
+		{
+			print("</TR>\n");
+			print("<TR>\n");
+			print("<TD bgcolor=\"#CCCCCC\">Num1</TD>\n");
+			print("<TD bgcolor=\"#CCCCCC\">Num2</TD>\n");
+			print("<TD BGCOLOR=\"#CCCCCC\"><center>Sigma</center></TD>\n");
+			print("<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n");
+			print("<TD bgcolor=\"#CCCCCC\">WA</TD>\n");
+			print("<TR>\n");
+		}
+
+		print("</TR>\n");
+	}
+
+	//end table
+	print("</TABLE>\n");
+?>

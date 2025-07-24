@@ -1,0 +1,395 @@
+<?php
+	
+	$temp_nums_count_2 = 0;
+	$temp_combo_count_2 = 0;
+
+	for ($c = 1; $c <= 10; $c++)
+	{
+		switch ($c) 
+		{ 
+		   case 1: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   break; 
+		   case 2: 
+			   $d1 = $row[1];
+			   $d2 = $row[3];
+			   break; 
+		   case 3: 
+			   $d1 = $row[1];
+			   $d2 = $row[4];
+			   break; 
+		   case 4: 
+			   $d1 = $row[1];
+			   $d2 = $row[5];
+			   break;
+		   case 5: 
+			   $d1 = $row[2];
+			   $d2 = $row[3];
+			   break;
+		   case 6: 
+			   $d1 = $row[2];
+			   $d2 = $row[4];
+			   break; 
+		   case 7: 
+			   $d1 = $row[2];
+			   $d2 = $row[5];
+			   break; 
+		   case 8: 
+			   $d1 = $row[3];
+			   $d2 = $row[4];
+			   break;
+		   case 9: 
+			   $d1 = $row[3];
+			   $d2 = $row[5];
+			   break;
+		   case 10: 
+			   $d1 = $row[4];
+			   $d2 = $row[5];
+			   break;
+		}
+
+		$hml_sum = intval($row[sum]/10)*10;
+
+		$query2 = "SELECT d1, d2 FROM ga_f5_2_42 ";
+		$query2 .= "WHERE d1 = $d1 "; 
+		$query2 .= "AND d2 = $d2 "; 
+		$query2 .= "AND hml = $hml_sum ";
+		$query2 .= "AND date < '$row[0]' ";
+
+		#echo "$query2<br>";
+
+		$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+
+		$num_rows = mysqli_num_rows($mysqli_result2);
+
+		$temp_nums_count_2 += $num_rows;
+	}
+
+	for ($c = 1; $c <= 10; $c++)
+	{
+		switch ($c) 
+		{ 
+		   case 1: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   break; 
+		   case 2: 
+			   $d1 = $row[1];
+			   $d2 = $row[3];
+			   break; 
+		   case 3: 
+			   $d1 = $row[1];
+			   $d2 = $row[4];
+			   break; 
+		   case 4: 
+			   $d1 = $row[1];
+			   $d2 = $row[5];
+			   break;
+		   case 5: 
+			   $d1 = $row[2];
+			   $d2 = $row[3];
+			   break;
+		   case 6: 
+			   $d1 = $row[2];
+			   $d2 = $row[4];
+			   break; 
+		   case 7: 
+			   $d1 = $row[2];
+			   $d2 = $row[5];
+			   break; 
+		   case 8: 
+			   $d1 = $row[3];
+			   $d2 = $row[4];
+			   break;
+		   case 9: 
+			   $d1 = $row[3];
+			   $d2 = $row[5];
+			   break;
+		   case 10: 
+			   $d1 = $row[4];
+			   $d2 = $row[5];
+			   break;
+		}
+
+		$sum_500 = $row[sum] + 500;
+
+		$query2 = "SELECT d1, d2 FROM ga_f5_2_42 ";
+		$query2 .= "WHERE d1 = $d1 "; 
+		$query2 .= "AND d2 = $d2 "; 
+		$query2 .= "AND hml = $sum_500 ";
+		$query2 .= "AND date < '$row[0]' ";
+
+		#echo "$query2<br>";
+
+		$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+
+		$num_rows = mysqli_num_rows($mysqli_result2);
+
+		$temp_combo_count_2 += $num_rows;
+	}
+
+	$temp_nums_count_3 = 0;
+	$temp_combo_count_3 = 0;
+
+	for ($c = 1; $c <= 10; $c++)
+	{
+		switch ($c) 
+		{ 
+		   case 1: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[3];
+			   break; 
+		   case 2: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[4];
+			   break; 
+		   case 3: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[5];
+			   break; 
+		   case 4: 
+			   $d1 = $row[1];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   break;
+		   case 5: 
+			   $d1 = $row[1];
+			   $d2 = $row[3];
+			   $d3 = $row[5];
+			   break; 
+		   case 6: 
+			   $d1 = $row[1];
+			   $d2 = $row[4];
+			   $d3 = $row[5];
+			   break;
+		   case 7: 
+			   $d1 = $row[2];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   break;
+		   case 8: 
+			   $d1 = $row[2];
+			   $d2 = $row[3];
+			   $d3 = $row[5];
+			   break;
+		   case 9: 
+			   $d1 = $row[2];
+			   $d2 = $row[4];
+			   $d3 = $row[5];
+			   break;
+		   case 10: 
+			   $d1 = $row[3];
+			   $d2 = $row[4];
+			   $d3 = $row[5];
+			   break;
+		}
+
+		$hml_sum = intval($row[sum]/10)*10;
+		
+		$query3 = "SELECT d1, d2, d3 FROM ga_f5_3_42 ";
+		$query3 .= "WHERE d1 = $d1 "; 
+		$query3 .= "AND d2 = $d2 ";
+		$query3 .= "AND d3 = $d3 ";
+		$query3 .= "AND hml = $hml_sum ";
+		$query3 .= "AND date < '$row[0]' ";
+
+		#echo "$query3<br>";
+
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		$num_rows = mysqli_num_rows($mysqli_result3);
+
+		$temp_nums_count_3 += $num_rows;
+	}
+
+	for ($c = 1; $c <= 10; $c++)
+	{
+		switch ($c) 
+		{ 
+		   case 1: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[3];
+			   break; 
+		   case 2: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[4];
+			   break; 
+		   case 3: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[5];
+			   break; 
+		   case 4: 
+			   $d1 = $row[1];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   break;
+		   case 5: 
+			   $d1 = $row[1];
+			   $d2 = $row[3];
+			   $d3 = $row[5];
+			   break; 
+		   case 6: 
+			   $d1 = $row[1];
+			   $d2 = $row[4];
+			   $d3 = $row[5];
+			   break;
+		   case 7: 
+			   $d1 = $row[2];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   break;
+		   case 8: 
+			   $d1 = $row[2];
+			   $d2 = $row[3];
+			   $d3 = $row[5];
+			   break;
+		   case 9: 
+			   $d1 = $row[2];
+			   $d2 = $row[4];
+			   $d3 = $row[5];
+			   break;
+		   case 10: 
+			   $d1 = $row[3];
+			   $d2 = $row[4];
+			   $d3 = $row[5];
+			   break;
+		}
+		
+		$sum_500 = $row[sum] + 500;
+
+		$query3 = "SELECT d1, d2, d3 FROM ga_f5_3_42 ";
+		$query3 .= "WHERE d1 = $d1 "; 
+		$query3 .= "AND d2 = $d2 "; 
+		$query3 .= "AND d3 = $d3 "; 
+		$query3 .= "AND hml = $sum_500 ";
+		$query3 .= "AND date < '$row[0]' ";
+
+		#echo "$query3<br>";
+
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		$num_rows = mysqli_num_rows($mysqli_result3);
+
+		$temp_combo_count_3 += $num_rows;
+	}
+
+	$temp_nums_count_4 = 0;
+	$temp_combo_count_4 = 0;
+
+	for ($c = 1; $c <= 5; $c++)
+	{
+		switch ($c) 
+		{ 
+		   case 1: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[3];
+			   $d4 = $row[4];
+			   break; 
+		   case 2: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[3];
+			   $d4 = $row[5];
+			   break; 
+		   case 3: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[4];
+			   $d4 = $row[5];
+			   break;
+		   case 4: 
+			   $d1 = $row[1];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   $d4 = $row[5];
+			   break; 
+		   case 5: 
+			   $d1 = $row[2];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   $d4 = $row[5];
+			   break;
+		} 
+
+		$hml_sum = intval($row[sum]/10)*10;
+	
+		$query4 = "SELECT d1, d2, d3, d4 FROM ga_f5_4_42 ";
+		$query4 .= "WHERE d1 = $d1 "; 
+		$query4 .= "AND d2 = $d2 ";
+		$query4 .= "AND d3 = $d3 ";
+		$query4 .= "AND d4 = $d4 ";
+		$query4 .= "AND hml = $hml_sum ";
+		$query4 .= "AND date < '$row[0]' ";
+
+		#echo "$query4<br>";
+
+		$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+		$num_rows = mysqli_num_rows($mysqli_result4);
+
+		$temp_nums_count_4 += $num_rows;
+	}
+
+	for ($c = 1; $c <= 5; $c++)
+	{
+		switch ($c) 
+		{ 
+		   case 1: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[3];
+			   $d4 = $row[4];
+			   break; 
+		   case 2: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[3];
+			   $d4 = $row[5];
+			   break; 
+		   case 3: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[4];
+			   $d4 = $row[5];
+			   break;
+		   case 4: 
+			   $d1 = $row[1];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   $d4 = $row[5];
+			   break; 
+		   case 5: 
+			   $d1 = $row[2];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   $d4 = $row[5];
+			   break;
+		} 
+
+		$sum_500 = $row[sum] + 500;
+	
+		$query4 = "SELECT d1, d2, d3, d4 FROM ga_f5_4_42 ";
+		$query4 .= "WHERE d1 = $d1 "; 
+		$query4 .= "AND d2 = $d2 ";
+		$query4 .= "AND d3 = $d3 ";
+		$query4 .= "AND d4 = $d4 ";
+		$query4 .= "AND hml = $sum_500 ";
+		$query4 .= "AND date < '$row[0]' ";
+
+		#echo "$query4<br>";
+
+		$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+		$num_rows = mysqli_num_rows($mysqli_result4);
+
+		$temp_combo_count_4 += $num_rows;
+	}
+?>

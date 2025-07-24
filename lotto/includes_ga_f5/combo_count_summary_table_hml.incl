@@ -1,0 +1,158 @@
+<?php
+	print "<p><b>Combo Count Summary</b></p>";
+
+	print("<table border=\"1\">\n");
+
+	print("<tr>\n");
+		print("<TD WIDTH=20 BGCOLOR=\"#CCCCCC\" align=center align=center>2</TD>\n");
+		print("<TD WIDTH=20 BGCOLOR=\"#CCCCCC\" align=center align=center>3</TD>\n");
+		print("<TD WIDTH=20 BGCOLOR=\"#CCCCCC\" align=center align=center>4</TD>\n");
+		print("<TD WIDTH=20 BGCOLOR=\"#CCCCCC\" align=center align=center>5</TD>\n");
+		print("<TD WIDTH=20 BGCOLOR=\"#CCCCCC\" align=center>Count</TD>\n");
+	print("</tr>\n");
+
+	for ($k = 9; $k <= 10; $k++)
+	{
+		print("<tr>\n");
+			$query_comb = "SELECT * FROM ga_f5_combo_count_table a ";
+			$query_comb .= "JOIN ga_f5_draws b ON ";
+			$query_comb .= "a.date = b.date ";
+			$query_comb .= "WHERE b.sum >= $range_low ";
+			$query_comb .= "AND b.sum <= $range_high ";
+			$query_comb .= "AND a.date >= '$last_date' "; 
+			$query_comb .= "AND a.c2 = $k ";
+			
+			#echo "$query_comb<p>";
+
+			$mysqli_result_comb = mysqli_query($query_comb, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+			$num_rows = mysqli_num_rows($mysqli_result_comb); 
+
+			print_r($row_comb);
+			
+			print("<TD align=center align=center>$k</TD>\n");
+			print("<TD align=center align=center>&nbsp;</TD>\n");
+			print("<TD align=center align=center>&nbsp;</TD>\n");
+			print("<TD align=center align=center>&nbsp;</TD>\n");
+			if ($num_rows > 8)
+			{
+				print("<TD align=center align=center BGCOLOR=\"#ff0000\"><b>$num_rows</b></TD>\n");
+			} else {
+				print("<TD align=center align=center>$num_rows</TD>\n");
+			}
+		print("</tr>\n");
+	}
+
+	for ($j = 10; $j <= 10; $j++)
+	{
+		for ($k = 0; $k <= 10; $k++)
+		{
+			print("<tr>\n");
+				$query_comb = "SELECT * FROM ga_f5_combo_count_table a ";
+				$query_comb .= "JOIN ga_f5_draws b ON ";
+				$query_comb .= "a.date = b.date ";
+				$query_comb .= "WHERE b.sum >= $range_low ";
+				$query_comb .= "AND b.sum <= $range_high ";
+				$query_comb .= "AND a.date >= '$last_date' "; 
+				$query_comb .= "AND a.c2 = $j ";
+				$query_comb .= "AND a.c3 = $k ";
+
+				#echo "$query_comb<p>";
+
+				$mysqli_result_comb = mysqli_query($query_comb, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+				$num_rows = mysqli_num_rows($mysqli_result_comb); 
+				
+				print("<TD align=center align=center>$j</TD>\n");
+				print("<TD align=center align=center>$k</TD>\n");
+				print("<TD align=center align=center>&nbsp;</TD>\n");
+				print("<TD align=center align=center>&nbsp;</TD>\n");
+				if ($num_rows > 4)
+				{
+					print("<TD align=center align=center BGCOLOR=\"#ff0000\"><b>$num_rows</b></TD>\n");
+				} else {
+					print("<TD align=center align=center>$num_rows</TD>\n");
+				}
+			print("</tr>\n");
+		}
+	}
+
+	for ($i = 10; $i <= 10; $i++)
+	{
+		for ($j = 3; $j <= 10; $j++)
+		{
+			for ($k = 0; $k <= 5; $k++)
+			{
+				print("<tr>\n");
+					$query_comb = "SELECT * FROM ga_f5_combo_count_table a ";
+					$query_comb .= "JOIN ga_f5_draws b ON ";
+					$query_comb .= "a.date = b.date ";
+					$query_comb .= "WHERE b.sum >= $range_low ";
+					$query_comb .= "AND b.sum <= $range_high ";
+					$query_comb .= "AND a.date >= '$last_date' "; 
+					$query_comb .= "AND a.c2 = $i ";
+					$query_comb .= "AND a.c3 = $j ";
+					$query_comb .= "AND a.c4 = $k ";
+
+					#echo "$query_comb<p>";
+
+					$mysqli_result_comb = mysqli_query($query_comb, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+					$num_rows = mysqli_num_rows($mysqli_result_comb); 
+					
+					print("<TD align=center align=center>$i</TD>\n");
+					print("<TD align=center align=center>$j</TD>\n");
+					print("<TD align=center align=center>$k</TD>\n");
+					print("<TD align=center align=center>&nbsp;</TD>\n");
+					if ($num_rows > 2)
+					{
+						print("<TD align=center align=center BGCOLOR=\"#ff0000\"><b>$num_rows</b></TD>\n");
+					} else {
+						print("<TD align=center align=center>$num_rows</TD>\n");
+					}
+				print("</tr>\n");
+			}
+		}
+	}
+	
+	/*
+	for ($i = 10; $i <= 10; $i++)
+	{
+		for ($j = 0; $j <= 10; $j++)
+		{
+			for ($k = 0; $k <= 2; $k++)
+			{
+				for ($l = 0; $l <= 0; $l++)
+				{
+					print("<tr>\n");
+						$query_comb = "SELECT * FROM $draw_prefix";
+						$query_comb .= "combo_count_table ";
+						$query_comb .= "WHERE c2 = $i ";
+						$query_comb .= "AND   c3 = $j ";
+						$query_comb .= "AND   c4 = $k ";
+						$query_comb .= "AND   c5 = $l ";
+						$query_comb .= "AND date >= '$last_date' ";
+
+						$mysqli_result_comb = mysqli_query($query_comb, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+						$num_rows = mysqli_num_rows($mysqli_result_comb); 
+						
+						print("<TD align=center align=center>$i</TD>\n");
+						print("<TD align=center align=center>$j</TD>\n");
+						print("<TD align=center align=center>$k</TD>\n");
+						print("<TD align=center align=center>$l</TD>\n");
+						if ($num_rows > 2)
+						{
+							print("<TD align=center align=center BGCOLOR=\"#ff0000\"><b>$num_rows</b></TD>\n");
+						} else {
+							print("<TD align=center align=center>$num_rows</TD>\n");
+						}
+					print("</tr>\n");
+				}
+			}
+		}
+	}
+	*/
+	
+	print("</table>\n");
+?>

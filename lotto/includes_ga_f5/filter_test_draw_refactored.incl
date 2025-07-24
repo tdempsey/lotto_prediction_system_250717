@@ -1,0 +1,141 @@
+<?php
+function filter_test_draw($draw, $filter_switch, $row = null, $balls_drawn = null, $date = null, $mysqli_link = null, $draw_prefix = null)
+{
+    global $debug, $game;	### 241201 ###
+
+    $pass_fail = false;
+
+    // Ensure draw is valid
+    if (!is_array($draw) || count($draw) < 6) {	### 241128 ###
+        echo "Invalid draw data.";
+        return $pass_fail;
+    }
+
+    switch ($filter_switch) {
+        case 'rank':	### 241201 ###
+            // Rank calculation
+            if (!$date) {
+                echo "Missing date for 'rank' filter.";
+                return $pass_fail;
+            }
+            $rank_count = calculate_rank($draw, $date);
+            echo "Rank counts: " . implode(", ", $rank_count) . "<br>";
+            break;
+	    
+	case 'seq':
+            // Check for consecutive pairs and sequences of 3
+            list($seq2, $seq3) = check_sequences($draw);
+            echo "Number of consecutive pairs: $seq2<br>";
+            echo "Number of three-number sequences: $seq3<br>";
+            break;
+
+        case 'mod':
+            // Calculate mod-related data
+            $mod_total = calculate_mod($draw);
+            echo "Mod total: $mod_total<br>";
+            break;
+
+        case 'dup':
+            // Check duplicates in last draws
+            if (!$row || !$balls_drawn || !$mysqli_link || !$draw_prefix) {
+                echo "Missing required data for 'dup' filter.";
+                return $pass_fail;
+            }
+            $last_dup = check_duplicates($row, $balls_drawn, $mysqli_link, $draw_prefix);
+            echo "Duplicates: " . implode(", ", $last_dup) . "<br>";
+            break;
+
+        default:
+            echo "Invalid filter switch.";
+            return $pass_fail;
+    }
+
+    $pass_fail = true;
+    
+    return $pass_fail;
+}
+
+### helper function for sequences
+function check_sequences($draw)
+{
+    $seq2 = $seq3 = 0;
+    $previous = null;
+
+    foreach ($draw as $index => $current) {
+        if ($index > 0 && $previous !== null) {
+            if ($previous == $current - 1 && $current != 0) {
+                $seq2++;
+            }
+        }
+        $previous = $current;
+    }
+
+    $previous = null;
+    $consecutiveCount = 1;
+    foreach ($draw as $index => $current) {
+        if ($index > 0 && $previous !== null) {
+            if ($current == $previous + 1) {
+                $consecutiveCount++;
+                if ($consecutiveCount == 3) {
+                    $seq3++;
+                    $consecutiveCount = 2; // Reset for overlapping sequences
+                }
+            } else {
+                $consecutiveCount = 1;
+            }
+        }
+        $previous = $current;
+    }
+
+    return [$seq2, $seq3];
+}
+
+### helper function for mod calculation
+function calculate_mod($draw)
+{
+    $mod = array_fill(0, 10, 0);
+    foreach ($draw as $value) {
+        if ($value == 0) {
+            continue;
+        }
+
+        $y = $value % 10; // Modulo logic replaces repetitive if-else
+        $mod[$y]++;
+    }
+
+    $mod_total = 0;
+    foreach ($mod as $count) {
+        if ($count > 1) {
+            $mod_total += ($count - 1);
+        }
+    }
+
+    return $mod_total;
+}
+
+### helper function for duplicate checks
+function check_duplicates($row, $balls_drawn, $mysqli_link, $draw_prefix)
+{
+    $last_dup = array_fill(1, 50, 0);
+    $last_draws = [];
+
+    for ($x = 1; $x <= 50; $x++) {
+        $last_draws[$x] = array_slice(LastDraws($row[0], $x), 0, 5); // Last 5 draws
+    }
+
+    foreach ($row as $y => $value) {
+        if ($y > 0 && $y <= $balls_drawn && $value != 0) {
+            foreach ($last_draws as $x => $draws) {
+                if (in_array($value, $draws, true)) {
+                    $last_dup[$x]++;
+                }
+            }
+        }
+    }
+
+    ### save to database
+    $query_dup = "INSERT INTO {$draw_prefix}dup_table VALUES ('$row[0]', " . implode(", ", $last_dup) . ")";
+    mysqli_query($mysqli_link, $query_dup) or die(mysqli_error($mysqli_link));
+
+    return $last_dup;
+}

@@ -1,0 +1,85 @@
+[17-Dec-2005 15:07:21] PHP Fatal error:  Failed opening required 'includes/games_switch.incl' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_display.php on line 11
+[17-Dec-2005 15:07:42] PHP Warning:  mysqli_fetch_array(): supplied argument is not a valid MySQL result resource in c:\phpdev\www\public\lotto\lot_display.php on line 100
+[17-Dec-2005 15:08:00] PHP Warning:  mysqli_fetch_array(): supplied argument is not a valid MySQL result resource in c:\phpdev\www\public\lotto\lot_display.php on line 100
+[17-Dec-2005 15:08:44] PHP Warning:  mysqli_fetch_array(): supplied argument is not a valid MySQL result resource in c:\phpdev\www\public\lotto\lot_display.php on line 100
+[17-Dec-2005 15:09:11] PHP Warning:  mysqli_fetch_array(): supplied argument is not a valid MySQL result resource in c:\phpdev\www\public\lotto\lot_display.php on line 102
+[17-Dec-2005 15:12:13] PHP Warning:  mysqli_fetch_array(): supplied argument is not a valid MySQL result resource in c:\phpdev\www\public\lotto\lot_display.php on line 102
+[17-Dec-2005 15:55:14] PHP Parse error:  parse error in c:\phpdev\www\public\lotto\lot_display.php on line 605
+[17-Dec-2005 16:06:07] PHP Parse error:  parse error in c:\phpdev\www\public\lotto\lot_display.php on line 279
+[17-Dec-2005 16:06:35] PHP Parse error:  parse error in c:\phpdev\www\public\lotto\lot_display.php on line 279
+[22-Dec-2005 16:05:47] PHP Fatal error:  Failed opening required 'includes/last_draws_fl_mm.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_analyze.php on line 15
+[22-Dec-2005 16:44:27] PHP Fatal error:  Failed opening required 'includes/last_draws.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_analyze.php on line 15
+[22-Dec-2005 17:09:16] PHP Fatal error:  Failed opening required 'includes/look_up_rank.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_analyze.php on line 17
+[22-Dec-2005 17:12:07] PHP Fatal error:  Failed opening required 'includes/calculate_rank_mb.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_analyze.php on line 19
+[22-Dec-2005 17:15:56] PHP Fatal error:  Failed opening required 'includes/number_due.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_analyze.php on line 21
+[22-Dec-2005 17:16:47] PHP Fatal error:  Call to undefined function:  findnextdrawdateflmm() in c:\phpdev\www\public\lotto\lot_analyze.php on line 813
+[22-Dec-2005 17:24:10] PHP Warning:  Missing argument 1 for findnextdrawdate()
+ in c:\phpdev\www\public\lotto\includes\next_draw.php on line 2
+[22-Dec-2005 17:29:02] PHP Fatal error:  Failed opening required 'includes/.d100.incl' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_analyze.php on line 126
+[22-Dec-2005 17:34:16] PHP Parse error:  parse error, expecting `'}'' in c:\phpdev\www\public\lotto\lot_analyze.php on line 122
+[22-Dec-2005 21:01:31] PHP Warning:  The argument to array_sum() should be an array in c:\phpdev\www\public\lotto\lot_analyze.php on line 189
+[23-Dec-2005 16:22:37] PHP Warning:  Can't connect to MySQL server on 'localhost' (10061) in c:\phpdev\www\public\lotto\includes\mysqli.php on line 26
+[23-Dec-2005 16:22:37] PHP Warning:  MySQL Connection Failed: Can't connect to MySQL server on 'localhost' (10061)
+ in c:\phpdev\www\public\lotto\includes\mysqli.php on line 26
+[24-Dec-2005 22:39:52] PHP Parse error:  parse error in c:\phpdev\www\public\lotto\lot_verify.php on line 549
+[25-Dec-2005 14:56:49] PHP Warning:  Can't connect to MySQL server on 'localhost' (10061) in c:\phpdev\www\public\lotto\includes\mysqli.php on line 26
+[25-Dec-2005 14:56:49] PHP Warning:  MySQL Connection Failed: Can't connect to MySQL server on 'localhost' (10061)
+ in c:\phpdev\www\public\lotto\includes\mysqli.php on line 26
+[26-Dec-2005 14:38:15] PHP Fatal error:  Failed opening required 'includes/dup_count_mm_lm5.incl' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 16
+[26-Dec-2005 14:39:25] PHP Fatal error:  Failed opening required 'includes/dup_count_lm5.incl' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 16
+[26-Dec-2005 14:42:44] PHP Fatal error:  Failed opening required 'includes/ga_ls_.config.incl' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 16
+[26-Dec-2005 14:46:57] PHP Parse error:  parse error, expecting `'}'' in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 16
+[26-Dec-2005 14:47:49] PHP Fatal error:  Failed opening required '{includes/ga_ls_.config.incl}' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 16
+[26-Dec-2005 14:53:56] PHP Fatal error:  Failed opening required 'includes/build_tables.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 19
+[26-Dec-2005 14:55:09] PHP Fatal error:  Failed opening required 'includes/remove_numbers.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 21
+[26-Dec-2005 14:56:09] PHP Fatal error:  Failed opening required 'includes/query_combo_lm5.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 22
+[26-Dec-2005 15:02:18] PHP Fatal error:  Failed opening required 'includes/test_pair_elimination.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 23
+[26-Dec-2005 15:02:52] PHP Fatal error:  Failed opening required 'includes/draw_main_lm5.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 25
+[26-Dec-2005 15:07:40] PHP Fatal error:  Failed opening required 'includes/draw_pb.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 27
+[26-Dec-2005 15:09:06] PHP Fatal error:  Failed opening required 'includes/look_up_eo50.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 29
+[26-Dec-2005 15:11:22] PHP Fatal error:  Failed opening required 'includes/look_up_eo50.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 29
+[26-Dec-2005 15:11:39] PHP Fatal error:  Failed opening required 'includes/range_analysis_auto_lm5.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 35
+[26-Dec-2005 15:13:11] PHP Fatal error:  Failed opening required 'includes/print_save_draw_lm5.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 37
+[26-Dec-2005 15:14:11] PHP Fatal error:  Failed opening required 'includes/save_draw_analysis_lm5.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 38
+[26-Dec-2005 15:16:09] PHP Fatal error:  Failed opening required 'includes/build_number_pool.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 39
+[26-Dec-2005 15:16:18] PHP Fatal error:  Failed opening required 'includes/set_test_ranges.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 41
+[26-Dec-2005 15:16:53] PHP Fatal error:  Failed opening required 'includes/build_hot_due_soon.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 43
+[26-Dec-2005 15:18:13] PHP Fatal error:  Failed opening required 'includes/print_dsh.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 45
+[26-Dec-2005 15:19:14] PHP Fatal error:  Failed opening required 'includes/print_draw_table.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 46
+[26-Dec-2005 15:19:57] PHP Fatal error:  Failed opening required 'includes/print_rank_table.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 47
+[26-Dec-2005 15:20:19] PHP Fatal error:  Failed opening required 'includes/print_stats_fl.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 48
+[26-Dec-2005 15:21:11] PHP Fatal error:  Failed opening required 'includes/print_stats_fl.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 48
+[26-Dec-2005 15:21:21] PHP Fatal error:  Failed opening required 'includes/combin_2_test.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 50
+[26-Dec-2005 15:24:38] PHP Fatal error:  Failed opening required 'includes/save_combin_temp.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 60
+[26-Dec-2005 15:29:50] PHP Fatal error:  Failed opening required 'look_up_rank_comp.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 66
+[26-Dec-2005 15:30:39] PHP Fatal error:  Cannot redeclare lookuprank() (previously declared in c:\phpdev\www\public\lotto\includes\look_up_rank.php:2) in c:\phpdev\www\public\lotto\includes\look_up_rank.php on line 2
+[26-Dec-2005 15:30:48] PHP Fatal error:  Failed opening required 'includes/x10.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 70
+[26-Dec-2005 15:33:37] PHP Fatal error:  Failed opening required 'includes/log.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 71
+[26-Dec-2005 15:33:57] PHP Fatal error:  Failed opening required 'includes/test_column_lookup.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 73
+[26-Dec-2005 15:36:12] PHP Warning:  Missing argument 1 for findnextdrawdate()
+ in c:\phpdev\www\public\lotto\includes\next_draw.php on line 2
+[26-Dec-2005 15:38:07] PHP Warning:  Missing argument 1 for findnextdrawdate()
+ in c:\phpdev\www\public\lotto\includes\next_draw.php on line 2
+[26-Dec-2005 15:38:31] PHP Warning:  Missing argument 1 for findnextdrawdate()
+ in c:\phpdev\www\public\lotto\includes\next_draw.php on line 2
+[26-Dec-2005 15:38:56] PHP Warning:  Missing argument 1 for findnextdrawdate()
+ in c:\phpdev\www\public\lotto\includes\next_draw.php on line 2
+[26-Dec-2005 15:40:00] PHP Fatal error:  Failed opening required 'includes/build_picks_table.incl' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 101
+[26-Dec-2005 15:41:42] PHP Fatal error:  Failed opening required 'includes/build_picks_table.incl' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 101
+[26-Dec-2005 15:42:21] PHP Fatal error:  Failed opening required 'includes/build_picks_table.incl' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 101
+[26-Dec-2005 15:42:53] PHP Fatal error:  Failed opening required 'includes_fl/error_table.incl' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 105
+[26-Dec-2005 15:43:24] PHP Fatal error:  Failed opening required 'includes_fl/error_table.incl' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 105
+[26-Dec-2005 15:43:27] PHP Fatal error:  Failed opening required 'includes_fl/error_table.incl' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_lm5_auto.php on line 105
+[29-Apr-2006 12:37:54] PHP Warning:  Can't connect to MySQL server on 'localhost' (10061) in c:\phpdev\www\public\lotto\includes\mysqli.php on line 26
+[29-Apr-2006 12:37:54] PHP Warning:  MySQL Connection Failed: Can't connect to MySQL server on 'localhost' (10061)
+ in c:\phpdev\www\public\lotto\includes\mysqli.php on line 26
+[29-Apr-2006 16:25:11] PHP Warning:  Can't connect to MySQL server on 'localhost' (10061) in c:\phpdev\www\public\lotto\includes\mysqli.php on line 26
+[29-Apr-2006 16:25:11] PHP Warning:  MySQL Connection Failed: Can't connect to MySQL server on 'localhost' (10061)
+ in c:\phpdev\www\public\lotto\includes\mysqli.php on line 26
+[29-Apr-2006 18:00:59] PHP Fatal error:  Failed opening required 'includes/fl_mm_x10.php' (include_path='.;C:/phpdev/php/includes;C:/phpdev/php/class') in c:\phpdev\www\public\lotto\lot_test.php on line 20
+[29-Apr-2006 18:09:38] PHP Parse error:  parse error in c:\phpdev\www\public\lotto\includes\look_up_eo50.php on line 8
+[29-Apr-2006 18:19:55] PHP Warning:  The argument to array_sum() should be an array in c:\phpdev\www\public\lotto\lot_analyze.php on line 193
+[29-Apr-2006 18:22:50] PHP Warning:  Missing argument 3 for calculate_rank_mb()
+ in c:\phpdev\www\public\lotto\includes\calculate_rank_mb.php on line 2
+[29-Apr-2006 18:22:50] PHP Warning:  Missing argument 4 for calculate_rank_mb()
+ in c:\phpdev\www\public\lotto\includes\calculate_rank_mb.php on line 2

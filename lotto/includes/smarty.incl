@@ -1,0 +1,13 @@
+<?php
+
+// load Smarty library
+require('Smarty.class.php');
+
+$smarty = new Smarty;
+
+$smarty->template_dir = 'C:\wamp\www\smarty\templates';
+$smarty->config_dir = 'C:\wamp\www\smarty\configs';
+$smarty->cache_dir = 'C:\wamp\smarty\cache';
+$smarty->compile_dir = 'C:\wamp\smarty\templates_c';
+
+?>

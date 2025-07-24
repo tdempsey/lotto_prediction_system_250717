@@ -1,0 +1,132 @@
+<?php
+	$temp_summary = 'temp_sumeo_drange_summary';
+	
+	$query4 = "DROP TABLE IF EXISTS $draw_prefix";
+	$query4 .= "sumeo_drange_summary ";
+
+	$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+	$query4 = "CREATE TABLE $draw_prefix";
+	$query4 .= "sumeo_drange_summary (";
+	$query4 .= "`id` mediumint UNSIGNED NOT NULL auto_increment,";
+	$query4 .= "sum tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "even tinyint(1) unsigned NOT NULL default '0',";
+	$query4 .= "odd  tinyint(1) unsigned NOT NULL default '0',";
+	$query4 .= "drange tinyint(1) unsigned NOT NULL default '0',";
+	$query4 .= "d_1 tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "d_2 tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "d_3 tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "d_4 tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "d_5 tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "d_6 tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "d_7 tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "dcount int(5) unsigned NOT NULL,";
+	$query4 .= "percent_y1 float(5,3) unsigned NOT NULL,";
+	$query4 .= "percent_y5 float(5,3) unsigned NOT NULL,";
+	$query4 .= "percent_wa float(5,3) unsigned NOT NULL,";
+	$query4 .= "PRIMARY KEY  (id),";
+	$query4 .= "UNIQUE KEY `id_2` (id),";
+	$query4 .= "KEY id (id)";
+	$query4 .= ") ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;";
+
+	$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+	###############################################################################################################
+
+	$query0 = "SELECT * FROM $draw_prefix";
+	$query0 .= "sum_count_sum ";
+	$query0 .= "ORDER BY month3 DESC, month1 DESC, week2 DESC ";
+	$query0 .= "LIMIT 40 "; 
+
+	#echo "$query0<br>";
+
+	$mysqli_result0 = mysqli_query($mysqli_link, $query0) or die (mysqli_error($mysqli_link));
+	
+	while($row0 = mysqli_fetch_array($mysqli_result0))
+	{
+		$querya = "INSERT INTO $draw_prefix";
+		$querya .= "sumeo_drange_summary ";
+		$querya .= "VALUES ('0', ";
+		$querya .= "'$row0[numx]',";
+		$querya .= "'$row0[even]',";
+		$querya .= "'$row0[odd]',";
+		$querya .= "'0',"; #no drange - sum/even/odd
+		$querya .= "'0',"; #b1
+		$querya .= "'0',"; #drange 2 
+		$querya .= "'0',"; #drange 3 
+		$querya .= "'0',"; #drange 4 
+		$querya .= "'0',"; #drange 5 
+		$querya .= "'0',"; #drange 6 
+		$querya .= "'0',"; #drange 7 
+		$querya .= "'$row0[year5]',";
+		$querya .= "'$row0[percent_y1]',";
+		$querya .= "'$row0[percent_y4]',";
+		$querya .= "'$row0[percent_wa]')";
+
+		#echo "$querya<br>";
+
+		$mysqli_resulta = mysqli_query($mysqli_link, $querya) or die (mysqli_error($mysqli_link));
+		
+		for ($r = 2; $r <= 7; $r++)
+		{
+			$query3 = "SELECT * FROM $draw_prefix";
+			$query3 .= "sumeo_drange";
+			$query3 .= "$r ";
+			$query3 .= "WHERE sum  = '$row0[numx]' ";
+			$query3 .= "AND   even = '$row0[even]' ";
+			$query3 .= "AND	  odd  = '$row0[odd]'  "; 
+			$query3 .= "AND   percent_wa >= 0.1 ";
+			$query3 .= "ORDER BY percent_y5 DESC, percent_y1 DESC, 
+					year1 DESC, month6 DESC, month3 DESC, month1 DESC "; 
+			#$query3 .= "LIMIT 1  "; 
+
+			#echo "$query3<p>";
+
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+			
+			while($row3 = mysqli_fetch_array($mysqli_result3))
+			{
+				$queryb = "INSERT INTO $draw_prefix";
+				$queryb .= "sumeo_drange_summary ";
+				$queryb .= "VALUES ('0', ";
+				$queryb .= "'$row3[sum]',";
+				$queryb .= "'$row3[even]',";
+				$queryb .= "'$row3[odd]',";
+				$queryb .= "'$r',"; #drange - sum/even/odd
+
+				for ($x = 4; $x < ($r+4); $x++)
+				{
+					$queryb .= "'$row3[$x]',";
+				}
+
+				for ($y = $x; $y <= 10; $y++)
+				{
+					$queryb .= "'0',";
+				}
+
+				$queryb .= "'$row3[year5]',";
+				$queryb .= "'$row3[percent_y1]',";
+				$queryb .= "'$row3[percent_y5]',";
+				$queryb .= "'$row3[percent_wa]')";
+
+				#echo "$queryb<br>";
+
+				$mysqli_resultb = mysqli_query($mysqli_link, $queryb) or die (mysqli_error($mysqli_link));
+			}
+		}
+	}
+
+	$table_temp_date = $temp_summary . '_' . $dateDiff;
+
+	$query = "DROP TABLE IF EXISTS $table_temp_date";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$query_copy = "CREATE TABLE $table_temp_date SELECT * FROM ga_f5_sumeo_drange_summary";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query_copy) or die (mysqli_error($mysqli_link));
+
+	print "<h3>Table <font color=\"#ff0000\">$table_temp_date</font> Updated!</h3>";
+
+	#########################################################################################################	
+?>

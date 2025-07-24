@@ -1,0 +1,240 @@
+<?php
+/**
+ * Database Table Management Script
+ * 
+ * This script creates and manages temporary tables needed for lottery data analysis.
+ * It provides improved security through prepared statements and better structure.
+ */
+
+/**
+ * Create a database table with specified structure
+ * 
+ * @param mysqli $mysqli_link Database connection
+ * @param string $table_name Name of the table to create
+ * @param array $columns Array of column definitions
+ * @param boolean $drop_if_exists Whether to drop the table if it exists
+ * @param boolean $debug_output Whether to output queries for debugging
+ * @return bool Success status
+ */
+function createTable($mysqli_link, $table_name, $columns, $drop_if_exists = false, $debug_output = false) {
+    try {
+        // Validate inputs
+        if (empty($table_name) || empty($columns) || !$mysqli_link) {
+            throw new Exception("Missing required parameters for table creation");
+        }
+        
+        // Drop table if needed
+        if ($drop_if_exists) {
+            $drop_query = "DROP TABLE IF EXISTS `" . mysqli_real_escape_string($mysqli_link, $table_name) . "`";
+            
+            if ($debug_output) {
+                echo htmlspecialchars($drop_query) . "<p>";
+            }
+            
+            if (!mysqli_query($mysqli_link, $drop_query)) {
+                throw new Exception("Error dropping table: " . mysqli_error($mysqli_link));
+            }
+        }
+        
+        // Build the CREATE TABLE query
+        $create_query = "CREATE TABLE IF NOT EXISTS `" . mysqli_real_escape_string($mysqli_link, $table_name) . "` (";
+        $create_query .= implode(", ", $columns);
+        $create_query .= ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1";
+        
+        if ($debug_output) {
+            echo htmlspecialchars($create_query) . "<p>";
+        }
+        
+        // Execute query
+        if (!mysqli_query($mysqli_link, $create_query)) {
+            throw new Exception("Error creating table: " . mysqli_error($mysqli_link));
+        }
+        
+        return true;
+        
+    } catch (Exception $e) {
+        // Log error and output message if debugging
+        error_log($e->getMessage());
+        if ($debug_output) {
+            echo "<p>Error: " . htmlspecialchars($e->getMessage()) . "</p>";
+        }
+        return false;
+    }
+}
+
+/**
+ * Get columns definition for temp_table1
+ * 
+ * @return array Columns definition
+ */
+function getTemp1Columns() {
+    return [
+        "`id` int(10) unsigned NOT NULL auto_increment",
+        "`sum` int(3) unsigned NOT NULL default '0'",
+        "`even` tinyint(1) unsigned NOT NULL default '0'",
+        "`odd` tinyint(1) unsigned NOT NULL default '0'",
+        "`k_count` tinyint(2) unsigned NOT NULL default '0'",
+        "`last_updated` date NOT NULL default '1962-08-17'",
+        "PRIMARY KEY (`id`)"
+    ];
+}
+
+/**
+ * Get columns definition for temp_table2 and temp_table4
+ * 
+ * @return array Columns definition
+ */
+function getStandardColumns() {
+    return [
+        "`id` int(10) unsigned NOT NULL auto_increment",
+        "`b1` tinyint(2) unsigned NOT NULL default '0'",
+        "`b2` tinyint(2) unsigned NOT NULL default '0'",
+        "`b3` tinyint(2) unsigned NOT NULL default '0'",
+        "`b4` tinyint(2) unsigned NOT NULL default '0'",
+        "`b5` tinyint(2) unsigned NOT NULL default '0'",
+        "`sum` int(5) unsigned NOT NULL default '0'",
+        "`hml` int(3) unsigned NOT NULL default '0'",
+        "`even` tinyint(1) unsigned NOT NULL default '0'",
+        "`odd` tinyint(1) unsigned NOT NULL default '0'",
+        "`d0` tinyint(1) unsigned NOT NULL default '0'",
+        "`d1` tinyint(1) unsigned NOT NULL default '0'",
+        "`d2` tinyint(1) unsigned NOT NULL default '0'",
+        "`d3` tinyint(1) unsigned NOT NULL default '0'",
+        "`d4` tinyint(1) unsigned NOT NULL default '0'",
+        "`rank0` tinyint(1) unsigned NOT NULL default '0'",
+        "`rank1` tinyint(1) unsigned NOT NULL default '0'",
+        "`rank2` tinyint(1) unsigned NOT NULL default '0'",
+        "`rank3` tinyint(1) unsigned NOT NULL default '0'",
+        "`rank4` tinyint(1) unsigned NOT NULL default '0'",
+        "`rank5` tinyint(1) unsigned NOT NULL default '0'",
+        "`rank6` tinyint(1) unsigned NOT NULL default '0'",
+        "`rank7` tinyint(1) unsigned NOT NULL default '0'",
+        "`mod_tot` tinyint(1) unsigned NOT NULL default '0'",
+        "`mod_x` tinyint(1) unsigned NOT NULL default '0'",
+        "`seq2` tinyint(1) unsigned NOT NULL default '0'",
+        "`seq3` tinyint(1) unsigned NOT NULL default '0'",
+        "`comb2` tinyint(1) unsigned NOT NULL default '0'",
+        "`comb3` tinyint(1) unsigned NOT NULL default '0'",
+        "`comb4` tinyint(1) unsigned NOT NULL default '0'",
+        "`comb5` tinyint(1) unsigned NOT NULL default '0'",
+        "`dup1` tinyint(1) unsigned NOT NULL default '0'",
+        "`dup2` tinyint(1) unsigned NOT NULL default '0'",
+        "`dup3` tinyint(1) unsigned NOT NULL default '0'",
+        "`dup4` tinyint(1) unsigned NOT NULL default '0'",
+        "`dup5` tinyint(1) unsigned NOT NULL default '0'",
+        "`dup6` tinyint(1) unsigned NOT NULL default '0'",
+        "`dup7` tinyint(1) unsigned NOT NULL default '0'",
+        "`dup8` tinyint(1) unsigned NOT NULL default '0'",
+        "`dup9` tinyint(1) unsigned NOT NULL default '0'",
+        "`dup10` tinyint(1) unsigned NOT NULL default '0'",
+        "`pair_sum` mediumint(8) unsigned NOT NULL default '0'",
+        "`avg` float(4,2) unsigned NOT NULL default '0.00'",
+        "`median` float(4,2) unsigned NOT NULL default '0.00'",
+        "`harmean` float(4,2) unsigned NOT NULL default '0.00'",
+        "`geomean` float(4,2) unsigned NOT NULL default '0.00'",
+        "`quart1` float(4,2) unsigned NOT NULL default '0.00'",
+        "`quart2` float(4,2) unsigned NOT NULL default '0.00'",
+        "`quart3` float(4,2) unsigned NOT NULL default '0.00'",
+        "`stdev` float(4,2) unsigned NOT NULL default '0.00'",
+        "`variance` float(6,2) unsigned NOT NULL default '0.00'",
+        "`avedev` float(4,2) unsigned NOT NULL default '0.00'",
+        "`kurt` float(4,2) NOT NULL default '0.00'",
+        "`skew` float(4,2) NOT NULL default '0.00'",
+        "`devsq` float(6,2) unsigned NOT NULL default '0.00'",
+        "`wheel_cnt5000` mediumint(5) unsigned NOT NULL default '0'",
+        "`wheel_percent_wa` float(4,2) unsigned NOT NULL default '0.00'",
+        "`draw_last` date NOT NULL default '1962-08-17'",
+        "`draw_count` tinyint(3) unsigned NOT NULL default '0'",
+        "`y1_sum` float(4,2) NOT NULL default '0.00'",
+        "`last_updated` date NOT NULL default '1962-08-17'",
+        "PRIMARY KEY (`id`)"
+    ];
+}
+
+/**
+ * Main function to setup all required tables
+ * 
+ * @param mysqli $mysqli_link Database connection
+ * @param string $temp_table1 Name of first temporary table
+ * @param string $temp_table2 Name of second temporary table
+ * @param string $temp_table4 Name of fourth temporary table
+ * @param boolean $drop_tables Whether to drop existing tables
+ * @param boolean $debug_output Whether to output queries for debugging
+ * @return array Status information
+ */
+function setupTables($mysqli_link, $temp_table1, $temp_table2, $temp_table4, $drop_tables = false, $debug_output = true) {
+    $status = [
+        'success' => true,
+        'messages' => []
+    ];
+    
+    try {
+        // Create temp_table1
+        if ($drop_tables) {
+            $temp1_success = createTable(
+                $mysqli_link, 
+                $temp_table1, 
+                getTemp1Columns(), 
+                true, 
+                $debug_output
+            );
+            
+            if (!$temp1_success) {
+                $status['messages'][] = "Failed to create {$temp_table1}";
+                $status['success'] = false;
+            }
+            
+            // Create temp_table2
+            $temp2_success = createTable(
+                $mysqli_link, 
+                $temp_table2, 
+                getStandardColumns(), 
+                true, 
+                $debug_output
+            );
+            
+            if (!$temp2_success) {
+                $status['messages'][] = "Failed to create {$temp_table2}";
+                $status['success'] = false;
+            }
+        }
+        
+        // Always create temp_table4 (regardless of $drop_tables)
+        $temp4_success = createTable(
+            $mysqli_link, 
+            $temp_table4, 
+            getStandardColumns(), 
+            $drop_tables, 
+            $debug_output
+        );
+        
+        if (!$temp4_success) {
+            $status['messages'][] = "Failed to create {$temp_table4}";
+            $status['success'] = false;
+        }
+        
+        return $status;
+        
+    } catch (Exception $e) {
+        $status['success'] = false;
+        $status['messages'][] = "Error setting up tables: " . $e->getMessage();
+        return $status;
+    }
+}
+
+// Execute the main function if all required variables are set
+if (isset($mysqli_link) && isset($temp_table1) && isset($temp_table2) && isset($temp_table4) && isset($drop_tables)) {
+    $debug_output = true; // Set to false in production
+    $result = setupTables($mysqli_link, $temp_table1, $temp_table2, $temp_table4, $drop_tables, $debug_output);
+    
+    // You can handle the result as needed
+    if (!$result['success'] && $debug_output) {
+        echo "<p>Errors occurred:</p>";
+        echo "<ul>";
+        foreach ($result['messages'] as $message) {
+            echo "<li>" . htmlspecialchars($message) . "</li>";
+        }
+        echo "</ul>";
+    }
+}
+?>

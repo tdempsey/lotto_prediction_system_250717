@@ -1,0 +1,2 @@
+Example 1
+First, suppose that we have the data set {1, 2, 2, 3, 3, 4, 5, 5, 9}. The number 9 certainly looks like it could be an outlier. It is much greater than any other value from the rest of the set. To objectively determine if 9 is an outlier, we use the above methods. The first quartile is 2 and the third quartile is 5, which means that the interquartile range is 3. We multiply the interquartile range by 1.5, obtaining 4.5, and then add this number to the third quartile. The result, 9.5, is greater than any of our data values. Therefore there are no outliers.

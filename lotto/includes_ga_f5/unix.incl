@@ -1,0 +1,75 @@
+<?php
+	echo "<b>\include_ga_f5\unix.incl</b><br>";
+	
+	# get unix timestamp - last draw
+	$first_draw_unix = findFirstDrawDateUnix($game,$draw_table_name);
+	$last_draw_unix = findLastDrawDateUnix($game);
+
+	$d1510_unix = mktime (0,0,0,'10','1','2015');
+
+	$today_unix = time ();
+
+	$day1_unix = $last_draw_unix;				# 0
+	$week1_unix = $last_draw_unix - (86400*7);			# 1
+	$week2_unix = $last_draw_unix - (86400*14);			# 2
+	$month1_unix = $last_draw_unix - (86400*30);			# 3
+	$month3_unix = $last_draw_unix - (86400*90);			# 4
+	$month6_unix  = $last_draw_unix - (86400*180);		# 5
+	$year1_unix  = $last_draw_unix - (86400*365);			# 6
+	$year2_unix  = $last_draw_unix - (86400*(365*2));		# 7
+	$year3_unix  = $last_draw_unix - (86400*(365*3));		# 8
+	$year4_unix  = $last_draw_unix - (86400*(365*4));		# 9
+	$year5_unix  = $last_draw_unix - (86400*(365*5));		# 10
+	$year6_unix  = $last_draw_unix - (86400*(365*6));		# 11
+	$year7_unix  = $last_draw_unix - (86400*(365*7));		# 12
+	$year8_unix  = $last_draw_unix - (86400*(365*8));		# 13
+	$year9_unix  = $last_draw_unix - (86400*(365*9));		# 14
+	$year10_unix  = $last_draw_unix - (86400*(365*10));	        # 15
+	#$year11 = $last_draw_unix - (86400*(365*11));	  
+
+	$year1510 = $today_unix - $d1510_unix;	        # 1510 2015-10-01
+
+	#echo "<h2>year1510 = "; 
+	#echo date('m/d/Y', $year1510);
+	#echo " for $year1510</h2>";
+
+	#echo "year1 = $year1 <p>";
+	#echo "d1510_unix = $d1510_unix<p>";
+	#echo "last_draw_unix = $last_draw_unix<p>";
+
+	/*
+	print "first_draw_unix = $first_draw_unix<br>";
+	print "last_draw_unix = $last_draw_unix<br>";
+	print "day1 = $day1<br>";
+	print "week1 = $week1<br>";
+	print "week2 = $week2<br>";
+	print "month1 = $month1<br>";
+	print "month3 = $month3<br>";
+	print "month6 = $month6<br>";
+	print "year1 = $year1<br>";
+	print "year2 = $year2<br>";
+	print "year3 = $year3<br>";
+	print "year4 = $year4<br>";
+	print "year5 = $year5<br>";
+	print "year6 = $year6<br>";
+	print "year7 = $year7<br>";
+	print "year8 = $year8<br>";
+	print "year9 = $year9<br>";
+	print "year10 = $year10<br>";
+	#print "year11 = $year11<br>";
+	*/
+	  
+	// Start date 
+	$date1 = "2015-10-01"; 
+	  
+	// End date 
+	$date2 = date("Y-m-d"); 
+	  
+	// Function call to find date difference 
+	$dateDiff = dateDiffInDays($date1, $date2); 
+	  
+	// Display the result 
+	#printf("Difference between $date1 and $date2: "
+	#   . $dateDiff . " Days<br> "); 
+	
+?>

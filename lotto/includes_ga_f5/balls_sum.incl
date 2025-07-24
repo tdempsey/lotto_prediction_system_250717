@@ -1,0 +1,66 @@
+<?php
+	$col_pos = $index + 1;
+
+	# -------------------------------------------------------------------------------------------------------
+	# ----------  Balls Limit Sum -----------------
+	# -------------------------------------------------------------------------------------------------------
+	$hml = $row[sum] + 500;
+				
+	$query_sum = "SELECT * FROM $draw_prefix";
+	$query_sum .= "filter_limits ";
+	$query_sum .= "WHERE col1 = '$row[b1]' ";
+	$query_sum .= "AND col_pos = '$col_pos' ";
+	$query_sum .= "AND limit_type = 'ba' ";
+	$query_sum .= "AND hml = '$hml' ";
+	#$query_sum .= "AND date = '$row[0]' ";
+	$query_sum .= "ORDER BY id DESC ";
+
+	if ($debug)
+	{
+		echo "$query_sum<p>";
+	}
+
+	$mysqli_result_sum = mysqli_query($query_sum, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+	$row_sum = mysqli_fetch_array($mysqli_result_sum);
+
+	$num_rows_sum = mysqli_num_rows($mysqli_result_sum);
+	
+	if ($num_rows_sum)
+	{
+		$balls_low = $row_sum[low];
+		$balls_high = $row_sum[high];
+	} else {
+		#echo "$row[0] -- num_rows_sum = $num_rows_sum<p>";
+
+		require ("includes/hml_switch.incl");
+
+		#lot_filter_limit_balls ($row[0]);
+
+		$query_sum = "SELECT * FROM $draw_prefix";
+		$query_sum .= "filter_limits ";
+		$query_sum .= "WHERE col1 = '$row[b1]' ";
+		$query_sum .= "AND col_pos = '$col_pos' ";
+		$query_sum .= "AND limit_type = 'ba' ";
+		$query_sum .= "AND hml = '$hml' ";
+		#$query_sum .= "AND date = '$row[0]' ";
+		$query_sum .= "ORDER BY id DESC ";
+
+		if ($debug)
+		{
+			echo "$query_sum<p>";
+		}
+	
+		$mysqli_result_sum = mysqli_query($query_sum, $mysqli_link) or die (mysqli_error($mysqli_link));
+	
+		$row_sum = mysqli_fetch_array($mysqli_result_sum);
+
+		$balls_low = $row_sum[low];
+		$balls_high = $row_sum[high];
+	}
+
+	if ($debug)
+	{
+		print "<h5>(all/0) balls_low = $row_sum[low] / balls_mid = $row_sum[mid] / balls_high = $row_sum[high] - ball = $draw[index]</h5>";
+	}
+?>

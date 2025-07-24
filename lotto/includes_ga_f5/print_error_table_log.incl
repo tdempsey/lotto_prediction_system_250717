@@ -1,0 +1,13 @@
+<?php
+
+log_info("Error Count\n");
+log_info("-----------\n");
+
+for ($x = 0; $x < count($error_table); $x++)
+{
+	log_info("$x: $error_table[$x] - ");
+	log_info("$error_table_count[$x]\n");
+}
+
+log_info("\n\n");
+?>

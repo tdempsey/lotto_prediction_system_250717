@@ -1,0 +1,48 @@
+<?php
+	for ($c = 1; $c <= 5; $c++)
+	{
+		switch ($c) 
+		{ 
+		   case 1: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[3];
+			   $d4 = $row[4];
+			   break; 
+		   case 2: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[3];
+			   $d4 = $row[5];
+			   break; 
+		   case 3: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[4];
+			   $d4 = $row[5];
+			   break;
+		   case 4: 
+			   $d1 = $row[1];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   $d4 = $row[5];
+			   break; 
+		   case 5: 
+			   $d1 = $row[2];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   $d4 = $row[5];
+			   break;
+		} 
+		
+		$query4 = "Insert INTO $table_temp ";
+		$query4 .= "VALUES ( '0', ";
+		$query4 .= "         '$row[0]', ";
+		$query4 .= "         $d1, ";
+		$query4 .= "	     $d2, ";
+		$query4 .= "	     $d3, ";
+		$query4 .= "	     $d4) ";
+		
+		$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+	}
+?>

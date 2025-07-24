@@ -1,0 +1,828 @@
+{
+  "generated_at": "2025-07-19T16:50:49.849521",
+  "total_draws": 20,
+  "filter_settings": {
+    "max_seq2": 1,
+    "max_seq3": 0,
+    "max_mod_tot": 1,
+    "sum_range": [
+      80,
+      80
+    ]
+  },
+  "rank_analysis_config": {
+    "rank_limits": [
+      1,
+      1,
+      2,
+      3,
+      2,
+      3,
+      1,
+      1
+    ],
+    "rank_counts_length": 42
+  },
+  "draws": [
+    {
+      "combination": [
+        2,
+        5,
+        13,
+        22,
+        38
+      ],
+      "score": 66.51,
+      "sum": 80,
+      "stats": {
+        "mean": 16.0,
+        "median": 13.0,
+        "even": 3,
+        "odd": 2,
+        "d0": 2,
+        "d1": 1,
+        "d2": 1,
+        "d3": 1,
+        "d4": 0,
+        "seq2": 0,
+        "seq3": 0,
+        "mod_total": 1,
+        "mod_x": 0,
+        "modx": 0,
+        "sum": 80,
+        "rank_analysis": {
+          "rank_0_limit": 1,
+          "rank_0_count": 5,
+          "rank_1_limit": 1,
+          "rank_1_count": 5,
+          "rank_2_limit": 2,
+          "rank_2_count": 2,
+          "rank_3_limit": 3,
+          "rank_3_count": 1,
+          "rank_4_limit": 2,
+          "rank_4_count": 3
+        }
+      }
+    },
+    {
+      "combination": [
+        5,
+        8,
+        15,
+        20,
+        32
+      ],
+      "score": 62.51,
+      "sum": 80,
+      "stats": {
+        "mean": 16.0,
+        "median": 15.0,
+        "even": 3,
+        "odd": 2,
+        "d0": 2,
+        "d1": 1,
+        "d2": 1,
+        "d3": 1,
+        "d4": 0,
+        "seq2": 0,
+        "seq3": 0,
+        "mod_total": 1,
+        "mod_x": 0,
+        "modx": 0,
+        "sum": 80,
+        "rank_analysis": {
+          "rank_0_limit": 1,
+          "rank_0_count": 5,
+          "rank_1_limit": 1,
+          "rank_1_count": 5,
+          "rank_2_limit": 2,
+          "rank_2_count": 2,
+          "rank_3_limit": 3,
+          "rank_3_count": 1,
+          "rank_4_limit": 2,
+          "rank_4_count": 3
+        }
+      }
+    },
+    {
+      "combination": [
+        4,
+        6,
+        17,
+        23,
+        30
+      ],
+      "score": 62.51,
+      "sum": 80,
+      "stats": {
+        "mean": 16.0,
+        "median": 17.0,
+        "even": 3,
+        "odd": 2,
+        "d0": 2,
+        "d1": 1,
+        "d2": 1,
+        "d3": 1,
+        "d4": 0,
+        "seq2": 0,
+        "seq3": 0,
+        "mod_total": 0,
+        "mod_x": 0,
+        "modx": 0,
+        "sum": 80,
+        "rank_analysis": {
+          "rank_0_limit": 1,
+          "rank_0_count": 5,
+          "rank_1_limit": 1,
+          "rank_1_count": 5,
+          "rank_2_limit": 2,
+          "rank_2_count": 2,
+          "rank_3_limit": 3,
+          "rank_3_count": 1,
+          "rank_4_limit": 2,
+          "rank_4_count": 3
+        }
+      }
+    },
+    {
+      "combination": [
+        4,
+        5,
+        11,
+        22,
+        38
+      ],
+      "score": 61.51,
+      "sum": 80,
+      "stats": {
+        "mean": 16.0,
+        "median": 11.0,
+        "even": 3,
+        "odd": 2,
+        "d0": 2,
+        "d1": 1,
+        "d2": 1,
+        "d3": 1,
+        "d4": 0,
+        "seq2": 1,
+        "seq3": 0,
+        "mod_total": 0,
+        "mod_x": 0,
+        "modx": 0,
+        "sum": 80,
+        "rank_analysis": {
+          "rank_0_limit": 1,
+          "rank_0_count": 5,
+          "rank_1_limit": 1,
+          "rank_1_count": 5,
+          "rank_2_limit": 2,
+          "rank_2_count": 2,
+          "rank_3_limit": 3,
+          "rank_3_count": 1,
+          "rank_4_limit": 2,
+          "rank_4_count": 3
+        }
+      }
+    },
+    {
+      "combination": [
+        5,
+        8,
+        12,
+        17,
+        38
+      ],
+      "score": 59.51,
+      "sum": 80,
+      "stats": {
+        "mean": 16.0,
+        "median": 12.0,
+        "even": 3,
+        "odd": 2,
+        "d0": 2,
+        "d1": 2,
+        "d2": 0,
+        "d3": 1,
+        "d4": 0,
+        "seq2": 0,
+        "seq3": 0,
+        "mod_total": 1,
+        "mod_x": 0,
+        "modx": 0,
+        "sum": 80,
+        "rank_analysis": {
+          "rank_0_limit": 1,
+          "rank_0_count": 5,
+          "rank_1_limit": 1,
+          "rank_1_count": 5,
+          "rank_2_limit": 2,
+          "rank_2_count": 2,
+          "rank_3_limit": 3,
+          "rank_3_count": 1,
+          "rank_4_limit": 2,
+          "rank_4_count": 3
+        }
+      }
+    },
+    {
+      "combination": [
+        5,
+        8,
+        12,
+        26,
+        29
+      ],
+      "score": 59.51,
+      "sum": 80,
+      "stats": {
+        "mean": 16.0,
+        "median": 12.0,
+        "even": 3,
+        "odd": 2,
+        "d0": 2,
+        "d1": 1,
+        "d2": 2,
+        "d3": 0,
+        "d4": 0,
+        "seq2": 0,
+        "seq3": 0,
+        "mod_total": 0,
+        "mod_x": 0,
+        "modx": 0,
+        "sum": 80,
+        "rank_analysis": {
+          "rank_0_limit": 1,
+          "rank_0_count": 5,
+          "rank_1_limit": 1,
+          "rank_1_count": 5,
+          "rank_2_limit": 2,
+          "rank_2_count": 2,
+          "rank_3_limit": 3,
+          "rank_3_count": 1,
+          "rank_4_limit": 2,
+          "rank_4_count": 3
+        }
+      }
+    },
+    {
+      "combination": [
+        3,
+        6,
+        14,
+        16,
+        41
+      ],
+      "score": 59.51,
+      "sum": 80,
+      "stats": {
+        "mean": 16.0,
+        "median": 14.0,
+        "even": 3,
+        "odd": 2,
+        "d0": 2,
+        "d1": 2,
+        "d2": 0,
+        "d3": 0,
+        "d4": 1,
+        "seq2": 0,
+        "seq3": 0,
+        "mod_total": 1,
+        "mod_x": 0,
+        "modx": 0,
+        "sum": 80,
+        "rank_analysis": {
+          "rank_0_limit": 1,
+          "rank_0_count": 5,
+          "rank_1_limit": 1,
+          "rank_1_count": 5,
+          "rank_2_limit": 2,
+          "rank_2_count": 2,
+          "rank_3_limit": 3,
+          "rank_3_count": 1,
+          "rank_4_limit": 2,
+          "rank_4_count": 3
+        }
+      }
+    },
+    {
+      "combination": [
+        2,
+        12,
+        16,
+        21,
+        29
+      ],
+      "score": 59.51,
+      "sum": 80,
+      "stats": {
+        "mean": 16.0,
+        "median": 16.0,
+        "even": 3,
+        "odd": 2,
+        "d0": 1,
+        "d1": 2,
+        "d2": 2,
+        "d3": 0,
+        "d4": 0,
+        "seq2": 0,
+        "seq3": 0,
+        "mod_total": 1,
+        "mod_x": 0,
+        "modx": 0,
+        "sum": 80,
+        "rank_analysis": {
+          "rank_0_limit": 1,
+          "rank_0_count": 5,
+          "rank_1_limit": 1,
+          "rank_1_count": 5,
+          "rank_2_limit": 2,
+          "rank_2_count": 2,
+          "rank_3_limit": 3,
+          "rank_3_count": 1,
+          "rank_4_limit": 2,
+          "rank_4_count": 3
+        }
+      }
+    },
+    {
+      "combination": [
+        2,
+        4,
+        17,
+        26,
+        31
+      ],
+      "score": 58.51,
+      "sum": 80,
+      "stats": {
+        "mean": 16.0,
+        "median": 17.0,
+        "even": 3,
+        "odd": 2,
+        "d0": 2,
+        "d1": 1,
+        "d2": 1,
+        "d3": 1,
+        "d4": 0,
+        "seq2": 0,
+        "seq3": 0,
+        "mod_total": 0,
+        "mod_x": 0,
+        "modx": 0,
+        "sum": 80,
+        "rank_analysis": {
+          "rank_0_limit": 1,
+          "rank_0_count": 5,
+          "rank_1_limit": 1,
+          "rank_1_count": 5,
+          "rank_2_limit": 2,
+          "rank_2_count": 2,
+          "rank_3_limit": 3,
+          "rank_3_count": 1,
+          "rank_4_limit": 2,
+          "rank_4_count": 3
+        }
+      }
+    },
+    {
+      "combination": [
+        8,
+        12,
+        13,
+        22,
+        25
+      ],
+      "score": 58.51,
+      "sum": 80,
+      "stats": {
+        "mean": 16.0,
+        "median": 13.0,
+        "even": 3,
+        "odd": 2,
+        "d0": 1,
+        "d1": 2,
+        "d2": 2,
+        "d3": 0,
+        "d4": 0,
+        "seq2": 1,
+        "seq3": 0,
+        "mod_total": 1,
+        "mod_x": 0,
+        "modx": 0,
+        "sum": 80,
+        "rank_analysis": {
+          "rank_0_limit": 1,
+          "rank_0_count": 5,
+          "rank_1_limit": 1,
+          "rank_1_count": 5,
+          "rank_2_limit": 2,
+          "rank_2_count": 2,
+          "rank_3_limit": 3,
+          "rank_3_count": 1,
+          "rank_4_limit": 2,
+          "rank_4_count": 3
+        }
+      }
+    },
+    {
+      "combination": [
+        1,
+        8,
+        17,
+        22,
+        32
+      ],
+      "score": 58.51,
+      "sum": 80,
+      "stats": {
+        "mean": 16.0,
+        "median": 17.0,
+        "even": 3,
+        "odd": 2,
+        "d0": 2,
+        "d1": 1,
+        "d2": 1,
+        "d3": 1,
+        "d4": 0,
+        "seq2": 0,
+        "seq3": 0,
+        "mod_total": 1,
+        "mod_x": 0,
+        "modx": 0,
+        "sum": 80,
+        "rank_analysis": {
+          "rank_0_limit": 1,
+          "rank_0_count": 5,
+          "rank_1_limit": 1,
+          "rank_1_count": 5,
+          "rank_2_limit": 2,
+          "rank_2_count": 2,
+          "rank_3_limit": 3,
+          "rank_3_count": 1,
+          "rank_4_limit": 2,
+          "rank_4_count": 3
+        }
+      }
+    },
+    {
+      "combination": [
+        6,
+        9,
+        14,
+        16,
+        35
+      ],
+      "score": 55.51,
+      "sum": 80,
+      "stats": {
+        "mean": 16.0,
+        "median": 14.0,
+        "even": 3,
+        "odd": 2,
+        "d0": 2,
+        "d1": 2,
+        "d2": 0,
+        "d3": 1,
+        "d4": 0,
+        "seq2": 0,
+        "seq3": 0,
+        "mod_total": 1,
+        "mod_x": 0,
+        "modx": 0,
+        "sum": 80,
+        "rank_analysis": {
+          "rank_0_limit": 1,
+          "rank_0_count": 5,
+          "rank_1_limit": 1,
+          "rank_1_count": 5,
+          "rank_2_limit": 2,
+          "rank_2_count": 2,
+          "rank_3_limit": 3,
+          "rank_3_count": 1,
+          "rank_4_limit": 2,
+          "rank_4_count": 3
+        }
+      }
+    },
+    {
+      "combination": [
+        1,
+        9,
+        16,
+        26,
+        28
+      ],
+      "score": 55.51,
+      "sum": 80,
+      "stats": {
+        "mean": 16.0,
+        "median": 16.0,
+        "even": 3,
+        "odd": 2,
+        "d0": 2,
+        "d1": 1,
+        "d2": 2,
+        "d3": 0,
+        "d4": 0,
+        "seq2": 0,
+        "seq3": 0,
+        "mod_total": 1,
+        "mod_x": 0,
+        "modx": 0,
+        "sum": 80,
+        "rank_analysis": {
+          "rank_0_limit": 1,
+          "rank_0_count": 5,
+          "rank_1_limit": 1,
+          "rank_1_count": 5,
+          "rank_2_limit": 2,
+          "rank_2_count": 2,
+          "rank_3_limit": 3,
+          "rank_3_count": 1,
+          "rank_4_limit": 2,
+          "rank_4_count": 3
+        }
+      }
+    },
+    {
+      "combination": [
+        1,
+        8,
+        15,
+        24,
+        32
+      ],
+      "score": 54.51,
+      "sum": 80,
+      "stats": {
+        "mean": 16.0,
+        "median": 15.0,
+        "even": 3,
+        "odd": 2,
+        "d0": 2,
+        "d1": 1,
+        "d2": 1,
+        "d3": 1,
+        "d4": 0,
+        "seq2": 0,
+        "seq3": 0,
+        "mod_total": 0,
+        "mod_x": 0,
+        "modx": 0,
+        "sum": 80,
+        "rank_analysis": {
+          "rank_0_limit": 1,
+          "rank_0_count": 5,
+          "rank_1_limit": 1,
+          "rank_1_count": 5,
+          "rank_2_limit": 2,
+          "rank_2_count": 2,
+          "rank_3_limit": 3,
+          "rank_3_count": 1,
+          "rank_4_limit": 2,
+          "rank_4_count": 3
+        }
+      }
+    },
+    {
+      "combination": [
+        2,
+        12,
+        19,
+        20,
+        27
+      ],
+      "score": 54.51,
+      "sum": 80,
+      "stats": {
+        "mean": 16.0,
+        "median": 19.0,
+        "even": 3,
+        "odd": 2,
+        "d0": 1,
+        "d1": 2,
+        "d2": 2,
+        "d3": 0,
+        "d4": 0,
+        "seq2": 1,
+        "seq3": 0,
+        "mod_total": 1,
+        "mod_x": 0,
+        "modx": 0,
+        "sum": 80,
+        "rank_analysis": {
+          "rank_0_limit": 1,
+          "rank_0_count": 5,
+          "rank_1_limit": 1,
+          "rank_1_count": 5,
+          "rank_2_limit": 2,
+          "rank_2_count": 2,
+          "rank_3_limit": 3,
+          "rank_3_count": 1,
+          "rank_4_limit": 2,
+          "rank_4_count": 3
+        }
+      }
+    },
+    {
+      "combination": [
+        3,
+        6,
+        16,
+        17,
+        38
+      ],
+      "score": 54.51,
+      "sum": 80,
+      "stats": {
+        "mean": 16.0,
+        "median": 16.0,
+        "even": 3,
+        "odd": 2,
+        "d0": 2,
+        "d1": 2,
+        "d2": 0,
+        "d3": 1,
+        "d4": 0,
+        "seq2": 1,
+        "seq3": 0,
+        "mod_total": 1,
+        "mod_x": 0,
+        "modx": 0,
+        "sum": 80,
+        "rank_analysis": {
+          "rank_0_limit": 1,
+          "rank_0_count": 5,
+          "rank_1_limit": 1,
+          "rank_1_count": 5,
+          "rank_2_limit": 2,
+          "rank_2_count": 2,
+          "rank_3_limit": 3,
+          "rank_3_count": 1,
+          "rank_4_limit": 2,
+          "rank_4_count": 3
+        }
+      }
+    },
+    {
+      "combination": [
+        8,
+        11,
+        15,
+        22,
+        24
+      ],
+      "score": 51.51,
+      "sum": 80,
+      "stats": {
+        "mean": 16.0,
+        "median": 15.0,
+        "even": 3,
+        "odd": 2,
+        "d0": 1,
+        "d1": 2,
+        "d2": 2,
+        "d3": 0,
+        "d4": 0,
+        "seq2": 0,
+        "seq3": 0,
+        "mod_total": 0,
+        "mod_x": 0,
+        "modx": 0,
+        "sum": 80,
+        "rank_analysis": {
+          "rank_0_limit": 1,
+          "rank_0_count": 5,
+          "rank_1_limit": 1,
+          "rank_1_count": 5,
+          "rank_2_limit": 2,
+          "rank_2_count": 2,
+          "rank_3_limit": 3,
+          "rank_3_count": 1,
+          "rank_4_limit": 2,
+          "rank_4_count": 3
+        }
+      }
+    },
+    {
+      "combination": [
+        6,
+        12,
+        15,
+        21,
+        26
+      ],
+      "score": 51.51,
+      "sum": 80,
+      "stats": {
+        "mean": 16.0,
+        "median": 15.0,
+        "even": 3,
+        "odd": 2,
+        "d0": 1,
+        "d1": 2,
+        "d2": 2,
+        "d3": 0,
+        "d4": 0,
+        "seq2": 0,
+        "seq3": 0,
+        "mod_total": 1,
+        "mod_x": 0,
+        "modx": 0,
+        "sum": 80,
+        "rank_analysis": {
+          "rank_0_limit": 1,
+          "rank_0_count": 5,
+          "rank_1_limit": 1,
+          "rank_1_count": 5,
+          "rank_2_limit": 2,
+          "rank_2_count": 2,
+          "rank_3_limit": 3,
+          "rank_3_count": 1,
+          "rank_4_limit": 2,
+          "rank_4_count": 3
+        }
+      }
+    },
+    {
+      "combination": [
+        7,
+        8,
+        12,
+        17,
+        36
+      ],
+      "score": 50.51,
+      "sum": 80,
+      "stats": {
+        "mean": 16.0,
+        "median": 12.0,
+        "even": 3,
+        "odd": 2,
+        "d0": 2,
+        "d1": 2,
+        "d2": 0,
+        "d3": 1,
+        "d4": 0,
+        "seq2": 1,
+        "seq3": 0,
+        "mod_total": 1,
+        "mod_x": 0,
+        "modx": 0,
+        "sum": 80,
+        "rank_analysis": {
+          "rank_0_limit": 1,
+          "rank_0_count": 5,
+          "rank_1_limit": 1,
+          "rank_1_count": 5,
+          "rank_2_limit": 2,
+          "rank_2_count": 2,
+          "rank_3_limit": 3,
+          "rank_3_count": 1,
+          "rank_4_limit": 2,
+          "rank_4_count": 3
+        }
+      }
+    },
+    {
+      "combination": [
+        1,
+        2,
+        15,
+        20,
+        42
+      ],
+      "score": 49.51,
+      "sum": 80,
+      "stats": {
+        "mean": 16.0,
+        "median": 15.0,
+        "even": 3,
+        "odd": 2,
+        "d0": 2,
+        "d1": 1,
+        "d2": 1,
+        "d3": 0,
+        "d4": 1,
+        "seq2": 1,
+        "seq3": 0,
+        "mod_total": 1,
+        "mod_x": 0,
+        "modx": 0,
+        "sum": 80,
+        "rank_analysis": {
+          "rank_0_limit": 1,
+          "rank_0_count": 5,
+          "rank_1_limit": 1,
+          "rank_1_count": 5,
+          "rank_2_limit": 2,
+          "rank_2_count": 2,
+          "rank_3_limit": 3,
+          "rank_3_count": 1,
+          "rank_4_limit": 2,
+          "rank_4_count": 3
+        }
+      }
+    }
+  ]
+}

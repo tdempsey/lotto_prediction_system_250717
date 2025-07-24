@@ -1,0 +1,17 @@
+<?php
+	$query = "CREATE TABLE IF NOT EXISTS $draw_prefix";
+	$query .= "picks_lm7_filter_$next_draw_Ymd ( ";
+	$query .= "id int(5) unsigned NOT NULL auto_increment, ";
+	$query .= "p1 tinyint(2) unsigned NOT NULL, ";
+	$query .= "p2 tinyint(2) unsigned NOT NULL, ";
+	$query .= "p3 tinyint(2) unsigned NOT NULL, ";
+	$query .= "p4 tinyint(2) unsigned NOT NULL, ";
+	$query .= "p5 tinyint(2) unsigned NOT NULL, ";
+	$query .= "p6 tinyint(2) unsigned NOT NULL, "; 
+	$query .= "da int(5) unsigned NOT NULL, ";
+	$query .= "PRIMARY KEY (id), ";
+	$query .= "KEY id (id) ";
+	$query .= ") ";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+?>

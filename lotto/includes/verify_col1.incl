@@ -1,0 +1,218 @@
+<?php
+
+		print("<a name=\"$limit\"><H3>(02) Lotto Verify Col1 - $game_name - Limit $limit</H3></a>\n");
+		
+		//start table
+		print("<TABLE BORDER=\"1\">\n");
+	
+		//create header row
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=100>Pass (1-9)</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=100>Pass %</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail (> 9)</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail %</TD>\n");
+		print("</B></TR>\n");
+
+		$today_unix = time ();
+;
+		$date_temp_seconds = $last_draw_unix - (86400*($limit)); ###211227
+					
+		// Start date 
+		$date_temp = date('Y/m/d', $date_temp_seconds); 
+
+		#echo "date_temp = $date_temp<br>"; ###211227
+
+		// get count draw table
+		$query5 = "SELECT count(*) FROM $draw_table_name ";
+		$query5 .= "WHERE date >= '$date_temp' ";
+		$query5 .= "AND b1 >= 10 "; ###211227
+
+		#echo "$query5<br>"; ###211227
+	
+		$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+		$row5 = mysqli_fetch_array($mysqli_result5);
+
+		$temp1 = number_format(($row5[0]/$limit)*100,2);
+
+		$temp2 = $limit-$row5[0];
+
+		$temp3 = number_format(((($limit-$row5[0])/$limit)*100),2);
+
+		print("<TR>\n");
+		
+		print("<TD align=center>&nbsp;</TD>\n");
+		print("<TD align=center>$temp2</TD>\n");
+		print("<TD align=center>$temp3 %</TD>\n");
+		print("<TD align=center>$row5[0]</TD>\n");
+		print("<TD align=center>$temp1 %</TD>\n");
+		print("</B></TR>\n");
+
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center>Pass (1-9)</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center>Pass %</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center>Fail (> 9)</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center>Fail %</TD>\n");
+		print("</B></TR>\n");
+
+		//end table
+		print("</TABLE>\n");
+		
+		echo "<br>";
+
+		//start table
+		print("<TABLE BORDER=\"1\">\n");
+		
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50 nowrap>Date</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>B1</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Sum</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Even</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Odd</TD>\n");
+		print("</B></TR>\n");
+		
+		// get count draw table
+		$query5b = "SELECT * FROM $draw_table_name ";
+		$query5b .= "WHERE date >= '$date_temp' ";
+		$query5b .= "AND b1 > 9 ";
+		$query5b .= "ORDER BY date DESC ";
+
+		#echo "$query5b<br>";
+		
+		$mysqli_result5b = mysqli_query($mysqli_link, $query5b) or die (mysqli_error($mysqli_link));
+
+		while ($row5b = mysqli_fetch_array($mysqli_result5b))
+		{
+			print("<TR>\n");
+			print("<TD align=center>&nbsp;</TD>\n");
+			print("<TD align=center nowrap>$row5b[date]</TD>\n");
+			print("<TD align=center>$row5b[b1]</TD>\n");
+			print("<TD align=center>$row5b[sum]</TD>\n");
+			print("<TD align=center>$row5b[even]</TD>\n");
+			print("<TD align=center>$row5b[odd]</TD>\n");
+			print("</TR>\n");
+		}
+		
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50 nowrap>Date</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>B1</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Sum</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Even</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Odd</TD>\n");
+		print("</B></TR>\n");
+
+		//end table
+		print("</TABLE>\n");
+
+		echo "<br>";
+
+		#############################################################################################
+		
+		//start table
+		print("<TABLE BORDER=\"1\">\n");
+	
+		//create header row
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=100>Pass (1-15)</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=100>Pass %</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail (> 15)</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail %</TD>\n");
+		print("</B></TR>\n");
+
+		$today_unix = time ();
+
+		$date_temp_seconds = $last_draw_unix - (86400*($limit)); ###211227
+					
+		// Start date 
+		$date_temp = date('Y/m/d', $date_temp_seconds); 
+
+		// get count draw table
+		$query5 = "SELECT count(*) FROM $draw_table_name ";
+		$query5 .= "WHERE date >= '$date_temp' ";
+		$query5 .= "AND b1 > 15 "; ###220312
+
+		#echo "$query5<br>"; ###211227
+	
+		$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+		$row5 = mysqli_fetch_array($mysqli_result5);
+
+		$temp1 = number_format(($row5[0]/$limit)*100,2);
+
+		$temp2 = $limit-$row5[0];
+
+		$temp3 = number_format(((($limit-$row5[0])/$limit)*100),2);
+
+		print("<TR>\n");
+		
+		print("<TD align=center>&nbsp;</TD>\n");
+		print("<TD align=center>$temp2</TD>\n");
+		print("<TD align=center>$temp3 %</TD>\n");
+		print("<TD align=center>$row5[0]</TD>\n");
+		print("<TD align=center>$temp1 %</TD>\n");
+		print("</B></TR>\n");
+
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center>Pass (1-15)</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center>Pass %</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center>Fail (> 15)</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center>Fail %</TD>\n");
+		print("</B></TR>\n");
+
+		//end table
+		print("</TABLE>\n");
+		
+		echo "<br>";
+
+		//start table
+		print("<TABLE BORDER=\"1\">\n");
+		
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50 nowrap>Date</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>B1</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Sum</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Even</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Odd</TD>\n");
+		print("</B></TR>\n");
+		
+		// get count draw table
+		$query5b = "SELECT * FROM $draw_table_name ";
+		$query5b .= "WHERE date >= '$date_temp' ";
+		$query5b .= "AND b1 > 15 ";
+		$query5b .= "ORDER BY date DESC ";
+
+		#echo "$query5b<br>";
+		
+		$mysqli_result5b = mysqli_query($mysqli_link, $query5b) or die (mysqli_error($mysqli_link));
+
+		while ($row5b = mysqli_fetch_array($mysqli_result5b))
+		{
+			print("<TR>\n");
+			print("<TD align=center>&nbsp;</TD>\n");
+			print("<TD align=center nowrap>$row5b[date]</TD>\n");
+			print("<TD align=center>$row5b[b1]</TD>\n");
+			print("<TD align=center>$row5b[sum]</TD>\n");
+			print("<TD align=center>$row5b[even]</TD>\n");
+			print("<TD align=center>$row5b[odd]</TD>\n");
+			print("</TR>\n");
+		}
+		
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50 nowrap>Date</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>B1</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Sum</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Even</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Odd</TD>\n");
+		print("</B></TR>\n");
+
+		//end table
+		print("</TABLE>\n");
+?>

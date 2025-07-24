@@ -1,0 +1,156 @@
+<?php
+	// ----------------------------------------------------------------------------------
+	function filter_test_draw($draw, $filter_switch) #241126
+	{
+		echo ">>>>> draw = $draw[1],$draw[2],$draw[3],$draw[4],$draw[5] <<<<<<br>";
+		
+		### seq2/seq3 ###
+		
+		$seq2 = 0; // Initialize the counter
+		$previous = null; // To keep track of the previous number
+
+		foreach ($draw as $index => $current) {
+		    if ($index > 0) { // Skip the first element
+			if ($previous == $current - 1 AND $current != 0) {
+			    $seq2++;
+			}
+		    }
+		    $previous = $current; // Update the previous number
+		}
+
+		echo "Number of consecutive pairs: $seq2<br>";
+		
+		$seq3 = 0; // Counter for sequences of three consecutive numbers
+		$consecutiveCount = 1; // Track the count of consecutive numbers
+
+		foreach ($draw as $index => $current) {
+		    if ($index > 0) {
+			// Check if current number is one more than the previous
+			if ($current == $previous + 1) {
+			    $consecutiveCount++;
+			    // Increment seq3 if three consecutive numbers are found
+			    if ($consecutiveCount == 3) {
+				$seq3++;
+				$consecutiveCount = 2; // Reset for overlapping sequences
+			    }
+			} else {
+			    $consecutiveCount = 1; // Reset if sequence breaks
+			}
+		    }
+		    $previous = $current; // Update previous number
+		}
+
+		echo "Number of three-number sequences: $seq3";
+
+
+		
+		### mod/modx ###
+		
+		// Initialize $mod array with zeros
+		$mod = array_fill(0, 10, 0); // Create an array with 10 elements, all initialized to 0
+
+		// Iterate over $draw using foreach
+		foreach ($draw as $value) {
+		    if ($value == 0) {
+			continue; // Skip the current iteration if the value is 0
+		    }
+
+		    if ($value < 10) {
+			$y = $value;
+		    } elseif ($value > 9 && $value < 20) {
+			$y = $value - 10;
+		    } elseif ($value > 19 && $value < 30) {
+			$y = $value - 20;
+		    } elseif ($value > 29 && $value < 40) {
+			$y = $value - 30;
+		    } elseif ($value > 39 && $value < 50) {
+			$y = $value - 40;
+		    } else {
+			$y = $value - 50;
+		    }
+		    $mod[$y]++;
+		}
+
+		// Calculate $mod_total
+		$mod_total = 0;
+
+		// Iterate over $mod using foreach
+		foreach ($mod as $count) {
+		    if ($count > 1) {
+			$mod_total += ($count - 1);
+		    }
+		}
+
+		return $mod_total;
+		
+		### dup ###
+
+		    // Initialize last_dup array to track repeating numbers
+		    $last_dup = array_fill(1, 50, 0); // Keys 1 to 50 initialized to 0
+
+		    // Generate last draws for each number from 1 to 50
+		    $last_draws = [];
+		    for ($x = 1; $x <= 50; $x++) {
+			$last_draws[$x] = array_slice(LastDraws($row[0], $x), 0, 5); // Only keep the last 5 draws
+		    }
+
+		    // Count repeating numbers in $row, ignoring '0'
+		    foreach ($row as $y => $value) {
+			if ($y > 0 && $y <= $balls_drawn && $value != 0) { // Skip '0' and ensure within drawn range
+			    foreach ($last_draws as $x => $draws) {
+				if (in_array($value, $draws, true)) {
+				    $last_dup[$x]++;
+				}
+			    }
+			}
+		    }
+
+		    // Build the SQL query dynamically
+		    $table_name = $hml ? "{$draw_prefix}dup_table" : "{$draw_prefix}dup_table";
+		    $columns = implode(', ', array_map(fn($x) => "'{$last_dup[$x]}'", range(1, 50)));
+		    $query_dup = "INSERT INTO $table_name VALUES ('$row[0]', $columns)";
+
+		    echo "$query_dup<br>";
+
+		    // Execute the query and handle errors
+		    $mysqli_result_dup = mysqli_query($mysqli_link, $query_dup) or die(mysqli_error($mysqli_link));
+
+		    return $last_dup;
+
+		### rank ###
+		
+		$rank_table = BuildRankTable($date);
+
+		// Initialize rank_count array with zeros
+		$rank_count = array_fill(0, 8, 0);
+
+		// Loop through the first 5 elements of $draw
+		for ($index = 0; $index <= 4; $index++) { // Ensure $draw has at least 5 elements
+		    $val = $draw[$index];
+
+		    // Ignore '0'
+		    if ($val == 0) {
+			continue;
+		    }
+
+		    // Get the count for the current value
+		    $count = $rank_table[$val];
+
+		    // Increment the appropriate rank_count bucket
+		    if ($count >= 0 && $count <= 6) {
+			$rank_count[$count]++;
+		    } else {
+			$rank_count[7]++; // Default for counts > 6 or invalid cases
+		    }
+		}
+
+		
+		### comb ###
+		
+		### includes_ga_f5\combin.incl 
+		
+		return ($pass_fail);
+	}
+
+	
+?>

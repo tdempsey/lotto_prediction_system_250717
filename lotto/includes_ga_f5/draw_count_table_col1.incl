@@ -1,0 +1,54 @@
+<?php
+	$table_temp = $draw_prefix . "temp2_" . $limit . "_" . $col1;
+
+	$query9 = "DROP TABLE IF EXISTS $table_temp ";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+
+	#$table_temp = $draw_prefix . "temp_" . $limit;
+	$query9 = "CREATE TABLE $table_temp ( ";
+	$query9 .= "num tinyint(3) unsigned NOT NULL, ";
+	$query9 .= "day1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query9 .= "week1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query9 .= "week2 tinyint(3) unsigned NOT NULL default '0', ";
+	$query9 .= "month1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query9 .= "month3 tinyint(3) unsigned NOT NULL default '0', ";
+	$query9 .= "month6 tinyint(3) unsigned NOT NULL default '0', ";
+	$query9 .= "year1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query9 .= "year2 tinyint(3) unsigned NOT NULL default '0', ";
+	$query9 .= "year3 tinyint(3) unsigned NOT NULL default '0', ";
+	$query9 .= "year4 tinyint(3) unsigned NOT NULL default '0', ";
+	$query9 .= "year5 tinyint(3) unsigned NOT NULL default '0', ";
+	$query9 .= "year6 tinyint(3) unsigned NOT NULL default '0', ";
+	$query9 .= "year7 tinyint(3) unsigned NOT NULL default '0', ";
+	$query9 .= "year8 tinyint(3) unsigned NOT NULL default '0', ";
+	$query9 .= "year9 tinyint(3) unsigned NOT NULL default '0', ";
+	$query9 .= "year10 tinyint(3) unsigned NOT NULL default '0', ";
+	$query9 .= "count int(5) unsigned NOT NULL, ";
+	$query9 .= "prev_date date NOT NULL default '1962-08-17', ";
+	$query9 .= "date date NOT NULL default '1962-08-17', ";
+	$query9 .= "PRIMARY KEY (num), ";
+	$query9 .= "KEY num (num), ";
+	$query9 .= "UNIQUE num_2 (num) ";
+	$query9 .= ") ";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+
+	for($index=1; $index <= $balls; $index++)
+	{
+		#$table_temp = $draw_prefix . "temp_" . $limit;
+		$query9 = "INSERT INTO $table_temp ";
+		$query9 .= "VALUES ('$index', ";
+		for ($d = 0; $d <= 15; $d++)
+		{
+			$query9 .= "'{$draw_count_array[$index][$d]}', ";
+		} 
+		$query9 .= "'$num_array[$index]', ";
+		$query9 .= "'$prev_date[$index]', ";
+		$query9 .= "'$num_date[$index]') ";
+
+		#print "$query9<p>";
+		
+		$mysqli_result = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+	}
+?>

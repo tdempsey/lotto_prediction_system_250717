@@ -1,0 +1,228 @@
+<?php
+		for ($r = 1; $r <= 5; $r++)
+		{
+			$temp1 = 7 + $r;
+			
+			print("<a name=\"$limit\"><H3>($temp1) Lotto Verify SumEO - Col $r - $game_name - Limit $limit</H3></a>\n");
+			
+			//start table
+			print("<TABLE BORDER=\"1\">\n");
+		
+			//create header row
+			print("<TR><B>\n");
+			print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+			print("<TD BGCOLOR=\"#57FC39\" align=center width=200>Pass (btw sumeo_limits)</TD>\n");
+			print("<TD BGCOLOR=\"#57FC39\" align=center width=100>Pass %</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=200>Fail (!btw sumeo_limits)</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail %</TD>\n");
+			print("</B></TR>\n");
+
+			$today_unix = time ();
+
+			$date_temp_seconds = $last_draw_unix - (86400*($limit+1));	
+						
+			// Start date 
+			$date_temp = date('Y/m/d', $date_temp_seconds); 
+
+			$pass_count = 0;
+			$failed_count = 0;
+
+			$failed_temp_array = array_fill (0,9,0);
+			$failed_array = array_fill (0,30,$failed_temp_array);
+			$x = 0;
+
+			// get draw table
+			$query5c = "SELECT * FROM $draw_table_name ";
+			$query5c .= "WHERE date >= '$date_temp' ";
+			$query5c .= "ORDER BY date DESC ";
+			#$query5c .= "LIMIT $limit ";
+
+			#echo "$query5c<br>";
+		
+			$mysqli_result5c = mysqli_query($mysqli_link, $query5c) or die (mysqli_error($mysqli_link));
+
+			while ($row5c = mysqli_fetch_array($mysqli_result5c))
+			{
+				#echo "vs - row5<br>";
+				#print_r($row5c);
+				#echo "<br>";
+				
+				$date_temp2 = explode('-',$row5c[date]);
+
+				#print_r($date_temp2);
+
+				$sumeo_table = "ga_f5_limits_by_sumeo_20" . $date_temp2[1] . $date_temp2[2];	
+
+				$query4 = "CREATE TABLE IF NOT EXISTS $sumeo_table LIKE ga_f5_limits_by_sumeo_template ";
+
+				#echo "$query4<br>";
+			
+				$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+				$query3 = "SELECT * FROM $sumeo_table ";
+				$query3 .= "LIMIT 1 ";
+
+				#echo "$query3<br>";
+			
+				$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+				$row3 = mysqli_fetch_array($mysqli_result3);
+
+				$num_rows3 = mysqli_num_rows($mysqli_result3); 
+				
+				if ($num_rows3)
+				{
+					$sumeo_table_exists = 1;
+					#echo "sumeo_table_exists<br>";
+				} else {
+					$sumeo_table_exists = 0;
+					#echo "!!!sumeo_table_exists<br>";
+				}
+
+				if (!$sumeo_table_exists)
+				{
+					#echo "calling calculate_limits_by_sumeo_date<br>";
+					require ("includes/calculate_limits_by_sumeo_date.incl");
+					#echo "calling calculate_limits_by_sumeo_date<br>";
+				}
+				
+				if (1)
+				{
+					// get draw table
+					$query6 = "SELECT * FROM $sumeo_table ";
+					$query6 .= "WHERE sum = $row5c[sum] ";
+					$query6 .= "AND   col = $r ";
+					$query6 .= "AND   even = $row5c[even] ";
+					$query6 .= "AND   odd = $row5c[odd] ";
+
+					#echo "$query6<br>";
+				
+					$mysqli_result6 = mysqli_query($mysqli_link, $query6) or die		(mysqli_error($mysqli_link));
+
+					$row6 = mysqli_fetch_array($mysqli_result6);
+
+					#echo "row5[$r] $row5c[$r]<br>";
+					#echo "row6[low] $row6[low]<br>";
+					#echo "row6[high] $row6[high]<br>";
+					
+					if (($row5c[$r] >= $row6[low]) AND ($row5c[$r] <= $row6[high])) {
+						$pass_count++;
+						#echo "pass_count++<br>";
+					} else {
+						$failed_count++;
+						$failed_array[$x][0] = $row5c[date];
+						$failed_array[$x][1] = $row5c[sum];
+						$failed_array[$x][2] = $row5c[$r];
+						$failed_array[$x][3] = $row6[low];
+						$failed_array[$x][4] = $row6[high];
+						$failed_array[$x][5] = $row6[count];
+						$failed_array[$x][6] = $row6[even];
+						$failed_array[$x][7] = $row6[odd];
+
+						$x++;
+					}
+				} 
+			}
+		
+			$temp1 = number_format(($pass_count/$limit)*100,2);
+
+			$temp3 = number_format(($failed_count/$limit*100),2);
+
+			print("<TR>\n");
+			
+			print("<TD align=center>&nbsp;</TD>\n");
+			print("<TD align=center>$pass_count</TD>\n");
+			print("<TD align=center>$temp1 %</TD>\n");
+			print("<TD align=center>$failed_count</TD>\n");
+			print("<TD align=center>$temp3 %</TD>\n");
+			print("</B></TR>\n");
+
+			print("<TR><B>\n");
+			print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+			print("<TD BGCOLOR=\"#57FC39\" align=center width=100>Pass (<= 1)</TD>\n");
+			print("<TD BGCOLOR=\"#57FC39\" align=center width=100>Pass %</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail (> 1)</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail %</TD>\n");
+			print("</B></TR>\n");
+
+			//end table
+			print("</TABLE>\n");
+
+			echo "<br>";
+
+			//start table
+			print("<TABLE BORDER=\"1\">\n");
+			
+			print("<TR><B>\n");
+			print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Date</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Sum</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Even</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Odd</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Ball</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Low</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>High</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Count</TD>\n");
+			print("</B></TR>\n");
+
+			#echo "entering y loop<br>";
+			
+			for ($y = 1; $y <= 30; $y++)
+			{
+				#echo "y = $y<br>";
+				#print_r($failed_array[$y]);
+				#echo "<br>";
+				
+				if ($failed_array[$y][2] && $failed_array[$y][5])
+				{
+					$temp0 = $failed_array[$y][0];
+					$temp1 = $failed_array[$y][1];
+					$temp2 = $failed_array[$y][2];
+					$temp3 = $failed_array[$y][3];
+					$temp4 = $failed_array[$y][4];
+					$temp5 = $failed_array[$y][5];
+					$temp6 = $failed_array[$y][6];
+					$temp7 = $failed_array[$y][7];
+
+					print("<TR>\n");
+					print("<TD align=center>&nbsp;</TD>\n");
+					print("<TD align=center>$temp0</TD>\n");
+					print("<TD align=center>$temp1</TD>\n");
+					print("<TD align=center>$temp6</TD>\n");
+					print("<TD align=center>$temp7</TD>\n");
+					print("<TD align=center>$temp2</TD>\n");
+					print("<TD align=center>$temp3</TD>\n");
+					print("<TD align=center>$temp4</TD>\n");
+					print("<TD align=center>$temp5</TD>\n");
+					print("</TR>\n");
+				}
+			}
+			
+			print("<TR><B>\n");
+			print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Date</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Sum</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Even</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Odd</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Ball</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Low</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>High</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Count</TD>\n");
+			print("</B></TR>\n");
+
+			//end table
+			print("</TABLE>\n");
+		}
+
+		/*
+		<script src="C:\Bitnami\wampstack-7.2.31-0\apache2\htdocs\Chart.js"></script>
+		<script>
+		    #var myChart = new Chart(ctx, {...});
+		</script>
+		
+
+		require(['path/to/chartjs/dist/Chart.min.js'], function(Chart){
+		    #var myChart = new Chart(ctx, {...});
+		});
+		*/
+?>

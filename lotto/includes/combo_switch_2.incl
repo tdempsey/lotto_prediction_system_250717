@@ -1,0 +1,45 @@
+<?php
+	switch ($combo) 
+	{
+		case 1:
+			$combo_col1 = 1;
+			$combo_col2 = 2;
+			break;
+		case 2:
+			$combo_col1 = 1;
+			$combo_col2 = 3;
+			break;
+		case 3:
+			$combo_col1 = 1;
+			$combo_col2 = 4;
+			break;
+		case 4:
+			$combo_col1 = 1;
+			$combo_col2 = 5;
+			break;
+		case 5:
+			$combo_col1 = 2;
+			$combo_col2 = 3;
+			break;
+		case 6:
+			$combo_col1 = 2;
+			$combo_col2 = 4;
+			break;
+		case 7:
+			$combo_col1 = 2;
+			$combo_col2 = 5;
+			break;
+		case 8:
+			$combo_col1 = 3;
+			$combo_col2 = 4;
+			break;
+		case 9:
+			$combo_col1 = 3;
+			$combo_col2 = 5;
+			break;
+		case 10:
+			$combo_col1 = 4;
+			$combo_col2 = 5;
+			break;
+	}
+?>

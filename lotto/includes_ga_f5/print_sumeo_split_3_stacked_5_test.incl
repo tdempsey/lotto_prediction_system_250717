@@ -1,0 +1,176 @@
+<?php
+	$table_temp = 'temp_5a_' . $balls . '_' . $row3[numx] . '_' . $row3[even] . '_' . $row3[odd] . '_200410';
+
+	/*
+	print("<h3>Count - SumEO = $row3[numx],$row3[even],$row3[odd]</h3>\n");
+	#print("<P>");
+	print("<TABLE BORDER=\"1\">\n");
+
+	//create header row
+	print("<TR><B>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Combin</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b1</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b2</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b3</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b4</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b5</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Count</center></TD>\n");
+	print("</B></TR>\n");
+	*/
+
+	############################################################################################
+	$query10 = "SELECT * FROM $table_temp ";
+
+	switch ($combin) {
+		case 1:
+			$query10 .= "WHERE b1 = $row8[b1] ";
+			$query10 .= "AND   b2 = $row8[b2] ";
+			$query10 .= "AND   b3 = $row8[b3] ";
+			#$query10 .= "AND   b4 = $row8[b4] ";
+			break;
+		case 2:
+			$query10 .= "WHERE b1 = $row8[b1] ";
+			$query10 .= "AND   b2 = $row8[b2] ";
+			$query10 .= "AND   b4 = $row8[b3] ";
+			#$query10 .= "AND   b5 = $row8[b4] ";
+			break;
+		case 3:
+			$query10 .= "WHERE b1 = $row8[b1] ";
+			$query10 .= "AND   b2 = $row8[b2] ";
+			$query10 .= "AND   b5 = $row8[b3] ";
+			#$query10 .= "AND   b5 = $row8[b4] ";
+			break;
+		case 4:
+			$query10 .= "WHERE b1 = $row8[b1] ";
+			$query10 .= "AND   b3 = $row8[b2] ";
+			$query10 .= "AND   b4 = $row8[b3] ";
+			#$query10 .= "AND   b5 = $row8[b4] ";
+			break;
+		case 5:
+			$query10 .= "WHERE b1 = $row8[b1] ";
+			$query10 .= "AND   b3 = $row8[b2] ";
+			$query10 .= "AND   b5 = $row8[b3] ";
+			#$query10 .= "AND   b5 = $row8[b4] ";
+			break;
+		case 6:
+			$query10 .= "WHERE b1 = $row8[b1] ";
+			$query10 .= "AND   b4 = $row8[b2] ";
+			$query10 .= "AND   b5 = $row8[b3] ";
+			#$query10 .= "AND   b4 = $row8[b4] ";
+			break;
+		case 7:
+			$query10 .= "WHERE b2 = $row8[b1] ";
+			$query10 .= "AND   b3 = $row8[b2] ";
+			$query10 .= "AND   b4 = $row8[b3] ";
+			#$query10 .= "AND   b5 = $row8[b4] ";
+			break;
+		case 8:
+			$query10 .= "WHERE b2 = $row8[b1] ";
+			$query10 .= "AND   b3 = $row8[b2] ";
+			$query10 .= "AND   b5 = $row8[b3] ";
+			#$query10 .= "AND   b5 = $row8[b4] ";
+			break;
+		case 9:
+			$query10 .= "WHERE b2 = $row8[b1] ";
+			$query10 .= "AND   b4 = $row8[b2] ";
+			$query10 .= "AND   b5 = $row8[b3] ";
+			#$query10 .= "AND   b5 = $row8[b4] ";
+			break;
+		case 10:
+			$query10 .= "WHERE b3 = $row8[b1] ";
+			$query10 .= "AND   b4 = $row8[b2] ";
+			$query10 .= "AND   b5 = $row8[b3] ";
+			#$query10 .= "AND   b5 = $row8[b4] ";
+			break;
+	}
+
+	#$query10 .= "AND   b1 <= '3' ";
+	$query10 .= "AND   comb2 = 10 AND comb5 = 0 ";
+	$query10 .= "AND   rank0 <= 0 AND rank1 <= 2 AND rank2 <= 2 AND rank3 <= 2 AND rank4 <= 2 AND rank5 <= 2 AND rank6 <= 1 AND rank7 <= 1 
+		     AND comb2 = 10 AND comb5 = 0 
+		     AND dup1 <= 1 AND dup2 <= 2 AND dup3 <= 2 AND dup4 <= 2 AND dup20 >= 4 and dup25 = 5 ";
+	$query10 .= "AND   last_updated = '$curr_date' ";
+	
+	$query10 .= "ORDER BY y1_sum DESC ";
+	#$query10 .= "LIMIT 100 ";
+	
+	#echo "$query10<p>";
+
+	$mysqli_result10 = mysqli_query($mysqli_link, $query10) or die (mysqli_error($mysqli_link));
+
+	// get each row
+	while($row10 = mysqli_fetch_array($mysqli_result10))
+	{
+		print("<TR>\n");
+		print("<TD><center>$row10[combin]</center></TD>\n");
+		print("<TD ><center>$row10[b1]</center></TD>\n");
+		print("<TD ><center>$row10[b2]</center></TD>\n");
+		print("<TD ><center>$row10[b3]</center></TD>\n");
+		print("<TD ><center>$row10[b4]</center></TD>\n");
+		print("<TD ><center>$row10[b5]</center></TD>\n");
+		print("<TD align=center>1</TD>\n");
+		if ($row10[y1_sum] >= 25.5)
+		{
+			print("<TD align=center><b>$row10[y1_sum]</b></TD>\n");
+		} else {
+			print("<TD align=center>$row10[y1_sum]</TD>\n");
+		}
+
+		$query88 = "SELECT * FROM ga_f5_dup_100 ";
+		$query88 .= "WHERE id > 32 ";
+		$query88 .= "AND dup1 = $row10[dup1] "; 
+		$query88 .= "AND dup2 = $row10[dup2] ";
+		$query88 .= "AND dup3 = $row10[dup3] ";
+		$query88 .= "AND dup4 = $row10[dup4] ";
+		
+		#echo "$query88<p>";
+
+		$mysqli_result88 = mysqli_query($mysqli_link, $query88) or die (mysqli_error($mysqli_link));
+
+		// get each row
+		$row88 = mysqli_fetch_array($mysqli_result88);
+
+		#echo "row88[count] = $row88[count]<br>";
+
+		if ($row88[count] > 4)
+		{
+			print("<TD align=center><b>$row10[dup1]</b></TD>\n");
+			print("<TD align=center><b>$row10[dup2]</b></TD>\n");
+			print("<TD align=center><b>$row10[dup3]</b></TD>\n");
+			print("<TD align=center><b>$row10[dup4]</b></TD>\n");
+		} else {
+			print("<TD align=center>$row10[dup1]</TD>\n");
+			print("<TD align=center>$row10[dup2]</TD>\n");
+			print("<TD align=center>$row10[dup3]</TD>\n");
+			print("<TD align=center>$row10[dup4]</TD>\n");
+		}
+
+		print("<TD ><center>$row10[rank0]</center></TD>\n");
+		print("<TD ><center>$row10[rank1]</center></TD>\n");
+		print("<TD ><center>$row10[rank2]</center></TD>\n");
+		print("<TD ><center>$row10[rank3]</center></TD>\n");
+		print("<TD ><center>$row10[rank4]</center></TD>\n");
+		print("<TD ><center>$row10[rank5]</center></TD>\n");
+		print("<TD ><center>$row10[rank6]</center></TD>\n");
+		print("<TD ><center>$row10[rank7]</center></TD>\n");
+
+		print("</TR>\n");
+	}
+
+	/*
+	print("<TR><B>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Combin</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b1</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b2</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b3</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b4</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b5</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Count</center></TD>\n");
+	print("</B></TR>\n");
+	*/
+
+	#die();
+
+	//end table
+	#print("</TABLE>\n");
+?>

@@ -1,0 +1,29 @@
+<?php
+		// initialize variables
+		for($index = 1; $index <= $balls; $index++)
+		{
+			$num_array[$index] = 0;
+			$num_date[$index] = "1962-08-17";
+			$prev_date[$index] = "1962-08-17";
+		}
+	
+		for($index = 1; $index <= $mega_balls; $index++)
+		{
+			$mb_array[$index] = 0;
+			$mb_date[$index] = "1962-08-17";
+		}
+	
+		// **************************************************************************
+	
+		for($index1=1; $index1 <= ($balls*$balls); $index1++)
+		{
+				$zero_array = array(0,000-00-00,000-00-00);
+				$pick_array[$index1] = $zero_array;	
+				$num1 = intval($index1/$balls)+1;
+				$num2 = $index1-(($num1-1)*$balls); 
+		}
+	
+		// **************************************************************************
+	
+		$rank_count = array_fill (0, 6, 0); 
+?>

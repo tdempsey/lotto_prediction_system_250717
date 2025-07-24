@@ -1,0 +1,36 @@
+<?php
+	$query2 = "INSERT INTO $table_temp ";
+	$query2 .= "VALUES ('0', ";
+	$query2 .= "'$row[$x]', ";
+	$query2 .= "'$row[$y]', ";
+	$query2 .= "'0', ";
+	$query2 .= "'0', ";
+	$query2 .= "'0', ";
+	$query2 .= "'0', ";
+	$query2 .= "'0', ";
+	$query2 .= "'0', ";
+	$query2 .= "'0', ";
+	$query2 .= "'0', ";
+	$query2 .= "'0', ";
+	$query2 .= "'0', ";
+	$query2 .= "'0', ";
+	$query2 .= "'0', ";
+	$query2 .= "'0', ";
+	$query2 .= "'0', ";
+	$query2 .= "'0', ";
+	$query2 .= "'0', ";
+	$query2 .= "'1', ";
+	$query2 .= "'0', ";
+	$query2 .= "'0', ";
+	$query2 .= "'0', ";
+	$query2 .= "'0', ";
+	$query2 .= "'0', ";
+	$query2 .= "'0', ";
+	$query2 .= "'0', ";
+	$query2 .= "'0', ";
+	$query2 .= "'$prev_date[$x]',";
+	$query2 .= "'$row[0]')"; 
+
+	#print("$query2<br>");
+	$mysqli_result = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+?>

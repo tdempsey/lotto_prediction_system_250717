@@ -1,0 +1,199 @@
+<?php
+	$table_temp = $draw_prefix . "temp_quad_" . $limit;
+
+	$query3 = "DROP TABLE IF EXISTS $table_temp ";
+
+	$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+	#
+	# Table "$draw_prefix . "temp_pair_" . $limit" 
+	#
+
+	$query4 = "CREATE TABLE $table_temp ( ";
+	$query4 .= "id int(10) unsigned NOT NULL auto_increment, ";
+	$query4 .= "num1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "num2 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "num3 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "num4 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "day1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "week1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "week2 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "month1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "month3 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "month6 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year2 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year3 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year4 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year5 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year6 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year7 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year8 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year9 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year10 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "count int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "combo2_1_2_3_4 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "combo2_1_2_3_5 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "combo2_1_2_4_5 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "combo2_1_3_4_5 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "combo2_2_3_4_5 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "percent_30 float(4,1) unsigned NOT NULL default '0', ";
+	$query4 .= "percent_365 float(4,1) unsigned NOT NULL default '0', ";
+	$query4 .= "percent_5000 float(4,1) unsigned NOT NULL default '0', ";
+	$query4 .= "percent_wa float(4,1) unsigned NOT NULL default '0', ";
+	$query4 .= "previous_date date NOT NULL default '1962-08-17', ";
+	$query4 .= "last_date date NOT NULL default '1962-08-17', ";
+	$query4 .= "PRIMARY KEY  (id), ";
+	$query4 .= "KEY num1 (num1), ";
+	$query4 .= "KEY num2 (num2) ";
+	$query4 .= ") ";
+
+	#echo "$query4<br>";
+
+	$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+	for ($a = 1; $a <= ($balls-3); $a++)
+	{
+		for ($b = $a+1; $b <= ($balls-2); $b++)
+		{
+			for ($c = $b+1; $c <= ($balls-1); $c++)
+			{
+				for ($d = $c+1; $d <= $balls; $d++)
+				{
+					$num_rows = 0;
+
+					$query5 = "SELECT * FROM $draw_prefix";
+					$query5 .= "4_";
+					$query5 .= "$balls ";
+					$query5 .= "WHERE d1 = $a and d2 = $b and d3 = $c and d4 = $d ";
+					$query5 .= "ORDER BY date DESC ";
+
+					#echo "$query5<br>";
+
+					$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+					$num_rows = mysqli_num_rows($mysqli_result5);
+
+					#echo "num_rows = $num_rows<br>";
+
+					$pair_count_array = array_fill (0,16,0);
+
+					$combo2_count = array_fill (0,10,0);
+
+					while ($row1 = mysqli_fetch_array($mysqli_result5))
+					{
+						$draw_date_array = date_parse("$row1[date]");
+						$draw_date_unix = mktime (0,0,0,$draw_date_array[month],$draw_date_array[day],$draw_date_array[year]);
+
+						#echo "draw_date_unix = $draw_date_unix<br>";
+						
+						if ($draw_date_unix == $day1)
+						{ 
+							for ($e = 0; $e <= 15; $e++) {$pair_count_array[$e]++;}
+						} elseif ($eraw_date_unix > $week1) {
+							for ($e = 1; $e <= 15; $e++) {$pair_count_array[$e]++;}
+						} elseif ($eraw_date_unix > $week2) {
+							for ($e = 2; $e <= 15; $e++) {$pair_count_array[$e]++;}
+						} elseif ($eraw_date_unix > $month1) {
+							for ($e = 3; $e <= 15; $e++) {$pair_count_array[$e]++;}
+						} elseif ($eraw_date_unix > $month3) {
+							for ($e = 4; $e <= 15; $e++) {$pair_count_array[$e]++;}
+						} elseif ($eraw_date_unix > $month6) {
+							for ($e = 5; $e <= 15; $e++) {$pair_count_array[$e]++;}
+						} elseif ($eraw_date_unix > $year1) {
+							for ($e = 6; $e <= 15; $e++) {$pair_count_array[$e]++;}
+						} elseif ($eraw_date_unix > $year2) {
+							for ($e = 7; $e <= 15; $e++) {$pair_count_array[$e]++;}
+						} elseif ($eraw_date_unix > $year3) {
+							for ($e = 8; $e <= 15; $e++) {$pair_count_array[$e]++;}
+						} elseif ($eraw_date_unix > $year4) {
+							for ($e = 9; $e <= 15; $e++) {$pair_count_array[$e]++;}
+						} elseif ($eraw_date_unix > $year5) {
+							for ($e = 10; $e <= 15; $e++) {$pair_count_array[$e]++;}
+						} elseif ($eraw_date_unix > $year6) {
+							for ($e = 11; $e <= 15; $e++) {$pair_count_array[$e]++;}
+						} elseif ($eraw_date_unix > $year7) {
+							for ($e = 12; $e <= 15; $e++) {$pair_count_array[$e]++;}
+						} elseif ($eraw_date_unix > $year8) {
+							for ($e = 13; $e <= 15; $e++) {$pair_count_array[$e]++;}
+						} elseif ($eraw_date_unix > $year9) {
+							for ($e = 14; $e <= 15; $e++) {$pair_count_array[$e]++;}
+						} elseif ($eraw_date_unix > $year10) {
+							for ($e = 15; $e <= 15; $e++) {$pair_count_array[$e]++;}
+						}
+
+						$combo2_count[$row1[combo]]++;
+					}
+
+					if ($num_rows)
+					{
+						mysqli_data_seek($mysqli_result5,0);
+					}
+
+					$row_last = mysqli_fetch_array($mysqli_result5); # last_draw
+
+					$row_prev = mysqli_fetch_array($mysqli_result5); # prev_draw
+
+					#$table_temp = $draw_prefix . "temp_pair_" . $limit;
+					$query2 = "INSERT INTO $table_temp ";
+					$query2 .= "VALUES ('0', ";
+					$query2 .= "'$a', ";
+					$query2 .= "'$b', ";
+					$query2 .= "'$c', ";
+					$query2 .= "'$d', ";
+					for ($e = 0; $e <= 15; $e++) 
+					{
+						$query2 .= "'$pair_count_array[$e]', ";
+					}
+					$query2 .= "'$num_rows', ";
+					for ($e = 1; $e <= 5; $e++) 
+					{
+						$query2 .= "'$combo2_count[$e]', ";
+					}
+					$query2 .= "'0', ";
+					$query2 .= "'0', ";
+					$query2 .= "'0', ";
+					$query2 .= "'0', ";
+					$query2 .= "'$row_prev[date]',"; 
+					$query2 .= "'$row_last[date]')";
+
+					#echo "$query2<br>";
+
+					$mysqli_result = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+
+					### reverse
+					
+					#$table_temp = $draw_prefix . "temp_pair_" . $limit;
+					$query2 = "INSERT INTO $table_temp ";
+					$query2 .= "VALUES ('0', ";
+					$query2 .= "'$d', ";
+					$query2 .= "'$c', ";
+					$query2 .= "'$b', ";
+					$query2 .= "'$a', ";
+					for ($e = 0; $e <= 15; $e++) 
+					{
+						$query2 .= "'$pair_count_array[$e]', ";
+					}
+					$query2 .= "'$num_rows', ";
+					for ($e = 1; $e <= 5; $e++) 
+					{
+						$query2 .= "'$combo2_count[$e]', ";
+					}
+					$query2 .= "'0', ";
+					$query2 .= "'0', ";
+					$query2 .= "'0', ";
+					$query2 .= "'0', ";
+					$query2 .= "'$row_prev[date]',"; 
+					$query2 .= "'$row_last[date]')";
+
+					#echo "$query2<br>";
+
+					$mysqli_result = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+				}
+			}
+		}
+	}
+
+	print "<h3>Table <font color=\"#ff0000\">$table_temp</font> Updated!</h3>";
+
+?>

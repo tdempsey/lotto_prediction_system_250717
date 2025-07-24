@@ -1,0 +1,86 @@
+Lotto Filter
+------------
+
+1) sum
+	- 60-119
+	- 9x king - 27%, 11x = 13%, 8x = 16%, 7x = 12%, 6x = 10%
+	- few 5x and 12x - 54,59,120,123,126,132,136,137,138,145,150
+	- sum365 > 1 = 83 sums (17 sums = 1)
+
+2) even/odd
+	- sum_analysis table 
+
+3) d501/d502
+	- sum_analysis table 
+
+4) draw
+	- sum_analysis table 
+	- draw_table (in dxxx.incl - draw column pairs [0][1] - higher percents 
+
+5) rank
+
+6) mod
+	- mod2 <= 2, mod3 <= 0
+
+7) seq2/seq3
+	- seq2<=1, seq3<=0
+
+8) wheels generated
+	- filter >= 0.1
+	- smaller selection of 0.02-0.09
+
+9) columns xy, pairs
+	- see column_draw.txt
+	- pass - use 26/all totals
+	- select high count pairs outside filter range
+
+10) due/soon
+
+11) hot/warm/cold
+
+12) x_num
+
+13) x10_1, x10_2, x10_3
+
+14) dup
+	- test groups of 5 on last ...
+	- limit based on dup_report_limit with fixed dup date calculation
+		- safe
+		- aggressive (one error or fluke)
+	- second pass with general dup limits (safer)
+
+15) combin (build subroutine)
+	- drawn
+	- saved
+
+16) range analysis - sum
+	- use form
+	- wheels generated will filter and cover
+
+Tests
+-----
+
+1) Columns 
+	- test using flags (26/all)
+
+Draws - ** randomize after finished (group pages 1-100 by random picks/columns) - 10 panels per page = 100 pages **
+-----
+
+1) Columns by sum (move to #2)
+	- pick 1-3 = 44%/100 draws
+	- pick 7 = 9%/100 draws
+	- pick 10 = 8%/100 draws
+	- pick 1-3,7,10 = 61%/100 draws
+
+	- pairs using flags (26/all) - Hot Pairs!
+
+	- note: add col1=10,11,12 - small draw total
+
+2) Sum percentage X 1000 for count of sum draws
+	- ex: 9x = 27% = 270 draws
+
+
+Exception Table
+---------------
+Columns - column/sum/number (generate from range_analysis)
+Draw rank - column/sum/count (generate from range_analysis)

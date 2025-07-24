@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lottery Analysis Dashboard</title>
+    <link rel="stylesheet" href="dashboard_styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <h1><i class="fas fa-chart-line"></i> Lottery Analysis Dashboard</h1>
+                <div class="header-controls">
+                    <select id="gameSelect" class="game-selector">
+                        <option value="1">Georgia Fantasy 5</option>
+                        <option value="2">Mega Millions</option>
+                        <option value="3">Georgia 5</option>
+                        <option value="7">Powerball</option>
+                    </select>
+                    <button id="refreshBtn" class="refresh-btn">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Statistics Cards -->
+            <section class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Last Draw</h3>
+                            <p id="lastDrawDate">Loading...</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-dice"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Next Draw</h3>
+                            <p id="nextDrawDate">Loading...</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Total Draws</h3>
+                            <p id="totalDraws">Loading...</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Hot Numbers</h3>
+                            <p id="hotNumbers">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Main Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Recent Draws -->
+                <section class="dashboard-panel">
+                    <h2><i class="fas fa-history"></i> Recent Draws</h2>
+                    <div class="recent-draws-container">
+                        <div id="recentDraws" class="recent-draws">
+                            Loading recent draws...
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Number Frequency Chart -->
+                <section class="dashboard-panel">
+                    <h2><i class="fas fa-chart-bar"></i> Number Frequency</h2>
+                    <div class="chart-container">
+                        <canvas id="frequencyChart"></canvas>
+                    </div>
+                </section>
+
+                <!-- Hot/Cold Numbers -->
+                <section class="dashboard-panel">
+                    <h2><i class="fas fa-thermometer-half"></i> Hot & Cold Numbers</h2>
+                    <div class="hot-cold-container">
+                        <div class="hot-numbers">
+                            <h3>Hot Numbers</h3>
+                            <div id="hotNumbersList" class="number-list">
+                                Loading...
+                            </div>
+                        </div>
+                        <div class="cold-numbers">
+                            <h3>Cold Numbers</h3>
+                            <div id="coldNumbersList" class="number-list">
+                                Loading...
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sum Analysis -->
+                <section class="dashboard-panel">
+                    <h2><i class="fas fa-calculator"></i> Sum Analysis</h2>
+                    <div class="sum-analysis-container">
+                        <div class="sum-stats">
+                            <div class="sum-stat">
+                                <label>Average Sum:</label>
+                                <span id="avgSum">Loading...</span>
+                            </div>
+                            <div class="sum-stat">
+                                <label>Most Common Sum:</label>
+                                <span id="commonSum">Loading...</span>
+                            </div>
+                            <div class="sum-stat">
+                                <label>Sum Range:</label>
+                                <span id="sumRange">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="sumChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Even/Odd Analysis -->
+                <section class="dashboard-panel">
+                    <h2><i class="fas fa-balance-scale"></i> Even/Odd Analysis</h2>
+                    <div class="even-odd-container">
+                        <div class="chart-container">
+                            <canvas id="evenOddChart"></canvas>
+                        </div>
+                        <div class="even-odd-stats">
+                            <div class="eo-stat">
+                                <label>Even Numbers:</label>
+                                <span id="evenCount">Loading...</span>
+                            </div>
+                            <div class="eo-stat">
+                                <label>Odd Numbers:</label>
+                                <span id="oddCount">Loading...</span>
+                            </div>
+                            <div class="eo-stat">
+                                <label>Even/Odd Ratio:</label>
+                                <span id="eoRatio">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Prediction Analysis -->
+                <section class="dashboard-panel">
+                    <h2><i class="fas fa-crystal-ball"></i> Prediction Analysis</h2>
+                    <div class="prediction-container">
+                        <div class="prediction-controls">
+                            <button id="generatePrediction" class="prediction-btn">
+                                <i class="fas fa-magic"></i> Generate Prediction
+                            </button>
+                            <select id="predictionMethod" class="prediction-method">
+                                <option value="frequency">Frequency Based</option>
+                                <option value="pattern">Pattern Based</option>
+                                <option value="statistical">Statistical</option>
+                            </select>
+                        </div>
+                        <div id="predictionResults" class="prediction-results">
+                            Click "Generate Prediction" to see suggested numbers
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <p>&copy; 2024 Lottery Analysis Dashboard. For entertainment purposes only.</p>
+        </footer>
+    </div>
+
+    <script src="dashboard_script.js"></script>
+</body>
+</html>

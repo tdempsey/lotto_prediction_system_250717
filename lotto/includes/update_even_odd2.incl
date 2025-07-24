@@ -1,0 +1,27 @@
+<?php
+	even_odd($draw,$draw_even,$draw_odd); 
+	
+	calculate_50_50($draw,$d2_1,$d2_2,$balls);
+	
+	$draw_count = calculate_draw_count($draw);
+
+	calculate_rank_count($row[0],$draw,$rank_count);
+
+	$query3 = "UPDATE combo_5_36_2 ";
+	$query3 .= "SET even=$draw_even, odd=$draw_odd, d2_1=$d2_1, d2_2=$d2_2, ";
+	
+	for ($x = 0; $x <= intval($balls/10); $x++)
+	{
+		$query3 .= "draw$x=$draw_count[$x], ";
+	}
+	
+	$query3 .= "rank0=$rank_count[0], rank1=$rank_count[1], rank2=$rank_count[2], rank3=$rank_count[3], ";
+	$query3 .= "rank4=$rank_count[4], rank5=$rank_count[5], rank6=$rank_count[6] ";
+	$query3 .= "WHERE date='$row[0]' ";
+
+	//print("$query3\n");
+
+	$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+	#print("<FONT COLOR=RED><H4>*** $row[0] updated ***</H4></FONT>\n");
+?>

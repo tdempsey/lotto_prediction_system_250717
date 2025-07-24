@@ -1,0 +1,1 @@
+SELECT * FROM `combo_5a_42_113_2_3` WHERE `rank0` = 0 AND `rank1` <= 1 AND `rank2` <= 3 AND `rank3` <= 3 AND `rank4` <= 3 AND `rank5` <= 1 AND `rank6` <= 1 AND `rank7` <= 1 AND `mod_tot` <= 1 AND `mod_x` = 0 AND `dup1` <= 1 AND `dup2` <= 2 AND `dup3` <= 2 AND `last_updated` = '2020-08-12' ORDER BY `combo_5a_42_113_2_3`.`y1_sum` DESC

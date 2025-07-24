@@ -1,0 +1,77 @@
+<?php
+	$query4 = "DROP TABLE IF EXISTS $draw_prefix";
+	$query4 .= "sum_table_sum4_summary ";
+
+	$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+	$query4 = "CREATE TABLE $draw_prefix";
+	$query4 .= "sum_table_sum4_summary (";
+	$query4 .= " id int(10) unsigned NOT NULL auto_increment, ";
+	$query4 .= "numx tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "combin tinyint(3) unsigned NOT NULL default '0',"; ### 220102
+	$query4 .= "even tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "odd tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "day1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "week1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "week2 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "month1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "month3 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "month6 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year1 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year2 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year3 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year4 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year5 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year6 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year7 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year8 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year9 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year10 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "count int(5) unsigned NOT NULL,";
+	$query4 .= "percent_y1 float(4,1) unsigned NOT NULL,";
+	$query4 .= "percent_y4 float(4,1) unsigned NOT NULL,";
+	$query4 .= "percent_wa float(4,1) unsigned NOT NULL,";
+	$query4 .= "PRIMARY KEY  (`id`),";
+	$query4 .= "UNIQUE KEY `numx_2` (`id`),";
+	$query4 .= "KEY `numx` (`id`)";
+	$query4 .= ") ENGINE=InnoDB DEFAULT CHARSET=latin1;";
+
+	$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+	###############################################################################################################
+
+	for ($combin = 1; $combin <= 10; $combin++)
+	{
+		$query0 = "SELECT * FROM temp_";
+		$query0 .= "sum_count_sum4_";
+		$query0 .= "$combin ";
+		$query0 .= "WHERE percent_wa > 0.5 ";
+		#$query0 .= "ORDER BY percent_wa DESC, percent_y4 DESC, percent_y1 DESC, percent_y4 DESC, year5 DESC, year4 DESC, year3 DESC, year2 DESC, year1 DESC ";
+
+		#echo "$query0<br>";
+
+		$mysqli_result0 = mysqli_query($mysqli_link, $query0) or die (mysqli_error($mysqli_link));
+		
+		while($row0 = mysqli_fetch_array($mysqli_result0))
+		{
+			$querya = "INSERT INTO $draw_prefix";
+			$querya .= "sum_table_sum4_summary ";
+			$querya .= "VALUES ('0', ";
+			$querya .= "'$row0[numx]',";
+			$querya .= "'$combin',";
+			
+			for ($b = 2; $b <= 22; $b++)
+			{
+				$querya .= "'$row0[$b]', ";
+			}
+			
+			$querya .= "'$row0[23]')";
+
+			#echo "$querya<br>";
+
+			$mysqli_resulta = mysqli_query($mysqli_link, $querya) or die (mysqli_error($mysqli_link));
+		}
+	}
+
+	#########################################################################################################	
+?>

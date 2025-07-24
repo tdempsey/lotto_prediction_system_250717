@@ -1,0 +1,1550 @@
+<?php
+	$debug = 0;
+
+	function lot_display ($limit)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+
+		require ("$game_includes/config.incl");
+		
+		print("<a name=\"$limit\"><H2>Lotto Display - $game_name - Limit $limit</H2></a>\n");
+
+		print "<h4><a href=\"#unsorted$limit\">Unsorted $limit</a> | <a href=\"#sorted$limit\">Sorted $limit</a> | <a href=\"#pairs$limit\">Pairs $limit</a> | <a href=\"#rank$limit\">Rank $limit</a> | <a href=\"#grid$limit\">Grid $limit</a></h4>";
+
+		# -------------------------------------------------------------------------------------------------------
+		# ----------  Sum Limit -----------------
+		# -------------------------------------------------------------------------------------------------------
+		$query_sum = "SELECT * FROM $draw_prefix";
+		$query_sum .= "filter_limits ";
+		$query_sum .= "WHERE col1 = '0' ";
+		$query_sum .= "AND limit_type = 'sm' ";
+		$query_sum .= "ORDER BY id DESC ";
+		
+		#echo "$query_sum<p>";
+	
+		$mysqli_result_sum = mysqli_query($query_sum, $mysqli_link) or die (mysqli_error($mysqli_link));
+	
+		$row_sum = mysqli_fetch_array($mysqli_result_sum);
+		# -------------------------------------------------------------------------------------------------------
+
+		print "<h5>(all/0) sum_low = $row_sum[low] / sum_mid = $row_sum[mid] / sum_high = $row_sum[high]</h5>";
+		
+		// initalize variables [include]
+		require ("includes/init_display.incl");
+		
+		//start table
+		print("<TABLE BORDER=\"1\">\n");
+	
+		//create header row
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Date</center></TD>\n");
+		for($index = 1; $index <= $balls_drawn; $index++)
+		{
+			print("<TD BGCOLOR=\"#CCCCCC\">b$index</TD>\n");
+		}
+		
+		if ($mega_balls)
+		{
+			print("<TD BGCOLOR=\"#CCCCCC\">PB</TD>\n");
+		}
+
+		print("<TD BGCOLOR=\"#CCCCCC\">Sum</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Average</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Median</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Harmean</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Geomean</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Quart1</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Quart2</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Quart3</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Stdev</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Variance</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">AveDev</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Kurt</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Skew</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">DevSq</TD>\n");
+		print("</B></TR>\n");
+	
+		$dcount = 1;
+		$num_array = array_fill (0,60,0);
+		
+		$num_array_count = array_fill (0,60,$num_array);
+		$pb_array_count = array_fill (0,60,$num_array);
+		$prev_date = array_fill (0,60,'1962-08-17');
+
+		$draw_count_temp_array = array_fill (0,16,0);
+		$draw_count_array = array_fill (0,60,$draw_count_temp_array);
+
+		#require ("includes/pair_table.incl"); #pair	
+
+		// get from draw table
+		$query5 = "SELECT * FROM $draw_table_name ";
+		$query5 .= "WHERE sum = 0 ";
+		$query5 .= "ORDER BY date DESC ";
+		$query5 .= "LIMIT $limit "; 
+	
+		$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+	
+		// get each row
+		while($row = mysqli_fetch_array($mysqli_result5))
+		{	
+			if ($row[sum] == 0)
+			{
+				$draw_sum  = $row[sum];
+				$draw_even  = $row[even];
+				$draw_odd  = $row[odd];
+
+				// build draw array [0..x]
+				$draw = array ();
+		
+				for ($x = 1; $x <= $balls_drawn; $x++)
+				{
+					array_push($draw, $row[$x]);
+				}
+
+				sort($draw);
+
+				require ("includes/update_sum.incl");
+				require ("includes/update_even_odd.incl");
+				require ("$game_includes/update_stats.incl");
+			} 
+		}
+
+		// get from draw table
+		$query5 = "SELECT * FROM $draw_table_name ";
+		$query5 .= "WHERE devsq = 99.99 ";
+		$query5 .= "ORDER BY date DESC ";
+		$query5 .= "LIMIT $limit "; 
+	
+		$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+	
+		// get each row
+		while($row = mysqli_fetch_array($mysqli_result5))
+		{		
+			// build draw array [x..x]
+			$draw = array ();
+	
+			for ($x = 1; $x <= $balls_drawn; $x++)
+			{
+				array_push($draw, $row[$x]);
+			}
+
+			sort($draw);
+
+			if ($row[devsq] = 99.99) 
+			{
+				$draw_average = ($row[b1]+$row[b2]+$row[b3]+$row[b4]+$row[b5])/5;
+				$devsq = calc_devsq ($draw,$draw_average);
+
+				$query7 = "UPDATE $draw_table_name ";
+				$query7 .= "SET   devsq = $devsq, ";
+				$query7 .= "      draw_average = $draw_average ";
+				$query7 .= "WHERE date = '$row[0]' ";
+
+				#print "$query7<p>";
+				
+				$mysqli_result7 = mysqli_query($query7, $mysqli_link) or die (mysqli_error($mysqli_link));
+			}
+		}
+			
+		// get from draw table
+		$query5 = "SELECT * FROM $draw_table_name ";
+		if ($hml)
+		{
+			$query5 .= "WHERE sum >= $range_low  ";
+			$query5 .= "AND   sum <= $range_high  ";
+		}
+		$query5 .= "ORDER BY date DESC ";
+		$query5 .= "LIMIT $limit "; 
+
+		echo "$query5<br>";
+
+		print("<P>lot_display - $query5<p>");
+	
+		$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+		$z = 1;
+		$pb_array = array_fill (0,50,0);
+		$pb_date = array_fill (0,50,'1962-08-17');
+
+		#initialize date variables
+		require ("includes/unix.incl");
+	
+		// get each row
+		while($row = mysqli_fetch_array($mysqli_result5))
+		{
+			// build draw array [0..x]
+			$draw = array ();
+	
+			for ($x = 1; $x <= $balls_drawn; $x++)
+			{
+				array_push($draw, $row[$x]);
+			}
+
+			sort($draw);
+
+			$draw_sum  = $row[sum];
+			$draw_even  = $row[even];
+			$draw_odd  = $row[odd];
+	
+			if ($mega_balls)
+			{
+				$pb = $row[pb];
+			}
+
+			$modulus10 = $dcount % 100;
+
+			if ($modulus10 == 1 || $limit < 100) 
+			{
+				print("<TR>\n");
+		
+				print("<TD align=center><b>$dcount</b></TD>\n");
+				print("<TD>$row[0]</TD>\n");
+		
+				for($index = 0; $index < $balls_drawn; $index++)
+				{
+					print("<TD align=center>$draw[$index]</TD>\n");
+				}
+				
+				if ($mega_balls)
+				{
+					print("<TD align=center><b>$row[pb]</b></TD>\n");
+				}
+
+				# -------------------------------------------------------------------------------------------------------
+				# ----------  Sum Limit -----------------
+				# -------------------------------------------------------------------------------------------------------
+				$query_sum = "SELECT * FROM $draw_prefix";
+				$query_sum .= "filter_limits ";
+				$query_sum .= "WHERE col1 = '$row[b1]' ";
+				$query_sum .= "AND limit_type = 'sm' ";
+				$query_sum .= "AND date = '$row[0]' ";
+				$query_sum .= "ORDER BY id DESC ";
+
+				#echo "$query_sum<p>";
+			
+				$mysqli_result_sum = mysqli_query($query_sum, $mysqli_link) or die (mysqli_error($mysqli_link));
+			
+				$row_sum = mysqli_fetch_array($mysqli_result_sum);
+				# -------------------------------------------------------------------------------------------------------
+		
+				$num_rows_sum = mysqli_num_rows($mysqli_result_sum);
+				
+				if ($num_rows_sum)
+				{
+					$sum_low = $row_sum[low];
+					$sum_high = $row_sum[high];
+				} else {
+					$sum_low = 80;
+					$sum_high = 120;
+				}
+				
+				if ($draw_sum < $sum_low || $draw_sum > $sum_high) #------------------------
+				{
+					print("<TD bgcolor=\"#FF0000\" align=center><font color=\"#ffffff\"><b>$draw_sum</b></font></TD>\n");
+				} else {
+					print("<TD align=center>$draw_sum</TD>\n");
+				}
+
+				print("<TD align=center>$row[draw_average]</TD>\n");
+				print("<TD align=center>$row[median]</TD>\n");
+				print("<TD align=center>$row[harmean]</TD>\n");
+				print("<TD align=center>$row[geomean]</TD>\n");
+				print("<TD align=center>$row[quart1]</TD>\n");
+				print("<TD align=center>$row[quart2]</TD>\n");
+				print("<TD align=center>$row[quart3]</TD>\n");
+				print("<TD align=center>$row[stdev]</TD>\n");
+				print("<TD align=center>$row[variance]</TD>\n");
+				print("<TD align=center>$row[avedev]</TD>\n");
+				print("<TD align=center>$row[kurt]</TD>\n");
+				print("<TD align=center>$row[skew]</TD>\n");
+				print("<TD align=center>$row[devsq]</TD>\n");
+			
+				print("</TR>\n");
+			}
+
+			##############################################################
+			# calculate draw count
+			##############################################################
+			require ("includes/calculate_draw_count.incl"); #ball count
+
+			##############################################################
+			# update pair table
+			##############################################################
+			#require ("includes/insert_pair_table.incl"); #update pair table temp_2_5000
+			/*
+			# copy current table into dated table
+			$curr_date = date("ymd");
+
+			$table_temp_date = $table_temp . "_" . $curr_date;
+			
+			$query = "DROP TABLE IF EXISTS $table_temp_date";
+
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+			$query_copy .= "CREATE TABLE $table_temp_date SELECT * FROM $table_temp";
+
+			print "$query_copy<p>";
+
+			$mysqli_result = mysqli_query($mysqli_link, $query_copy) or die (mysqli_error($mysqli_link));
+			
+			print "<h3>Table <font color=\"#ff0000\">$table_temp</font> Updated!</h3>";
+			print "<h3>Table <font color=\"#ff0000\">$table_temp_date</font> Updated!</h3>";
+			*/
+
+			/* fix me!
+			for ($x = 1; $x < $balls_drawn; $x++)
+			{
+				for ($y = ($x+1); $y <= $balls_drawn; $y++)
+				{
+					//print "x = $x<br>";
+					//print "y = $y<br>";
+					//print "pick_array = {($row[$x]-1)*$balls+$row[$y]}<br>";
+					$pick_array[($row[$x]-1)*$balls+$row[$y]][0]++;
+					if ($row[0] > $pick_array[($row[$x]-1)*$balls+$row[$y]][1])
+					{
+						$pick_array[($row[$x]-1)*$balls+$row[$y]][1] = $row[0];
+					}
+				}
+			}
+			
+			for ($x = $balls_drawn; $x > 2; $x--)
+			{
+				for ($y = ($x-1); $y >= 1; $y--)
+				{
+					$pick_array[($row[$x]-1)*$balls+$row[$y]][0]++;
+					if ($row[0] > $pick_array[($row[$x]-1)*$balls+$row[$y]][1])
+					{
+						$pick_array[($row[$x]-1)*$balls+$row[$y]][1] = $row[0];
+					}
+				}
+			}
+			*/
+			
+			$dcount++;
+			$z++;
+		}
+
+		//create footer row
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Date</center></TD>\n");
+		for($index = 1; $index <= $balls_drawn; $index++)
+		{
+			print("<TD BGCOLOR=\"#CCCCCC\">b$index</TD>\n");
+		}
+		
+		if ($mega_balls)
+		{
+			print("<TD BGCOLOR=\"#CCCCCC\">PB</TD>\n");
+		}
+
+		print("<TD BGCOLOR=\"#CCCCCC\">Sum</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Average</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Median</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Harmean</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Geomean</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Quart1</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Quart2</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Quart3</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Stdev</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Variance</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">AveDev</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Kurt</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Skew</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">DevSq</TD>\n");
+		print("</B></TR>\n");
+	
+		//end table
+		print("</TABLE>\n");
+
+		##############################################################################
+		# create pair table
+		#
+		#require ("includes/create_pair_table.incl"); #pair
+		##############################################################################
+		
+		print "<h3>Table <font color=\"#ff0000\">$table_temp</font> Updated!</h3>";
+
+		print "<h4><a href=\"#unsorted$limit\">Unsorted $limit</a> | <a href=\"#sorted$limit\">Sorted $limit</a> | <a href=\"#pairs$limit\">Pairs $limit</a> |  <a href=\"#rank$limit\">Rank $limit</a> | <a href=\"#grid$limit\">Grid $limit</a><a name=\"unsorted$limit\">&nbsp;</a></h4>";
+
+		##############################################################################
+		# create draw count table
+		#
+		require ("includes/draw_count_table.incl");
+		##############################################################################
+
+		// process and print unsorted table
+		if ($limit > 105)
+		{
+			require ("includes/unsorted_table_large.incl");
+		} elseif ($limit == 100) {
+			require ("includes/unsorted_table_100.incl");
+		} else {
+			require ("includes/unsorted_table.incl");
+		}
+
+		print "<h4><a href=\"#unsorted$limit\">Unsorted $limit</a> | <a href=\"#sorted$limit\">Sorted $limit</a> | <a href=\"#pairs$limit\">Pairs $limit</a> | <a href=\"#rank$limit\">Rank $limit</a> | <a href=\"#grid$limit\">Grid $limit</a><a name=\"sorted$limit\">&nbsp;</a></h4>";
+
+		##############################################################
+		# process and print sorted table
+		##############################################################
+		if ($limit > 105 )
+		{
+			require ("includes/sorted_table_large.incl");
+		} elseif ($limit == 100) {
+			require ("includes/sorted_table_100.incl");
+		} else {
+			require ("includes/sorted_table.incl");
+		}
+
+		// process and print megaball table
+		require ("includes/megaball_table.incl");
+	
+		///////////////////////////////////////////////////////////////////////////////
+	
+		//$table_temp = $draw_prefix . "temp_2_" . $limit;
+	
+		/* fix me!
+		for($index=1; $index <= ($balls*$balls); $index++)
+		{
+			if ($index % $balls == 0) {
+				$num1 = intval($index/$balls);
+			} else {
+				$num1 = intval($index/$balls)+1;
+			}
+			$num2 = $index-(($num1-1)*$balls); 
+			$count = $pick_array[$index][0];
+			$date = $pick_array[$index][1];
+			
+		*/
+
+		$table_temp = $draw_prefix . "temp_2_" . $limit;
+		$table_temp_pairs = $draw_prefix . "temp_pairs_" . $limit;
+
+		print "<h4><a href=\"#unsorted$limit\">Unsorted $limit</a> | <a href=\"#sorted$limit\">Sorted $limit</a> | <a href=\"#pairs$limit\">Pairs $limit</a> | <a href=\"#rank$limit\">Rank $limit</a> | <a href=\"#grid$limit\">Grid $limit</a><a name=\"pairs$limit\">&nbsp;</a></h4>";
+	
+		// process and print pair table
+		if ($limit < 100)
+		{
+			#require ("includes/pair_table_small.incl"); #pair
+		} else {
+			#require ("includes/pair_table_large.incl"); #pair
+			#require ("includes_fl_f5/fl_f5_pair_table_large.incl"); #-----------------
+			#require ("includes/print_sigma_table.incl"); #pair
+			//require ("includes/pair_table_small.incl");
+		}
+		/*
+		print("<a name=\"rank$limit\"><H2>Top Pairs - $game_name - Limit $limit</H2></a>\n");
+		
+		//start table
+		print("<TABLE BORDER=\"1\">\n");
+
+		//create header row
+		print("<TR><B>\n");
+	
+		print("<TD BGCOLOR=\"#CCCCCC\">Rank</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Num1</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Num2</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Total</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" align=center>Last Match</TD>\n");
+		print("</B></TR>\n");
+		
+		// get everything from temp table
+		$query = "SELECT DISTINCT num1, num2, count FROM $table_temp ";
+		$query .= "WHERE count > 1 ";
+		$query .= "ORDER BY count DESC ";
+		
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		//print "$query<p>";
+
+		$count = 1;
+	
+		// get each row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			print("<TR>\n");
+	
+			print("<TD align=center><b>$count</b></TD>\n");
+			print("<TD align=center>$row[num1]</TD>\n");
+			print("<TD align=center>$row[num2]</TD>\n");
+			if ($row2[count] == 3 || $row2[count] > 30)
+			{
+				print("<TD align=center><b>$row2[count]</b></TD>\n");
+			} else {
+				print("<TD align=center>$row[count]</TD>\n"); 
+			}
+
+			$query2 = "SELECT DISTINCT last_date FROM $table_temp ";
+			$query2 .= "WHERE num1 = $row[num1] and num2 = $row[num2] ";
+			$query2 .= "ORDER BY last_date DESC ";
+			$query2 .= "LIMIT 1 ";
+			
+			$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+
+			$row2 = mysqli_fetch_array($mysqli_result2);
+
+			if ($row2[last_date] < "2007-01-01")
+			{
+				print("<TD align=center><font color=\"#ff0000\">$row2[last_date]</font></TD>\n");
+			} elseif ($row2[last_date] < "2007-04-01") {
+				print("<TD align=center><font color=\"#ff6600\">$row2[last_date]</font></TD>\n");
+			} else {
+				print("<TD align=center>$row2[last_date]</TD>\n");
+			}
+	
+			print("</TR>\n");
+			$count++;
+	
+		}
+	
+		//end table
+		print("</TABLE>\n");
+		*/
+	}
+	
+	function lot_combo ($combo_count)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix;
+	
+		require ("includes/mysqli.php");
+		require ("includes/unix.incl");
+
+		$table_temp = $draw_prefix . "_" . $combo_count . $balls_drawn;
+
+		$query = "DROP TABLE IF EXISTS $table_temp";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query = "CREATE TABLE $table_temp";
+		$query .= "(";
+		$query .= "id int(10) unsigned NOT NULL auto_increment, ";
+
+		for ($r = 1; $r <= $combo_count; $r++)
+		{
+			$query .= "d";
+			$query .= "$r tinyint(3) unsigned NOT NULL default '0', ";
+		}
+		
+		$query .= "day1 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "week1 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "week2 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "month1 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "month3 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "month6 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "year1 int(5) unsigned NOT NULL default '0', ";
+		$query .= "year2 int(5) unsigned NOT NULL default '0', ";
+		$query .= "year3 int(5) unsigned NOT NULL default '0', ";
+		$query .= "year4 int(5) unsigned NOT NULL default '0', ";
+		$query .= "year5 int(5) unsigned NOT NULL default '0', ";
+		$query .= "year6 int(5) unsigned NOT NULL default '0', ";
+		$query .= "year7 int(5) unsigned NOT NULL default '0', ";
+		$query .= "year8 int(5) unsigned NOT NULL default '0', ";
+		$query .= "year9 int(5) unsigned NOT NULL default '0', ";
+		$query .= "year10 int(5) unsigned NOT NULL default '0', ";
+		$query .= "count int(5) unsigned NOT NULL default '0', ";
+		$query .= "percent_30 float (4,1) unsigned NOT NULL default '0.0', ";
+		$query .= "percent_365 float (4,1) unsigned NOT NULL default '0.0', ";
+		$query .= "percent_5000 float (4,1) unsigned NOT NULL default '0.0', ";
+		$query .= "PRIMARY KEY  (id), ";
+		$query .= ")  ";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+	
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "ORDER BY date ASC ";
+		//$query .= "LIMIT 1 ";
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+	
+		//start table
+		print("<TABLE BORDER=\"1\">\n");
+	
+		//create header row
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Date</TD>\n");
+		
+		for($index = 1; $index <= $balls_drawn; $index++)
+		{
+			print("<TD BGCOLOR=\"#CCCCCC\">Pick $index</TD>\n");
+		}
+		
+		print("<TD BGCOLOR=\"#CCCCCC\">Sum</TD>\n");
+		print("</B></TR>\n");
+	
+		$dcount = 1;
+	
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			for ($x = 1; $x <= $balls_drawn; $x++)
+			{
+				array_push($draw, $row[$x]);
+			}
+	
+			print("<TR>\n");
+	
+			print("<TD><B>$dcount</B></TD>\n");
+			print("<TD>$row[0]</TD>\n");
+			
+			for($index = 1; $index <= $balls_drawn; $index++)
+			{
+				print("<TD BGCOLOR=\"#CCCCCC\">Pick $row[$index]</TD>\n");
+			}
+			
+			print("<TD>$row[sum]</TD>\n");
+	
+			print("</TR>\n");
+			
+			$dc = array_fill (0, ($combo_count), 0);
+			//$combo_count = 0;
+			
+			for  ($x = 1; $x < $balls_drawn; $x++)
+			{
+				for ($y = ($x+1); $y <= $balls_drawn; $y++)
+				{
+					for ($z = 1; $z <= $combo_count; $z++)
+					{
+						$dc[$x] = $row[$z];
+						
+						for ($b = $z + 1; $b <= $balls_drawn; $b++) // draw index
+						{
+							$dc[$z] = $row[$b];
+							$combo_count++;
+						}
+					}
+				}
+			}
+				
+				$query3 = "Insert INTO $table_temp ";
+				$query3 .= "VALUES ( '0', ";
+				$query3 .= "         '$row[0]', ";
+				
+				for($z = 1; $z <= $combo_count; $z++)
+				{
+					$query3 .= "         $dc[$z], ";
+				}
+				
+				$query3 .= "	     ) ";
+	
+				//print "$query3<p>";
+				
+				$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+				$dcount++;
+			}
+		
+		print("</TABLE>\n");
+	}
+
+	function lot_grid ($limit)
+	{
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $grid_26_flag, $grid_all_flag;
+		
+		require ("includes/mysqli.php");
+
+		print "<a name=\"grid$limit\"><H2>Pair Grid - $limit</H2></a>";
+
+		print "<h4><a href=\"#unsorted$limit\">Unsorted $limit</a> | <a href=\"#sorted$limit\">Sorted $limit</a> | <a href=\"#pairs$limit\">Pairs $limit</a> | <a href=\"#rank$limit\">Rank $limit</a> | <a href=\"#grid$limit\">Grid $limit</a></h4>";
+
+		$table_temp = $draw_prefix . "temp_2_" . $limit;
+
+
+		//start table
+		print("<TABLE BORDER=\"1\">\n");
+
+		//create header row
+		print("<TR><B>\n");
+		print("<TD width=20>&nbsp;</TD>\n");
+		for ($x = 1; $x <= $balls; $x++)
+		{
+			print("<TD align=center width=20><b>$x</b></TD>\n");
+		}
+		print("<TD width=20>&nbsp;</TD>\n");
+		print("</TR></B>\n");
+
+		if ($limit == 26)
+		{
+			$grid_flag = $grid_26_flag;
+		} else {
+			$grid_flag = $grid_all_flag;
+		}
+
+		// process rows
+		for ($x = 1; $x <= $balls; $x++)
+		{
+			print("<TR>\n");
+			print("<TD align=center><b>$x</b></TD>\n");
+			for ($y = 1; $y <= $balls; $y++)
+			{
+				if ($x != $y)
+				{
+					$query5 = "SELECT * FROM $table_temp ";
+					$query5 .= "WHERE num1 = $x AND num2 = $y "; 
+					$query5 .= "ORDER BY last_date DESC ";
+
+					//print("$query5<br>");
+					
+					$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+					$num_rows = mysqli_num_rows($mysqli_result5);
+
+					if ($game == 2 || $game == 7)
+					{
+						if ($num_rows == 3 || $num_rows == 4 || $num_rows > 10)
+						{
+							print("<TD bgcolor=\"#99ff00\" align=center><b>$num_rows</b></TD>\n");
+						} elseif ($num_rows > 15) {
+							print("<TD bgcolor=\"#99ffff\" align=center><b>$num_rows</b></TD>\n");
+						} else {
+							print("<TD align=center>$num_rows</TD>\n");
+						}
+					} else {
+						if ($num_rows == 3 || $num_rows == 4 || $num_rows > 35)
+						{
+							print("<TD bgcolor=\"#99ff00\" align=center><b>$num_rows</b></TD>\n");
+						} elseif ($num_rows > $grid_flag) {
+							print("<TD bgcolor=\"#99ffff\" align=center><b>$num_rows</b></TD>\n");
+						} else {
+							print("<TD align=center>$num_rows</TD>\n");
+						}
+
+					}
+				} else {
+					print("<TD>&nbsp;</TD>\n");
+				}
+			}
+			    print("<TD align=center><b>$x</b></TD>\n");
+				print("</TR>\n");
+		}
+
+		//create footer row
+		print("<TR><B>\n");
+		print("<TD>&nbsp;</TD>\n");
+		for ($x = 1; $x <= $balls; $x++)
+		{
+			print("<TD align=center><b>$x</b></TD>\n");
+		}
+		print("<TD>&nbsp;</TD>\n");
+		print("</TR></B>\n");
+
+		//end table
+		print("</TABLE>\n");
+	}
+
+	function lot_grid_2 ($limit,$all)
+	{
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $grid_26_flag, $grid_all_flag;
+		
+		require ("includes/mysqli.php");
+
+		print "<a name=\"grid5000\"><H2>Pair Grid - $limit/$all</H2></a>";
+
+		print "<h4><a href=\"#unsorted$limit\">Unsorted $limit</a> | <a href=\"#sorted$limit\">Sorted $limit</a> | <a href=\"#pairs$limit\">Pairs $limit</a> | <a href=\"#rank$limit\">Rank $limit</a> | <a href=\"#grid$limit\">Grid $limit</a></h4>";
+
+		$table_temp = $draw_prefix . "temp_2_" . $limit;
+
+		//start table
+		print("<TABLE BORDER=\"1\">\n");
+
+		//create header row
+		print("<TR><B>\n");
+		print("<TD width=20>&nbsp;</TD>\n");
+		for ($x = 1; $x <= $balls; $x++)
+		{
+			print("<TD align=center><b>$x</b></TD>\n");
+		}
+		print("<TD width=20>&nbsp;</TD>\n");
+		print("</TR></B>\n");
+
+		$grid_flag = $grid_all_flag;
+
+		// process rows
+		for ($x = 1; $x <= $balls; $x++)
+		{
+			print("<TR>\n");
+			print("<TD align=center><b>$x</b></TD>\n");
+			for ($y = 1; $y <= $balls; $y++)
+			{
+				if ($x != $y)
+				{
+					$query5 = "SELECT * FROM $table_temp ";
+					$query5 .= "WHERE num1 = $x AND num2 = $y "; 
+					$query5 .= "ORDER BY last_date DESC ";
+					
+					$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+					$num_rows_limit = mysqli_num_rows($mysqli_result5);
+
+					$query6 = "SELECT * FROM $draw_prefix";
+					$query6 .= "temp_2_"; 
+					$query6 .= "$all "; 
+					$query6 .= "WHERE num1 = $x AND num2 = $y "; 
+					$query6 .= "ORDER BY last_date DESC ";
+					
+					$mysqli_result6 = mysqli_query($query6, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+					$num_rows_all = mysqli_num_rows($mysqli_result6);
+
+					if ($game == 1 || $game == 4)
+					{
+						if ($num_rows_all > 45)
+						{
+							print("<TD bgcolor=\"#ff0000\" align=center><b>$num_rows_limit/$num_rows_all</b></TD>\n");
+						} elseif ($num_rows_limit == 3 || $num_rows_limit == 4 || $num_rows_all > 45) {
+							print("<TD bgcolor=\"#66cc00\" align=center><b>$num_rows_limit/$num_rows_all</b></TD>\n");
+						} elseif ($num_rows_limit == 3 || $num_rows_limit == 4) {
+							print("<TD bgcolor=\"#99ff00\" align=center><b>$num_rows_limit/$num_rows_all</b></TD>\n");
+						} elseif ($num_rows_all >= 15) {
+							print("<TD bgcolor=\"#ffffff\" align=center><b>$num_rows_limit/$num_rows_all</b></TD>\n");
+						} else {
+							print("<TD align=center><b>$num_rows_limit/$num_rows_all</b></TD>\n");
+						}
+					} else {
+						if ($num_rows_all > 20)
+						{
+							print("<TD bgcolor=\"#ffffff\" align=center><b>$num_rows_limit/$num_rows_all</b></TD>\n");
+						} elseif ($num_rows_limit == 3 || $num_rows_limit == 4 || $num_rows_all >= 15) {
+							print("<TD bgcolor=\"#66cc00\" align=center><b>$num_rows_limit/$num_rows_all</b></TD>\n");
+						} elseif ($num_rows > $grid_flag) {
+							print("<TD bgcolor=\"#99ffff\" align=center><b>$num_rows</b></TD>\n");
+						} else {
+							#print("<TD bgcolor=\"#f0f0f0\" align=center><b>$num_rows_limit/$num_rows_all</b></TD>\n");
+							print("<TD align=center><b>$num_rows_limit/$num_rows_all</b></TD>\n");
+						}
+					}
+				} else {
+					print("<TD>&nbsp;</TD>\n");
+				}
+			}
+			    print("<TD align=center><b>$x</b></TD>\n");
+				print("</TR>\n");
+		}
+
+		//create footer row
+		print("<TR><B>\n");
+		print("<TD>&nbsp;</TD>\n");
+		for ($x = 1; $x <= $balls; $x++)
+		{
+			print("<TD align=center><b>$x</b></TD>\n");
+		}
+		print("<TD>&nbsp;</TD>\n");
+		print("</TR></B>\n");
+
+		//end table
+		print("</TABLE>\n");
+	}
+
+	function lot_grid_wa ($limit)
+	{
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $grid_26_flag, $grid_all_flag;
+		
+		require ("includes/mysqli.php");
+
+		print "<a name=\"grid$limit\"><H2>Pair Grid - Weighted Averages - $limit</H2></a>";
+
+		print "<h4><a href=\"#unsorted$limit\">Unsorted $limit</a> | <a href=\"#sorted$limit\">Sorted $limit</a> | <a href=\"#pairs$limit\">Pairs $limit</a> | <a href=\"#rank$limit\">Rank $limit</a> | <a href=\"#grid$limit\">Grid $limit</a></h4>";
+
+		$table_temp = $draw_prefix . "temp_pairs_" . $limit;
+
+
+		//start table
+		print("<TABLE BORDER=\"1\">\n");
+
+		//create header row
+		print("<TR><B>\n");
+		print("<TD width=20>&nbsp;</TD>\n");
+		for ($x = 1; $x <= $balls; $x++)
+		{
+			print("<TD align=center width=20><b>$x</b></TD>\n");
+		}
+		print("<TD width=20>&nbsp;</TD>\n");
+		print("</TR></B>\n");
+
+		if ($limit == 26)
+		{
+			$grid_flag = $grid_26_flag;
+		} else {
+			$grid_flag = $grid_all_flag;
+		}
+
+		// process rows
+		for ($x = 1; $x <= $balls; $x++)
+		{
+			print("<TR>\n");
+			print("<TD align=center><b>$x</b></TD>\n");
+			for ($y = 1; $y <= $balls; $y++)
+			{
+				if ($x != $y)
+				{
+					$query5 = "SELECT * FROM $table_temp ";
+					$query5 .= "WHERE num1 = $x AND num2 = $y "; 
+					$query5 .= "ORDER BY last_date DESC ";
+
+					//print("$query5<br>");
+					
+					$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+					$row = mysqli_fetch_array($mysqli_result5);
+
+					//$num_rows = mysqli_num_rows($mysqli_result5);
+
+					#if ($row[percent_wa] > 2.9)
+					if ($row[percent_365] >= 1.0)
+					{
+						print("<TD bgcolor=\"#99ff00\" align=center><b>$row[percent_365]</b></TD>\n");
+					#} elseif ($row[percent_wa] > 1.4) {
+					#} elseif ($row[percent_wa] >= 0.5) {
+					} elseif ($row[percent_365] >= 0.8) {
+						print("<TD bgcolor=\"#99ffff\" align=center><b>$row[percent_365]</b></TD>\n");
+					} else {
+						print("<TD align=center>$row[percent_365]</TD>\n");
+					}
+				} else {
+					print("<TD>&nbsp;</TD>\n");
+				}
+			}
+			    print("<TD align=center><b>$x</b></TD>\n");
+				print("</TR>\n");
+		}
+
+		//create footer row
+		print("<TR><B>\n");
+		print("<TD>&nbsp;</TD>\n");
+		for ($x = 1; $x <= $balls; $x++)
+		{
+			print("<TD align=center><b>$x</b></TD>\n");
+		}
+		print("<TD>&nbsp;</TD>\n");
+		print("</TR></B>\n");
+
+		//end table
+		print("</TABLE>\n");
+	}
+
+	// ----------------------------------------------------------------------------------
+	function test_columns($cola,$colb) 
+	{
+		global $debug, $game, $draw_prefix, $draw_table_name, $balls, $balls_drawn;
+
+		require ("includes/mysqli.php");
+		require ("includes/unix.incl");
+
+		$table_temp = $draw_prefix . 'temp_col_' . $cola . '_' . $colb;
+
+		$query = "DROP TABLE IF EXISTS $table_temp";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query = "CREATE TABLE $table_temp";
+		$query .= "(id int(10) unsigned NOT NULL auto_increment, ";
+		$query .= "num1 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "num2 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "day1 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "week1 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "week2 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "month1 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "month3 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "month6 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "year1 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "year2 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "year3 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "year4 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "year5 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "year6 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "year7 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "year8 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "year9 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "year10 tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "count int(5) unsigned NOT NULL default '0', ";
+		$query .= "prev_draw date NOT NULL default '1962-08-17', ";
+		$query .= "last_draw date NOT NULL default '1962-08-17', ";
+		$query .= "percent_365 float (4,1) unsigned NOT NULL default '0', ";
+		$query .= "percent_5000 float (4,1) unsigned NOT NULL default '0', ";
+		$query .= "percent_wa float (4,1) unsigned NOT NULL default '0', ";
+		$query .= "PRIMARY KEY  (id), ";
+		$query .= "KEY num1 (num1), ";
+		$query .= "KEY num2 (num2) ";
+		$query .= ")  ";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query_all = "SELECT * FROM $draw_table_name ";
+		$query_all .= "ORDER BY date DESC ";
+
+		$mysqli_result_all = mysqli_query($query_all, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$num_rows_all = mysqli_num_rows($mysqli_result_all);
+
+		$today  = mktime (0,0,0,date("m"),date("d"),date("Y"));
+
+		for ($x = 1; $x < $balls; $x++)
+		{
+			for ($y = ($x+1); $y <= $balls; $y++)
+			{
+				// day1
+				$query5 = "SELECT * FROM $draw_table_name ";
+				$query5 .= "WHERE b$cola = $x AND b$colb = $y "; 
+				$query5 .= "AND date = '$last_draw_unix'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+				$pair_day1 = mysqli_num_rows($mysqli_result5);
+
+				// week1
+				$temp_date = gmstrftime("%Y-%m-%d", ($today-(86400*7)));
+
+				$query5 = "SELECT * FROM $draw_table_name ";
+				$query5 .= "WHERE b$cola = $x AND b$colb = $y "; 
+				$query5 .= "AND date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+				$pair_week1 = mysqli_num_rows($mysqli_result5);
+
+				// week2
+				$temp_date = gmstrftime("%Y-%m-%d", ($today-(86400*14)));
+
+				$query5 = "SELECT * FROM $draw_table_name ";
+				$query5 .= "WHERE b$cola = $x AND b$colb = $y "; 
+				$query5 .= "AND date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+				$pair_week2 = mysqli_num_rows($mysqli_result5);
+
+				// month1
+				$temp_date = gmstrftime("%Y-%m-%d", ($today-(86400*30)));
+
+				$query5 = "SELECT * FROM $draw_table_name ";
+				$query5 .= "WHERE b$cola = $x AND b$colb = $y "; 
+				$query5 .= "AND date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+				$pair_month1 = mysqli_num_rows($mysqli_result5);
+
+				// month3
+				$temp_date = gmstrftime("%Y-%m-%d", ($today-(86400*90)));
+
+				$query5 = "SELECT * FROM $draw_table_name ";
+				$query5 .= "WHERE b$cola = $x AND b$colb = $y "; 
+				$query5 .= "AND date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+				$pair_month3 = mysqli_num_rows($mysqli_result5);
+
+				// month6
+				$temp_date = gmstrftime("%Y-%m-%d", ($today-(86400*180)));
+
+				$query5 = "SELECT * FROM $draw_table_name ";
+				$query5 .= "WHERE b$cola = $x AND b$colb = $y "; 
+				$query5 .= "AND date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+				$pair_month6 = mysqli_num_rows($mysqli_result5);
+
+				// year1
+				$temp_date = gmstrftime("%Y-%m-%d", ($today-(86400*365)));
+
+				$query5 = "SELECT * FROM $draw_table_name ";
+				$query5 .= "WHERE b$cola = $x AND b$colb = $y "; 
+				$query5 .= "AND date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+				$pair_year1 = mysqli_num_rows($mysqli_result5);
+
+				// year2
+				$temp_date = gmstrftime("%Y-%m-%d", ($today-(86400*(365*2))));
+
+				$query5 = "SELECT * FROM $draw_table_name ";
+				$query5 .= "WHERE b$cola = $x AND b$colb = $y "; 
+				$query5 .= "AND date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+				$pair_year2 = mysqli_num_rows($mysqli_result5);
+
+				// year3
+				$temp_date = gmstrftime("%Y-%m-%d", ($today-(86400*(365*3))));
+
+				$query5 = "SELECT * FROM $draw_table_name ";
+				$query5 .= "WHERE b$cola = $x AND b$colb = $y "; 
+				$query5 .= "AND date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+				$pair_year3 = mysqli_num_rows($mysqli_result5);
+
+				// year4
+				$temp_date = gmstrftime("%Y-%m-%d", ($today-(86400*(365*4))));
+
+				$query5 = "SELECT * FROM $draw_table_name ";
+				$query5 .= "WHERE b$cola = $x AND b$colb = $y "; 
+				$query5 .= "AND date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+				$pair_year4 = mysqli_num_rows($mysqli_result5);
+
+				// year5
+				$temp_date = gmstrftime("%Y-%m-%d", ($today-(86400*(365*5))));
+
+				$query5 = "SELECT * FROM $draw_table_name ";
+				$query5 .= "WHERE b$cola = $x AND b$colb = $y "; 
+				$query5 .= "AND date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+				$pair_year5 = mysqli_num_rows($mysqli_result5);
+
+				// year6
+				$temp_date = gmstrftime("%Y-%m-%d", ($today-(86400*(365*6))));
+
+				$query5 = "SELECT * FROM $draw_table_name ";
+				$query5 .= "WHERE b$cola = $x AND b$colb = $y "; 
+				$query5 .= "AND date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+				$pair_year6 = mysqli_num_rows($mysqli_result5);
+
+				// year7
+				$temp_date = gmstrftime("%Y-%m-%d", ($today-(86400*(365*7))));
+
+				$query5 = "SELECT * FROM $draw_table_name ";
+				$query5 .= "WHERE b$cola = $x AND b$colb = $y "; 
+				$query5 .= "AND date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+				$pair_year7 = mysqli_num_rows($mysqli_result5);
+
+				// year8
+				$temp_date = gmstrftime("%Y-%m-%d", ($today-(86400*(365*8))));
+
+				$query5 = "SELECT * FROM $draw_table_name ";
+				$query5 .= "WHERE b$cola = $x AND b$colb = $y "; 
+				$query5 .= "AND date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+				$pair_year8 = mysqli_num_rows($mysqli_result5);
+
+				# year9
+				$temp_date = gmstrftime("%Y-%m-%d", ($today-(86400*(365*9))));
+
+				$query5 = "SELECT * FROM $draw_table_name ";
+				$query5 .= "WHERE b$cola = $x AND b$colb = $y "; 
+				$query5 .= "AND date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+				$pair_year9 = mysqli_num_rows($mysqli_result5);
+
+				# year10
+				$temp_date = gmstrftime("%Y-%m-%d", ($today-(86400*(365*10))));
+
+				$query5 = "SELECT * FROM $draw_table_name ";
+				$query5 .= "WHERE b$cola = $x AND b$colb = $y "; 
+				$query5 .= "AND date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+				$pair_year10 = mysqli_num_rows($mysqli_result5);
+
+				$pair_temp_year1 = number_format(($pair_year1/365)*100,1);
+
+				$pair_temp_year8 = number_format(($pair_year8/$num_rows_all)*100,1);
+
+				$row2 = mysqli_fetch_array($mysqli_result5);
+
+				$last_draw = $row2[date];
+
+				$row3 = mysqli_fetch_array($mysqli_result5);
+
+				$prev_draw = $row3[date];
+
+				$weighted_average = (
+					($pair_week1/10*100*0.01) +
+					($pair_month1/30*100*0.05) +
+					($pair_month3/90*100*0.10) +
+					($pair_year1/365*100*0.20) +
+					($pair_year3/(365*3)*100*0.20) +
+					($pair_year5/(365*5)*100*0.20) +
+					($pair_year8/$num_rows_all*100*0.24));
+
+				$pair_temp_wa = number_format($weighted_average,1);
+
+				$query_insert = "INSERT INTO $draw_prefix";
+				$query_insert .= "temp_col_";
+				$query_insert .= "$cola";
+				$query_insert .= "_$colb ";
+				$query_insert .= "VALUES ('0', ";
+				$query_insert .= "'$x', ";
+				$query_insert .= "'$y', ";
+				$query_insert .= "'$pair_day1', "; 
+				$query_insert .= "'$pair_week1', "; 
+				$query_insert .= "'$pair_week2', "; 
+				$query_insert .= "'$pair_month1', "; 
+				$query_insert .= "'$pair_month3', "; 
+				$query_insert .= "'$pair_month6', ";
+				$query_insert .= "'$pair_year1', "; 
+				$query_insert .= "'$pair_year2', ";
+				$query_insert .= "'$pair_year3', ";
+				$query_insert .= "'$pair_year4', ";
+				$query_insert .= "'$pair_year5', ";
+				$query_insert .= "'$pair_year6', ";
+				$query_insert .= "'$pair_year7', ";
+				$query_insert .= "'$pair_year8', ";
+				$query_insert .= "'$pair_year9', ";
+				$query_insert .= "'$pair_year10', ";
+				$query_insert .= "'$pair_year10', ";
+				$query_insert .= "'$prev_draw', "; 
+				$query_insert .= "'$last_draw', "; 
+				$query_insert .= "'$pair_temp_year1', "; 
+				$query_insert .= "'$pair_temp_year8', "; 
+				$query_insert .= "'$pair_temp_wa')"; 
+			
+				$mysqli_result_insert = mysqli_query($query_insert, $mysqli_link) or die (mysqli_error($mysqli_link)); 
+			}
+		}
+
+		# copy current table into dated table
+		$curr_date = date("ymd");
+
+		$table_temp = $draw_prefix . 'temp_col_' . $cola . '_' . $colb;
+		$table_temp_date = $table_temp . "_" . $curr_date;
+
+		$query = "DROP TABLE IF EXISTS $table_temp_date";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query_copy .= "CREATE TABLE $table_temp_date SELECT * FROM $table_temp";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query_copy) or die (mysqli_error($mysqli_link));
+
+		print "<h3>Table <font color=\"#ff0000\">$table_temp</font> Updated!</h3>";
+		print "<h3>Table <font color=\"#ff0000\">$table_temp_date</font> Updated!</h3>";
+	}
+
+	function lot_grid_wa_y1 ($limit)
+	{
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $grid_26_flag, $grid_all_flag;
+		
+		require ("includes/mysqli.php");
+
+		print "<a name=\"grid$limit\"><H2>Pair Grid - Weighted Averages - Year 1 - $limit</H2></a>";
+
+		print "<h4><a href=\"#unsorted$limit\">Unsorted $limit</a> | <a href=\"#sorted$limit\">Sorted $limit</a> | <a href=\"#pairs$limit\">Pairs $limit</a> | <a href=\"#rank$limit\">Rank $limit</a> | <a href=\"#grid$limit\">Grid $limit</a></h4>";
+
+		$table_temp = $draw_prefix . "temp_pairs_" . $limit;
+
+
+		//start table
+		print("<TABLE BORDER=\"1\">\n");
+
+		//create header row
+		print("<TR><B>\n");
+		print("<TD width=20>&nbsp;</TD>\n");
+		for ($x = 1; $x <= $balls; $x++)
+		{
+			print("<TD align=center width=20><b>$x</b></TD>\n");
+		}
+		print("<TD width=20>&nbsp;</TD>\n");
+		print("</TR></B>\n");
+
+		if ($limit == 26)
+		{
+			$grid_flag = $grid_26_flag;
+		} else {
+			$grid_flag = $grid_all_flag;
+		}
+
+		// process rows
+		for ($x = 1; $x <= $balls; $x++)
+		{
+			print("<TR>\n");
+			print("<TD align=center><b>$x</b></TD>\n");
+			for ($y = 1; $y <= $balls; $y++)
+			{
+				if ($x != $y)
+				{
+					$query5 = "SELECT * FROM $table_temp ";
+					$query5 .= "WHERE num1 = $x AND num2 = $y "; 
+					$query5 .= "ORDER BY last_date DESC ";
+
+					//print("$query5<br>");
+					
+					$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+					$row = mysqli_fetch_array($mysqli_result5);
+
+					//$num_rows = mysqli_num_rows($mysqli_result5);
+
+					#if ($row[percent_wa] > 2.9)
+					if ($row[percent_wa] >= 1.0)
+					{
+						print("<TD bgcolor=\"#99ff00\" align=center><b>$row[percent_wa]</b></TD>\n");
+					#} elseif ($row[percent_wa] > 1.4) {
+					#} elseif ($row[percent_wa] >= 0.5) {
+					} elseif ($row[percent_wa] >= 0.8) {
+						print("<TD bgcolor=\"#99ffff\" align=center><b>$row[percent_wa]</b></TD>\n");
+					} else {
+						print("<TD align=center>$row[percent_wa]</TD>\n");
+					}
+				} else {
+					print("<TD>&nbsp;</TD>\n");
+				}
+			}
+			    print("<TD align=center><b>$x</b></TD>\n");
+				print("</TR>\n");
+		}
+
+		//create footer row
+		print("<TR><B>\n");
+		print("<TD>&nbsp;</TD>\n");
+		for ($x = 1; $x <= $balls; $x++)
+		{
+			print("<TD align=center><b>$x</b></TD>\n");
+		}
+		print("<TD>&nbsp;</TD>\n");
+		print("</TR></B>\n");
+
+		//end table
+		print("</TABLE>\n");
+	}
+
+	// ----------------------------------------------------------------------------------
+	function update_counts($count) 
+	{
+		require ("includes/mysqli.php"); 
+
+		global $debug, $game, $draw_prefix, $draw_table_name, $balls, $balls_drawn;
+
+		$table_temp = $draw_prefix . $count . "_" . $balls;
+
+		#$query = "DROP TABLE IF EXISTS $table_temp";
+
+		#$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query = "CREATE TABLE $table_temp";
+		$query .= "(";
+		$query .= "id int(10) unsigned NOT NULL auto_increment, ";
+		$query .= "date date NOT NULL default '1962-08-17',";
+
+		for ($r = 1; $r < $count; $r++)
+		{
+			$query .= "d";
+			$query .= "$r tinyint(3) unsigned NOT NULL default '0', ";
+		}
+		$query .= "d";
+		$query .= "$r tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "sum tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "draw_sum tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "combo tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "nums_count int(5) unsigned NOT NULL default '0', ";
+		$query .= "combo_count int(5) unsigned NOT NULL default '0', ";
+		$query .= "PRIMARY KEY  (id) ";
+		$query .= ")  ";
+
+		# draw draw_sum
+		$query = "SELECT DISTINCT date, draw_sum FROM $table_temp ";
+		$query .= "WHERE draw_sum = 0 ";
+		$query .= "ORDER BY date ASC ";
+
+		print "$query<p>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$num_rows_update = mysqli_num_rows($mysqli_result);
+
+		echo "num_rows_update  = $num_rows_update<p>";
+
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			$query_draw = "SELECT * FROM $draw_table_name ";
+			$query_draw .= "WHERE date = '$row[0]' ";
+
+			print "$query_draw<p>";
+
+			$mysqli_result_date = mysqli_query($query_draw, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+			$row_date = mysqli_fetch_array($mysqli_result_date);
+
+			$query_update = "UPDATE $table_temp ";
+			$query_update .= "SET draw_sum = $row_date[sum] ";
+			$query_update .= "WHERE date = '$row[0]' ";
+
+			print "$query_update<p>";
+
+			$mysqli_result_update = mysqli_query ($mysqli_link, $query_update) or die (mysqli_error($mysqli_link));
+		}
+
+		$query = "SELECT * FROM $table_temp ";
+		$query .= "ORDER BY date DESC ";
+
+		print "$query<p>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$row_date = mysqli_fetch_array($mysqli_result);
+
+		$temp_include = "combin_" . $count . "_" . $balls_drawn . ".incl";
+
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date > '$row_date[date]' ";
+		$query .= "ORDER BY date ASC ";
+
+		print "$query<p>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		# create pair/trip/quad tables
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			require ("includes/$temp_include"); 
+		}
+
+		# copy current table into dated table
+		#$curr_date = date("ymd");
+
+		#$table_temp_date = $table_temp . "_" . $curr_date;
+
+		#$query = "DROP TABLE IF EXISTS $table_temp_date";
+
+		#$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		#$query_copy .= "CREATE TABLE $table_temp_date SELECT * FROM $table_temp";
+
+		#$mysqli_result = mysqli_query($mysqli_link, $query_copy) or die (mysqli_error($mysqli_link));
+
+		print "<h3>Table <font color=\"#ff0000\">$table_temp</font> Updated!</h3>";
+		#print "<h3>Table <font color=\"#ff0000\">$table_temp_date</font> Updated!</h3>";
+	}
+
+	function update_column_combin($count,$column) 
+	{
+		require ("includes/mysqli.php"); 
+
+		global $debug, $game, $draw_prefix, $draw_table_name, $balls, $balls_drawn;
+
+		$table_temp = $draw_prefix . "column" . $column . "_combin" . $count;
+
+		$query = "TRUNCATE TABLE $table_temp ";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "ORDER BY date ASC ";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		// get each draw table row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			$y = $column;
+
+			$query9 = "Insert INTO $table_temp ";
+			$query9 .= "VALUES ( '0', ";
+			$query9 .= "     '$row[0]', ";
+			for ($x = 1; $x < $count; $x++)
+			{
+				$query9 .= " '$row[$y]', ";
+				$y++;
+			}
+			$query9 .= "'$row[$y]', ";
+			$query9 .= "'0') ";
+			
+			$mysqli_result9 = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+		}
+
+		$query = "SELECT * FROM $table_temp ";
+		//$query .= "ORDER BY date ASC ";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		// get each row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			if (!$row[count])
+			{
+				$y = 2;
+				$query7 = "SELECT * FROM $table_temp ";
+				$query7 .= "WHERE ";
+				for ($x = 1; $x < $count; $x++)
+				{
+					$query7 .= " d$x = $row[$y] AND ";
+					$y++;
+				}
+				$query7 .= " d$x = $row[$y] ";
+
+				//print "$query7<br>";
+
+				$mysqli_result7 = mysqli_query($query7, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+				$num_rows = mysqli_num_rows($mysqli_result7);
+
+				$y = 2;
+				$query9 = "UPDATE $table_temp ";
+				$query9 .= "SET count = $num_rows ";
+				$query9 .= "WHERE ";
+				for ($x = 1; $x < $count; $x++)
+				{
+					$query9 .= " d$x = $row[$y] AND ";
+					$y++;
+				}
+				$query9 .= " d$x = $row[$y] ";
+
+				//print "$query9<br>";
+				
+				$mysqli_result9 = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+			}
+		}
+
+		print "<h3>Table <font color=\"#ff0000\">$table_temp</font> Updated!</h3>";
+	}
+
+
+	//start HTML page
+	print("<HTML>\n");
+	print("<HEAD>\n");
+	print("<TITLE>$game_name Display - $game_name</TITLE>\n");
+	print("</HEAD>\n");
+	
+	print("<BODY>\n");
+
+	print "<h3><a href=\"#26\">Limit 26</a> | <a href=\"#5000\">Limit 5000</a></h3>";
+	
+	lot_display (26);
+	
+	lot_display (5000);
+	
+	#lot_grid (26);
+
+	#lot_grid_2 (26,5000);
+	
+	#lot_grid_wa (5000);
+
+	#lot_grid_wa_y1 (5000);
+	
+	/*
+	for ($x = 1; $x < $balls_drawn; $x++)
+	{
+		for ($y = $x+ 1; $y <= $balls_drawn; $y++)
+		{
+			test_columns($cola=$x,$colb=$y);
+		}
+	}
+	*/
+	
+	for ($x = 2; $x < $balls_drawn; $x++)
+	{
+		update_counts($x);
+	}
+	
+	/*
+	update_column_combin($count=3,$column=1);
+	update_column_combin($count=3,$column=2);
+	update_column_combin($count=3,$column=3);
+
+	update_column_combin($count=4,$column=1);
+	update_column_combin($count=4,$column=2);
+	*/
+
+	print "<a href=\"lot_analyze.php\" target=\"_blank\">Open lot_analyze.php</a>"; 
+	
+	print("</BODY>\n");
+?>

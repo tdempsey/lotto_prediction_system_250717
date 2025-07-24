@@ -1,0 +1,44 @@
+<?php
+	switch ($z) { 
+	   case 1: 
+		   $query5 .= "'$row[1]',";
+		   $query5 .= "'$row[2]',";
+		   break; 
+	   case 2: 
+		   $query5 .= "'$row[1]',";
+		   $query5 .= "'$row[3]',";
+		   break; 
+	   case 3: 
+		   $query5 .= "'$row[1]',";
+		   $query5 .= "'$row[4]',";
+		   break; 
+	   case 4: 
+		   $query5 .= "'$row[1]',";
+		   $query5 .= "'$row[5]',";
+		   break;
+	   case 5: 
+		   $query5 .= "'$row[2]',";
+		   $query5 .= "'$row[3]',";
+		   break;
+	   case 6: 
+		   $query5 .= "'$row[2]',";
+		   $query5 .= "'$row[4]',";
+		   break; 
+	   case 7: 
+		   $query5 .= "'$row[2]',";
+		   $query5 .= "'$row[5]',";
+		   break; 
+	   case 8: 
+		   $query5 .= "'$row[3]',";
+		   $query5 .= "'$row[4]',";
+		   break;
+	   case 9: 
+		   $query5 .= "'$row[3]',";
+		   $query5 .= "'$row[5]',";
+		   break;
+	   case 10: 
+		   $query5 .= "'$row[4]',";
+		   $query5 .= "'$row[5]',";
+		   break;
+	} 
+?>

@@ -1,0 +1,124 @@
+<?php
+	if ($drop_tables)
+	{
+		$combo_table = "$draw_prefix";
+		$combo_table .= "filter_";
+		$combo_table .= "$filter_letter";
+		$combo_table .= "_save";
+
+		$query = "DROP TABLE IF EXISTS $combo_table ";
+
+		#echo "$query<p>";
+
+		#$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query =  "CREATE TABLE $combo_table LIKE combo_";
+		$query .=  "$balls_drawn";
+		$query .=  "_";
+		$query .=  "$balls";
+		
+		if ($game == 7)
+		{
+			$query .=  "_1";
+		} elseif ($game == 2) {
+			$query .=  "_01";
+		}
+
+		#print("$query<p>");
+
+		#$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		for ($x = 1; $x <= 30; $x++)
+		{
+			$combo_table = "$draw_prefix";
+			$combo_table .= "filter_";
+			$combo_table .= "$filter_letter";
+			$combo_table .= "_";
+			
+			if ($x < 10)
+			{
+				$combo_table .= "0$x";
+			} else {
+				$combo_table .= "$x";
+			}
+
+			if ($hml)
+			{
+				$combo_table .= "_";
+				$combo_table .= "$hml";
+			} 
+
+			$query = "DROP TABLE IF EXISTS $combo_table ";
+
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+			$query =  "CREATE TABLE $combo_table LIKE combo_";
+			$query .=  "$balls_drawn";
+			$query .=  "_";
+			$query .=  "$balls";
+			if ($game == 7)
+			{
+				$query .=  "_1";
+			} elseif ($game == 2) {
+			$query .=  "_01";
+		}
+
+			print("$query<p>");
+
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+		}
+	} else {
+		echo"<h2>tables not dropped</h2>";
+	}
+	
+	if ($drop_tables)
+	{
+		for ($x = 1; $x <= 30; $x++)
+		{
+			$combo_table = "$draw_prefix";
+			$combo_table .= "2_";
+			$combo_table .= "$balls";
+			$combo_table .= "_";
+			$combo_table .= "$filter_letter";
+			$combo_table .= "_$x";
+
+			print("$query<p>");
+
+			$query = "DROP TABLE IF EXISTS $combo_table ";
+
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+		}
+
+		for ($x = 1; $x <= 30; $x++)
+		{
+			$combo_table = "$draw_prefix";
+			$combo_table .= "3_";
+			$combo_table .= "$balls";
+			$combo_table .= "_";
+			$combo_table .= "$filter_letter";
+			$combo_table .= "_$x";
+
+			print("$query<p>");
+
+			$query = "DROP TABLE IF EXISTS $combo_table ";
+
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+		}
+
+		for ($x = 1; $x <= 30; $x++)
+		{
+			$combo_table = "$draw_prefix";
+			$combo_table .= "4_";
+			$combo_table .= "$balls";
+			$combo_table .= "_";
+			$combo_table .= "$filter_letter";
+			$combo_table .= "_$x";
+
+			print("$query<p>");
+
+			$query = "DROP TABLE IF EXISTS $combo_table ";
+
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+		}
+	}
+?>

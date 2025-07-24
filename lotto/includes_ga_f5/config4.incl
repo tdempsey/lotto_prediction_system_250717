@@ -1,0 +1,98 @@
+<?php
+//$dup_count_minim = array (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0); // no 0
+
+// play 1st // 50%
+$dup_count_limit = array 
+(0,1,1,2,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4); 
+// 1 2 3 4 5 6 7 8 9 1011121314151617181920212223242526272829303132333435363738394041424344454647484950
+$dup_count_minim = array 
+(0,0,0,0,0,1,1,2,2,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4);
+// *
+$dup_variance = 0;
+
+/*
+// play 2st // 50%
+dup_count_limit2 = array 
+(0,2,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5); 
+// 1 2 3 4 5 6 7 8 9 1011121314151617181920212223242526272829303132333435363738394041424344454647484950
+$dup_count_minim2 = array 
+(0,0,0,1,1,1,1,2,2,2,3,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,5);
+*/
+
+// dup test last 40 draws
+
+$sum_low = 60;
+$sum_high = 119;
+
+$look_back = 1; // should be 2 - max 3
+
+$mod_limit = 1;
+$mod_two_count_limit = 2;
+
+$due_count_limit = 2; 
+$soon_count_limit = 1; 
+
+$hot_min = 0;
+$hot_max = 3; 
+$warm_min = 0; 
+$warm_max = 4; 
+$cold_min = 0; 
+$cold_max = 3;
+
+$delete_combin = 0;
+$filter_range = 1;
+
+$wheel_recent = 1;
+$wheel_percent = 0.09;
+
+$query_limit = 12; // combo table limit eg combo_10_6_53
+$seq2_limit = 1;
+$seq3_limit = 0;
+
+$combin5min = 0; // no need
+$combin5max = 0; // no need
+$combin4min = 0;
+$combin4max = 0; // max 1 //// *
+$combin3min = 6; // min 6
+$combin3max = 11; 
+$combin2min = 15; // no change
+$combin2max = 15; // no change
+
+//$exclude_count_limit_1 = array (4,6);
+$exclude_count_limit_0 = 5;
+$exclude_count_limit_1 = 5;
+$exclude_count_limit_2 = 3; 
+$exclude_count_limit_3 = 1; 
+
+$exclude_sum = array();
+ 
+$exclude_numbers_col_one = array (1,2,6,7,9,11,14,17);
+
+$exclude_numbers_col_two = array (8,13,16);
+$exclude_numbers_col_three = array (31,34,36);
+$exclude_numbers_col_four = array (45,48);
+$exclude_numbers_col_five = array (31,37,38,46);
+$exclude_numbers_col_six = array (38,40,44,46,47,53);
+
+$exclude_numbers = array (2,17,21,30,31,37,43,53);
+$exclude_num_limit = 1;
+
+$required_numbers = array ();
+$required_numbers_min = 0;
+
+$rank_count_range[0][0] = 0;
+$rank_count_range[0][1] = 0; 
+$rank_count_range[1][0] = 0; 
+$rank_count_range[1][1] = 1;
+$rank_count_range[2][0] = 0; 
+$rank_count_range[2][1] = 3; 
+$rank_count_range[3][0] = 0; // 0
+$rank_count_range[3][1] = 3; // no change
+$rank_count_range[4][0] = 0; 
+$rank_count_range[4][1] = 2; 
+$rank_count_range[5][0] = 0; 
+$rank_count_range[5][1] = 1; 
+$rank_count_range[6][0] = 0; 
+$rank_count_range[6][1] = 1; 
+
+?>

@@ -1,0 +1,188 @@
+<?php
+	if ($count == 2)
+	{
+		switch ($combo) 
+		{ 
+		   case 1: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   break; 
+		   case 2: 
+			   $d1 = $row[1];
+			   $d2 = $row[3];
+			   break; 
+		   case 3: 
+			   $d1 = $row[1];
+			   $d2 = $row[4];
+			   break; 
+		   case 4: 
+			   $d1 = $row[1];
+			   $d2 = $row[5];
+			   break;
+		   case 5: 
+			   $d1 = $row[2];
+			   $d2 = $row[3];
+			   break;
+		   case 6: 
+			   $d1 = $row[2];
+			   $d2 = $row[4];
+			   break; 
+		   case 7: 
+			   $d1 = $row[2];
+			   $d2 = $row[5];
+			   break; 
+		   case 8: 
+			   $d1 = $row[3];
+			   $d2 = $row[4];
+			   break;
+		   case 9: 
+			   $d1 = $row[3];
+			   $d2 = $row[5];
+			   break;
+		   case 10: 
+			   $d1 = $row[4];
+			   $d2 = $row[5];
+			   break;
+		}
+	} elseif ($count == 3) {
+		switch ($c) 
+		{ 
+		   case 1: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[3];
+			   break; 
+		   case 2: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[4];
+			   break; 
+		   case 3: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[5];
+			   break; 
+		   case 4: 
+			   $d1 = $row[1];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   break;
+		   case 5: 
+			   $d1 = $row[1];
+			   $d2 = $row[3];
+			   $d3 = $row[5];
+			   break; 
+		   case 6: 
+			   $d1 = $row[1];
+			   $d2 = $row[4];
+			   $d3 = $row[5];
+			   break;
+		   case 7: 
+			   $d1 = $row[2];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   break;
+		   case 8: 
+			   $d1 = $row[2];
+			   $d2 = $row[3];
+			   $d3 = $row[5];
+			   break;
+		   case 9: 
+			   $d1 = $row[2];
+			   $d2 = $row[4];
+			   $d3 = $row[5];
+			   break;
+		   case 10: 
+			   $d1 = $row[3];
+			   $d2 = $row[4];
+			   $d3 = $row[5];
+			   break;
+		} 
+	} elseif ($count == 4) {
+		switch ($c) 
+		{ 
+		   case 1: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[3];
+			   $d4 = $row[4];
+			   break; 
+		   case 2: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[3];
+				   $d4 = $row[5];
+			   break; 
+		   case 3: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[4];
+			   $d4 = $row[5];
+			   break;
+		   case 4: 
+			   $d1 = $row[1];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   $d4 = $row[5];
+			   break; 
+		   case 5: 
+			   $d1 = $row[2];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   $d4 = $row[5];
+			   break;
+		} 
+	} else {
+		die("combo_all.incl");
+	}
+
+	# -------------------------------------------------------------------------------------------------------
+	# ----------  Combo All -----------------
+	# -------------------------------------------------------------------------------------------------------
+	$query_combo = "SELECT * FROM $draw_prefix";
+	$query_combo .= "$count";
+	$query_combo .= "_$balls ";
+
+	if ($count == 2) {
+		$query_combo .= "WHERE d1 = '$d1' ";
+		$query_combo .= "AND d2 = '$d2' ";
+	} elseif ($count == 3) {
+		$query_combo .= "WHERE d1 = '$d1' ";
+		$query_combo .= "AND d2 = '$d2' ";
+		$query_combo .= "AND d3 = '$d3' ";
+	} elseif ($count == 4) {
+		$query_combo .= "WHERE d1 = '$d1' ";
+		$query_combo .= "AND d2 = '$d2' ";
+		$query_combo .= "AND d3 = '$d3' ";
+		$query_combo .= "AND d4 = '$d4' ";
+	} else {
+		die("combo_all.incl");
+	}
+
+	$query_combo .= "AND combo = '$combo' ";
+	$query_combo .= "AND hml = '0' ";
+	$query_combo .= "AND date = '$row[0]' ";
+	$query_combo .= "ORDER BY id DESC ";
+
+	echo "$query_combo<p>";
+
+	$mysqli_result_combo = mysqli_query($query_combo, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+	$row_combo = mysqli_fetch_array($mysqli_result_combo);
+
+	$num_rows_combo = mysqli_num_rows($mysqli_result_combo);
+	
+	if ($num_rows_combo)
+	{
+		$count_low = intval(($row_combo[combo_count]-1)*0.33)+1;
+		$count_high = $row_combo[combo_count];
+	} else {
+		$count_low = 0;
+		$count_high = 0;
+	}
+
+	if ($debug)
+	{
+		print "<h5>(all/0) count_low = $row_combo[low] / balls_mid = $row_combo[mid] / count_high = $row_combo[high] - ball = $draw[index]</h5>";
+	}
+?>

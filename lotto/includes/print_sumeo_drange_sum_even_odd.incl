@@ -1,0 +1,240 @@
+<?php
+	// ----------------------------------------------------------------------------------
+	function print_sumeo_drange2_sum_even_odd()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sumeo_drange2_sum_even_odd_sum_even_odd.incl");
+
+		require ("includes/print_sumeo_table_drange2_sum_even_odd_sum_even_odd.incl");
+
+		require ("includes/print_sumeo_table_drange2_top25_sum_even_odd.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sumeo</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sumeo_drange3_sum_even_odd()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sumeo_drange3_sum_even_odd.incl");
+
+		require ("includes/print_sumeo_table_drange3_sum_even_odd.incl");
+
+		require ("includes/print_sumeo_table_drange3_top25_sum_even_odd.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sumeo </font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sum_drange4_sum_even_odd()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sum_drange4_sum_even_odd.incl");
+
+		require ("includes/print_sum_table_drange4_sum_even_odd.incl");
+
+		require ("includes/print_sum_table_drange4_top25_sum_even_odd.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sumeo_drange4_sum_even_odd()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sumeo_drange4_sum_even_odd.incl");
+
+		require ("includes/print_sumeo_table_drange4_sum_even_odd.incl");
+
+		require ("includes/print_sumeo_table_drange4_top25_sum_even_odd.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sumeo</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sum_drange5_sum_even_odd()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sum_drange5_sum_even_odd.incl");
+
+		require ("includes/print_sum_table_drange5_sum_even_odd.incl");
+
+		require ("includes/print_sum_table_drange5_top25_sum_even_odd.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sumeo_drange5_sum_even_odd()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sumeo_drange5_sum_even_odd.incl");
+
+		require ("includes/print_sumeo_table_drange5_sum_even_odd.incl");
+
+		require ("includes/print_sumeo_table_drange5_top25_sum_even_odd.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sum_drange6_sum_even_odd()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sum_drange6_sum_even_odd.incl");
+
+		require ("includes/print_sum_table_drange6_sum_even_odd.incl");
+
+		require ("includes/print_sum_table_drange6_top25_sum_even_odd.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sumeo_drange6_sum_even_odd()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sumeo_drange6_sum_even_odd.incl");
+
+		require ("includes/print_sumeo_table_drange6_sum_even_odd.incl");
+
+		require ("includes/print_sumeo_table_drange6_top25_sum_even_odd.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sum_drange7_sum_even_odd()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sum_drange7_sum_even_odd.incl");
+
+		require ("includes/print_sum_table_drange7_sum_even_odd.incl");
+
+		require ("includes/print_sum_table_drange7_top25_sum_even_odd.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+
+	function print_sumeo_drange7_sum_even_odd()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sumeo_drange7_sum_even_odd.incl");
+
+		require ("includes/print_sumeo_table_drange7_sum_even_odd.incl");
+
+		require ("includes/print_sumeo_table_drange7_top25_sum_even_odd.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sum_drange8_sum_even_odd()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sum_drange8_sum_even_odd.incl");
+
+		require ("includes/print_sum_table_drange8_sum_even_odd.incl");
+
+		require ("includes/print_sum_table_drange8_top25_sum_even_odd.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sumeo_drange8_sum_even_odd()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sumeo_drange8_sum_even_odd.incl");
+
+		require ("includes/print_sumeo_table_drange8_sum_even_odd.incl");
+
+		require ("includes/print_sumeo_table_drange8_top25_sum_even_odd.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sumeo_drange9_sum_even_odd()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sumeo_drange9_sum_even_odd.incl");
+
+		require ("includes/print_sumeo_table_drange9_sum_even_odd.incl");
+
+		require ("includes/print_sumeo_table_drange9_top25_sum_even_odd.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sumeo_drange10_sum_even_odd()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sumeo_drange10_sum_even_odd.incl");
+
+		require ("includes/print_sumeo_table_drange10_sum_even_odd.incl");
+
+		require ("includes/print_sumeo_table_drange10_top25_sum_even_odd.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sumeo_drange_summary_sum_even_odd()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sumeo_drange_summary_sum_even_odd.incl");
+
+		require ("includes/print_sumeo_table_drange_summary_sum_even_odd.incl");
+
+		require ("includes/print_sumeo_table_drange_summary_top25_sum_even_odd.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+?>

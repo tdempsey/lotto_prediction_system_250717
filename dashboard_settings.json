@@ -1,0 +1,10 @@
+{
+  "count": 1000,
+  "max_seq2": 1,
+  "max_seq3": 0,
+  "max_mod_tot": 1,
+  "sum_min": 70,
+  "sum_max": 139,
+  "include_scores": true,
+  "load_historical": true
+}

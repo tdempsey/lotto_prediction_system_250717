@@ -1,0 +1,41 @@
+<?php
+	echo "<h1>$game_name Limits</h1>";
+
+	$next_draw_date = findNextDrawDateDash($game);
+
+	echo "Next draw = $next_draw_date<p>";
+
+	for ($hml = 60; $hml <= 140; $hml = $hml + 10)
+	{
+		require ("includes/hml_switch.incl");
+
+		lot_filter_limit_sum ($next_draw_date);
+		lot_filter_limit_balls ($next_draw_date);
+		lot_filter_limit_even ($next_draw_date);
+		lot_filter_limit_odd ($next_draw_date);
+		lot_filter_limit_d2_1 ($next_draw_date);
+		lot_filter_limit_d2_2 ($next_draw_date);
+		#lot_filter_limit_mod ($next_draw_date);
+		#lot_filter_limit_modx ($next_draw_date);
+		lot_filter_limit_draw ($next_draw_date);
+		lot_filter_limit_rank ($next_draw_date);
+		lot_filter_limit_dup ($next_draw_date); 
+		lot_filter_limit_combo ($next_draw_date);
+		lot_filter_limit_combo_count ($next_draw_date,2);
+		lot_filter_limit_combo_count ($next_draw_date,3);
+		lot_filter_limit_combo_count ($next_draw_date,4);
+		lot_filter_limit_average ($next_draw_date);
+		lot_filter_limit_median ($next_draw_date);
+		lot_filter_limit_harmean ($next_draw_date);
+		#lot_filter_limit_geomean ($next_draw_date);
+		lot_filter_limit_quart1 ($next_draw_date);
+		lot_filter_limit_quart2 ($next_draw_date);
+		lot_filter_limit_quart3 ($next_draw_date);
+		lot_filter_limit_stdev ($next_draw_date);
+		lot_filter_limit_variance ($next_draw_date);
+		lot_filter_limit_avedev ($next_draw_date);
+		lot_filter_limit_kurt ($next_draw_date);
+		lot_filter_limit_skew ($next_draw_date); 
+		lot_filter_limit_devsq ($next_draw_date); 
+	}
+?>

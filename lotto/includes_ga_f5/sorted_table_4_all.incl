@@ -1,0 +1,55 @@
+<?php
+	//start sorted table --------------------------------------------------------
+	print("<h2>Numbers Sorted All - Limit $limit</h2>\n");
+	print("<P>");
+	print("<TABLE BORDER=\"1\">\n");
+
+	//create header row
+	print("<TR><B>\n");
+
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Sorted</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Total</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Prev</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n");
+	print("</B></TR>\n");
+
+	#$table_temp = $draw_prefix . "temp_pairs_" . $limit;
+	$query = "SELECT * FROM ga_f5_temp2a_4_all_$limit ";
+	$query .= "ORDER BY count DESC, combin ASC ";
+
+	echo "$query<br>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	// get each row
+	while($row = mysqli_fetch_array($mysqli_result))
+	{
+		print("<TR>\n");
+
+		print("<TD><center>$row[num]</center></TD>\n");
+		print("<TD align=center>$row[count]</TD>\n");
+
+		if ((strtotime ("$row[prev_date]") - $month6) < 0)
+		{
+			print("<TD nobreak><font color=\"#ff0000\">$row[prev_date]</font></TD>\n");
+		} else {
+			print("<TD nobreak >$row[prev_date]</TD>\n");
+		}
+
+		if ((strtotime ("$row[0]") - $month6) < 0)
+		{
+			print("<TD nobreak><font color=\"#ff0000\">$row[0]</font></TD>\n");
+		} else {
+			print("<TD nobreak >$row[0]</TD>\n");
+		}
+
+		#print("<TD>$row[0]</TD>\n");
+
+		print("</TR>\n");
+	}
+
+	//end table
+	print("</TABLE>\n");
+
+	
+?>

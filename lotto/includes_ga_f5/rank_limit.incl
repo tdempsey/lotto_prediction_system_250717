@@ -1,0 +1,7 @@
+				$query5 .= "AND   a.rank0 <= 0 ";
+				$query5 .= "AND   a.rank1 <= 2 ";
+				$query5 .= "AND   a.rank2 <= 2 ";
+				$query5 .= "AND   a.rank3 <= 3 ";
+				$query5 .= "AND   a.rank4 <= 3 ";
+				$query5 .= "AND   a.rank5 <= 1 ";
+				$query5 .= "AND   a.rank6 <= 1 ";

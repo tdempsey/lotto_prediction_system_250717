@@ -1,0 +1,175 @@
+<?php
+
+	$curr_date = date('Y-m-d');
+
+	$drop_tables = 1;
+	
+	if ($drop_tables)
+	{
+		$query = "DROP TABLE IF EXISTS temp_draw_";
+		$query .= "$hml";
+		$query .= "_eo4";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query =  "CREATE TABLE IF NOT EXISTS  temp_draw_";
+		$query .= "$hml";
+		$query .= "_eo4 ( ";
+		$query .= "  `id` int(10) unsigned NOT NULL auto_increment, ";
+		$query .= "  `draw0` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `draw1` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `draw2` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `draw3` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `draw4` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `date` date NOT NULL default '1962-08-17', ";
+		$query .= "  PRIMARY KEY  (`id`) ";
+		$query .= ") ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 "; 
+
+		#print("$query<p>");
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$draw_table = "$draw_prefix";
+		$draw_table .= "draw_count_";
+		$draw_table .= "$balls_drawn";
+		$draw_table .= "_$balls";
+		$draw_table .= "_$hml";
+		$draw_table .= "_eo4";
+
+		$query = "DROP TABLE IF EXISTS $draw_table ";
+
+		#echo "$query<br>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query =  "CREATE TABLE IF NOT EXISTS  $draw_table ( ";
+		$query .= "  `id` int(10) unsigned NOT NULL auto_increment, ";
+		$query .= "  `draw0` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `draw1` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `draw2` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `draw3` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `draw4` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `date` date NOT NULL default '1962-08-17', ";
+		$query .= "  `count` int(3) unsigned NOT NULL default '0', ";
+		$query .= "  PRIMARY KEY  (`id`) ";
+		$query .= ") ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ";
+
+		#print("$query<p>");
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+	}
+
+	$row = array_fill (0,7,0);
+
+	$max_num = 5;
+
+	print("<p align=\"center\"><b><font face=\"Arial, Helvetica, sans-serif\">Build draw 5/$max_num</font></b></p>");
+
+	$query_temp = "SELECT * FROM $draw_table_name ";
+	$query_temp .= "WHERE date > '2015-10-01' "; ##170527
+	if ($hml)
+	{
+		$query_temp .= "AND   sum >= $range_low  ";
+		$query_temp .= "AND   sum <= $range_high  ";
+		$query_temp .= "AND   even = $even  ";
+		$query_temp .= "AND   odd = $odd  ";
+		$query_temp .= "AND   d4_1 = $d4_1  ";
+		$query_temp .= "AND   d4_2 = $d4_2  ";
+		$query_temp .= "AND   d4_3 = $d4_3  ";
+		$query_temp .= "AND   d4_4 = $d4_4  ";
+		
+	}
+	$query_temp .= "ORDER BY DATE desc ";
+
+	echo "$query_temp<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query_temp) or die (mysqli_error($mysqli_link));
+
+	$draw_count = array_fill (0, 6, 0);
+
+	while($row = mysqli_fetch_array($mysqli_result))
+	{
+		#$draw = array($row[draw0],$row[draw1],$row[draw2],$row[draw3]);
+
+		#$draw_count = calculate_draw_count($draw); 
+
+		$query = "INSERT INTO temp_draw_";
+		$query .= "$hml";
+		$query .= "_eo4 ";
+		$query .= "VALUES ('0', ";
+		$query .= "'$row[draw0]', ";
+		$query .= "'$row[draw1]', ";
+		$query .= "'$row[draw2]', ";
+		$query .= "'$row[draw3]', ";
+		$query .= "'$row[draw4]', ";
+		$query .= "'$row[0]') ";
+		
+		#print "$query<br>";
+		
+		$mysqli_result2 = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$last_date = $row[0];
+	}
+
+	$query_temp = "SELECT DISTINCT draw0,draw1,draw2,draw3,draw4 FROM temp_draw_";
+	$query_temp .= "$hml";
+	$query_temp .= "_eo4 ";
+
+	#echo "$query_temp<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query_temp) or die (mysqli_error($mysqli_link));
+
+	while($row = mysqli_fetch_array($mysqli_result))
+	{
+
+		$query_temp = "SELECT * FROM $draw_table_name ";
+		$query_temp .= "WHERE draw0 = $row[draw0] ";
+		$query_temp .= "AND   draw1 = $row[draw1] ";
+		$query_temp .= "AND   draw2 = $row[draw2] ";
+		$query_temp .= "AND   draw3 = $row[draw3] ";
+		$query_temp .= "AND   draw4 = $row[draw4] ";
+		$query_temp .= "AND   even = $even  ";
+		$query_temp .= "AND   odd  = $odd  ";
+		$query_temp .= "AND   d4_1 = $d4_1  ";
+		$query_temp .= "AND   d4_2 = $d4_2  ";
+		$query_temp .= "AND   d4_3 = $d4_3  ";
+		$query_temp .= "AND   d4_4 = $d4_4  ";
+		$query_temp .= "AND date >= '2015-10-01' "; #170527
+		$query_temp .= "ORDER BY DATE ";
+
+		#echo "$query_temp<p>";
+
+		$mysqli_result_temp = mysqli_query($mysqli_link, $query_temp) or die (mysqli_error($mysqli_link));
+
+		$row_temp = mysqli_fetch_array($mysqli_result_temp);
+
+		$num_rows_temp = mysqli_num_rows($mysqli_result_temp);
+
+		$query = "INSERT INTO $draw_table ";
+		$query .= "VALUES ('0', ";
+		$query .= "'$row_temp[draw0]', ";
+		$query .= "'$row_temp[draw1]', ";
+		$query .= "'$row_temp[draw2]', ";
+		$query .= "'$row_temp[draw3]', ";
+		$query .= "'$row_temp[draw4]', ";
+		$query .= "'$row_temp[date]', ";
+		$query .= "'$num_rows_temp') ";
+
+		#print "$query<br>";
+		
+		$mysqli_result2 = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+	}
+
+	$query_temp = "SELECT * FROM $draw_table ";
+	$query_temp .= "ORDER BY count DESC ";
+
+	#echo "$query_temp<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query_temp) or die (mysqli_error($mysqli_link));
+
+	while($row = mysqli_fetch_array($mysqli_result))
+	{
+		echo "$row[draw0],$row[draw1],$row[draw2],$row[draw3],$row[draw4] - <b>$row[count]</b><br>";
+	}
+
+?>

@@ -1,0 +1,84 @@
+<?php
+	
+	#even_odd($draw,$draw_even,$draw_odd); 
+
+	$even = 0;
+	$odd = 0;
+
+	#echo "update even/odd"; #201108
+
+	// error checking ---------------------------------------------------------------------------------------
+	if (count($draw) == 0)
+	{
+		exit("<h2>Error - function even_odd.php - <font color=\"#FF0000\">\$draw undefined</font></h2>");
+	}
+
+	if (array_sum($draw) == 0)
+	{
+		exit("<h2>Error - function even_odd.php - <font color=\"#FF0000\">\$draw array_sum = 0</font></h2>");
+	}
+	// error checking ---------------------------------------------------------------------------------------
+
+	foreach ($draw as $val) 
+	{ 
+		if(!is_int($val/2)) 
+		{ 
+			$odd++; 
+			#echo "odd++<br>";
+		} else { 
+				$even++; 
+				#echo "even++<br>";
+		}
+	}
+
+	if ($even == 0 && $odd == 0)
+	{
+		exit("<font color=\"#FF0000\"><h2>Error - function even_odd.php - \$even/\$odd = 0</h2></font>");
+	}
+	
+	#calculate_50_50($draw,$d2_1,$d2_2,$balls);
+
+	$d2_1 = 0;
+	$d2_2 = 0;
+	
+	#echo "calculate_draw_count enter<br>"; #201108
+	$draw_count = calculate_draw_count($draw);
+	#echo "calculate_draw_rank exit<br>"; #201108
+
+	#echo "calculate_rank_count enter<br>"; #201108
+	calculate_rank_count($row5a[0],$draw,$rank_count); #201108
+	#echo "calculate_rank_count exit<br>"; #201108
+
+	$query3 = "UPDATE $draw_table_name ";
+	$query3 .= "SET even=$even, odd=$odd, ";
+	
+	for ($x = 0; $x <= intval($balls/10); $x++)
+	{
+		$query3 .= "draw$x=$draw_count[$x], ";
+	}
+	
+	$query3 .= "rank0=$rank_count[0], rank1=$rank_count[1], rank2=$rank_count[2], rank3=$rank_count[3], ";
+	$query3 .= "rank4=$rank_count[4], rank5=$rank_count[5], rank6=$rank_count[6] ";
+	#$query3 .= "WHERE date='$row5a[date]' ";
+	$query3 .= "WHERE date = '$row5a[0]' ";
+
+	#print("$query3\n");
+
+	$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+	#update rank table  ### add check
+	$query_insert = "INSERT $draw_prefix";
+	$query_insert .= "rank_table ";
+	$query_insert .= "VALUES ('$row5a[0]', ";
+	$query_insert .= "'$rank_count[0]', ";
+	$query_insert .= "'$rank_count[1]', ";
+	$query_insert .= "'$rank_count[2]', ";
+	$query_insert .= "'$rank_count[3]', ";
+	$query_insert .= "'$rank_count[4]', ";
+	$query_insert .= "'$rank_count[5]', ";
+	$query_insert .= "'$rank_count[6]') ";
+
+	#$mysqli_result_insert = mysqli_query($query_insert, $mysqli_link) or die (mysqli_error($mysqli_link)); 
+
+	#print("<FONT COLOR=RED><H4>*** $row5a[0] updated ***</H4></FONT>\n");
+?>

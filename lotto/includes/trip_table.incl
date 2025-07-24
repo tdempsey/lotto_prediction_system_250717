@@ -1,0 +1,54 @@
+<?php
+
+	$table_temp = $draw_prefix . "temp_3_" . $limit;
+
+	// Table structure for table "$draw_prefix . "temp_2_" . $limit"
+	$query3 = "DROP TABLE IF EXISTS $table_temp ";
+
+	//print("$query3\n");
+
+	$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+	#
+	# Table "$draw_prefix . "temp_3_" . $limit"
+	#
+
+	$query4 = "CREATE TABLE $table_temp ( ";
+	$query4 .= "id int(10) unsigned NOT NULL auto_increment, ";
+	$query4 .= "num1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "num2 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "num3 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "day1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "week1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "week2 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "month1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "month3 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "month6 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year2 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year3 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year4 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year5 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year6 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year7 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year8 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year9 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year10 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "sigma int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "count int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "num2_total int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "percent_10 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "percent_30 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "percent_100 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "percent_365 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "percent_5000 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "percent_wa float(4,1) unsigned NOT NULL default '0', ";
+	$query4 .= "prev_date date NOT NULL default '1962-08-17', ";
+	$query4 .= "last_date date NOT NULL default '1962-08-17', ";
+	$query4 .= "PRIMARY KEY  (id), ";
+	$query4 .= "KEY num1 (num1), ";
+	$query4 .= "KEY num2 (num2) ";
+	$query4 .= ")  ";
+
+	$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+?>

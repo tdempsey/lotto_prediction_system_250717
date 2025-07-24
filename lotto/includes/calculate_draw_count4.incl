@@ -1,0 +1,98 @@
+<?php
+	# start draw count
+	$draw_date_array = explode("-","$row[1]"); ### 210104
+	$draw_date_unix = mktime (0,0,0,$draw_date_array[1],$draw_date_array[2],$draw_date_array[0]); ### 210104
+
+	$draw_date_first_unix = findFirstDrawDateUnix($game,$draw_table_name);
+
+	#echo "calculate_draw_count4.incl<br>";
+
+	#echo "row - <br>";
+	#print_r ($row);
+	#echo "<br>";
+
+	for ($x = 3; $x <= 6; $x++)
+	{
+		if ($game == 10 OR $game == 20)
+		{
+			$y = $row[$x+2]; # number drawn
+		} else {
+			$y = $row[$x]; # number drawn
+			#echo "y = $y<br>";
+		}
+		
+		$num_array[$y]++; 
+		$num_array_count[$y][$z]++;
+		
+		# calculate history
+		if ($draw_date_unix == $day1_unix)
+		{ 
+			for ($d = 0; $d <= 16; $d++) {$draw_count_array[$y][$d]++;}
+		} elseif ($draw_date_unix > $week1_unix) {
+			for ($d = 1; $d <= 16; $d++) {$draw_count_array[$y][$d]++;}
+		} elseif ($draw_date_unix > $week2_unix) {
+			for ($d = 2; $d <= 16; $d++) {$draw_count_array[$y][$d]++;}
+		} elseif ($draw_date_unix > $month1_unix) {
+			for ($d = 3; $d <= 16; $d++) {$draw_count_array[$y][$d]++;}
+		} elseif ($draw_date_unix > $month3_unix) {
+			for ($d = 4; $d <= 16; $d++) {$draw_count_array[$y][$d]++;}
+		} elseif ($draw_date_unix > $month6_unix) {
+			for ($d = 5; $d <= 16; $d++) {$draw_count_array[$y][$d]++;}
+		} elseif ($draw_date_unix > $year1_unix) {
+			for ($d = 6; $d <= 16; $d++) {$draw_count_array[$y][$d]++;}
+		} elseif ($draw_date_unix > $year2_unix) {
+			for ($d = 7; $d <= 16; $d++) {$draw_count_array[$y][$d]++;}
+		} elseif ($draw_date_unix > $year3_unix) {
+			for ($d = 8; $d <= 16; $d++) {$draw_count_array[$y][$d]++;}
+		} elseif ($draw_date_unix > $year4_unix) {
+			for ($d = 9; $d <= 16; $d++) {$draw_count_array[$y][$d]++;}
+		} elseif ($draw_date_unix > $year5_unix) {
+			for ($d = 10; $d <= 16; $d++) {$draw_count_array[$y][$d]++;}
+		} elseif ($draw_date_unix > $year6_unix) {
+			for ($d = 11; $d <= 16; $d++) {$draw_count_array[$y][$d]++;}
+		} elseif ($draw_date_unix > $year7_unix) {
+			for ($d = 12; $d <= 16; $d++) {$draw_count_array[$y][$d]++;}
+		} elseif ($draw_date_unix > $year8_unix) {
+			for ($d = 13; $d <= 16; $d++) {$draw_count_array[$y][$d]++;}
+		} elseif ($draw_date_unix > $d1510_unix) {
+			for ($d = 14; $d <= 16; $d++) {$draw_count_array[$y][$d]++;}
+		} elseif ($draw_date_unix > $year9_unix) {
+			for ($d = 15; $d <= 16; $d++) {$draw_count_array[$y][$d]++;}
+		} elseif ($draw_date_unix > $year1_unix) {
+			for ($d = 16; $d <= 16; $d++) {$draw_count_array[$y][$d]++;}
+		}
+
+		#add 1 year to clear
+		if ($first_draw_unix > $year9_unix) {
+			for ($d = 16; $d <= 16; $d++) {$draw_count_array[$y][$d]=0;}
+		} elseif ($first_draw_unix > $year1_unix) {
+			for ($d = 17; $d <= 17; $d++) {$draw_count_array[$y][$d]=0;}
+		}
+		
+		if ($prev_date[$y] == '1962-08-17' || $prev_date[$y] == $num_date[$y])
+		{
+			$prev_date[$y] = $row[0];
+		}
+
+		if ($row[0] > $num_date[$y])
+		{	
+			$prev_date[$y] = $num_date[$y];
+			$num_date[$y] = $row[0];
+		}
+	}
+
+	#echo "draw_count_array - <br>";
+	#print_r ($draw_count_array);
+	#echo "<br>";
+
+	if ($mega_balls)
+	{
+		$y = $row[pb];
+		$pb_array[$pb]++;
+		$pb_array_count[$y][$z]++;
+		if ($row[0] > $pb_date[$y])
+		{
+			$pb_date[$y] = $row[0];
+		}
+	}
+?>

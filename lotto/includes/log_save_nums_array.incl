@@ -1,0 +1,9 @@
+<?php
+	log_info("saved_nums_array\n");
+	log_info("----------------\n");
+	for ($x = 0; $x < count($saved_nums_array); $x++)
+	{
+		log_info("$saved_nums_array[$x]\n");
+	}
+	log_info("saved_nums_array end\n");
+?>

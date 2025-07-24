@@ -1,0 +1,92 @@
+	<?php
+	$sum_tot_temp_array = array_fill (0,16,0);
+	$sum_tot_array = array_fill (0,300,$sum_tot_temp_array);
+
+	#initialize date variables
+	require ("includes/unix.incl");
+
+	$draw = 1;
+
+	$query4 = "DROP TABLE IF EXISTS ";
+	$query4 .= "temp_sumeo_drange6_";
+	$query4 .= "$sum";
+	$query4 .= "_$even";
+	$query4 .= "_$odd ";
+	
+	#echo "$query4<p>";
+
+	$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+	$query4 = "CREATE TABLE ";
+	$query4 .= "temp_sumeo_drange6_";
+	$query4 .= "$sum";
+	$query4 .= "_$even";
+	$query4 .= "_$odd (";
+	$query4 .= " id int(10) unsigned NOT NULL auto_increment, ";
+	$query4 .= "sum tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "even tinyint(1) unsigned NOT NULL default '0',";
+	$query4 .= "odd  tinyint(1) unsigned NOT NULL default '0',";
+	$query4 .= "d6_1 tinyint(1) unsigned NOT NULL default '0',";
+	$query4 .= "d6_2 tinyint(1) unsigned NOT NULL default '0',";
+	$query4 .= "d6_3 tinyint(1) unsigned NOT NULL default '0',";
+	$query4 .= "d6_4 tinyint(1) unsigned NOT NULL default '0',";
+	$query4 .= "d6_5 tinyint(1) unsigned NOT NULL default '0',";
+	$query4 .= "d6_6 tinyint(1) unsigned NOT NULL default '0',";
+	$query4 .= "day1 tinyint(1) unsigned NOT NULL default '0', ";
+	$query4 .= "week1 tinyint(1) unsigned NOT NULL default '0', ";
+	$query4 .= "week2 tinyint(1) unsigned NOT NULL default '0', ";
+	$query4 .= "month1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "month3 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "month6 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year1 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year2 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year3 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year4 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year5 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "d1510 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year6 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year7 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year8 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year9 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year10 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "count int(5) unsigned NOT NULL,";
+	$query4 .= "percent_y1 float(5,3) unsigned NOT NULL,";
+	$query4 .= "percent_y5 float(5,3) unsigned NOT NULL,";
+	$query4 .= "percent_wa float(5,3) unsigned NOT NULL,";
+	$query4 .= "PRIMARY KEY  (id),";
+	$query4 .= "UNIQUE KEY `id_2` (id),";
+	$query4 .= "KEY id (id)";
+	$query4 .= ") ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;";
+
+	#echo "$query4<p>";
+
+	$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+	$query6 = "SELECT * FROM $draw_prefix";
+	$query6 .= "combo6 ";
+	$query6 .= "ORDER BY id ASC ";
+
+	#echo "$query6<p>";
+
+	$mysqli_result6 = mysqli_query($mysqli_link, $query6) or die (mysqli_error($mysqli_link));
+
+	$num_rows_all = mysqli_num_rows($mysqli_result6);
+	
+	while($row6 = mysqli_fetch_array($mysqli_result6))
+	{
+		$query7 = "SELECT * FROM ga_f5_combo6 ";
+		$query7 .= "ORDER BY d1 ASC, d2 ASC, d3 ASC, d4 ASC, d5 ASC, d6 ASC ";
+		#echo "$query7<p>";
+
+		$mysqli_result7 = mysqli_query($mysqli_link, $query7) or die (mysqli_error($mysqli_link));
+
+		#$num_rows_all = mysqli_num_rows($mysqli_result6);
+		
+		while($row7 = mysqli_fetch_array($mysqli_result7))
+		{
+			$drange = 6;
+
+			require ("includes/calculate_sumeo_drange_loop_sumeo.incl");
+		}
+	}
+?>

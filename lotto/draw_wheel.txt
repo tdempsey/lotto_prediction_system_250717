@@ -1,0 +1,4 @@
+Each sum
+	- history > 1
+	- percent >= 0.25
+	- all col_one

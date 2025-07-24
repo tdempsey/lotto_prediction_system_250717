@@ -1,0 +1,17 @@
+in machine learning, what are some key metrics researching schools and surrounding crime
+
+Safety Index: This is a metric that measures the overall safety and crime rate of an area. It takes into account various crime statistics, such as the number of violent crimes, property crimes, and overall crime rate per 100,000 residents.
+
+School Performance: This metric measures the academic performance of the schools in the area, including graduation rates, test scores, and overall school ranking.
+
+Student-Teacher Ratio: This metric measures the number of students per teacher in a school, which can give an idea of the level of individual attention that students receive.
+
+Crime Rate by Type: This metric looks at specific types of crime in the area, such as violent crime, property crime, and drug offenses.
+
+Demographics: This metric looks at the age, gender, and ethnic makeup of the area, which can give an idea of the overall diversity of the community.
+
+Distance to nearest school: This metric measures the distance between the school and the surrounding area, which can give an idea of the level of access to education in the area.
+
+Public Transportation: This metric looks at the availability and accessibility of public transportation options, which can make it easier for students and parents to get to and from school.
+
+Crime Rate by Location: This metric looks at the crime rate in specific locations, such as neighborhoods or specific streets, which can give a more detailed picture of the overall safety of the area.

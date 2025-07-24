@@ -1,0 +1,43 @@
+<?php
+	
+	$draw_combo_temp_array = array_fill (0,2,0);
+	$draw_combo_temp_array_2 = array_fill (0,2,$draw_combo_temp_array);
+	#$draw_combo_temp_array_3 = array_fill (0,25,$draw_combo_temp_array_2);
+	$dup_range_all = array_fill (0,13,$draw_combo_temp_array_2);
+
+	for ($g = 1; $g <= 50; $g++)
+	{
+		$temp_name = '$temp' . $g;
+		$temp_name = array();
+	}
+
+	$query_temp = "SELECT * FROM ga_f5_dup_table ";
+	$query_temp .= "ORDER BY date desc LIMIT 10 ";
+
+	echo "$query_temp<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query_temp) or die (mysqli_error($mysqli_link));
+
+	for ($g = 1; $g <= 50; $g++)
+	{
+		$temp_array = array();
+
+		mysqli_data_seek ($mysqli_result, 0);
+
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			array_push ($temp_array, $row[$g]);
+	
+		}
+
+		sort ($temp_array);
+
+		$dup_range_all[$g][0] = $temp_array[2];
+		$dup_range_all[$g][1] = $temp_array[7];
+	}
+	
+	echo "dup_range_all<br>";
+	print_r ($dup_range_all);
+	echo "<br>";
+
+?>

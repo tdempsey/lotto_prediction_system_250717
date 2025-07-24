@@ -1,0 +1,7 @@
+<?php
+function combination ($x, $y)
+{
+	$z = factorial($y)/(factorial($x) * factorial($y-$x));
+	return $z;
+}
+?>

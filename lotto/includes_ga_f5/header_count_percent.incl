@@ -1,0 +1,13 @@
+<?php
+		print("<TD BGCOLOR=\"#CCCCCC\">10</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">30</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">50</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">100</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">365</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">500</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">1000</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">$num_rows_all</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">%365</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">% $num_rows_all</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">% wa</TD>\n");
+?>

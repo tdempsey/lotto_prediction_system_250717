@@ -1,0 +1,103 @@
+<?php
+		#echo "Begin eo50_draw_range, ";
+		
+		$b1_low = 59;
+		$b1_high = 1;
+		$b2_low = 59;
+		$b2_high = 1;
+		$b3_low = 59;
+		$b3_high = 1;
+		$b4_low = 59;
+		$b4_high = 1;
+		$b5_low = 59;
+		$b5_high = 1;
+
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$curr_date' ";
+		$query .= "AND   sum = $row_wheel[sum]  ";
+		$query .= "AND   even = $row_wheel[even]  ";
+		$query .= "AND   odd = $row_wheel[odd]  ";
+		$query .= "AND   d2_1 = $row_wheel[d2_1]  ";
+		$query .= "AND   d2_2 = $row_wheel[d2_2]  ";
+		$query .= "AND   draw0 = $row_draw[draw0]  ";
+		$query .= "AND   draw1 = $row_draw[draw1]  ";
+		$query .= "AND   draw2 = $row_draw[draw2]  ";
+		$query .= "AND   draw3 = $row_draw[draw3]  ";
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 ";
+
+		#print "$query<br>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$b1_array = array();
+		$b2_array = array();
+		$b3_array = array();
+		$b4_array = array();
+		$b5_array = array();
+
+		$max_b = 0;
+
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			array_push ($b1_array, $row[b1]);
+			array_push ($b2_array, $row[b2]);
+			array_push ($b3_array, $row[b3]);
+			array_push ($b4_array, $row[b4]);
+			array_push ($b5_array, $row[b5]);
+		}
+
+		sort ($b1_array);
+		sort ($b2_array);
+		sort ($b3_array);
+		sort ($b4_array);
+		sort ($b5_array);
+
+		$max_b = count($b1_array);
+
+		#echo "max_b = $max_b, ";
+
+		#if ($max_b > 1)
+		#{
+			#$max_b = count($b1_array);
+
+			#echo "max_b = $max_b<br>";
+
+			if ($max_b > 1 AND $max_b < 10)
+			{
+				$b1_low = $b1_array[0];
+				$b1_high = $b1_array[$max_b-1];
+				$b2_low = $b2_array[0];
+				$b2_high = $b2_array[$max_b-1];
+				$b3_low = $b3_array[0];
+				$b3_high = $b3_array[$max_b-1];
+				$b4_low = $b4_array[0];
+				$b4_high = $b4_array[$max_b-1];
+				$b5_low = $b5_array[0];
+				$b5_high = $b5_array[$max_b-1];
+			} else {
+				$b1_low = $b1_array[1];
+				$b1_high = $b1_array[8];
+				$b2_low = $b2_array[1];
+				$b2_high = $b2_array[8];
+				$b3_low = $b3_array[1];
+				$b3_high = $b3_array[8];
+				$b4_low = $b4_array[1];
+				$b4_high = $b4_array[8];
+				$b5_low = $b5_array[1];
+				$b5_high = $b5_array[8];
+			}
+		#}
+		/*
+		echo "b1_low = $b1_low, ";
+		echo "b1_high = $b1_high, ";
+		echo "b2_low = $b2_low, ";
+		echo "b2_high = $b2_high, ";
+		echo "b3_low = $b3_low, ";
+		echo "b3_high = $b3_high, ";
+		echo "b4_low = $b4_low, ";
+		echo "b4_high = $b4_high, ";
+		echo "b5_low = $b5_low, ";
+		echo "b5_high = $b5_high<br> ";
+		*/
+?>

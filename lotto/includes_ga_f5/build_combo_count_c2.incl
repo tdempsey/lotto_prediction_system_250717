@@ -1,0 +1,70 @@
+<?php
+	
+	$draw_combo_temp_array = array_fill (0,2,0);
+	$draw_combo_temp_array_2 = array_fill (0,2,$draw_combo_temp_array);
+	#$draw_combo_temp_array_3 = array_fill (0,25,$draw_combo_temp_array_2);
+	$range_combo_array_c2 = array_fill (0,13,$draw_combo_temp_array_2);
+	$temp1 = array();
+	$temp2 = array();
+	$temp3 = array();
+	$temp4 = array();
+	$temp5 = array();
+	$temp6 = array();
+	$temp7 = array();
+	$temp8 = array();
+	$temp9 = array();
+	$temp10 = array();
+	$temp11 = array();
+	$temp12 = array();
+
+	$query_temp = "SELECT * FROM aon_combo_count_table_c2 a ";
+	$query_temp .= "JOIN aon_draws b ON ";
+	$query_temp .= "a.id = b.id ";
+	#$query_temp .= "WHERE a.id <= '$curr_date' ";
+	if ($hml)
+	{
+		$query_temp .= "WHERE   b.sum >= $range_low  ";
+		$query_temp .= "AND   b.sum <= $range_high  ";
+	}
+	$query_temp .= "ORDER BY b.id desc LIMIT 10 ";
+
+	echo "$query_temp<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query_temp) or die (mysqli_error($mysqli_link));
+
+	while($row = mysqli_fetch_array($mysqli_result))
+	{
+		array_push ($temp1, $row[c1]);
+		array_push ($temp2, $row[c2]);
+		array_push ($temp3, $row[c3]);
+		array_push ($temp4, $row[c4]);
+		array_push ($temp5, $row[c5]);
+		array_push ($temp6, $row[c6]);
+		array_push ($temp7, $row[c7]);
+		array_push ($temp8, $row[c8]);
+		array_push ($temp9, $row[c9]);
+		array_push ($temp10, $row[c10]);
+		array_push ($temp11, $row[c11]);
+	}
+
+	sort ($temp1);
+	sort ($temp2);
+	sort ($temp3);
+	sort ($temp4);
+	sort ($temp5);
+	sort ($temp6);
+	sort ($temp7);
+	sort ($temp8);
+	sort ($temp9);
+	sort ($temp10);
+	sort ($temp11);
+
+	for ($x = 1; $x <= 11; $x++)
+	{
+		$range_combo_array_c2[$x][0] = ${temp.$x}[1];
+		$range_combo_array_c2[$x][1] = ${temp.$x}[9];
+	}
+	
+	print_r ($range_combo_array_c2);
+
+?>

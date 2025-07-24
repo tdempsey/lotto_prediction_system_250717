@@ -1,0 +1,13 @@
+<?php
+	use draw
+
+	for each
+		select 1,5,10 count for all,hml
+			- use range hml's
+			- 0 = all (make changes)
+
+	sigma calc [1,5,10]
+
+
+
+?>

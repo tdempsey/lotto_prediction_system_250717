@@ -1,0 +1,487 @@
+<?php
+	// ----------------------------------------------------------------------------------
+	function print_column_test_0($col)
+	{
+		global $debug, $draw_table_name, $balls, $balls_drawn, $draw_prefix, $game, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php"); 
+		require ("includes/unix.incl"); 
+
+		$query4 = "DROP TABLE IF EXISTS $draw_prefix";
+		$query4 .= "column_$col";
+		if (1)
+		{
+			$query4 .= "_$hml";
+		}
+
+		echo "$query4<p>";
+
+		$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+		$query4 = "CREATE TABLE $draw_prefix";
+		$query4 .= "column_$col";
+		if (1)
+		{
+			$query4 .= "_$hml (";
+		} else {
+			$query4 .= " (";
+		}
+		$query4 .= "`num` tinyint(3) unsigned NOT NULL,";
+		$query4 .= "day1 tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "week1 tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "week2 tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "month1 tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "month3 tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "month6 tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "year1 tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "year2 tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "year3 tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "year4 tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "year5 int(5) unsigned NOT NULL default '0', ";
+		$query4 .= "year6 int(5) unsigned NOT NULL default '0', ";
+		$query4 .= "year7 int(5) unsigned NOT NULL default '0', ";
+		$query4 .= "year8 int(5) unsigned NOT NULL default '0', ";
+		$query4 .= "year9 int(5) unsigned NOT NULL default '0', ";
+		$query4 .= "year10 int(5) unsigned NOT NULL default '0', ";
+		$query4 .= "count int(5) unsigned NOT NULL default '0', ";
+		$query4 .= "percent_w1 float(4,1) unsigned NOT NULL default '0', ";
+		$query4 .= "percent_w2 float(4,1) unsigned NOT NULL default '0', ";
+		$query4 .= "percent_m1 float(4,1) unsigned NOT NULL default '0', ";
+		$query4 .= "percent_m3 float(4,1) unsigned NOT NULL default '0', ";
+		$query4 .= "percent_m6 float(4,1) unsigned NOT NULL default '0', ";
+		$query4 .= "percent_y1 float(4,1) unsigned NOT NULL default '0', ";
+		$query4 .= "percent_y5 float(4,1) unsigned NOT NULL default '0', ";
+		$query4 .= "percent_wa float(4,1) unsigned NOT NULL default '0', ";
+		$query4 .= "previous_date date NOT NULL default '1962-08-17', ";
+		$query4 .= "last_date date NOT NULL default '1962-08-17', ";
+		$query4 .= "PRIMARY KEY  (`num`),";
+		$query4 .= "UNIQUE KEY `num_2` (`num`),";
+		$query4 .= "KEY `num` (`num`)";
+		$query4 .= ") ENGINE=InnoDB DEFAULT CHARSET=latin1;";
+
+		print "$query4<p>";
+	
+		$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+		$query = "SELECT * FROM $draw_table_name ";
+		if (1)
+		{
+			$query .= "WHERE sum >= 80  ";
+			$query .= "AND   sum <= 129  ";
+		} else {
+			$query .= "WHERE sum >= 80  ";
+			$query .= "AND   sum <= 129  ";
+		}
+		$query .= "ORDER BY date DESC ";
+
+		print "$query<p>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$num_rows_all = mysqli_num_rows($mysqli_result);
+
+		//start table
+		print("<h3>Column $col Test</h3>\n");
+		print("<TABLE BORDER=\"1\">\n");
+
+		//create header row
+		print("<TR>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Num</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Week1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Week2</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Month1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Month3</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Month6</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year2</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year3</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year4</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year5</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year6</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year7</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year8</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year9</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year10</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Total</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Prev</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Sigma</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>w1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>w2</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>m1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>m3</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>m6</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>wa1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>wa5</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>wa10</center></TD>\n");
+		print("</TR>\n");
+
+		$draw = 1;
+
+		$temp_array = array_fill (0,17,0);
+		$column_count_array = array_fill (0,$balls+1,$temp_array);
+
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			$temp_draw = array (0);
+
+			if ($game == 10 OR $game == 20)
+			{
+				for ($v = 1; $v <= $balls_drawn; $v++)
+				{
+					$w = $v + 2;
+					array_push($temp_draw, $row[$w]);
+				}
+			} else {
+				for ($v = 1; $v <= $balls_drawn; $v++)
+				{
+					array_push($temp_draw, $row[$v]);
+				}
+			}
+
+			sort ($temp_draw);
+
+			$x = $temp_draw[$col];
+
+			$draw_date_array = explode("-","$row[0]"); ### 210104
+			$draw_date_unix = mktime (0,0,0,$draw_date_array[1],$draw_date_array[2],$draw_date_array[0]); ### 210104
+			
+			if ($draw_date_unix == $day1)
+			{ 
+				for ($d = 0; $d <= 15; $d++) {$column_count_array[$x][$d]++;}
+			} elseif ($draw_date_unix > $week1) {
+				for ($d = 1; $d <= 15; $d++) {$column_count_array[$x][$d]++;}
+			} elseif ($draw_date_unix > $week2) {
+				for ($d = 2; $d <= 15; $d++) {$column_count_array[$x][$d]++;}
+			} elseif ($draw_date_unix > $month1) {
+				for ($d = 3; $d <= 15; $d++) {$column_count_array[$x][$d]++;}
+			} elseif ($draw_date_unix > $month3) {
+				for ($d = 4; $d <= 15; $d++) {$column_count_array[$x][$d]++;}
+			} elseif ($draw_date_unix > $month6) {
+				for ($d = 5; $d <= 15; $d++) {$column_count_array[$x][$d]++;}
+			} elseif ($draw_date_unix > $year1) {
+				for ($d = 6; $d <= 15; $d++) {$column_count_array[$x][$d]++;}
+			} elseif ($draw_date_unix > $year2) {
+				for ($d = 7; $d <= 15; $d++) {$column_count_array[$x][$d]++;}
+			} elseif ($draw_date_unix > $year3) {
+				for ($d = 8; $d <= 15; $d++) {$column_count_array[$x][$d]++;}
+			} elseif ($draw_date_unix > $year4) {
+				for ($d = 9; $d <= 15; $d++) {$column_count_array[$x][$d]++;}
+			} elseif ($draw_date_unix > $year5) {
+				for ($d = 10; $d <= 15; $d++) {$column_count_array[$x][$d]++;}
+			} elseif ($draw_date_unix > $year6) {
+				for ($d = 11; $d <= 15; $d++) {$column_count_array[$x][$d]++;}
+			} elseif ($draw_date_unix > $year7) {
+				for ($d = 12; $d <= 15; $d++) {$column_count_array[$x][$d]++;}
+			} elseif ($draw_date_unix > $year8) {
+				for ($d = 13; $d <= 15; $d++) {$column_count_array[$x][$d]++;}
+			} elseif ($draw_date_unix > $year9) {
+				for ($d = 14; $d <= 15; $d++) {$column_count_array[$x][$d]++;}
+			} elseif ($draw_date_unix > $year10) {
+				for ($d = 15; $d <= 15; $d++) {$column_count_array[$x][$d]++;}
+			}
+	
+			$column_count_array[$x][16]++;
+
+			#add 1 year to clear
+			if ($first_draw_unix > $year7) {
+				for ($d = 13; $d <= 15; $d++) {$column_count_array[$x][$d]=0;}
+			} elseif ($first_draw_unix > $year8) {
+				for ($d = 14; $d <= 15; $d++) {$column_count_array[$x][$d]=0;}
+			} elseif ($first_draw_unix > $year9) {
+				for ($d = 15; $d <= 15; $d++) {$column_count_array[$x][$d]=0;}
+			} elseif ($first_draw_unix > $year10) {
+				for ($d = 16; $d <= 16; $d++) {$column_count_array[$x][$d]=0;}
+			}
+
+			$draw++;
+		}
+
+		
+		for ($x = 1 ; $x <= $balls; $x++)
+		{	
+			if ($x == intval($balls/2+1))
+			{
+				print("<TR>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\">Num</TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Week1</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Week2</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Month1</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Month3</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Month6</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year1</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year2</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year3</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year4</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year5</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year6</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year7</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year8</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year9</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year10</center>	</TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\" nowrap><center>Total</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\" nowrap><center>Prev</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\" nowrap><center>Last</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\" nowrap><center>Sigma</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\" nowrap><center>w1</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\" nowrap><center>w2</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\" nowrap><center>m1</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>m3</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>m6</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\" nowrap><center>wa1</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\" nowrap><center>wa5</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\" nowrap><center>wa10</center></TD>\n");
+				print("</TR>\n");
+			}
+			print("<TR>\n");
+			print("<TD><CENTER><b>$x</b></CENTER></TD>\n");
+
+			for ($d = 0; $d <= 15; $d++)
+			{
+				if ($column_count_array[$x][$d] > 79)
+				{
+					print("<TD bgcolor=\"#FF0033\" align=center>{$column_count_array[$x][$d]}</TD>\n");
+				} elseif ($column_count_array[$x][$d] > 15) {
+					print("<TD bgcolor=\"#CCFFFF\" align=center>{$column_count_array[$x][$d]}</TD>\n");
+				} elseif ($column_count_array[$x][$d] > 1) {
+					print("<TD bgcolor=\"#CCFF66\" align=center>{$column_count_array[$x][$d]}</TD>\n");
+				} elseif ($column_count_array[$x][$d] == 1) {
+					print("<TD bgcolor=\"#F1F1F1\" align=center>{$column_count_array[$x][$d]}</TD>\n");
+				} else {
+					print("<TD align=center>{$column_count_array[$x][$d]}</TD>\n");
+				}
+			} 
+
+			if ($column_count_array[$x][16] > 79)
+			{
+				print("<TD bgcolor=\"#FF0000\" align=center><font color=\"#ffffff\"><b>{$column_count_array[$x][16]}</b></font></TD>\n");
+			} else {
+				print("<TD align=center>{$column_count_array[$x][16]}</TD>\n");
+			}
+
+			# prev/last
+			$prev_date = '1962-08-17';
+			$last_date = '1962-08-17';
+
+			$query_date = "SELECT * FROM $draw_table_name ";
+			if ($game != 10)
+			{
+				$query_date .= "WHERE b$col = $x "; #aon
+				if (1)
+				{
+					$query_date .= "AND sum >= 80  ";
+					$query_date .= "AND   sum <= 129  ";
+				} else {
+					$query_date .= "WHERE sum >= 80  ";
+					$query_date .= "AND   sum <= 129  ";
+				}
+			} else {
+			if (1)
+				{
+					$query_date .= "WHERE sum >= 80  ";
+					$query_date .= "AND   sum <= 129  ";
+				} else {
+					$query_date .= "WHERE sum >= 80  ";
+					$query_date .= "AND   sum <= 129  ";
+				}
+			}
+			$query_date .= "ORDER BY date DESC ";
+
+			#echo "$query_date<p>";
+
+			$mysqli_result_date = mysqli_query($query_date, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+			if ($row_date = mysqli_fetch_array($mysqli_result_date))
+			{
+				$last_date = $row_date[date];
+			}
+
+			if ($row_date = mysqli_fetch_array($mysqli_result_date))
+			{
+				$prev_date = $row_date[date];
+			}
+
+			if ($prev_date == '1962-08-17')
+			{
+				print("<TD align=center>---</TD>\n");
+			} elseif ((strtotime ("$prev_date") - $month6) < 0) {
+				print("<TD nowrap><font color=\"#ff0000\">$prev_date</font></TD>\n");
+			} else {
+				print("<TD nowrap>$prev_date</TD>\n");
+			}
+
+			if ($last_date == '1962-08-17')
+			{
+				print("<TD align=center>---</TD>\n");
+			} elseif ((strtotime ("$prev_date") - $month6) < 0) {
+				print("<TD nowrap><font color=\"#ff0000\">$last_date</font></TD>\n");
+			} else {
+				print("<TD nowrap>$last_date</TD>\n");
+			}
+
+			# sigma
+			$sigma_sum = 0;
+
+			for ($d = 0; $d <= 15; $d++)
+			{
+				$sigma_sum += $column_count_array[$x][$d];
+			}
+
+			print("<TD align=center>$sigma_sum</TD>\n");
+
+			$sum_temp_w1 = number_format(($column_count_array[$x][1]/7)*100,2);
+
+			if ($sum_temp_w1 >= 1.0)
+			{
+				print("<TD align=center><font size=\"-1\"><b>$sum_temp_w1 %</b></font></TD>\n");
+			} else {
+				print("<TD align=center><font size=\"-1\">$sum_temp_w1 %</font></TD>\n");
+			}
+
+			$sum_temp_w2 = number_format(($column_count_array[$x][2]/14)*100,2);
+
+			if ($sum_temp_w2 >= 1.0)
+			{
+				print("<TD align=center><font size=\"-1\"><b>$sum_temp_w2 %</b></font></TD>\n");
+			} else {
+				print("<TD align=center><font size=\"-1\">$sum_temp_w2 %</font></TD>\n");
+			}
+
+			$sum_temp_m1 = number_format(($column_count_array[$x][3]/30)*100,2);
+
+			if ($sum_temp_m1 >= 1.0)
+			{
+				print("<TD align=center><font size=\"-1\"><b>$sum_temp_m1 %</b></font></TD>\n");
+			} else {
+				print("<TD align=center><font size=\"-1\">$sum_temp_m1 %</font></TD>\n");
+			}
+
+			$sum_temp_m3 = number_format(($column_count_array[$x][4]/60)*100,2);
+
+			if ($sum_temp_m3 >= 1.0)
+			{
+				print("<TD align=center><font size=\"-1\"><b>$sum_temp_m3 %</b></font></TD>\n");
+			} else {
+				print("<TD align=center><font size=\"-1\">$sum_temp_m3 %</font></TD>\n");
+			}
+
+			$sum_temp_m6 = number_format(($column_count_array[$x][5]/90)*100,2);
+
+			if ($sum_temp_m6 >= 1.0)
+			{
+				print("<TD align=center><font size=\"-1\"><b>$sum_temp_m6 %</b></font></TD>\n");
+			} else {
+				print("<TD align=center><font size=\"-1\">$sum_temp_m6 %</font></TD>\n");
+			}
+
+			$sum_temp_y1 = number_format(($column_count_array[$x][6]/(365))*100,2);
+
+			if ($sum_temp_y1 >= 1.0)
+			{
+				print("<TD align=center><font size=\"-1\"><b>$sum_temp_y1 %</b></font></TD>\n");
+			} else {
+				print("<TD align=center><font size=\"-1\">$sum_temp_y1 %</font></TD>\n");
+			}
+
+			$sum_temp_y5 = number_format(($column_count_array[$x][10]/(365*5))*100,2);
+
+			if ($sum_temp_y5 >= 1.0)
+			{
+				print("<TD align=center><font size=\"-1\"><b>$sum_temp_y5 %</b></font></TD>\n");
+			} else {
+				print("<TD align=center><font size=\"-1\">$sum_temp_y5 %</font></TD>\n");
+			}
+
+			$weighted_average = (
+				($column_count_array[$x][1]/7*100*0.10) + #week1
+				($column_count_array[$x][3]/30*100*0.10) + #month1
+				($column_count_array[$x][5]/(365/2)*100*0.15) + #month6
+				($column_count_array[$x][6]/365*100*0.15) + #year1
+				($column_count_array[$x][10]/(365*5)*100*0.25) + #year5
+				($column_count_array[$x][13]/(365*8)*100*0.25)); #year8
+
+			$sum_temp = number_format($weighted_average,1);
+			if ($sum_temp >= 5.0){
+				print("<TD align=center><font size=\"-1\"><b>$sum_temp %</b></font></TD>\n");
+			} else {
+				print("<TD align=center><font size=\"-1\">$sum_temp %</font></TD>\n");
+			}
+
+			print("</TR>\n");
+
+			#print("x = $x<br>");
+
+			#print_r ("$column_count_array");
+			#die ("$column_count_array");
+
+			$query5 = "INSERT INTO $draw_prefix";
+			$query5 .= "column_$col";
+			if (1)
+			{
+				$query5 .= "_$hml ";
+			} else {
+				$query5 .= " ";
+			}
+			$query5 .= "VALUES ('$x', ";
+			for ($d = 0; $d <= 15; $d++) 
+			{
+				$query5 .= "'{$column_count_array[$x][$d]}', ";
+			}
+			#$query5 .= "'$num_rows', ";
+			$query5 .= "'{$column_count_array[$x][16]}', ";
+			$query5 .= "'$sum_temp_w1', ";
+			$query5 .= "'$sum_temp_w2', ";
+			$query5 .= "'$sum_temp_m1', ";
+			$query5 .= "'$sum_temp_m3', ";
+			$query5 .= "'$sum_temp_m6', ";
+			$query5 .= "'$sum_temp_y1', ";
+			$query5 .= "'$sum_temp_y5', ";
+			$query5 .= "'$weighted_average', ";
+			$query5 .= "'$row_last[last_date]',"; 
+			$query5 .= "'$row_prev[last_date]')";
+
+			#print "$query5<p>";
+			#die ("column_count_array");
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+		}
+
+		print("<TR>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Num</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Week1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Week2</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Month1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Month3</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Month6</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year2</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year3</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year4</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year5</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year6</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year7</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year8</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year9</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year10</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Total</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Prev</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Sigma</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>w1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>w2</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>m1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>m3</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>m6</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>wa1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>wa5</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>wa10</center></TD>\n");
+		print("</TR>\n");
+
+		print("</TABLE>\n");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}column_$col</font> Updated!</h3>";
+	}
+?>

@@ -1,0 +1,130 @@
+<?php
+	//start sorted table --------------------------------------------------------
+	//start table
+	print("<h3>Sum Table Sum3 - Combin $combin - $sumeo_sum/$sumeo_even/$sumeo_odd</h3>\n");
+	print("<TABLE BORDER=\"1\">\n");
+
+	//create header row
+	print("<TR>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Sum</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Even</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Odd</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Last</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Week1</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Week2</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Month1</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Month3</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Month6</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year1</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year2</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year3</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year4</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year5</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year6</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year7</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year8</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">D1510</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year9</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year10</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Count</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=center>y1</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=center>y4</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=center>wa</TD>\n");
+	print("</TR>\n");
+
+	$table4 = 'temp2_sum_count_sum3_' . $combin . '_' .$sumeo_sum . '_' .$sumeo_even . '_' .$sumeo_odd;
+
+	$query = "SELECT * FROM $table4 ";
+	$query .= "ORDER BY percent_wa DESC, sum ASC ";
+
+	#echo "print_sum_table_sum3_sumeo.incl - query = $query<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	// get each row
+	while($row = mysqli_fetch_array($mysqli_result))
+	{
+			print("<TR>\n");
+
+			for ($t = 1; $t <= 3; $t++)
+			{
+				print("<TD align=center>$row[$t]</TD>\n");
+			}
+
+			for ($t = 4; $t <= 17; $t++) 
+			{
+				if ($row[$t] > 20)
+				{
+					print("<TD bgcolor=\"#FF0033\" align=center>$row[$t]</TD>\n");
+				} elseif ($row[$t] > 15) {
+					print("<TD bgcolor=\"#CCFFFF\" align=center>$row[$t]</TD>\n");
+				} elseif ($row[$t] > 1) {
+					print("<TD bgcolor=\"#CCFF66\" align=center>$row[$t]</TD>\n");
+				} elseif ($row[$t] == 1) {
+					print("<TD bgcolor=\"#F1F1F1\" align=center>$row[$t]</TD>\n");
+				} else {
+					print("<TD align=center>$row[$t]</TD>\n");
+				}
+			}
+			
+			print("<TD align=center>&nbsp;</TD>\n");
+			print("<TD align=center>&nbsp;</TD>\n");
+			print("<TD align=center>&nbsp;</TD>\n");
+
+			print("<TD align=center>$row[17]</TD>\n");
+			
+			if ($row['percent_y1'] >= 0.1)
+			{
+				print("<TD align=center><font size=\"-1\"><b>$row[percent_y1]</b></font></TD>\n");
+			} else {
+				print("<TD align=center><font size=\"-1\">$row[percent_y1]</font></TD>\n");
+			}
+			
+			if ($row['percent_y4'] >= 0.1)
+			{
+				print("<TD align=center><font size=\"-1\"><b>$row[percent_y4]</b></font></TD>\n");
+			} else {
+				print("<TD align=center><font size=\"-1\">$row[percent_y4]</font></TD>\n");
+			}
+
+			if ($row['percent_wa'] >= 0.1)
+			{
+				print("<TD align=center><font size=\"-1\"><b>$row[percent_wa]</b></font></TD>\n");
+			} else {
+				print("<TD align=center><font size=\"-1\">$row[percent_wa]</font></TD>\n");
+			}
+
+			print("</TR>\n");
+	}
+
+	//create footer row
+	print("<TR><B>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Sum</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Even</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Odd</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Week1</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Week2</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Month1</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Month3</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Month6</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Year1</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Year2</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Year3</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Year4</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Year5</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Year6</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Year7</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Year8</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">D1510</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Year9</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Year10</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\">Count</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=center>y1</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=center>y4</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=center>wa</TD>\n");
+	print("</B></TR>\n");
+
+	//end table
+	print("</TABLE>\n");
+?>

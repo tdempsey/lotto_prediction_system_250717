@@ -1,0 +1,135 @@
+<?php
+	// ----------------------------------------------------------------------------------
+	function table_format_array ($count_array,$title,$column_label,$limit)
+	{
+		//start sorted table --------------------------------------------------------
+		print("<h2>$title - Limit $limit</h2>\n");
+		print("<P>");
+		print("<TABLE BORDER=\"1\">\n");
+
+		//create header row
+		print("<TR><B>\n");
+
+		print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">$column_label</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Week1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Week2</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Month1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Month3</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Month6</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year2</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year3</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year4</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year5</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year6</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year7</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year8</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year9</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year10</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Total</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Prev</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n");
+		print("</B></TR>\n");
+
+		// get each row
+		for ($x = 1; $x < count($count_array); $x++)
+		{
+			#$x = $row[num];
+			print("<TR>\n");
+
+			print("<TD align=center>$x</TD>\n");	
+
+			for ($d = 0; $d <= 15; $d++)
+			{
+				if ($count_array[$x][$d] > 79)
+				{
+					print("<TD bgcolor=\"#FF0033\" align=center>{$count_array[$x][$d]}</TD>\n");
+				} elseif ($draw_count_array[$x][$d] > 15) {
+					print("<TD bgcolor=\"#CCFFFF\" align=center>{$count_array[$x][$d]}</TD>\n");
+				} elseif ($draw_count_array[$x][$d] >= 1) {
+					print("<TD bgcolor=\"#CCFF66\" align=center>{$count_array[$x][$d]}</TD>\n");
+				} else {
+					print("<TD align=center>{$count_array[$x][$d]}</TD>\n");
+				}
+			} 
+
+			if ($row[count] > $sorted_limit[16])
+			{
+				print("<TD bgcolor=\"#FF0000\" align=center><font color=\"#ffffff\"><b>$row[count]</b></font></TD>\n");
+			} else {
+				print("<TD align=center>$row[count]</TD>\n");
+			}
+			
+			if ((strtotime ("$row[prev_date]") - $month6) < 0)
+			{
+				print("<TD nowrap><font color=\"#ff0000\">$row[prev_date]</font></TD>\n");
+			} else {
+				print("<TD nowrap>$row[prev_date]</TD>\n");
+			}
+
+			print("<TD nowrap>$row[0]</TD>\n");
+
+			print("</TR>\n");
+			$dcount++;
+
+			if ($dcount == intval($balls/2))
+			{
+				print("<TR><B>\n");
+
+				print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Number</TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Week1</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Week2</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Month1</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Month3</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Month6</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year1</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year2</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year3</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year4</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year5</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year6</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year7</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year8</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year9</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year10</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Total</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Prev</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n");
+				print("</B></TR>\n");
+			}
+		}
+
+		//create footer row
+		print("<TR><B>\n");
+
+		print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Number</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Week1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Week2</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Month1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Month3</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Month6</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year2</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year3</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year4</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year5</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year6</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year7</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year8</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year9</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year10</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Total</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Prev</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n");
+		print("</B></TR>\n");
+
+		//end table
+		print("</TABLE>\n");
+	
+	}
+
+
+?>

@@ -1,0 +1,80 @@
+<?php
+	$curr_date = date('Y-m-d');
+
+	$drop_tables = 1;
+
+	if ($hml)
+	{
+		$rank_count = array (0);
+
+		$rank_count = BuildRankTable($curr_date); // array 0..balls with total draws for last 26
+
+		$sumeo50_table_count = array_fill (0, 7, 0);
+
+		for($z = 1; $z <= $balls; $z++)
+		{
+			if ($rank_count[$z] >= 6)
+			{
+				$sumeo50_table_count[6]++;
+			} else {
+				$sumeo50_table_count[$rank_count[$z]]++;
+			}
+		}
+	}
+	
+	if ($drop_tables)
+	{
+		$sumeo50_table = "ga_f5_sumeo50_5_42";
+
+		$query = "DROP TABLE IF EXISTS $sumeo50_table ";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query =  "CREATE TABLE IF NOT EXISTS  $sumeo50_table ( ";
+		$query .= "  `id` int(10) unsigned NOT NULL auto_increment, ";
+		$query .= "  `sum` tinyint(3) unsigned NOT NULL default '0', ";
+		$query .= "  `even` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `odd` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `d2_1` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `d2_2` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `wa` float(4,2) unsigned NOT NULL default '0', ";
+		$query .= "  `date` date NOT NULL default '1962-08-17', ";
+		$query .= "  PRIMARY KEY  (`id`) ";
+		$query .= ") ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 "; 
+
+		print("$query<p>");
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+	}
+
+	$row = array_fill (0,7,0);
+
+	$max_num = 5;
+
+	print("<p align=\"center\"><b><font face=\"Arial, Helvetica, sans-serif\">Build Sumeo50 5/$max_num</font></b></p>");
+
+	$query_temp = "SELECT * FROM ga_f5_wheel_sum_table ";
+	$query_temp .= "WHERE sum = $range_low ";
+	$query_temp .= "AND wa >= 0.2 ";
+
+	echo "$query_temp<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query_temp) or die (mysqli_error($mysqli_link));
+
+	while($row = mysqli_fetch_array($mysqli_result))
+	{
+		$query = "INSERT INTO $sumeo50_table ";
+		$query .= "VALUES ('0', ";
+		$query .= "'$row[sum]', ";
+		$query .= "'$row[even]', ";
+		$query .= "'$row[odd]', ";
+		$query .= "'$row[d2_1]', ";
+		$query .= "'$row[d2_2]', ";
+		$query .= "'$row[wa]', ";
+		$query .= "'$row[last_date]') ";
+		
+		print "$query<br>";
+		
+		$mysqli_result2 = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+	}
+?>

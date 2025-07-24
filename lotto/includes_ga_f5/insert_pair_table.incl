@@ -1,0 +1,85 @@
+<?php
+	#$table_temp = $draw_prefix . "temp_2_" . $limit;
+	for ($x = 1; $x < $balls_drawn; $x++)
+	{
+		for ($y = ($x+1); $y <= $balls_drawn; $y++)
+		{
+			$query2 = "INSERT INTO $table_temp ";
+			$query2 .= "VALUES ('0', ";
+			$query2 .= "'$row[$x]', ";
+			$query2 .= "'$row[$y]', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'1', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'$prev_date[$x]',";
+			$query2 .= "'$row[0]')"; 
+		
+			#print("$query2<br>");
+			$mysqli_result = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+		}
+	}
+
+	#$table_temp = $draw_prefix . "temp_2_" . $limit;
+	for ($x = $balls_drawn; $x >= 2; $x--)
+	{
+		for ($y = ($x-1); $y >= 1; $y--)
+		{
+			$query2 = "INSERT INTO $table_temp ";
+			$query2 .= "VALUES ('0', ";
+			$query2 .= "'$row[$x]', ";
+			$query2 .= "'$row[$y]', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'1', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'0', ";
+			$query2 .= "'$prev_date[$x]',";
+			$query2 .= "'$row[0]')"; 
+		
+			#print("$query2<br>");
+			$mysqli_result = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+		}
+	}
+?>

@@ -1,0 +1,1 @@
+http://localhost/lotto/lot_wheels16_0xx_get.php?col1=1&drop=1

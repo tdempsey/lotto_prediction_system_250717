@@ -1,0 +1,468 @@
+<?php
+	### insert comb3 into temp_table ###
+	$query_temp2 = "INSERT INTO `georgia_fantasy_5`.`combo_temp_3` (`id`, `d1`, `d2`, `d3`, `count`) VALUES (NULL, ";
+
+	switch ($y) { 
+	   case 1: 
+		   $query_temp2 .= "$row4d[b1], ";
+		   $query_temp2 .= "$row4d[b2], ";
+		   $query_temp2 .= "$row4d[b3], 0) ";
+		   break; 
+	   case 2: 
+		   $query_temp2 .= "$row4d[b1], ";
+		   $query_temp2 .= "$row4d[b2], ";
+		   $query_temp2 .= "$row4d[b4], 0) ";
+		   break; 
+	   case 3: 
+		   $query_temp2 .= "$row4d[b1], ";
+		   $query_temp2 .= "$row4d[b2], ";
+		   $query_temp2 .= "$row4d[b5], 0) ";
+		   break; 
+	   case 4: 
+		   $query_temp2 .= "$row4d[b1], ";
+		   $query_temp2 .= "$row4d[b3], ";
+		   $query_temp2 .= "$row4d[b4], 0) ";
+		   break;
+	   case 5: 
+		   $query_temp2 .= "$row4d[b1], ";
+		   $query_temp2 .= "$row4d[b3], ";
+		   $query_temp2 .= "$row4d[b5], 0) ";
+		   break;
+	   case 6: 
+		   $query_temp2 .= "$row4d[b1], ";
+		   $query_temp2 .= "$row4d[b4], ";
+		   $query_temp2 .= "$row4d[b5], 0) ";
+		   break; 
+	   case 7: 
+		   $query_temp2 .= "$row4d[b2], ";
+		   $query_temp2 .= "$row4d[b3], ";
+		   $query_temp2 .= "$row4d[b4], 0) ";
+		   break; 
+	   case 8: 
+		   $query_temp2 .= "$row4d[b2], ";
+		   $query_temp2 .= "$row4d[b3], ";
+		   $query_temp2 .= "$row4d[b5], 0) ";
+		   break;
+	   case 9: 
+		   $query_temp2 .= "$row4d[b2], ";
+		   $query_temp2 .= "$row4d[b4], ";
+		   $query_temp2 .= "$row4d[b5], 0) ";
+		   break;
+	   case 10: 
+		   $query_temp2 .= "$row4d[b3], ";
+		   $query_temp2 .= "$row4d[b4], ";
+		   $query_temp2 .= "$row4d[b5], 0) ";
+		   break;
+	} 
+
+	#print "$query_temp2<p>";
+
+	$mysqli_result_temp2 = mysqli_query($query_temp2, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+	$query_temp2 = "SELECT count(*) FROM `combo_temp_3` ";
+
+	switch ($y) { 
+	   case 1: 
+		   $query_temp2 .= "WHERE `d1` = $row4d[b1] ";
+		   $query_temp2 .= "AND `d2` = $row4d[b2] ";
+		   $query_temp2 .= "AND `d3` = $row4d[b3] ";
+		   break; 
+	   case 2: 
+		   $query_temp2 .= "WHERE `d1` = $row4d[b1] ";
+		   $query_temp2 .= "AND `d2` = $row4d[b2] ";
+		   $query_temp2 .= "AND `d3` = $row4d[b4] ";
+		   break; 
+	   case 3: 
+		   $query_temp2 .= "WHERE `d1` = $row4d[b1] ";
+		   $query_temp2 .= "AND `d2` = $row4d[b2] ";
+		   $query_temp2 .= "AND `d3` = $row4d[b5] ";
+		   break; 
+	   case 4: 
+		   $query_temp2 .= "WHERE `d1` = $row4d[b1] ";
+		   $query_temp2 .= "AND `d2` = $row4d[b3] ";
+		   $query_temp2 .= "AND `d3` = $row4d[b4] ";
+		   break;
+	   case 5: 
+		   $query_temp2 .= "WHERE `d1` = $row4d[b1] ";
+		   $query_temp2 .= "AND `d2` = $row4d[b3] ";
+		   $query_temp2 .= "AND `d3` = $row4d[b5] ";
+		   break;
+	   case 6: 
+		   $query_temp2 .= "WHERE `d1` = $row4d[b1] ";
+		   $query_temp2 .= "AND `d2` = $row4d[b4] ";
+		   $query_temp2 .= "AND `d3` = $row4d[b5] ";
+		   break; 
+	   case 7: 
+		   $query_temp2 .= "WHERE `d1` = $row4d[b2] ";
+		   $query_temp2 .= "AND `d2` = $row4d[b3] ";
+		   $query_temp2 .= "AND `d3` = $row4d[b4] ";
+		   break; 
+	   case 8: 
+		   $query_temp2 .= "WHERE `d1` = $row4d[b2] ";
+		   $query_temp2 .= "AND `d2` = $row4d[b3] ";
+		   $query_temp2 .= "AND `d3` = $row4d[b5] ";
+		   break;
+	   case 9: 
+		   $query_temp2 .= "WHERE `d1` = $row4d[b2] ";
+		   $query_temp2 .= "AND `d2` = $row4d[b4] ";
+		   $query_temp2 .= "AND `d3` = $row4d[b5] ";
+		   break;
+	   case 10: 
+		   $query_temp2 .= "WHERE `d1` = $row4d[b3] ";
+		   $query_temp2 .= "AND `d2` = $row4d[b4] ";
+		   $query_temp2 .= "AND `d3` = $row4d[b5] ";
+		   break;
+	} 
+
+	#print "$query_temp2<p>";
+
+	$mysqli_result_temp2 = mysqli_query($query_temp2, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+	$row_count = mysqli_fetch_array($mysqli_result_temp2);
+
+	### calulate y1_sum ###
+	$y1_sum = 0.00;
+
+	switch ($y) { 
+	   case 1: 
+		$query_col1 = "SELECT * FROM ga_f5_column2_1";
+		$query_col1 .= " WHERE num = $row4d[b1] ";
+
+		$mysqli_result_col1 = mysqli_query($query_col1, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col1 = mysqli_fetch_array($mysqli_result_col1);
+
+		$y1_sum += $row4d_col1[percent_y1];
+
+		$query_col2 = "SELECT * FROM ga_f5_column2_2";
+		$query_col2 .= " WHERE num = $row4d[b2] ";
+
+		$mysqli_result_col2 = mysqli_query($query_col2, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col2 = mysqli_fetch_array($mysqli_result_col2);
+
+		$y1_sum += $row4d_col2[percent_y1];
+
+		$query_col3 = "SELECT * FROM ga_f5_column2_3";
+		$query_col3 .= " WHERE num = $row4d[b3] ";
+
+		$mysqli_result_col3 = mysqli_query($query_col3, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col3 = mysqli_fetch_array($mysqli_result_col3);
+
+		$y1_sum += $row4d_col3[percent_y1];
+		break; 
+	   case 2: 
+		$query_col1 = "SELECT * FROM ga_f5_column2_1";
+		$query_col1 .= " WHERE num = $row4d[b1] ";
+
+		$mysqli_result_col1 = mysqli_query($query_col1, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col1 = mysqli_fetch_array($mysqli_result_col1);
+
+		$y1_sum += $row4d_col1[percent_y1];
+
+		$query_col2 = "SELECT * FROM ga_f5_column2_2";
+		$query_col2 .= " WHERE num = $row4d[b2] ";
+
+		$mysqli_result_col2 = mysqli_query($query_col2, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col2 = mysqli_fetch_array($mysqli_result_col2);
+
+		$y1_sum += $row4d_col2[percent_y1];
+
+		$query_col3 = "SELECT * FROM ga_f5_column2_4";
+		$query_col3 .= " WHERE num = $row4d[b4] ";
+
+		$mysqli_result_col3 = mysqli_query($query_col3, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col3 = mysqli_fetch_array($mysqli_result_col3);
+
+		$y1_sum += $row4d_col3[percent_y1];
+		break;  
+	   case 3: 
+		$query_col1 = "SELECT * FROM ga_f5_column2_1";
+		$query_col1 .= " WHERE num = $row4d[b1] ";
+
+		$mysqli_result_col1 = mysqli_query($query_col1, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col1 = mysqli_fetch_array($mysqli_result_col1);
+
+		$y1_sum += $row4d_col1[percent_y1];
+
+		$query_col2 = "SELECT * FROM ga_f5_column2_2";
+		$query_col2 .= " WHERE num = $row4d[b2] ";
+
+		$mysqli_result_col2 = mysqli_query($query_col2, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col2 = mysqli_fetch_array($mysqli_result_col2);
+
+		$y1_sum += $row4d_col2[percent_y1];
+
+		$query_col3 = "SELECT * FROM ga_f5_column2_5";
+		$query_col3 .= " WHERE num = $row4d[b5] ";
+
+		$mysqli_result_col3 = mysqli_query($query_col3, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col3 = mysqli_fetch_array($mysqli_result_col3);
+
+		$y1_sum += $row4d_col3[percent_y1];
+		break; 
+	   case 4: 
+		$query_col1 = "SELECT * FROM ga_f5_column2_1";
+		$query_col1 .= " WHERE num = $row4d[b1] ";
+
+		$mysqli_result_col1 = mysqli_query($query_col1, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col1 = mysqli_fetch_array($mysqli_result_col1);
+
+		$y1_sum += $row4d_col1[percent_y1];
+
+		$query_col2 = "SELECT * FROM ga_f5_column2_3";
+		$query_col2 .= " WHERE num = $row4d[b3] ";
+
+		$mysqli_result_col2 = mysqli_query($query_col2, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col2 = mysqli_fetch_array($mysqli_result_col2);
+
+		$y1_sum += $row4d_col2[percent_y1];
+
+		$query_col3 = "SELECT * FROM ga_f5_column2_4";
+		$query_col3 .= " WHERE num = $row4d[b4] ";
+
+		$mysqli_result_col3 = mysqli_query($query_col3, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col3 = mysqli_fetch_array($mysqli_result_col3);
+
+		$y1_sum += $row4d_col3[percent_y1];
+		break; 
+	   case 5: 
+		$query_col1 = "SELECT * FROM ga_f5_column2_1";
+		$query_col1 .= " WHERE num = $row4d[b1] ";
+
+		$mysqli_result_col1 = mysqli_query($query_col1, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col1 = mysqli_fetch_array($mysqli_result_col1);
+
+		$y1_sum += $row4d_col1[percent_y1];
+
+		$query_col2 = "SELECT * FROM ga_f5_column2_3";
+		$query_col2 .= " WHERE num = $row4d[b3] ";
+
+		$mysqli_result_col2 = mysqli_query($query_col2, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col2 = mysqli_fetch_array($mysqli_result_col2);
+
+		$y1_sum += $row4d_col2[percent_y1];
+
+		$query_col3 = "SELECT * FROM ga_f5_column2_5";
+		$query_col3 .= " WHERE num = $row4d[b5] ";
+
+		$mysqli_result_col3 = mysqli_query($query_col3, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col3 = mysqli_fetch_array($mysqli_result_col3);
+
+		$y1_sum += $row4d_col3[percent_y1];
+		break; 
+	   case 6: 
+		$query_col1 = "SELECT * FROM ga_f5_column2_1";
+		$query_col1 .= " WHERE num = $row4d[b1] ";
+
+		$mysqli_result_col1 = mysqli_query($query_col1, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col1 = mysqli_fetch_array($mysqli_result_col1);
+
+		$y1_sum += $row4d_col1[percent_y1];
+
+		$query_col2 = "SELECT * FROM ga_f5_column2_4";
+		$query_col2 .= " WHERE num = $row4d[b4] ";
+
+		$mysqli_result_col2 = mysqli_query($query_col2, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col2 = mysqli_fetch_array($mysqli_result_col2);
+
+		$y1_sum += $row4d_col2[percent_y1];
+
+		$query_col3 = "SELECT * FROM ga_f5_column2_5";
+		$query_col3 .= " WHERE num = $row4d[b5] ";
+
+		$mysqli_result_col3 = mysqli_query($query_col3, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col3 = mysqli_fetch_array($mysqli_result_col3);
+
+		$y1_sum += $row4d_col3[percent_y1];
+		break; 
+	   case 7: 
+		$query_col1 = "SELECT * FROM ga_f5_column2_2";
+		$query_col1 .= " WHERE num = $row4d[b2] ";
+
+		$mysqli_result_col1 = mysqli_query($query_col1, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col1 = mysqli_fetch_array($mysqli_result_col1);
+
+		$y1_sum += $row4d_col1[percent_y1];
+
+		$query_col2 = "SELECT * FROM ga_f5_column2_3";
+		$query_col2 .= " WHERE num = $row4d[b3] ";
+
+		$mysqli_result_col2 = mysqli_query($query_col2, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col2 = mysqli_fetch_array($mysqli_result_col2);
+
+		$y1_sum += $row4d_col2[percent_y1];
+
+		$query_col3 = "SELECT * FROM ga_f5_column2_4";
+		$query_col3 .= " WHERE num = $row4d[b4] ";
+
+		$mysqli_result_col3 = mysqli_query($query_col3, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col3 = mysqli_fetch_array($mysqli_result_col3);
+
+		$y1_sum += $row4d_col3[percent_y1];
+		break; 
+	   case 8: 
+		$query_col1 = "SELECT * FROM ga_f5_column2_2";
+		$query_col1 .= " WHERE num = $row4d[b2] ";
+
+		$mysqli_result_col1 = mysqli_query($query_col1, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col1 = mysqli_fetch_array($mysqli_result_col1);
+
+		$y1_sum += $row4d_col1[percent_y1];
+
+		$query_col2 = "SELECT * FROM ga_f5_column2_3";
+		$query_col2 .= " WHERE num = $row4d[b3] ";
+
+		$mysqli_result_col2 = mysqli_query($query_col2, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col2 = mysqli_fetch_array($mysqli_result_col2);
+
+		$y1_sum += $row4d_col2[percent_y1];
+
+		$query_col3 = "SELECT * FROM ga_f5_column2_5";
+		$query_col3 .= " WHERE num = $row4d[b5] ";
+
+		$mysqli_result_col3 = mysqli_query($query_col3, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col3 = mysqli_fetch_array($mysqli_result_col3);
+
+		$y1_sum += $row4d_col3[percent_y1];
+		break; 
+	   case 9: 
+		$query_col1 = "SELECT * FROM ga_f5_column2_2";
+		$query_col1 .= " WHERE num = $row4d[b2] ";
+
+		$mysqli_result_col1 = mysqli_query($query_col1, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col1 = mysqli_fetch_array($mysqli_result_col1);
+
+		$y1_sum += $row4d_col1[percent_y1];
+
+		$query_col2 = "SELECT * FROM ga_f5_column2_4";
+		$query_col2 .= " WHERE num = $row4d[b4] ";
+
+		$mysqli_result_col2 = mysqli_query($query_col2, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col2 = mysqli_fetch_array($mysqli_result_col2);
+
+		$y1_sum += $row4d_col2[percent_y1];
+
+		$query_col3 = "SELECT * FROM ga_f5_column2_5";
+		$query_col3 .= " WHERE num = $row4d[b5] ";
+
+		$mysqli_result_col3 = mysqli_query($query_col3, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col3 = mysqli_fetch_array($mysqli_result_col3);
+
+		$y1_sum += $row4d_col3[percent_y1];
+		break; 
+	   case 10: 
+		$query_col1 = "SELECT * FROM ga_f5_column2_3";
+		$query_col1 .= " WHERE num = $row4d[b3] ";
+
+		$mysqli_result_col1 = mysqli_query($query_col1, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col1 = mysqli_fetch_array($mysqli_result_col1);
+
+		$y1_sum += $row4d_col1[percent_y1];
+
+		$query_col2 = "SELECT * FROM ga_f5_column2_4";
+		$query_col2 .= " WHERE num = $row4d[b4] ";
+
+		$mysqli_result_col2 = mysqli_query($query_col2, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col2 = mysqli_fetch_array($mysqli_result_col2);
+
+		$y1_sum += $row4d_col2[percent_y1];
+
+		$query_col3 = "SELECT * FROM ga_f5_column2_5";
+		$query_col3 .= " WHERE num = $row4d[b5] ";
+
+		$mysqli_result_col3 = mysqli_query($query_col3, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row4d_col3 = mysqli_fetch_array($mysqli_result_col3);
+
+		$y1_sum += $row4d_col3[percent_y1];
+		break; 
+	} 
+
+	$queryu6 = "UPDATE `georgia_fantasy_5`.`combo_temp_3` ";
+	$queryu6 .= "SET count = $row_count[0], y1_sum = $y1_sum ";
+	
+	switch ($y) { 
+	   case 1: 
+		   $queryu6 .= "WHERE `d1` = $row4d[b1] ";
+		   $queryu6 .= "AND `d2` = $row4d[b2] ";
+		   $queryu6 .= "AND `d3` = $row4d[b3] ";
+		   break; 
+	   case 2: 
+		   $queryu6 .= "WHERE `d1` = $row4d[b1] ";
+		   $queryu6 .= "AND `d2` = $row4d[b2] ";
+		   $queryu6 .= "AND `d3` = $row4d[b4] ";
+		   break; 
+	   case 3: 
+		   $queryu6 .= "WHERE `d1` = $row4d[b1] ";
+		   $queryu6 .= "AND `d2` = $row4d[b2] ";
+		   $queryu6 .= "AND `d3` = $row4d[b5] ";
+		   break; 
+	   case 4: 
+		   $queryu6 .= "WHERE `d1` = $row4d[b1] ";
+		   $queryu6 .= "AND `d2` = $row4d[b3] ";
+		   $queryu6 .= "AND `d3` = $row4d[b4] ";
+		   break;
+	   case 5: 
+		   $queryu6 .= "WHERE `d1` = $row4d[b1] ";
+		   $queryu6 .= "AND `d2` = $row4d[b3] ";
+		   $queryu6 .= "AND `d3` = $row4d[b5] ";
+		   break;
+	   case 6: 
+		   $queryu6 .= "WHERE `d1` = $row4d[b1] ";
+		   $queryu6 .= "AND `d2` = $row4d[b4] ";
+		   $queryu6 .= "AND `d3` = $row4d[b5] ";
+		   break; 
+	   case 7: 
+		   $queryu6 .= "WHERE `d1` = $row4d[b2] ";
+		   $queryu6 .= "AND `d2` = $row4d[b3] ";
+		   $queryu6 .= "AND `d3` = $row4d[b4] ";
+		   break; 
+	   case 8: 
+		   $queryu6 .= "WHERE `d1` = $row4d[b2] ";
+		   $queryu6 .= "AND `d2` = $row4d[b3] ";
+		   $queryu6 .= "AND `d3` = $row4d[b5] ";
+		   break;
+	   case 9: 
+		   $queryu6 .= "WHERE `d1` = $row4d[b2] ";
+		   $queryu6 .= "AND `d2` = $row4d[b4] ";
+		   $queryu6 .= "AND `d3` = $row4d[b5] ";
+		   break;
+	   case 10: 
+		   $queryu6 .= "WHERE `d1` = $row4d[b3] ";
+		   $queryu6 .= "AND `d2` = $row4d[b4] ";
+		   $queryu6 .= "AND `d3` = $row4d[b5] ";
+		   break;
+	} 
+
+	#print "$queryu6<p>";
+
+	$mysqli_result_u6 = mysqli_query($queryu6, $mysqli_link) or die (mysqli_error($mysqli_link));
+?>

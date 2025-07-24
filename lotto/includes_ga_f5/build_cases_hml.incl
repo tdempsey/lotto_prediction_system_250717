@@ -1,0 +1,255 @@
+<?php
+	$query = "DROP TABLE IF EXISTS temp_cases_";
+	$query .= "$hml ";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$query =  "CREATE TABLE IF NOT EXISTS  temp_cases_";
+	$query .= "$hml (";
+	$query .= "  `id` int(10) unsigned NOT NULL auto_increment, ";
+	$query .= "  `sum` tinyint(3) unsigned NOT NULL default '0', ";
+	$query .= "  `b1` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `b3` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `even` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `odd` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `d2_1` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `d2_2` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `d3_1` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `d3_2` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `d3_3` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `d4_1` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `d4_2` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `d4_3` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `d4_4` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `mod_total` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `seq2` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `d0` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `d1` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `d2` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `d3` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `d4` tinyint(2) unsigned NOT NULL default '0', ";
+	#$query .= "  `d5` tinyint(2) unsigned NOT NULL default '0', ";
+	#$query .= "  `d6` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `draw_count` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `dup1` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `dup2` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `dup3` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `dup4` tinyint(2) unsigned NOT NULL default '0', ";
+	#$query .= "  `dup5` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `dup_count` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `comb2` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `comb3` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `comb4` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `comb5` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `combo_count` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  PRIMARY KEY  (`id`) ";
+	$query .= ") ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 "; 
+
+	#print("$query<p>");
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$row = array_fill (0,7,0);
+
+	$max_num = 5;
+
+	print("<p align=\"center\"><b><font face=\"Arial, Helvetica, sans-serif\">Build Cases 5/$max_num</font></b></p>");
+
+	#################################################################################
+
+	$num1_temp = array();
+
+	$query_ct = "SELECT * FROM ga_f5_column_1";
+	if ($hml)
+	{
+		$query_ct .= "_$hml ";
+	}
+	$query_ct .= " ORDER BY percent_y5 DESC, percent_y3 DESC ";
+	$query_ct .= "LIMIT 7 ";
+
+	print "$query_ct<p>";
+
+	$mysqli_result_ct = mysqli_query($query_ct, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+	while($row_ct = mysqli_fetch_array($mysqli_result_ct))
+	{
+		array_push($num1_temp,$row_ct[num]);	
+	}
+
+	echo "<strong>num1_temp = </strong>";
+	print_r ($num1_temp);
+	echo "<p>";
+
+	##########################################################################################
+
+	$num3_temp = array();
+
+	$query_ct = "SELECT * FROM ga_f5_column_3";
+	if ($hml)
+	{
+		$query_ct .= "_$hml ";
+	}
+	$query_ct .= " ORDER BY percent_y5 DESC, percent_y3 DESC ";
+	$query_ct .= "LIMIT 10 ";
+
+	print "$query_ct<p>";
+
+	$mysqli_result_ct = mysqli_query($query_ct, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+	while($row_ct = mysqli_fetch_array($mysqli_result_ct))
+	{
+		array_push($num3_temp,$row_ct[num]);	
+	}
+
+	echo "<strong>num3_temp = </strong>";
+	print_r ($num3_temp);
+	echo "<p>";
+
+	##########################################################################################
+
+	$hml9 = $hml + 9;
+
+	$query_sm = "SELECT * FROM `ga_f5_wheel_sum_table` WHERE `sum` >= $hml AND `sum` <= $hml9 AND `wa` >= 0.10 ORDER BY `wa` DESC ";
+
+	print "$query_sm<br>";
+
+	$mysqli_result_sm = mysqli_query($query_sm, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+	$num_rows_sm = mysqli_num_rows($mysqli_result_sm);
+
+	echo "num_rows_sm = $num_rows_sm<br>";
+
+	while($row_sm = mysqli_fetch_array($mysqli_result_sm))
+	{
+		$draw_table = "$draw_prefix";
+		$draw_table .= "draw_count_";
+		$draw_table .= "$balls_drawn";
+		$draw_table .= "_$balls";
+		$draw_table .= "_$hml";
+
+		$query_draw = "SELECT * FROM $draw_table ";
+		$query_draw .= "WHERE count > 2 ";
+		$query_draw .= "ORDER BY count DESC ";
+
+		echo "<b>$query_draw</b><br>";
+
+		$mysqli_result_draw = mysqli_query($query_draw, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		while($row_draw = mysqli_fetch_array($mysqli_result_draw))
+		{
+			echo "draw - $row_draw[draw0],$row_draw[draw1],$row_draw[draw2],$row_draw[draw3],$row_draw[draw4] - <b>$row_draw[count]</b><br>";
+
+			$dup_table = "ga_f5_dup_count4_5_59_";
+			$dup_table .= "$hml";
+			
+			$query_dup = "SELECT * FROM $dup_table ";
+			$query_dup .= "WHERE count > 2 ";
+			$query_dup .= "ORDER BY count DESC ";
+
+			#echo "<b>$query_dup</b><br>";
+
+			$mysqli_result_dup = mysqli_query($query_dup, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+			while($row_dup = mysqli_fetch_array($mysqli_result_dup))
+			{
+				echo "dup - $row_dup[dup1],$row_dup[dup2],$row_dup[dup3],$row_dup[dup4] - <b>$row_dup[count]</b><br>";
+
+				$combo_table = "ga_f5_combo_count_5_59_";
+				$combo_table .= "$hml ";
+				
+				$query_combo = "SELECT * FROM $combo_table ";
+				$query_combo .= "WHERE combo2 = 10 ";
+				$query_combo .= "AND   count > 5 ";
+				$query_combo .= "ORDER BY count DESC ";
+
+				#echo "$query_combo<br>";
+
+				$mysqli_result_combo = mysqli_query($query_combo, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+				while($row_combo = mysqli_fetch_array($mysqli_result_combo))
+				{
+					echo "combo - $row_combo[combo2],$row_combo[combo3],$row_combo[combo4],$row_combo[combo5] - <b>$row_combo[count]</b><br>";
+				
+					for ($a = 0; $a < count($num1_temp)-1; $a++)  
+					{
+						for ($b = 0; $b < count($num3_temp)-1; $b++)  
+						{		
+							mysqli_data_seek($mysqli_result_draw,0);
+
+							$mod_total = 0;
+							$seq2 = 0;
+
+							while($row_draw = mysqli_fetch_array($mysqli_result_draw))
+							{
+								mysqli_data_seek($mysqli_result_dup,0);
+
+								while($row_dup = mysqli_fetch_array($mysqli_result_dup))
+								{
+									mysqli_data_seek($mysqli_result_combo,0);
+
+									while($row_combo = mysqli_fetch_array($mysqli_result_combo))
+									{
+										$query = "INSERT INTO temp_cases_";
+										$query .= "$hml ";
+										$query .= "VALUES ('0', ";
+										$query .= "'$row_sm[sum]', ";
+										$query .= "'$num1_temp[$a]', ";
+										$query .= "'$num3_temp[$b]', ";
+										$query .= "'$row_sm[even]', ";
+										$query .= "'$row_sm[odd]', ";
+										$query .= "'$row_sm[d2_1]', ";
+										$query .= "'$row_sm[d2_2]', ";
+										#build wheel sum table for 3/4
+										$query .= "'0', ";
+										$query .= "'0', ";
+										$query .= "'0', ";
+										$query .= "'0', ";
+										$query .= "'0', ";
+										$query .= "'0', ";
+										$query .= "'0', ";
+										$query .= "'$mod_total', ";
+										$query .= "'$seq2', ";
+										$query .= "'$row_draw[draw0]', ";
+										$query .= "'$row_draw[draw1]', ";
+										$query .= "'$row_draw[draw2]', ";
+										$query .= "'$row_draw[draw3]', ";
+										$query .= "'$row_draw[draw4]', ";
+										$query .= "'$row_draw[count]', ";
+										$query .= "'$row_dup[dup1]', ";
+										$query .= "'$row_dup[dup2]', ";
+										$query .= "'$row_dup[dup3]', ";
+										$query .= "'$row_dup[dup4]', ";
+										$query .= "'$row_dup[count]', ";
+										$query .= "'$row_combo[combo2]', ";
+										$query .= "'$row_combo[combo3]', ";
+										$query .= "'$row_combo[combo4]', ";
+										$query .= "'$row_combo[combo5]', ";
+										$query .= "'$row_combo[count]') ";
+
+										#print "$query<br>";
+										
+										$mysqli_result2 = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	/*
+	$query_temp = "SELECT * FROM temp_cases_";
+	$query_temp .= "$hml ";
+	#$query_temp .= "ORDER BY count DESC ";
+
+	echo "$query_temp<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query_temp) or die (mysqli_error($mysqli_link));
+
+	while($row = mysqli_fetch_array($mysqli_result))
+	{
+		echo "$row[combo2],$row[combo3],$row[combo4],$row[combo5] - <b>$row[count]</b><br>";
+	}
+	*/
+?>

@@ -1,0 +1,29 @@
+if ($row_combin[$d] >= 140)
+{
+	print("<TD bgcolor=\"#FF0033\" align=center>{$row_combin[$d]}</TD>\n");
+} elseif ($row_combin[$d] > 100) {
+	print("<TD bgcolor=\"#FF9900\" align=center>{$row_combin[$d]}</TD>\n");
+} elseif ($row_combin[$d] > 20) {
+	print("<TD bgcolor=\"#FFDD33\" align=center>{$row_combin[$d]}</TD>\n");
+} elseif ($row_combin[$d] >= 6) {
+	print("<TD bgcolor=\"#66CC00\" align=center>{$row_combin[$d]}</TD>\n");
+} elseif ($row_combin[$d] >= 2) {
+	print("<TD bgcolor=\"#87CEFF\" align=center>{$row_combin[$d]}</TD>\n");
+} else {
+	print("<TD align=center>{$row_combin[$d]}</TD>\n");
+}
+
+if ($row[$t] > 10)
+{
+	print("<TD bgcolor=\"#FF0033\" align=center>$row[$t]</TD>\n");
+} elseif ($row[$t] > 7) {
+	print("<TD bgcolor=\"#FF9900\" align=center>$row[$t]</TD>\n");
+} elseif ($row[$t] > 1) {
+	print("<TD bgcolor=\"#FFDD33\" align=center>$row[$t]</TD>\n");
+} elseif ($row[$t] == 1) {
+	print("<TD bgcolor=\"#66CC00\" align=center>$row[$t]</TD>\n");
+} elseif ($row[$t] == 1) {
+	print("<TD bgcolor=\"#87CEFF\" align=center>$row[$t]</TD>\n");
+} else {
+	print("<TD align=center>$row[$t]</TD>\n");
+}

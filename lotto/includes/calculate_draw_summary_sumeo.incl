@@ -1,0 +1,238 @@
+<?php
+	$query4 = "DROP TABLE IF EXISTS temp_";
+	$query4 .= "draw_summary2_";
+	$query4 .= "$sum";
+	$query4 .= "_$even";
+	$query4 .= "_$odd ";
+
+	#echo "$query4<br>";
+
+	$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+	$query4 = "CREATE TABLE temp_";
+	$query4 .= "draw_summary2_";
+	$query4 .= "$sum";
+	$query4 .= "_$even";
+	$query4 .= "_$odd (";
+	$query4 .= " id int(10) unsigned NOT NULL auto_increment, ";
+	$query4 .= "d0 tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "d1 tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "d2 tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "d3 tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "d4 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "day1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "week1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "week2 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "month1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "month3 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "month6 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year2 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year3 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year4 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year5 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year6 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year7 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year8 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year9 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year10 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "count int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "percent_y1 float(5,3) unsigned NOT NULL default '0', ";
+	$query4 .= "percent_y5 float(5,3) unsigned NOT NULL default '0', ";
+	$query4 .= "percent_wa float(5,3) unsigned NOT NULL default '0', ";
+	$query4 .= "PRIMARY KEY  (`id`),";
+	$query4 .= "UNIQUE KEY `numx_2` (`id`),";
+	$query4 .= "KEY `numx` (`id`)";
+	$query4 .= ") ENGINE=InnoDB DEFAULT CHARSET=latin1;";
+
+	#echo "$query4<br>";
+
+	$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+	$query4 = "DELETE FROM `ga_f5_draw_summary_by_sumeo` WHERE `sum` = $sum AND `even` = $even AND `odd` = $odd";
+
+	#echo "$query4<br>";
+
+	$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+	###############################################################################################################
+
+	$query0 = "SELECT DISTINCT draw0, draw1, draw2, draw3, draw4 FROM $draw_table_name ";
+	$query0 .= "ORDER BY draw0 ASC, draw1 ASC, draw2 asc, draw3 ASC, draw4 ASC ";
+
+	#echo "$query0<br>";
+
+	$mysqli_result0 = mysqli_query($mysqli_link, $query0) or die (mysqli_error($mysqli_link));
+	
+	while($row0 = mysqli_fetch_array($mysqli_result0))
+	{
+		$query1 = "SELECT * FROM $draw_table_name ";
+		$query1 .= "WHERE date >= '2015-10-15' ";
+		$query1 .= "AND   sum = $sum ";
+		$query1 .= "AND   even = $even ";
+		$query1 .= "AND   odd = $odd ";
+		$query1 .= "AND   draw0 = $row0[0] ";
+		$query1 .= "AND   draw1 = $row0[1] ";
+		$query1 .= "AND   draw2 = $row0[2] ";
+		$query1 .= "AND   draw3 = $row0[3] ";
+		$query1 .= "AND   draw4 = $row0[4] ";
+
+		#echo "$query1<br>";
+
+		$mysqli_result1 = mysqli_query($mysqli_link, $query1) or die (mysqli_error($mysqli_link));
+
+		$num_rows_dc = mysqli_num_rows($mysqli_result1);
+
+		##################################################################################################
+		
+		$temp_array = array_fill (0,17,0);
+		$column_sumeo_count_array = array_fill (0,$balls+1,$temp_array);
+
+		for ($x = 0; $x <= 17; $x++)
+		{
+			for ($d = 0; $d <= 43; $d++)
+			{
+				$column_sumeo_count_array[$x][$d] = 0;
+			}
+		}
+		
+		// get each row
+		while($row2 = mysqli_fetch_array($mysqli_result1))
+		{
+			#echo "1 - num_rows_dc = $num_rows_dc<br>";
+			if ($num_rows_dc)
+			{
+				#print_r($column_sumeo_count_array);
+				#echo "<br>";
+				#echo "row2[0] = $row2[0]<br>";
+				
+				$draw_date_array = explode("-","$row2[0]"); 
+				$draw_date_unix = mktime (0,0,0,$draw_date_array[1],$draw_date_array[2],$draw_date_array[0]);
+
+				#echo "draw_date_unix = $draw_date_unix<br>";
+
+				if ($draw_date_unix == $day1_unix) { 
+					for ($d = 0; $d <= 15; $d++) {$column_sumeo_count_array[$x][$d]++;}
+				} elseif ($draw_date_unix > $week1_unix) {
+					for ($d = 1; $d <= 15; $d++) {$column_sumeo_count_array[$x][$d]++;}
+				} elseif ($draw_date_unix > $week2_unix) {
+					for ($d = 2; $d <= 15; $d++) {$column_sumeo_count_array[$x][$d]++;}
+				} elseif ($draw_date_unix > $month1_unix) {
+					for ($d = 3; $d <= 15; $d++) {$column_sumeo_count_array[$x][$d]++;}
+				} elseif ($draw_date_unix > $month3_unix) {
+					for ($d = 4; $d <= 15; $d++) {$column_sumeo_count_array[$x][$d]++;}
+				} elseif ($draw_date_unix > $month6_unix) {
+					for ($d = 5; $d <= 15; $d++) {$column_sumeo_count_array[$x][$d]++;}
+				} elseif ($draw_date_unix > $year1_unix) {
+					for ($d = 6; $d <= 15; $d++) {$column_sumeo_count_array[$x][$d]++;}
+				} elseif ($draw_date_unix > $year2_unix) {
+					for ($d = 7; $d <= 15; $d++) {$column_sumeo_count_array[$x][$d]++;}
+				} elseif ($draw_date_unix > $year3_unix) {
+					for ($d = 8; $d <= 15; $d++) {$column_sumeo_count_array[$x][$d]++;}
+				} elseif ($draw_date_unix > $year4_unix) {
+					for ($d = 9; $d <= 15; $d++) {$column_sumeo_count_array[$x][$d]++;}
+				} elseif ($draw_date_unix > $year5_unix) {
+					for ($d = 10; $d <= 15; $d++) {$column_sumeo_count_array[$x][$d]++;}
+				} elseif ($draw_date_unix > $year6_unix) {
+					for ($d = 11; $d <= 15; $d++) {$column_sumeo_count_array[$x][$d]++;}
+				#} elseif ($draw_date_unix > $year6_unix) {
+				#	for ($d = 11; $d <= 15; $d++) {$column_sumeo_count_array[$x][$d]++;}
+				} elseif ($draw_date_unix > $year7_unix) {
+					for ($d = 12; $d <= 15; $d++) {$column_sumeo_count_array[$x][$d]++;}
+				} elseif ($draw_date_unix > $year8_unix) {
+					for ($d = 13; $d <= 15; $d++) {$column_sumeo_count_array[$x][$d]++;}
+				} elseif ($draw_date_unix > $year9_unix) {
+					for ($d = 14; $d <= 15; $d++) {$column_sumeo_count_array[$x][$d]++;}
+				} elseif ($draw_date_unix > $year10_unix) {
+					for ($d = 15; $d <= 15; $d++) {$column_sumeo_count_array[$x][$d]++;}
+				}
+
+				$column_sumeo_count_array[$x][16]++;
+
+				#add 1 year to clear
+				if ($first_draw_unix > $year7_unix) {
+					for ($d = 13; $d <= 15; $d++) {$column_sumeo_count_array[$x][$d]=0;}
+				} elseif ($first_draw_unix > $year8_unix) {
+					for ($d = 14; $d <= 15; $d++) {$column_sumeo_count_array[$x][$d]=0;}
+				} elseif ($first_draw_unix > $year9_unix) {
+					for ($d = 15; $d <= 15; $d++) {$column_sumeo_count_array[$x][$d]=0;}
+				} elseif ($first_draw_unix > $year10_unix) {
+					for ($d = 16; $d <= 16; $d++) {$column_sumeo_count_array[$x][$d]=0;}
+				}
+			}
+
+			$sum_temp_y1 = number_format(($column_sumeo_count_array[$x][6]/365)*100,2);
+
+			$sum_temp_y5 = number_format(($column_sumeo_count_array[$x][10]/(365*5))*100,2);
+
+			$weighted_average = (
+				#($column_sumeo_count_array[$x][1]/7*100*0.05) + #week1
+				#($column_sumeo_count_array[$x][3]/30*100*0.05) + #month1
+				#($column_sumeo_count_array[$x][5]/(365/2)*100*0.20) + #month6
+				($column_sumeo_count_array[$x][6]/365*100*0.33) + #year1
+				($column_sumeo_count_array[$x][8]/(365*3)*100*0.33) + #year3
+				($column_sumeo_count_array[$x][10]/(365*5)*100*0.34)); #year5
+
+			$sum_temp = number_format($weighted_average,2);
+		}
+
+		##################################################################################################
+
+		
+		#echo "2 - num_rows_dc = $num_rows_dc<br>";
+		if ($num_rows_dc)
+		{
+			$querya = "INSERT INTO temp_";
+			$querya .= "draw_summary2_";
+			$querya .= "$sum";
+			$querya .= "_$even";
+			$querya .= "_$odd ";
+			$querya .= "VALUES ('0', ";
+			$querya .= "'$row0[0]',";
+			$querya .= "'$row0[1]',";
+			$querya .= "'$row0[2]',";
+			$querya .= "'$row0[3]',";
+			$querya .= "'$row0[4]',";
+			$querya .= "'0',";
+			for ($d = 1; $d <= 15; $d++) 
+			{
+				$querya .= "'{$column_sumeo_count_array[$x][$d]}', ";
+			}
+			$querya .= "'{$column_sumeo_count_array[$x][16]}', ";
+			$querya .= "'$sum_temp_y1', ";
+			$querya .= "'$sum_temp_y5', ";
+			$querya .= "'$weighted_average') ";
+
+			#echo "$querya<br>";
+
+			$mysqli_resulta = mysqli_query($mysqli_link, $querya) or die (mysqli_error($mysqli_link));
+
+			$querya = "INSERT INTO `ga_f5_draw_summary_by_sumeo` ";
+			$querya .= "VALUES ('0', ";
+			$querya .= "'$sum',";
+			$querya .= "'$even',";
+			$querya .= "'$odd',";
+			$querya .= "'$row0[0]',";
+			$querya .= "'$row0[1]',";
+			$querya .= "'$row0[2]',";
+			$querya .= "'$row0[3]',";
+			$querya .= "'$row0[4]',";
+			$querya .= "'0',";
+			for ($d = 1; $d <= 16; $d++) 
+			{
+				$querya .= "'{$column_sumeo_count_array[$x][$d]}', ";
+			}
+			$querya .= "'{$column_sumeo_count_array[$x][16]}', ";
+			$querya .= "'$sum_temp_y1', ";
+			$querya .= "'$sum_temp_y5', ";
+			$querya .= "'$weighted_average') ";
+
+			#echo "$querya<br>";
+
+			$mysqli_resulta = mysqli_query($mysqli_link, $querya) or die (mysqli_error($mysqli_link));
+		}
+		
+	}
+
+	#########################################################################################################	
+?>

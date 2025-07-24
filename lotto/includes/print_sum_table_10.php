@@ -1,0 +1,144 @@
+<?php
+	//start sorted table --------------------------------------------------------
+	//start table
+	print("<h3>Sum Rank</h3>\n");
+	print("<TABLE BORDER=\"1\">\n");
+
+	//create header row
+	print("<TR>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">SumX</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Last</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Week1</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Week2</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Month1</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Month3</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Month6</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year1</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year2</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year3</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year4</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year5</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year6</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year7</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">D1015</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year8</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year9</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year10</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">$num_rows_all</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=center>m1</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=center>y1</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=center>y8</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=center>wa</TD>\n");
+	print("</TR>\n");
+
+	$query = "SELECT * FROM $draw_prefix";
+	$query .= "sum ";
+	$query .= "ORDER BY numx ASC ";
+
+	echo "$query<br>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$dcount = 0;
+
+	// get each row
+	while($row = mysqli_fetch_array($mysqli_result))
+	{
+		$x = $row[0];
+		print("<TR>\n");
+
+		print("<TD align=center>$row[0]</TD>\n");	
+
+		for ($s = 0; $s <= 14; $s++)
+		{
+			if ($sum_tot_array[$x][$s] > 190)
+			{
+				print("<TD bgcolor=\"#FF0033\" align=center>{$sum_tot_array[$x][$s]}</TD>\n");
+			} elseif ($sum_tot_array[$x][$s] > 200) {
+				print("<TD bgcolor=\"#FF9900\" align=center>{$sum_tot_array[$x][$s]}</TD>\n");
+			} elseif ($sum_tot_array[$x][$s] > 100) {
+				print("<TD bgcolor=\"#FFDD33\" align=center>{$sum_tot_array[$x][$s]}</TD>\n");
+			} elseif ($sum_tot_array[$x][$s] > 10) {
+				print("<TD bgcolor=\"#66CC00\" align=center>{$sum_tot_array[$x][$s]}</TD>\n");
+			} elseif ($sum_tot_array[$x][$s] > 0) {
+				print("<TD bgcolor=\"#87CEFF\" align=center>{$sum_tot_array[$x][$s]}</TD>\n");
+			} else {
+				print("<TD align=center>{$sum_tot_array[$x][$s]}</TD>\n");
+			}
+		} 
+
+		#print("<TD align=center>&nbsp;</TD>\n");
+		print("<TD align=center>&nbsp;</TD>\n");
+		print("<TD align=center>&nbsp;</TD>\n");
+		
+		if ($row[17] > 100)
+		{
+			print("<TD bgcolor=\"#FF0000\" align=center><font color=\"#ffffff\">$row[17]</font></TD>\n");
+		} else {
+			print("<TD align=center>$row[17]</TD>\n");
+		}
+
+		$temp = number_format(($row[4]/31) * 100,1);
+
+		if ($temp > 9.9)
+		{
+			print("<TD align=center><font size=\"-1\"><b>$temp</b></font></TD>\n");
+		} else {
+			print("<TD align=center><font size=\"-1\">$temp</font></TD>\n");
+		}
+		if ($row[19] > 9.9)
+		{
+			print("<TD align=center><font size=\"-1\"><b>$row[19]</b></font></TD>\n");
+		} else {
+			print("<TD align=center><font size=\"-1\">$row[19]</font></TD>\n");
+		}
+		if ($row[20] > 9.9)
+		{
+			print("<TD align=center><font size=\"-1\"><b>$row[20]</b></font></TD>\n");
+		} else {
+			print("<TD align=center><font size=\"-1\">$row[20]</font></TD>\n");
+		}
+		/*
+		if ($row[21] > 9.9)
+		{
+			print("<TD align=center><font size=\"-1\"><b>$row[21]</b></font></TD>\n");
+		} else {
+			print("<TD align=center><font size=\"-1\">$row[21]</font></TD>\n");
+		}
+		*/
+
+		print("</TR>\n");
+		$dcount++;
+	}
+
+	//create footer row
+	print("<TR>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">SumX</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Last</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Week1</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Week2</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Month1</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Month3</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Month6</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year1</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year2</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year3</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year4</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year5</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year6</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year7</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">D1015</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year8</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year9</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year10</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">$num_rows_all</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=center>m1</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=center>y1</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=center>y8</TD>\n");
+	#print("<TD BGCOLOR=\"#CCCCCC\" align=center>$num_rows_all</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=center>wa</TD>\n");
+	print("</TR>\n");
+
+	//end table
+	print("</TABLE>\n");
+?>

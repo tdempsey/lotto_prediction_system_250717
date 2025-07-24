@@ -1,0 +1,44 @@
+<?php
+	echo "<b>hml = $hml in lot_display.php</b><p>";
+
+	switch ($game) {
+		case 1;
+			if ($hml == 0) {
+				break;
+			} elseif ($hml == 1) {
+				$range_low = 120;	#gaf5 high
+				$range_high = 139;	#gaf5 high
+			} elseif ($hml == 2) {
+				$range_low = 90;	#gaf5 medium
+				$range_high = 119;	#gaf5 medium
+			} elseif ($hml == 3) {
+				$range_low = 70;	#gaf5 low
+				$range_high = 89;	#gaf5 low
+			} elseif ($hml == 4) {
+				$range_low = 40;	#gaf5 min
+				$range_high = 69;	#gaf5 min
+			} elseif ($hml == 5) {
+				$range_low = 140;	#gaf5 max
+				$range_high = 159;	#gaf5 max
+			} else {
+				die ("hml incorrect for gaf5 - hml = $hml");
+			}
+			break;
+		case 7;
+			if ($hml == 0) {
+				break;
+			} elseif ($hml == 1) {
+				$range_low = 160;	#pb high
+				$range_high = 189;	#pb high
+			} elseif ($hml == 2) {
+				$range_low = 130;	#pb medium
+				$range_high = 159;	#pb medium
+			} elseif ($hml == 3) {
+				$range_low = 100;	#pb low
+				$range_high = 129;	#pb low
+			} else {
+				die ("hml incorrect for pb - hml = $hml");
+			}
+			break;
+	}
+?>

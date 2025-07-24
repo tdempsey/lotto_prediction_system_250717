@@ -1,0 +1,5 @@
+SELECT * FROM `combo_5_42_105_2_3` WHERE `rank0` <= 1 AND `rank1` <= 1 AND `rank2` <= 2 AND `rank3` <= 2 AND `rank4` <= 3 AND `rank5` <= 2 AND `rank6` <= 1 AND `comb2` = 10 AND `comb5` = 0 AND `dup1` <= 0 AND `dup2` <= 1 AND `dup3` <= 1 AND `last_updated` = '2020-02-24' ORDER BY `combo_5_42_105_2_3`.`y1_sum` DESC
+
+SELECT * FROM `combo_5_42_105_2_3` WHERE `rank0` <= 1 AND `rank1` <= 1 AND `rank2` <= 2 AND `rank3` <= 2 AND `rank4` <= 3 AND `rank5` <= 2 AND `rank6` <= 1 AND `comb2` = 10 AND `comb5` = 0 AND `dup1` <= 1 AND `dup2` <= 2 AND `dup3` <= 2 AND `last_updated` = '2020-02-24' ORDER BY `combo_5_42_105_2_3`.`y1_sum` DESC
+
+SELECT * FROM `combo_5_42_105_2_3` WHERE `rank0` <= 1 AND `rank1` <= 1 AND `rank2` <= 2 AND `rank3` <= 3 AND `rank4` <= 3 AND `rank5` <= 2 AND `rank6` <= 1 AND `comb2` = 10 AND `comb5` = 0 AND `dup1` <= 1 AND `dup2` <= 2 AND `dup3` <= 2 AND `last_updated` = '2020-02-25' ORDER BY `combo_5_42_105_2_3`.`y1_sum` DESC

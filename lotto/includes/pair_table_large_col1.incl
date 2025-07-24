@@ -1,0 +1,570 @@
+<?php
+	$pair_count_temp_array = array_fill (0,15,0);
+	$pair_count_array = array_fill (0,60,$pair_count_temp_array);
+
+	print("<H2>Pairs - $game_name - Limit $limit</H2>\n");
+
+	//start table
+	print("<P>");
+	print("<TABLE BORDER=\"1\">\n");
+
+	//create header row
+	print("<TR>\n");
+	print("<TD bgcolor=\"#CCCCCC\">Num1</TD>\n");
+	print("<TD bgcolor=\"#CCCCCC\">Num2</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Week1</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Week2</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Month1</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Month3</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Month6</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Year1</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Year2</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Year3</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Year4</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Year5</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Year6</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Year7</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Year8</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Year9</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Year10</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Total</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Prev</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Sigma</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>wa1</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>wa5</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>wa10</center></TD>\n");
+	print("</TR>\n");
+
+	$query_all = "SELECT * FROM $draw_table_name ";
+	$query_all .= "WHERE b1 = $col1 ";
+	$query_all .= "ORDER BY date DESC ";
+
+	$mysqli_result_all = mysqli_query($query_all, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+	$num_rows_all = mysqli_num_rows($mysqli_result_all);
+
+	#for ($x = $col1; $x <= $balls; $x++)
+	for ($x = 1; $x <= $balls; $x++)
+	{
+		for ($y = ($x+1); $y <= $balls; $y++)
+		#for ($y = $col1; $y <= $balls; $y++)
+		{
+			if ($x <> $y)
+			{
+				$sigma = 0;
+				
+				print("<TR>\n");
+				print("<TD align=center>$x</TD>\n");
+				print("<TD align=center>$y</TD>\n");
+
+				// 1
+				$temp_date = gmstrftime("%Y-%m-%d", ($last_draw_unix));
+
+				$query5 = "SELECT * FROM $table_temp ";
+				$query5 .= "WHERE num1 = $x AND num2 = $y "; 
+				$query5 .= "AND last_date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+				$num_rows = mysqli_num_rows($mysqli_result5);
+				$sigma += $num_rows;
+
+				$row = mysqli_fetch_array($mysqli_result5);
+					
+				if ($num_rows > 10)
+				{
+					print("<TD bgcolor=\"#FF0033\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 5) {
+					print("<TD bgcolor=\"#CCFFFF\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 1) {
+					print("<TD bgcolor=\"#CCFF66\" align=center>$num_rows</TD>\n");
+				} else {
+					print("<TD align=center>$num_rows</TD>\n");
+				}
+
+				// 7
+				$temp_date = gmstrftime("%Y-%m-%d", ($last_draw_unix-(86400*7)));
+
+				$query5 = "SELECT * FROM $table_temp ";
+				$query5 .= "WHERE num1 = $x AND num2 = $y "; 
+				$query5 .= "AND last_date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+				$num_rows = mysqli_num_rows($mysqli_result5);
+				$sigma += $num_rows;
+
+				$row = mysqli_fetch_array($mysqli_result5);
+					
+				if ($num_rows > 10)
+				{
+					print("<TD bgcolor=\"#FF0033\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 5) {
+					print("<TD bgcolor=\"#CCFFFF\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 1) {
+					print("<TD bgcolor=\"#CCFF66\" align=center>$num_rows</TD>\n");
+				} else {
+					print("<TD align=center>$num_rows</TD>\n");
+				}
+
+				// 14
+				$temp_date = gmstrftime("%Y-%m-%d", ($last_draw_unix-(86400*14)));
+
+				$query5 = "SELECT * FROM $table_temp ";
+				$query5 .= "WHERE num1 = $x AND num2 = $y "; 
+				$query5 .= "AND last_date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+				$num_rows = mysqli_num_rows($mysqli_result5);
+				$sigma += $num_rows;
+
+				$row = mysqli_fetch_array($mysqli_result5);
+					
+				if ($num_rows > 10)
+				{
+					print("<TD bgcolor=\"#FF0033\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 5) {
+					print("<TD bgcolor=\"#CCFFFF\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 1) {
+					print("<TD bgcolor=\"#CCFF66\" align=center>$num_rows</TD>\n");
+				} else {
+					print("<TD align=center>$num_rows</TD>\n");
+				}
+
+				// 30
+				$temp_date = gmstrftime("%Y-%m-%d", ($last_draw_unix-(86400*30)));
+
+				$query5 = "SELECT * FROM $table_temp ";
+				$query5 .= "WHERE num1 = $x AND num2 = $y "; 
+				$query5 .= "AND last_date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+				$num_rows = mysqli_num_rows($mysqli_result5);
+				$sigma += $num_rows;
+				$pair_30 = $num_rows;
+
+				$row = mysqli_fetch_array($mysqli_result5);
+					
+				if ($num_rows > 10)
+				{
+					print("<TD bgcolor=\"#FF0033\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 5) {
+					print("<TD bgcolor=\"#CCFFFF\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 1) {
+					print("<TD bgcolor=\"#CCFF66\" align=center>$num_rows</TD>\n");
+				} else {
+					print("<TD align=center>$num_rows</TD>\n");
+				}
+
+				// 90
+				$temp_date = gmstrftime("%Y-%m-%d", ($last_draw_unix-(86400*90)));
+
+				$query5 = "SELECT * FROM $table_temp ";
+				$query5 .= "WHERE num1 = $x AND num2 = $y "; 
+				$query5 .= "AND last_date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+				$num_rows = mysqli_num_rows($mysqli_result5);
+				$sigma += $num_rows;
+				$pair_50 = $num_rows;
+
+				$row = mysqli_fetch_array($mysqli_result5);
+					
+				if ($num_rows > 10)
+				{
+					print("<TD bgcolor=\"#FF0033\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 5) {
+					print("<TD bgcolor=\"#CCFFFF\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 1) {
+					print("<TD bgcolor=\"#CCFF66\" align=center>$num_rows</TD>\n");
+				} else {
+					print("<TD align=center>$num_rows</TD>\n");
+				}
+
+				// 180
+				$temp_date = gmstrftime("%Y-%m-%d", ($last_draw_unix-(86400*180)));
+
+				$query5 = "SELECT * FROM $table_temp ";
+				$query5 .= "WHERE num1 = $x AND num2 = $y "; 
+				$query5 .= "AND last_date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+				$num_rows = mysqli_num_rows($mysqli_result5);
+				$sigma += $num_rows;
+				$pair_100 = $num_rows;
+
+				$row = mysqli_fetch_array($mysqli_result5);
+					;
+				if ($num_rows > 10)
+				{
+					print("<TD bgcolor=\"#FF0033\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 5) {
+					print("<TD bgcolor=\"#CCFFFF\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 1) {
+					print("<TD bgcolor=\"#CCFF66\" align=center>$num_rows</TD>\n");
+				} else {
+					print("<TD align=center>$num_rows</TD>\n");
+				}
+
+				// year1
+				$temp_date = gmstrftime("%Y-%m-%d", ($last_draw_unix-(86400*365)));
+
+				$query5 = "SELECT * FROM $table_temp ";
+				$query5 .= "WHERE num1 = $x AND num2 = $y "; 
+				$query5 .= "AND last_date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+				$num_rows = mysqli_num_rows($mysqli_result5);
+				$sigma += $num_rows;
+				$pair_365 = $num_rows;
+
+				$row = mysqli_fetch_array($mysqli_result5);
+					
+				if ($num_rows > 10)
+				{
+					print("<TD bgcolor=\"#FF0033\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 5) {
+					print("<TD bgcolor=\"#CCFFFF\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 1) {
+					print("<TD bgcolor=\"#CCFF66\" align=center>$num_rows</TD>\n");
+				} else {
+					print("<TD align=center>$num_rows</TD>\n");
+				}
+
+				// year2
+				$temp_date = gmstrftime("%Y-%m-%d", ($last_draw_unix-(86400*(365*2))));
+
+				$query5 = "SELECT * FROM $table_temp ";
+				$query5 .= "WHERE num1 = $x AND num2 = $y "; 
+				$query5 .= "AND last_date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+				$num_rows = mysqli_num_rows($mysqli_result5);
+				$sigma += $num_rows;
+
+				$row = mysqli_fetch_array($mysqli_result5);
+					
+				if ($num_rows > 10)
+				{
+					print("<TD bgcolor=\"#FF0033\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 5) {
+					print("<TD bgcolor=\"#CCFFFF\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 1) {
+					print("<TD bgcolor=\"#CCFF66\" align=center>$num_rows</TD>\n");
+				} else {
+					print("<TD align=center>$num_rows</TD>\n");
+				}
+
+				// year3
+				$temp_date = gmstrftime("%Y-%m-%d", ($last_draw_unix-(86400*(365*3))));
+
+				$query5 = "SELECT * FROM $table_temp ";
+				$query5 .= "WHERE num1 = $x AND num2 = $y "; 
+				$query5 .= "AND last_date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+				$num_rows = mysqli_num_rows($mysqli_result5);
+				$sigma += $num_rows;
+
+				$row = mysqli_fetch_array($mysqli_result5);
+					
+				if ($num_rows > 10)
+				{
+					print("<TD bgcolor=\"#FF0033\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 5) {
+					print("<TD bgcolor=\"#CCFFFF\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 1) {
+					print("<TD bgcolor=\"#CCFF66\" align=center>$num_rows</TD>\n");
+				} else {
+					print("<TD align=center>$num_rows</TD>\n");
+				}
+
+				// year4
+				$temp_date = gmstrftime("%Y-%m-%d", ($last_draw_unix-(86400*(365*4))));
+
+				$query5 = "SELECT * FROM $table_temp ";
+				$query5 .= "WHERE num1 = $x AND num2 = $y "; 
+				$query5 .= "AND last_date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+				$num_rows = mysqli_num_rows($mysqli_result5);
+				$sigma += $num_rows;
+
+				$row = mysqli_fetch_array($mysqli_result5);
+					
+				if ($num_rows > 10)
+				{
+					print("<TD bgcolor=\"#FF0033\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 5) {
+					print("<TD bgcolor=\"#CCFFFF\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 1) {
+					print("<TD bgcolor=\"#CCFF66\" align=center>$num_rows</TD>\n");
+				} else {
+					print("<TD align=center>$num_rows</TD>\n");
+				}
+
+				// year5
+				$temp_date = gmstrftime("%Y-%m-%d", ($last_draw_unix-(86400*(365*5))));
+
+				$query5 = "SELECT * FROM $table_temp ";
+				$query5 .= "WHERE num1 = $x AND num2 = $y "; 
+				$query5 .= "AND last_date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+				$num_rows = mysqli_num_rows($mysqli_result5);
+				$sigma += $num_rows;
+
+				$row = mysqli_fetch_array($mysqli_result5);
+					
+				if ($num_rows > 10)
+				{
+					print("<TD bgcolor=\"#FF0033\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 5) {
+					print("<TD bgcolor=\"#CCFFFF\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 1) {
+					print("<TD bgcolor=\"#CCFF66\" align=center>$num_rows</TD>\n");
+				} else {
+					print("<TD align=center>$num_rows</TD>\n");
+				}
+
+				// year6
+				$temp_date = gmstrftime("%Y-%m-%d", ($last_draw_unix-(86400*(365*6))));
+
+				$query5 = "SELECT * FROM $table_temp ";
+				$query5 .= "WHERE num1 = $x AND num2 = $y "; 
+				$query5 .= "AND last_date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+				$num_rows = mysqli_num_rows($mysqli_result5);
+				$sigma += $num_rows;
+
+				$row = mysqli_fetch_array($mysqli_result5);
+					
+				if ($num_rows > 10)
+				{
+					print("<TD bgcolor=\"#FF0033\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 5) {
+					print("<TD bgcolor=\"#CCFFFF\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 1) {
+					print("<TD bgcolor=\"#CCFF66\" align=center>$num_rows</TD>\n");
+				} else {
+					print("<TD align=center>$num_rows</TD>\n");
+				}
+
+				// year7
+				$temp_date = gmstrftime("%Y-%m-%d", ($last_draw_unix-(86400*(365*7))));
+
+				$query5 = "SELECT * FROM $table_temp ";
+				$query5 .= "WHERE num1 = $x AND num2 = $y "; 
+				$query5 .= "AND last_date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+				$num_rows = mysqli_num_rows($mysqli_result5);
+				$sigma += $num_rows;
+
+				$row = mysqli_fetch_array($mysqli_result5);
+					
+				if ($num_rows > 10)
+				{
+					print("<TD bgcolor=\"#FF0033\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 5) {
+					print("<TD bgcolor=\"#CCFFFF\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 1) {
+					print("<TD bgcolor=\"#CCFF66\" align=center>$num_rows</TD>\n");
+				} else {
+					print("<TD align=center>$num_rows</TD>\n");
+				}
+
+				// year8
+				$temp_date = gmstrftime("%Y-%m-%d", ($last_draw_unix-(86400*(365*8))));
+
+				$query5 = "SELECT * FROM $table_temp ";
+				$query5 .= "WHERE num1 = $x AND num2 = $y "; 
+				$query5 .= "AND last_date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+				$num_rows = mysqli_num_rows($mysqli_result5);
+				$sigma += $num_rows;
+
+				$row = mysqli_fetch_array($mysqli_result5);
+					
+				if ($num_rows > 10)
+				{
+					print("<TD bgcolor=\"#FF0033\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 5) {
+					print("<TD bgcolor=\"#CCFFFF\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 1) {
+					print("<TD bgcolor=\"#CCFF66\" align=center>$num_rows</TD>\n");
+				} else {
+					print("<TD align=center>$num_rows</TD>\n");
+				}
+
+				// year9
+				$temp_date = gmstrftime("%Y-%m-%d", ($last_draw_unix-(86400*(365*9))));
+
+				$query5 = "SELECT * FROM $table_temp ";
+				$query5 .= "WHERE num1 = $x AND num2 = $y "; 
+				$query5 .= "AND last_date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+				$num_rows = mysqli_num_rows($mysqli_result5);
+				$sigma += $num_rows;
+
+				$row = mysqli_fetch_array($mysqli_result5);
+					
+				if ($num_rows > 10)
+				{
+					print("<TD bgcolor=\"#FF0033\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 5) {
+					print("<TD bgcolor=\"#CCFFFF\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 1) {
+					print("<TD bgcolor=\"#CCFF66\" align=center>$num_rows</TD>\n");
+				} else {
+					print("<TD align=center>$num_rows</TD>\n");
+				}
+				
+				// year10
+				$temp_date = gmstrftime("%Y-%m-%d", ($last_draw_unix-(86400*(365*10))));
+
+				$query5 = "SELECT * FROM $table_temp ";
+				$query5 .= "WHERE num1 = $x AND num2 = $y "; 
+				$query5 .= "AND last_date >= '$temp_date'  ";
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+				$num_rows = mysqli_num_rows($mysqli_result5);
+				$sigma += $num_rows;
+
+				$row = mysqli_fetch_array($mysqli_result5);
+					
+				if ($num_rows > 10)
+				{
+					print("<TD bgcolor=\"#FF0033\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 5) {
+					print("<TD bgcolor=\"#CCFFFF\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 1) {
+					print("<TD bgcolor=\"#CCFF66\" align=center>$num_rows</TD>\n");
+				} else {
+					print("<TD align=center>$num_rows</TD>\n");
+				}
+
+				// 5000
+				$query5 = "SELECT * FROM $table_temp ";
+				$query5 .= "WHERE num1 = $x AND num2 = $y "; 
+				
+				$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+				$num_rows = mysqli_num_rows($mysqli_result5);
+				$pair_5000 = $num_rows;
+
+				$row = mysqli_fetch_array($mysqli_result5);
+					
+				if ($num_rows > 10)
+				{
+					print("<TD bgcolor=\"#FF0033\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 5) {
+					print("<TD bgcolor=\"#CCFFFF\" align=center>$num_rows</TD>\n");
+				} elseif ($num_rows > 1) {
+					print("<TD bgcolor=\"#CCFF66\" align=center>$num_rows</TD>\n");
+				} else {
+					print("<TD align=center>$num_rows</TD>\n");
+				}
+
+				print("<TD align=center>&nbsp;</TD>\n"); 
+				print("<TD align=center>&nbsp;</TD>\n"); 
+
+				if ($sigma < 70)
+				{
+					print("<TD align=center>$sigma</TD>\n");
+				} else {
+					print("<TD bgcolor=\"#FF0033\" align=center>$sigma</TD>\n");
+				}
+
+				$col_temp_365 = number_format(($pair_365/365)*100,1);
+				print("<TD align=center><font size=\"-1\">$col_temp_365 %</font></TD>\n");
+
+				$col_temp_5000 = number_format(($pair_5000/$num_rows_all)*100,1);
+				print("<TD align=center><font size=\"-1\">$col_temp_5000 %</font></TD>\n");
+
+				$weighted_average = (
+					($pair_10/10*100*0.05) +
+					($pair_30/30*100*0.10) +
+					($pair_100/100*100*0.20) +
+					($pair_365/365*100*0.25) + # 30
+					($pair_500/500*100*0.20) + # 05
+					($pair_1000/1000*100*0.10) + # 05
+					($pair_5000/$num_rows_all*100*0.10)); # 05
+
+				$col_temp_wa = number_format($weighted_average,1);
+				if ($col_temp_wa >= 2.0)
+				{
+						print("<TD align=center><font size=\"-1\"><b>$col_temp_wa %</b></font></TD>\n");
+				} else {
+					print("<TD align=center><font size=\"-1\">$col_temp_wa %</font></TD>\n");
+				}
+
+				$query2 = "UPDATE $table_temp ";
+				$query2 .= "SET count = $num_rows, sigma = $sigma ";
+				$query2 .= "WHERE num1 = $x AND num2 = $y ";
+
+				//print("$query2<br>");
+
+				$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+
+				$query2 = "UPDATE $draw_prefix";
+				$query2 .= "temp_pairs_$limit ";
+				$query2 .= "SET percent_365 = $col_temp_365, percent_5000 = $col_temp_5000, percent_wa = $weighted_average ";
+				$query2 .= "WHERE num1 = $x AND num2 = $y ";
+
+				//print("$query2<br>");
+
+				$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+			}
+		}
+		print("<TR>\n");
+		print("<TD bgcolor=\"#CCCCCC\">Num1</TD>\n");
+		print("<TD bgcolor=\"#CCCCCC\">Num2</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Week1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Week2</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Month1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Month3</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Month6</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year2</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year3</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year4</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year5</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year6</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year7</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year8</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year9</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year10</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Total</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Prev</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Sigma</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>wa1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>wa5</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>wa10</center></TD>\n");
+		print("</TR>\n");
+	}
+
+	//end table
+	print("</TABLE>\n");
+?>

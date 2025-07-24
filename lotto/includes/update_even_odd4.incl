@@ -1,0 +1,61 @@
+<?php
+	
+	#even_odd($draw,$draw_even,$draw_odd); 
+
+	$even = 0;
+	$odd = 0;
+
+	// error checking ---------------------------------------------------------------------------------------
+	if (count($draw_array) == 0)
+	{
+		exit("<h2>Error - function even_odd.php - <font color=\"#FF0000\">\$draw_array undefined</font></h2>");
+	}
+
+	if (array_sum($draw_array) == 0)
+	{
+		exit("<h2>Error - function even_odd.php - <font color=\"#FF0000\">\$draw_array array_sum = 0</font></h2>");
+	}
+	// error checking ---------------------------------------------------------------------------------------
+
+	foreach ($draw_array as $val) 
+	{ 
+		if(!is_int($val/2)) 
+		{ 
+			$odd++; 
+			#echo "odd++<br>";
+		} 
+		else 
+        { 
+			$even++; 
+			#echo "even++<br>";
+        }
+	}
+
+	if ($even == 0 && $odd == 0)
+	{
+		exit("<font color=\"#FF0000\"><h2>Error - function even_odd.php - \$even/\$odd = 0</h2></font>");
+	}
+	
+	#calculate_50_50($draw,$d2_1,$d2_2,$balls);
+
+	#$d2_1 = 0;
+	#$d2_2 = 0;
+	
+	#$draw_count = calculate_draw_count($draw);
+
+	if ($game == 10 OR $game == 20)
+	{
+		#calculate_rank_count($row[id],$draw,$rank_count);
+	} else {
+		#calculate_rank_count($row[0],$draw,$rank_count);
+	}
+
+	$query3 = "UPDATE ga_f5_draws_4 ";
+	$query3 .= "SET even=$even, odd=$odd ";
+	$query3 .= "WHERE date   = '$row[1]' ";
+	$query3 .= "AND   combin = '$combin' ";
+
+	print("$query3<br>");
+
+	$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+?>

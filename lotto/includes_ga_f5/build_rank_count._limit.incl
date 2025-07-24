@@ -1,0 +1,50 @@
+
+	echo "####################################### Rank #######################################<br>";
+	$query = "SELECT * FROM ga_f5_temp2a_26  ";
+	$query .= "ORDER BY num ASC ";
+
+	print "$query<br>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	while($row = mysqli_fetch_array($mysqli_result))
+	{
+		$v = $row[num];
+		$rank_count[$v] = $row[count];
+	}
+
+	echo "rank table - ";
+	print_r ($rank_count);
+	echo "<br>";
+
+	$rank_table_count = array_fill (0, 7, 0);
+
+	for($z = 1; $z <= $balls; $z++)
+	{
+		if ($rank_count[$z] >= 6)
+		{
+			$rank_table_count[6]++;
+		} else {
+			$rank_table_count[$rank_count[$z]]++;
+		}
+	}
+
+	print_r ($rank_table_count);
+	echo "<br>";
+
+	$temp_rank_array = array_fill (0,7,0);
+
+	for ($r = 0; $r <= 6; $r++)
+	{
+		if ($rank_table_count[$r] <= 5) 
+		{
+			$temp_rank_array[$r] = 1;
+		} elseif ($rank_table_count[$r] <= 8) {
+			$temp_rank_array[$r] = 2;
+		} else {
+			$temp_rank_array[$r] = 3;
+		}
+	}
+
+	print_r ($temp_rank_array);
+	echo "<br>";

@@ -1,0 +1,72 @@
+<?php
+	function lot_update_drange2 ($date, $draw)
+	{ 
+		global $debug, $game, $draw_table_name;
+	
+		require ("includes/mysqli.php");
+
+		$query4 = "SELECT * FROM ga_f5_draws_draw2 ";
+		$query4 .= "WHERE draw_date = '$date' ";
+
+		#print("$query4<br>");
+		
+		$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+		$num_rows4 = mysqli_num_rows($mysqli_result4);
+
+		if (!$num_rows4)
+		{
+			$d1 = 0;
+			$d2 = 0; 
+
+			$range1 = intval(42/2);
+
+			reset ($draw); 
+		
+			foreach ($draw as $val) 
+			{ 
+				if ($val > $range1) { # > 24
+					$d2++;
+				} else {
+					$d1++;
+				}
+			} 
+
+			$query4 = "INSERT INTO ga_f5_draws_draw2 ";
+			$query4 .= "VALUES('0', ";
+			$query4 .= "'$date', ";
+			$query4 .= "'$d1', ";
+			$query4 .= "'$d2') ";
+
+			#print("$query4<br>");
+
+			$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link)); 
+
+			#print("<FONT COLOR=RED><H4>*** drange2 $row[0] updated ***</H4></FONT>\n");
+		}
+	}
+
+	### get count draw table
+	$query5 = "SELECT * FROM $draw_table_name ";
+	$query5 .= "WHERE date >= '2015-10-01' ";
+	$query5 .= "ORDER BY date DESC ";
+	$query5 .= "LIMIT 10 ";
+
+	#echo "$query5<br>";
+
+	$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+	while ($row5 = mysqli_fetch_array($mysqli_result5))
+	{
+		$draw = array ();
+
+		for ($x = 1; $x <= $balls_drawn; $x++)
+		{
+			array_push($draw, $row5[$x]);
+		}
+
+		#print_r ($row5);
+
+		lot_update_drange2 ($row5[0], $draw);
+	}
+?>

@@ -1,0 +1,52 @@
+6	10	13	22	35
+
+6	10	13
+6	10	22	
+6	10	35
+6	13	22
+6	13	35
+6	22	35
+10	13	22
+10	13	35
+10	22	35
+13	22	35
+
+
+1	2	3
+1	2	4
+1	2	5
+
+1	3	4
+1	3	5
+
+1	4	5
+
+2	3	4
+2	3	5
+
+2	4	5
+
+3	4	5
+
+3-4 pointers :: c = combin
+
+array (0..balls_drawn-1) (0,1,2,3,4)
+
+1 - first / beginning
+	- if (p1 + c) > array [balls_drawn] :: exit 
+
+2 - last / balls_drawn in c position
+	 - if (p2 - 1) < ball_drawn :: exit loop
+	 - (last - 1)-- , fill array (prev + 1), exit all if = balls_drawn
+
+3 - loop till > balls_drawn
+	- exit loop
+
+for ($x = 0; $x < balls_drawn; $x++)
+
+{
+	for ($y = c; $y <= balls_drawn; $y--)
+	{
+
+	} // y
+} // x

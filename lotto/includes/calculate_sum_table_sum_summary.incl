@@ -1,0 +1,127 @@
+<?php
+	$query4 = "DROP TABLE IF EXISTS $draw_prefix";
+	$query4 .= "sum_table_sum_summary ";
+
+	$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+	$query4 = "CREATE TABLE $draw_prefix";
+	$query4 .= "sum_table_sum_summary (";
+	$query4 .= " id int(10) unsigned NOT NULL auto_increment, ";
+	$query4 .= "numx tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "combin tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "even tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "odd tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "day1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "week1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "week2 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "month1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "month3 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "month6 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year1 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year2 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year3 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year4 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year5 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year6 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year7 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year8 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year9 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year10 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "count int(5) unsigned NOT NULL,";
+	$query4 .= "percent_y1 float(4,1) unsigned NOT NULL,";
+	$query4 .= "percent_y4 float(4,1) unsigned NOT NULL,";
+	$query4 .= "percent_wa float(4,1) unsigned NOT NULL,";
+	$query4 .= "PRIMARY KEY  (`id`),";
+	$query4 .= "UNIQUE KEY `numx_2` (`id`),";
+	$query4 .= "KEY `numx` (`id`)";
+	$query4 .= ") ENGINE=InnoDB DEFAULT CHARSET=latin1;";
+
+	$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+	###############################################################################################################
+
+	$query0 = "SELECT * FROM $draw_prefix";
+	$query0 .= "sum_count_sum ";
+	$query0 .= "ORDER BY month3 DESC, month1 DESC, week2 DESC ";
+	$query0 .= "LIMIT 40 "; 
+
+	#echo "$query0<br>";
+
+	$mysqli_result0 = mysqli_query($mysqli_link, $query0) or die (mysqli_error($mysqli_link));
+	
+	while($row0 = mysqli_fetch_array($mysqli_result0))
+	{
+		$querya = "INSERT INTO $draw_prefix";
+		$querya .= "sumeo_drange_summary ";
+		$querya .= "VALUES ('0', ";
+		$querya .= "'$row0[numx]',";
+		$querya .= "'$row0[even]',";
+		$querya .= "'$row0[odd]',";
+		$querya .= "'0',"; #no drange - sum/even/odd
+		$querya .= "'0',"; #b1
+		$querya .= "'0',"; #drange 2 
+		$querya .= "'0',"; #drange 3 
+		$querya .= "'0',"; #drange 4 
+		$querya .= "'0',"; #drange 5 
+		$querya .= "'0',"; #drange 6 
+		$querya .= "'0',"; #drange 7 
+		$querya .= "'$row0[year5]',";
+		$querya .= "'$row0[percent_y1]',";
+		$querya .= "'$row0[percent_y4]',";
+		$querya .= "'$row0[percent_wa]')";
+
+		#echo "$querya<br>";
+
+		$mysqli_resulta = mysqli_query($mysqli_link, $querya) or die (mysqli_error($mysqli_link));
+		
+		for ($r = 2; $r <= 7; $r++)
+		{
+			$query3 = "SELECT * FROM $draw_prefix";
+			$query3 .= "sumeo_drange";
+			$query3 .= "$r ";
+			$query3 .= "WHERE sum  = '$row0[numx]' ";
+			$query3 .= "AND   even = '$row0[even]' ";
+			$query3 .= "AND	  odd  = '$row0[odd]'  "; 
+			$query3 .= "AND   percent_wa >= 0.1 ";
+			$query3 .= "ORDER BY percent_y5 DESC, percent_y1 DESC, 
+					year1 DESC, month6 DESC, month3 DESC, month1 DESC "; 
+			#$query3 .= "LIMIT 1  "; 
+
+			#echo "$query3<p>";
+
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+			
+			while($row3 = mysqli_fetch_array($mysqli_result3))
+			{
+				$queryb = "INSERT INTO $draw_prefix";
+				$queryb .= "sumeo_drange_summary ";
+				$queryb .= "VALUES ('0', ";
+				$queryb .= "'$row3[sum]',";
+				$queryb .= "'$row3[even]',";
+				$queryb .= "'$row3[odd]',";
+				$queryb .= "'$r',"; #drange - sum/even/odd
+
+				for ($x = 4; $x < ($r+4); $x++)
+				{
+					$queryb .= "'$row3[$x]',";
+				}
+
+				for ($y = $x; $y <= 10; $y++)
+				{
+					$queryb .= "'0',";
+				}
+
+				$queryb .= "'$row3[year5]',";
+				$queryb .= "'$row3[percent_y1]',";
+				$queryb .= "'$row3[percent_y5]',";
+				$queryb .= "'$row3[percent_wa]')";
+
+				#echo "$queryb<br>";
+
+				$mysqli_resultb = mysqli_query($mysqli_link, $queryb) or die (mysqli_error($mysqli_link));
+			}
+		}
+	}
+
+	#########################################################################################################	
+?>

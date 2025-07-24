@@ -1,0 +1,44 @@
+//HTML comment
+'<!--.*?-->'
+
+//HTML file
+//Matches a complete HTML file.  Place round brackets around the .*? parts you want to extract from the file.
+//Performance will be terrible on HTML files that miss some of the tags 
+//(and thus won't be matched by this regular expression).  Use the atomic version instead when your search 
+//includes such files (the atomic version will also fail invalid files, but much faster).
+'<html>.*?<head>.*?<title>.*?</title>.*?</head>.*?<body[^>]*>.*?</body>.*?</html>'
+
+//HTML file (atomic)
+//Matches a complete HTML file.  Place round brackets around the .*? parts you want to extract from the file.
+//Atomic grouping maintains the regular expression's performance on invalid HTML files.
+'<html>(?>.*?<head>)(?>.*?<title>)(?>.*?</title>)(?>.*?</head>)(?>.*?<body[^>]*>)(?>.*?</body>).*?</html>'
+
+//HTML tag
+//Matches the opening and closing pair of whichever HTML tag comes next.
+//The name of the tag is stored into the first capturing group.
+//The text between the tags is stored into the second capturing group.
+'<([A-Z][A-Z0-9]*)[^>]*>(.*?)</\1>'
+
+//HTML tag
+//Matches the opening and closing pair of a specific HTML tag.
+//Anything between the tags is stored into the first capturing group.
+//Does NOT properly match tags nested inside themselves.
+'<%TAG%[^>]*>(.*?)</%TAG%>'
+
+//HTML tag
+//Matches any opening or closing HTML tag, without its contents.
+'</?[a-z][a-z0-9]*[^<>]*>'
+
+//Path: Windows
+'\b[a-z]:\\[^/:*?"<>|\r\n]*'
+
+//Path: Windows
+//Different elements of the path are captured into backreferences.
+'\b((?#drive)[a-z]):\\((?#folder)[^/:*?"<>|\r\n]*\\)?((?#file)[^\\/:*?"<>|\r\n]*)'
+
+//Path: Windows or UNC
+'(?:(?#drive)\b[a-z]:|\\\\[a-z0-9]+)\\[^/:*?"<>|\r\n]*'
+
+//Path: Windows or UNC
+//Different elements of the path are captured into backreferences.
+'((?#drive)\b[a-z]:|\\\\[a-z0-9]+)\\((?#folder)[^/:*?"<>|\r\n]*\\)?((?#file)[^\\/:*?"<>|\r\n]*)'

@@ -1,0 +1,205 @@
+<?php
+	for ($c = 1; $c <= 15; $c++)
+	{
+		switch ($c) 
+		{ 
+			case 1: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   break; 
+			case 2: 
+			   $d1 = $row[1];
+			   $d2 = $row[3];
+			   break; 
+			case 3: 
+			   $d1 = $row[1];
+			   $d2 = $row[4];
+			   break; 
+			case 4: 
+			   $d1 = $row[1];
+			   $d2 = $row[5];
+			   break;
+			case 5: 
+			   $d1 = $row[1];
+			   $d2 = $row[6];
+			   break;
+			case 6: 
+			   $d1 = $row[2];
+			   $d2 = $row[3];
+			   break; 
+			case 7: 
+			   $d1 = $row[2];
+			   $d2 = $row[4];
+			   break; 
+			case 8: 
+			   $d1 = $row[2];
+			   $d2 = $row[5];
+			   break;
+			case 9: 
+			   $d1 = $row[2];
+			   $d2 = $row[6];
+			   break;
+			case 10: 
+			   $d1 = $row[3];
+			   $d2 = $row[4];
+			   break;
+			case 11: 
+			   $d1 = $row[3];
+			   $d2 = $row[5];
+			   break;
+			case 12: 
+			   $d1 = $row[3];
+			   $d2 = $row[6];
+			   break;
+			case 13: 
+			   $d1 = $row[4];
+			   $d2 = $row[5];
+			   break;
+			case 14: 
+			   $d1 = $row[4];
+			   $d2 = $row[6];
+			   break;
+			case 15: 
+			   $d1 = $row[5];
+			   $d2 = $row[6];
+			   break;
+		} 
+
+		$query2 = "SELECT DISTINCT d1, d2, date FROM $table_temp ";
+		$query2 .= "WHERE d1 = $d1 "; 
+		$query2 .= "AND d2 = $d2 "; 
+
+		$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+
+		$num_rows = mysqli_num_rows($mysqli_result2);
+		
+		$sum = ++$num_rows;
+
+		$query2 = "Insert INTO $table_temp ";
+		$query2 .= "VALUES ( '0', ";
+		$query2 .= "         '$row[0]', ";
+		$query2 .= "         $d1, ";
+		$query2 .= "	     $d2, ";
+		$query2 .= "	     '0') ";
+		/*
+		$query2 .= "	     0, ";
+		$query2 .= "	     0, ";
+		$query2 .= "	     0, ";
+		$query2 .= "	     0, ";
+		$query2 .= "	     0, ";
+		$query2 .= "	     0, ";
+		$query2 .= "	     0, ";
+		$query2 .= "	     0, ";
+		$query2 .= "	     0, ";
+		$query2 .= "	     0, ";
+		$query2 .= "	     0, ";
+		$query2 .= "	     0, ";
+		$query2 .= "	     0, ";
+		$query2 .= "	     0, ";
+		$query2 .= "	     0, ";
+		$query2 .= "	     0, ";
+		$query2 .= "	     0, ";
+		$query2 .= "	     0, ";
+		$query2 .= "	     0, ";
+		$query2 .= "	     0) ";
+		*/
+		#print "$query2<p>";
+		
+		$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+		/*
+		$query2 = "SELECT DISTINCT d1, d2, date FROM $table_temp ";
+		#$query2 = "SELECT d1, d2, date FROM $table_temp ";
+		$query2 .= "WHERE d1 = $d1 "; 
+		$query2 .= "AND d2 = $d2 "; 
+		
+		#print "$query2<p>";
+
+		$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+
+		$num_rows = mysqli_num_rows($mysqli_result2);
+		
+		$combo_count_array = array_fill (0,16,0);
+
+		while ($row1 = mysqli_fetch_array($mysqli_result2))
+		{
+			$draw_date_array = explode("-","$row1[date]"); ### 210104
+				$draw_date_unix = mktime (0,0,0,$draw_date_array[1],$draw_date_array[2],$draw_date_array[0]); ### 210104
+			
+			if ($draw_date_unix == $day1)
+			{ 
+				for ($d = 0; $d <= 15; $d++) {$combo_count_array[$d]++;}
+			} elseif ($draw_date_unix > $week1) {
+				for ($d = 1; $d <= 15; $d++) {$combo_count_array[$d]++;}
+			} elseif ($draw_date_unix > $week2) {
+				for ($d = 2; $d <= 15; $d++) {$combo_count_array[$d]++;}
+			} elseif ($draw_date_unix > $month1) {
+				for ($d = 3; $d <= 15; $d++) {$combo_count_array[$d]++;}
+			} elseif ($draw_date_unix > $month3) {
+				for ($d = 4; $d <= 15; $d++) {$combo_count_array[$d]++;}
+			} elseif ($draw_date_unix > $month6) {
+				for ($d = 5; $d <= 15; $d++) {$combo_count_array[$d]++;}
+			} elseif ($draw_date_unix > $year1) {
+				for ($d = 6; $d <= 15; $d++) {$combo_count_array[$d]++;}
+			} elseif ($draw_date_unix > $year2) {
+				for ($d = 7; $d <= 15; $d++) {$combo_count_array[$d]++;}
+			} elseif ($draw_date_unix > $year3) {
+				for ($d = 8; $d <= 15; $d++) {$combo_count_array[$d]++;}
+			} elseif ($draw_date_unix > $year4) {
+				for ($d = 9; $d <= 15; $d++) {$combo_count_array[$d]++;}
+			} elseif ($draw_date_unix > $year5) {
+				for ($d = 10; $d <= 15; $d++) {$combo_count_array[$d]++;}
+			} elseif ($draw_date_unix > $year6) {
+				for ($d = 11; $d <= 15; $d++) {$combo_count_array[$d]++;}
+			} elseif ($draw_date_unix > $year7) {
+				for ($d = 12; $d <= 15; $d++) {$combo_count_array[$d]++;}
+			} elseif ($draw_date_unix > $year8) {
+				for ($d = 13; $d <= 15; $d++) {$combo_count_array[$d]++;}
+			} elseif ($draw_date_unix > $year9) {
+				for ($d = 14; $d <= 15; $d++) {$combo_count_array[$d]++;}
+			} elseif ($draw_date_unix > $year10) {
+				for ($d = 15; $d <= 15; $d++) {$combo_count_array[$d]++;}
+			}
+		}
+
+		$query_update = "UPDATE $table_temp ";
+		$query_update .= "SET count = $num_rows, ";
+		$query_update .= "day1 = $combo_count_array[0], ";
+		$query_update .= "week1 = $combo_count_array[1], ";
+		$query_update .= "week2 = $combo_count_array[2], ";
+		$query_update .= "month1 = $combo_count_array[3], ";
+		$query_update .= "month3 = $combo_count_array[4], ";
+		$query_update .= "month6 = $combo_count_array[5], ";
+		$query_update .= "year1 = $combo_count_array[6], ";
+		$query_update .= "year2 = $combo_count_array[7], ";
+		$query_update .= "year3 = $combo_count_array[8], ";
+		$query_update .= "year4 = $combo_count_array[9], ";
+		$query_update .= "year5 = $combo_count_array[10], ";
+		$query_update .= "year6 = $combo_count_array[11], ";
+		$query_update .= "year7 = $combo_count_array[12], ";
+		$query_update .= "year8 = $combo_count_array[13], ";
+		$query_update .= "year9 = $combo_count_array[14], ";
+		$query_update .= "year10 = $combo_count_array[15] ";
+		$query_update .= "WHERE d1 = $d1 ";
+		$query_update .= "AND d2 = $d2 ";
+		
+
+		$query3 = "SELECT DISTINCT d1, d2 FROM $table_temp ";
+		$query3 .= "WHERE d1 = $d1 "; 
+		$query3 .= "AND d2 = $d2 "; 
+		
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		$num_rows = mysqli_num_rows($mysqli_result3);
+		*/
+
+		$query_update = "UPDATE $table_temp ";
+		$query_update .= "SET sum = $sum ";
+		$query_update .= "WHERE d1 = $d1 ";
+		$query_update .= "AND d2 = $d2 ";
+		#print "$query_update<p>";
+
+		$mysqli_result_update = mysqli_query ($mysqli_link, $query_update) or die (mysqli_error($mysqli_link));
+		
+	}
+
+?>

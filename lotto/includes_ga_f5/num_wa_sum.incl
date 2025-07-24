@@ -1,0 +1,66 @@
+<?php
+	$num_wa_sum = 0.00;
+	
+	for ($d = 1; $d <= 5; $d++)
+	{
+		$query_col1 = "SELECT * FROM ga_f5_temp2a_10";
+		if ($hml)
+		{
+			$query_col1 .= "_";
+			$query_col1 .= "$hml ";
+		}
+		$query_col1 .= " WHERE num = $row[$d] ";
+
+		#print "$query_col1<br>";
+
+		$mysqli_result_col1 = mysqli_query($mysqli_link, $query_col1) or die (mysqli_error($mysqli_link));
+
+		$row_col1 = mysqli_fetch_array($mysqli_result_col1);
+
+		$num_wa_sum += $row_col1[percent_wa];
+
+		#echo "num_wa_sum = $num_wa_sum<br>";
+	}
+
+	for ($d = 1; $d <= 5; $d++)
+	{
+		$query_col1 = "SELECT * FROM ga_f5_temp2a_14";
+		if ($hml)
+		{
+			$query_col1 .= "_";
+			$query_col1 .= "$hml ";
+		}
+		$query_col1 .= " WHERE num = $row[$d] ";
+
+		#print "$query_col1<br>";
+
+		$mysqli_result_col1 = mysqli_query($mysqli_link, $query_col1) or die (mysqli_error($mysqli_link));
+
+		$row_col1 = mysqli_fetch_array($mysqli_result_col1);
+
+		$num_wa_sum += $row_col1[percent_wa];
+
+		#echo "num_wa_sum = $num_wa_sum<br>";
+	}
+
+	for ($d = 1; $d <= 5; $d++)
+	{
+		$query_col1 = "SELECT * FROM ga_f5_temp2a_30";
+		if ($hml)
+		{
+			$query_col1 .= "_";
+			$query_col1 .= "$hml ";
+		}
+		$query_col1 .= " WHERE num = $row[$d] ";
+
+		#print "$query_col1<br>";
+
+		$mysqli_result_col1 = mysqli_query($mysqli_link, $query_col1) or die (mysqli_error($mysqli_link));
+
+		$row_col1 = mysqli_fetch_array($mysqli_result_col1);
+
+		$num_wa_sum += $row_col1[percent_wa];
+
+		#echo "num_wa_sum = $num_wa_sum<br>";
+	}
+?>

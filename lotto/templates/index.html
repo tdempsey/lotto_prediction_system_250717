@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lottery Analysis System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <style>
+        .game-card {
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+        }
+        .game-card:hover {
+            transform: scale(1.03);
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="jumbotron">
+            <h1 class="display-4">Lottery Analysis System</h1>
+            <p class="lead">Statistical analysis and visualization for lottery games</p>
+            <hr class="my-4">
+        </div>
+
+        <div class="row">
+            {% for id, game in games.items() %}
+            <div class="col-md-4">
+                <div class="card game-card">
+                    <div class="card-header bg-primary text-white">
+                        {{ game.name }}
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ game.balls_drawn }} numbers drawn from {{ game.balls }} balls</p>
+                        {% if game.mega_balls %}
+                        <p class="card-text">Includes Mega/Power Ball</p>
+                        {% endif %}
+                        <div class="btn-group mt-3" role="group">
+                            <a href="{{ url_for('display', game_id=id) }}" class="btn btn-success">Display</a>
+                            <a href="{{ url_for('pairs', game_id=id) }}" class="btn btn-info">Pairs</a>
+                            <a href="{{ url_for('rank', game_id=id) }}" class="btn btn-warning">Rank</a>
+                            <a href="{{ url_for('grid', game_id=id) }}" class="btn btn-danger">Grid</a>
+                        </div>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <form action="{{ url_for('display', game_id=id) }}" method="get" class="form-inline">
+                            <div class="form-group mr-2">
+                                <label for="limitSelect{{ id }}">Limit: </label>
+                                <select name="limit" id="limitSelect{{ id }}" class="form-control form-control-sm ml-2">
+                                    <option value="5">5 draws</option>
+                                    <option value="7">7 draws</option>
+                                    <option value="14">14 draws</option>
+                                    <option value="21">21 draws</option>
+                                    <option value="26">26 draws</option>
+                                    <option value="30" selected>30 draws</option>
+                                    <option value="50">50 draws</option>
+                                    <option value="100">100 draws</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-sm btn-outline-primary">Go</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/jquery-3.5.1.slim.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

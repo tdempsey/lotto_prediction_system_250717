@@ -1,0 +1,235 @@
+<?php
+
+		print("<a name=\"$limit\"><H3>(02) Lotto Verify Col1 - $game_name - Limit $limit</H3></a>\n");
+		
+		//start table
+		print("<TABLE BORDER=\"1\">\n");
+	
+		//create header row
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=100>Pass (>= low)</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=100>Pass %</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail (<= high)</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail %</TD>\n");
+		print("</B></TR>\n");
+
+		$today_unix = time ();
+
+		#echo "today_unix = $today_unix<br>";
+
+		$date_temp_seconds = $last_draw_unix - (86400*($limit+1));	
+
+		#echo "<H3>date_temp = "; 
+		#echo date('Y/m/d', $date_temp_seconds);
+		#echo " for $date_temp</H3>";
+					
+		// Start date 
+		$date_temp = date('Y/m/d', $date_temp_seconds); 
+
+		#echo "date_temp = $date_temp<br>";
+
+		$date_array_low = array();
+		$date_array_high = array();
+
+		$low_count_failed = 0;
+		$high_count_failed = 0;
+
+		// get count draw table
+		$query5 = "SELECT * FROM $draw_table_name ";
+		$query5 .= "WHERE date >= '$date_temp' ";
+
+		#echo "$query5<br>";
+	
+		$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+		while ($row5 = mysqli_fetch_array($mysqli_result5))
+		{
+			$query6 = "SELECT * FROM ga_f5_limits_by_sumeo ";
+			$query6 .= "WHERE sum = '$row5[sum]' ";
+			$query6 .= "AND col = '1' ";
+			$query6 .= "AND even = '$row5[even]' ";
+			$query6 .= "AND odd = '$row5[odd]' ";
+
+			#echo "$query6<br>";
+		
+			$mysqli_result6 = mysqli_query($mysqli_link, $query6) or die (mysqli_error($mysqli_link));
+
+			$num_rows6 = mysqli_num_rows($mysqli_result6);
+
+			if ($num_rows6)
+			{
+				$row6 = mysqli_fetch_array($mysqli_result6);
+
+				if ($row5[1] < $row6[5])
+				{
+					$low_count_failed++;
+					array_push ($date_array_low, $row5[0]);
+				} 
+				
+				if ($row5[1] > $row6[6])
+				{
+					$high_count_failed++;
+					array_push ($date_array_high, $row5[0]);
+				}
+			}
+		}
+
+		$temp1 = number_format(($low_count_failed/$limit)*100,2);
+
+		$temp2 = $limit-$low_count_failed;
+
+		$temp3 = number_format(((($limit-$low_count_failed)/$limit)*100),2);
+
+		print("<TR>\n");
+		
+		print("<TD align=center>&nbsp;</TD>\n");
+		print("<TD align=center>$low_count_failed</TD>\n");
+		print("<TD align=center>$temp1 %</TD>\n");
+		print("<TD align=center>$temp2</TD>\n");
+		print("<TD align=center>$temp3 %</TD>\n");
+		print("</B></TR>\n");
+
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=100>Pass (>= low)</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=100>Pass %</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail (<= high)</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail %</TD>\n");
+		print("</B></TR>\n");
+
+		//end table
+		print("</TABLE>\n");
+		
+		echo "<br>";
+
+		###################################################################################
+
+		//start table
+		print("<TABLE BORDER=\"1\">\n");
+		
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Date</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>B1</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Sum</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Low</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>High</TD>\n");
+		print("</B></TR>\n");
+		
+		foreach ($date_array_low as $date) 
+		{	
+			$query5 = "SELECT * FROM $draw_table_name ";
+			$query5 .= "WHERE date >= '$date' ";
+
+			#echo "$query5<br>";
+		
+			$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+			$row5 = mysqli_fetch_array($mysqli_result5);
+
+			$query6 = "SELECT * FROM ga_f5_limits_by_sumeo ";
+			$query6 .= "WHERE sum = '$row5[sum]' ";
+			$query6 .= "AND col = '1' ";
+			$query6 .= "AND even = '$row5[even]' ";
+			$query6 .= "AND odd = '$row5[odd]' ";
+
+			#echo "$query6<br>";
+		
+			$mysqli_result6 = mysqli_query($mysqli_link, $query6) or die (mysqli_error($mysqli_link));
+
+			$row6 = mysqli_fetch_array($mysqli_result6);
+
+			print("<TR>\n");
+			print("<TD align=center>&nbsp;</TD>\n");
+			print("<TD align=center nowrap>$row5[date]</TD>\n");
+			print("<TD align=center>$row5[b1]</TD>\n");
+			print("<TD align=center>$row5[sum]</TD>\n");
+			print("<TD align=center>$row6[low]</TD>\n");
+			print("<TD align=center>$row6[high]</TD>\n");
+			print("</TR>\n");
+		}
+		
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Date</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>B1</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Sum</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Low</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>High</TD>\n");
+		print("</B></TR>\n");
+
+		//end table
+		print("</TABLE>\n");
+
+		###################################################################################
+
+		//start table
+		print("<TABLE BORDER=\"1\">\n");
+		
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Date</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>B1</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Sum</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Low</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>High</TD>\n");
+		print("</B></TR>\n");
+		
+		foreach ($date_array_high as $date) 
+		{	
+			$query5 = "SELECT * FROM $draw_table_name ";
+			$query5 .= "WHERE date >= '$date' ";
+
+			#echo "$query5<br>";
+		
+			$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+			$row5 = mysqli_fetch_array($mysqli_result5);
+
+			$query6 = "SELECT * FROM ga_f5_limits_by_sumeo ";
+			$query6 .= "WHERE sum = '$row5[sum]' ";
+			$query6 .= "AND col = '1' ";
+			$query6 .= "AND even = '$row5[even]' ";
+			$query6 .= "AND odd = '$row5[odd]' ";
+
+			#echo "$query6<br>";
+		
+			$mysqli_result6 = mysqli_query($mysqli_link, $query6) or die (mysqli_error($mysqli_link));
+
+			$row6 = mysqli_fetch_array($mysqli_result6);
+
+			print("<TR>\n");
+			print("<TD align=center>&nbsp;</TD>\n");
+			print("<TD align=center>$row5[date]</TD>\n");
+			print("<TD align=center>$row5[b1]</TD>\n");
+			print("<TD align=center>$row5[sum]</TD>\n");
+			print("<TD align=center>$row6[low]</TD>\n");
+			print("<TD align=center>$row6[high]</TD>\n");
+			print("</TR>\n");
+		}
+		
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Date</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>B1</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Sum</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Low</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>High</TD>\n");
+		print("</B></TR>\n");
+
+		//end table
+		print("</TABLE>\n");
+		
+		/*
+		<script src="C:\Bitnami\wampstack-7.2.31-0\apache2\htdocs\Chart.js"></script>
+		<script>
+		    #var myChart = new Chart(ctx, {...});
+		</script>
+		
+
+		require(['path/to/chartjs/dist/Chart.min.js'], function(Chart){
+		    #var myChart = new Chart(ctx, {...});
+		});
+		*/
+?>

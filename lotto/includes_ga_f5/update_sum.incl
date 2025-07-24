@@ -1,0 +1,13 @@
+<?php
+	$draw_sum = array_sum($draw);
+	
+	$query2 = "UPDATE $draw_table_name ";
+	$query2 .= "SET sum = $draw_sum ";
+	$query2 .= "WHERE date = '$row5a[date]' "; #201108
+
+	#echo "$query2<br>"; #201108
+
+	$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+
+	//print("<FONT COLOR=RED><H4>*** $row[0] sum updated ***</H4></FONT>\n");
+?>

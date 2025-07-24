@@ -1,0 +1,39 @@
+ SELECT * FROM `ga_f5_quick_pick_4` WHERE `rank0` <= 1 AND `rank1` <= 1 AND `rank2` <= 3 AND `rank3` <= 2 AND `rank4` <= 1 AND `rank5` <= 2 AND `rank6` <= 1 AND `mod_tot` <= 1 AND `mod_x` = 0 AND `seq3` = 0 AND `comb2` = 10 AND `comb3` <= 9 AND `comb5` = 0 AND `dup1` = 0 AND `dup2` <= 1 AND `dup3` <= 2 ORDER BY `y1_sum` DESC
+
+SELECT * FROM `ga_f5_quick_pick_4` WHERE `rank0` <= 1 AND `rank1` <= 2 AND `rank2` <= 3 AND `rank3` <= 1 AND `rank4` <= 2 AND `rank5` <= 3 AND `rank6` <= 1 AND `mod_tot` <= 1 AND `mod_x` = 0 AND `seq3` = 0 AND `comb2` = 10 AND `comb3` <= 9 AND `comb5` = 0 AND `dup1` = 0 AND `dup2` <= 1 AND `dup3` <= 2 AND `dup22` = 5 ORDER BY `y1_sum` DESC
+
+SELECT * FROM `ga_f5_quick_pick_4` WHERE `sum` = 104 
+AND `even` = 3	
+AND `odd` = 2 
+AND `d1` = 1 
+AND `d2` = 2 
+AND `d3` = 1 
+AND `d4` = 1 
+AND `rank0` <= 1 AND `rank1` <= 2 AND `rank2` <= 3 AND `rank3` <= 1 AND `rank4` <= 2 AND `rank5` <= 3 AND `rank6` <= 1 AND `mod_tot` <= 1 AND `mod_x` = 0 AND `seq3` = 0 AND `comb2` = 10 AND `comb3` <= 9 AND `comb5` = 0 AND `dup1` = 0 AND `dup2` <= 1 AND `dup3` <= 2 AND `dup22` = 5 ORDER BY `y1_sum` DESC
+
+SELECT DISTINCT `wheel_cnt5000`, `wheel_percent_wa` FROM ga_f5_quick_pick_4 ORDER BY `wheel_percent_wa` DESC
+
+SELECT * FROM `ga_f5_quick_pick_4` WHERE
+rank0 <= 1 AND `rank1` <= 2 AND `rank2` <= 3 AND `rank3` <= 1 AND `rank4` <= 2 AND `rank5` <= 3 AND `rank6` <= 1 AND `mod_tot` <= 1 AND `mod_x` = 0 AND `seq3` = 0 AND `comb2` = 10 AND `comb3` <= 9 AND `comb5` = 0 AND `dup1` = 0 AND `dup2` <= 1 AND `dup3` <= 2 AND `dup22` = 5 
+AND wheel_cnt5000 = 3206
+AND wheel_percent_wa = 0.50
+ORDER BY `y1_sum` DESC
+
+SELECT * FROM `ga_f5_quick_pick_4` WHERE
+rank0 <= 1 AND `rank1` <= 2 AND `rank2` <= 2 AND `rank3` <= 2 AND `rank4` <= 2 AND `rank5` <= 2 AND `rank6` <= 1 AND `mod_tot` <= 1 AND `mod_x` = 0 AND `seq2` = 0 AND `seq3` = 0 
+AND `comb2` = 10 AND `comb3` <= 9 AND `comb5` = 0 AND `dup1` = 0 AND `dup2` <= 1 AND `dup3` <= 2 AND `dup22` = 5 
+AND wheel_cnt5000 = 2730
+AND wheel_percent_wa = 0.44
+ORDER BY `y1_sum` DESC
+
+SELECT * FROM `ga_f5_quick_pick_4` WHERE
+rank0 <= 1 AND `rank1` <= 2 AND `rank2` <= 2 AND `rank3` <= 2 AND `rank4` <= 2 AND `rank5` <= 2 AND `rank6` <= 1 
+AND `mod_tot` <= 1 AND `mod_x` = 0 AND `seq2` = 0 AND `seq3` = 0 
+AND `comb2` = 10 AND `comb3` = 9 AND `comb4` = 2 AND `comb5` = 0
+AND `dup1` = 0 AND `dup2` = 2 AND `dup3` = 2 AND `dup22` = 5 
+ORDER BY `y1_sum` DESC
+
+SELECT * FROM `ga_f5_quick_pick_4` WHERE rank0 <= 1 AND `rank1` <= 2 AND `rank2` <= 2 AND `rank3` <= 2 AND `rank4` <= 2 AND `rank5` <= 2 AND `rank6` <= 1 AND `mod_tot` <= 1 AND `mod_x` = 0 AND `seq2` = 0 AND `seq3` = 0 AND `comb2` = 10 AND `comb3` = 9 AND `comb4` = 2 AND `comb5` = 0 AND `dup1` = 0 AND `dup2` = 2 AND `dup3` = 2 AND `dup22` = 5 AND `last_updated`= '2018-09-12' ORDER BY `y1_sum` DESC
+
+SELECT * FROM `ga_f5_quick_pick_4` WHERE rank0 <= 1 AND `rank1` <= 2 AND `rank2` <= 2 AND `rank3` <= 2 AND `rank4` <= 2 AND `rank5` <= 2 AND `rank6` <= 1 AND `mod_tot` <= 1 AND `mod_x` = 0 AND `seq2` = 0 AND `seq3` = 0 AND `comb2` = 10 AND `comb3` <= 9 AND `comb5` = 0 AND `comb2` = 10 AND `comb3` = 6 AND `comb4` = 1 AND `comb5` = 0 AND `dup1` = 1 AND `dup2` = 1 AND `dup3` = 1 AND `dup22` = 5 AND `last_updated`= '2018-09-12' 
+ORDER BY `wheel_percent_wa` DESC, `y1_sum` DESC, `wheel_cnt5000` DESC

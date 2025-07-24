@@ -1,0 +1,123 @@
+<?php
+	if ($mega_balls)
+	{
+		//start table --------------------------------------------------------
+		print("<P>");
+		print("<TABLE BORDER=\"1\">\n");
+
+		//create header row
+		print("<TR><B>\n");
+
+		print("<TD BGCOLOR=\"#CCCCCC\">Powerball Unsorted</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Total</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Last</TD>\n");
+		print("</B></TR>\n");
+
+		$table_temp = $draw_prefix . "pb_temp_" . $limit;
+
+		// Table structure
+		$Query = "DROP TABLE IF EXISTS $table_temp ";
+
+		//print("$Query\n");
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$Query = "CREATE TABLE $table_temp ( ";
+		$Query .= "num tinyint(3) unsigned NOT NULL, ";
+		$Query .= "count int(5) unsigned NOT NULL, ";
+		$Query .= "date date NOT NULL default '1962-08-17', ";
+		$Query .= "PRIMARY KEY (num), ";
+		$Query .= "KEY num (num), ";
+		$Query .= "UNIQUE num_2 (num) ";
+		$Query .= ") ";
+
+		#print "$Query<p>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+
+		for($index=1; $index <= $mega_balls; $index++)
+		{
+			print("<TR>\n");
+			print("<TD>$index</TD>\n");
+			print("<TD align=center>$pb_array[$index]</TD>\n");
+			print("<TD align=center>$pb_date[$index]</TD>\n");
+			print("</TR>\n");
+
+			$Query = "INSERT INTO $table_temp ";
+			$Query .= "VALUES ('$index', ";
+			$Query .= "'$pb_array[$index]', ";
+			$Query .= "'$pb_date[$index]') ";
+			
+			#print("$Query\n");
+
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+		}
+
+		//end table
+		print("</TABLE>\n");
+
+		//start sorted table --------------------------------------------------------
+		print("<P>");
+		print("<TABLE BORDER=\"1\">\n");
+
+		//create header row
+		print("<TR><B>\n");
+
+		print("<TD BGCOLOR=\"#CCCCCC\">Powerball Sorted</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Total</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">Last</TD>\n");
+		print("</B></TR>\n");
+
+		// get everything from catalog table
+		$query = "SELECT * FROM $table_temp ";
+		$query .= "ORDER BY count DESC ";
+
+		print "$query<p>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$z = 1;
+
+		// get each row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			//get columns
+			$num = $row[num];
+			$COUNT = $row[count];
+			$DATE = $row[0];
+
+			$y = $row[$x];
+			$num_array[$y]++;
+			$num_array_count[$y][$num]++;
+
+			$z++;
+
+		}
+
+		for($index=1; $index <= $balls; $index++)
+		{
+			print("<TR>\n");
+			print("<TD>$index</TD>\n");
+			for ($x = 1; $x <= 26; $x++)
+			{
+				if ($num_array_count[$index][$x])
+				{
+					#print("<TD align=center width=20>{$num_array_count[$index][$x]}</TD>\n");
+					print("<TD align=center width=20><font color=\"ff0000\"><b>X</b></font></TD>\n");
+				} else {
+					print("<TD align=center width=20>-</TD>\n");
+				}
+			}
+			print("<TD align=center>$num_array[$index]</TD>\n");
+			print("<TD>$prev_date[$index]</TD>\n");
+			print("<TD>$num_date[$index]</TD>\n");
+			print("</TR>\n");
+			
+			//print("$query9\n");
+			$mysqli_result = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+		}
+
+		//end table
+		print("</TABLE>\n");
+	}
+?>

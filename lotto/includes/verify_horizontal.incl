@@ -1,0 +1,559 @@
+<?php
+		error_reporting(1);
+
+		#echo "2 - entering verify_horizontal<p>";
+
+		$debug = 0;
+		
+		require_once ("includes/dup_table_update.php");
+		require_once ("includes/build_rank_table.php");
+		
+		print("<a name=\"$limit\"><H3>(95) Lotto Hortizontal - $game_name - Limit $limit</H3></a>\n");
+
+		#############################################################################################
+
+		//start table
+		print("<TABLE BORDER=\"1\">\n");
+		
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=50>Date</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>b1</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>b2</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>b3</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>b4</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>b5</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>sum</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>rsum</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>even</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>odd</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>rank</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>count</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>seq2</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>seq3</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>mod</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>modx</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>dc0</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>dc1</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>dc2</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>dc3</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>dc4</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>dup1</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>dup2</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>dup3</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>dup4</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><CENTER>r0</CENTER></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><CENTER>r1</CENTER></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><CENTER>r2</CENTER></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><CENTER>r3</CENTER></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><CENTER>r4</CENTER></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><CENTER>r5</CENTER></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><CENTER>r6</CENTER></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><CENTER>r7</CENTER></TD>\n");
+		/*
+		print("<TD BGCOLOR=\"#57FC39\"><CENTER>l/h1</CENTER></TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\"><CENTER>l/h2</CENTER></TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\"><CENTER>l/h3</CENTER></TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\"><CENTER>l/h4</CENTER></TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\"><CENTER>l/h5</CENTER></TD>\n");
+		*/
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=25>pass/fail</TD>\n");
+
+		print("</B></TR>\n");
+		
+		// get draw table
+		$query5b = "SELECT * FROM $draw_table_name ";
+		$query5b .= "ORDER BY date DESC ";
+		$query5b .= "LIMIT 30 ";
+
+		#echo"$query5b<br>";
+		
+		$mysqli_result5b = mysqli_query($mysqli_link, $query5b) or die (mysqli_error($mysqli_link));
+
+		$dcount = 0;
+		
+		while ($row5b = mysqli_fetch_array($mysqli_result5b))
+		{
+			$failed = 0;
+			
+			print("<TR>\n");
+			print("<TD align=center>&nbsp;</TD>\n");
+			print("<TD align=center nowrap>$row5b[date]</TD>\n");
+			
+			if ($row5b['b1'] > 15)
+			{
+				print("<TD BGCOLOR=\"#FC5B39\" align=center>$row5b[1]</TD>\n");
+				$failed++;
+			} else {
+				print("<TD align=center>$row5b[1]</TD>\n");
+			}
+
+			print("<TD align=center>$row5b[b2]</TD>\n");
+			print("<TD align=center>$row5b[b3]</TD>\n");
+			print("<TD align=center>$row5b[b4]</TD>\n");
+			print("<TD align=center>$row5b[b5]</TD>\n");
+
+			if ($row5b['sum'] < 50 OR $row5b['sum'] > 179)
+			{
+				print("<TD BGCOLOR=\"#FC5B39\" align=center>$row5b[sum]</TD>\n");
+				$failed++;
+			} else {
+				print("<TD align=center>$row5b[sum]</TD>\n");
+			}
+
+			$query2 = "SELECT * FROM ga_f5_sum_count_sum ";	### 221103
+			$query2 .= "WHERE numx  = $row5b[sum] "; 
+			$query2 .= "AND   even = $row5b[even] "; 
+			$query2 .= "AND   odd  = $row5b[odd] "; 
+			$query2 .= "ORDER BY percent_wa DESC, percent_y4 DESC, percent_y1 DESC, year5 DESC, year4 DESC, year3 DESC, year2 DESC, year1 DESC ";
+
+			#echo "query2 - $query2<p>";
+
+			$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+
+			$row9 = mysqli_fetch_array($mysqli_result2);
+			
+			print("<TD align=center>$row9[rank]</TD>\n");	### 250217 ###
+
+			if ($row5b['even'] < 1 OR $row5b['even'] > 4)
+			{
+				print("<TD BGCOLOR=\"#FC5B39\" align=center>$row5b[even]</TD>\n");
+				$failed++;
+			} else {
+				print("<TD align=center>$row5b[even]</TD>\n");
+			}
+			
+			if ($row5b['odd'] < 1 OR $row5b['odd'] > 4)
+			{
+				print("<TD BGCOLOR=\"#FC5B39\" align=center>$row5b[odd]</TD>\n");
+				$failed++;
+			} else {
+				print("<TD align=center>$row5b[odd]</TD>\n");
+			}
+			
+			print("<TD align=center>$row9[rank]</TD>\n");	### 250217 ###
+			
+			/* 240919	
+			SELECT row_number
+			FROM (
+			    SELECT @row_number := @row_number + 1 AS row_number, your_table.*
+			    FROM my_table AS your_table
+			    JOIN (SELECT @row_number := 0) AS init
+			    ORDER BY percent_wa DESC
+			) AS numbered_table
+			WHERE sum = 10 AND even = 1 AND odd = 0;
+			*/
+			
+			
+			/*	
+			### 240724 ###
+			$table_temp_date = 'ga_f5_sum_count_sum_' . ($dateDiff-1);	### 240724 fix ###
+			#$table_temp_date = 'ga_f5_sum_count_sum';
+
+			$query8 = "SELECT * FROM $table_temp_date ";
+			$query8 .= "WHERE numx = $row5b[sum] ";
+			$query8 .= "AND   even = $row5b[even] ";
+			$query8 .= "AND   odd = $row5b[odd] ";
+
+			echo "$query8<p>";
+
+			$mysqli_result8 = mysqli_query($mysqli_link, $query8) or die (mysqli_error($mysqli_link));
+
+			$row8 = mysqli_fetch_array($mysqli_result8);
+
+			print("<TD BGCOLOR=\"#57FC39\" style='font-size:75%;' align=center>$row8[rank]</TD>\n");
+
+			$query7 = "SELECT count(*) FROM combo_5_42 ";
+			$query7 .= "WHERE sum = $row5b[sum] ";
+			$query7 .= "AND   even = $row5b[even] ";
+			$query7 .= "AND   odd = $row5b[odd] ";
+
+			#echo "$query7<p>";
+
+			$mysqli_result7 = mysqli_query($mysqli_link, $query7) or die (mysqli_error($mysqli_link));
+
+			$row7 = mysqli_fetch_array($mysqli_result7);
+
+			$temp_num = number_format($row7[0],0)."<br>";
+			*/
+			
+			$temp_num = 0;
+
+			print("<TD BGCOLOR=\"#57FC39\" style='font-size:75%;' align=center>$temp_num</TD>\n");
+			
+			// get combo table
+			$query6 = "SELECT * FROM combo_5_42 ";
+			$query6 .= "WHERE b1 = $row5b[b1] ";
+			$query6 .= "AND   b2 = $row5b[b2] ";
+			$query6 .= "AND   b3 = $row5b[b3] ";
+			$query6 .= "AND   b4 = $row5b[b4] ";
+			$query6 .= "AND   b5 = $row5b[b5] ";
+			
+			$mysqli_result6 = mysqli_query($mysqli_link, $query6) or die (mysqli_error($mysqli_link));
+			
+			$row6 = mysqli_fetch_array($mysqli_result6);
+
+			if ($row6['seq2'] > 1)
+			{
+				print("<TD BGCOLOR=\"#FC5B39\" align=center>$row6[seq2]</TD>\n");
+				$failed++;
+			} else {
+				print("<TD align=center>$row6[seq2]</TD>\n");
+			}
+
+			if ($row6['seq3'] > 0)
+			{
+				print("<TD BGCOLOR=\"#FC5B39\" align=center>$row6[seq3]</TD>\n");
+				$failed++;
+			} else {
+				print("<TD align=center>$row6[seq3]</TD>\n");
+			}
+
+			if ($row6['mod_tot'] > 1)
+			{
+				print("<TD BGCOLOR=\"#FC5B39\" align=center>$row6[mod_tot]</TD>\n");
+				$failed++;
+			} else {
+				print("<TD align=center>$row6[mod_tot]</TD>\n");
+			}
+
+			if ($row6['mod_x'] > 0)
+			{
+				print("<TD BGCOLOR=\"#FC5B39\" align=center>$row6[mod_x]</TD>\n");
+				$failed++;
+			} else {
+				print("<TD align=center>$row6[mod_x]</TD>\n");
+			}
+
+			print("<TD BGCOLOR=\"#dddddd\" align=center>$row6[d0]</TD>\n");
+			print("<TD BGCOLOR=\"#dddddd\" align=center>$row6[d1]</TD>\n");
+			print("<TD BGCOLOR=\"#dddddd\" align=center>$row6[d2]</TD>\n");
+			print("<TD BGCOLOR=\"#dddddd\" align=center>$row6[d3]</TD>\n");
+			print("<TD BGCOLOR=\"#dddddd\" align=center>$row6[d4]</TD>\n");
+
+			$last_dup = array_fill (0,51,0);
+			
+			// get dup table
+			$query6 = "SELECT * FROM ga_f5_dup_table ";
+			$query6 .= "WHERE date = '$row5b[date]' ";
+			
+			$mysqli_result6 = mysqli_query($mysqli_link, $query6) or die (mysqli_error($mysqli_link));
+
+			if ($row_exist = mysqli_num_rows($mysqli_result6))
+			{
+				
+				$row6 = mysqli_fetch_array($mysqli_result6);
+
+				for ($d = 1; $d <= 4; $d++)
+				{
+					$last_dup[$d] = $row6[$d];
+				}
+			} else {
+				$last_dup = dup_table_update($row5b);
+			}
+
+			if ($last_dup[1] > 1)
+			{
+				print("<TD BGCOLOR=\"#FC5B39\" align=center>$last_dup[1]</TD>\n");
+				$failed++;
+			} else {
+				print("<TD align=center>$last_dup[1]</TD>\n");
+			}
+
+			if ($last_dup[2] > 2)
+			{
+				print("<TD BGCOLOR=\"#FC5B39\" align=center>$last_dup[2]</TD>\n");
+				$failed++;
+			} else {
+				print("<TD align=center>$last_dup[2]</TD>\n");
+			}
+
+			if ($last_dup[3] > 3)
+			{
+				print("<TD BGCOLOR=\"#FC5B39\" align=center>$last_dup[3]</TD>\n");
+				$failed++;
+			} else {
+				print("<TD align=center>$last_dup[3]</TD>\n");
+			}
+			
+			$temp4 = $last_dup[3] + 1;	### calculate dup4 limit
+
+			if ($last_dup[4] > $temp4)
+			{
+				print("<TD BGCOLOR=\"#FC5B39\" align=center>$last_dup[4]</TD>\n");
+				$failed++;
+			} else {
+				print("<TD align=center>$last_dup[4]</TD>\n");
+			}
+
+			### rank verify 
+			$rank_count = array (0);
+
+			$rank_count = BuildRankTable($row5b[0]); // array 0..balls with total draws for last 2 ### 210814
+
+			$rank_table_count = array_fill (0, 8, 0);
+
+			for($z = 1; $z <= $balls; $z++)
+			{
+				if ($rank_count[$z] >= 7)
+				{
+					$rank_table_count[7]++;
+				} else {
+					$rank_table_count[$rank_count[$z]]++;
+				}
+			}
+
+			### rank limits
+			$rank_table_limit = array_fill (0, 8, 0);
+
+			for($z = 1; $z <= $balls_drawn; $z++)
+			{
+				if ($rank_table_count[$z] <= 3) {
+					$rank_table_limit[$z] = 1;
+				} elseif ($rank_table_count[$z] <= 6) {
+					$rank_table_limit[$z] = 2;
+				} else {
+					$rank_table_limit[$z] = 3;
+				}
+			}
+
+			$draw_rank_count = array_fill (0, 8, 0); #180907
+			$draw_rank_sum = array_fill (0, 8, 0); #200721
+			for($y = 1; $y <= $balls_drawn; $y++)
+			{
+				if ($rank_count[$row5b[$y]] >= 7) #200321
+				{
+					$draw_rank_count[7]++; #200321	
+				} else {
+					$draw_rank_count[$rank_count[$row5b[$y]]]++;
+				}
+			}
+
+			for($x = 0; $x <= 7; $x++) #200321
+			{
+				$draw_rank_sum[$x] += $draw_rank_count[$x];
+			}
+
+			### 240717 ###
+			$rank_limit_array = array_fill(0,8,0); 
+
+			$query9 = "SELECT * FROM ga_f5_rank_limit ";
+			$query9 .= "WHERE draw_limit = 30 ";
+			$query9 .= "AND   date = '$row5b[date]' ";
+
+			#echo "$query9<br>";
+
+			$mysqli_result9 = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+
+			$row9 = mysqli_fetch_array($mysqli_result9);
+
+			for($w = 0; $w <= 7; $w++)
+			{
+				$x = $w+3;
+				$rank_limit_array[$w] = $row9[$x];
+			}
+
+			// add loop below
+			if ($draw_rank_count[0] > $rank_limit_array[0]) {	### 240717 ###
+				print("<TD><CENTER><font color=\"#ff0000\"><B>$draw_rank_count[0]/$rank_table_count[0]</B></font></CENTER></TD>\n");
+			} else {
+				print("<TD><CENTER>$draw_rank_count[0]/$rank_table_count[0]</CENTER></TD>\n");
+			}
+			if ($draw_rank_count[1] > $rank_limit_array[1]) {
+				print("<TD><CENTER><font color=\"#ff0000\"><B>$draw_rank_count[1]/$rank_table_count[1]</B></font></CENTER></TD>\n");
+			} else {
+				print("<TD><CENTER>$draw_rank_count[1]/$rank_table_count[1]</CENTER></TD>\n");
+			}
+			if ($draw_rank_count[2] > $rank_limit_array[2]) {
+				print("<TD><CENTER><font color=\"#ff0000\"><B>$draw_rank_count[2]/$rank_table_count[2]</B></font></CENTER></TD>\n");
+			} else {
+				print("<TD><CENTER>$draw_rank_count[2]/$rank_table_count[2]</CENTER></TD>\n");
+			}
+			if ($draw_rank_count[3] > $rank_limit_array[3]) {
+				print("<TD><CENTER><font color=\"#ff0000\"><B>$draw_rank_count[3]/$rank_table_count[3]</B></font></CENTER></TD>\n");
+			} else {
+				print("<TD><CENTER>$draw_rank_count[3]/$rank_table_count[3]</CENTER></TD>\n");
+			}
+			if ($draw_rank_count[4] > $rank_limit_array[4]) {
+				print("<TD><CENTER><font color=\"#ff0000\"><B>$draw_rank_count[4]/$rank_table_count[4]</B></font></CENTER></TD>\n");
+			} else {
+				print("<TD><CENTER>$draw_rank_count[4]/$rank_table_count[4]</CENTER></TD>\n");
+			}
+			if ($draw_rank_count[5] > $rank_limit_array[5]) {
+				print("<TD><CENTER><font color=\"#ff0000\"><B>$draw_rank_count[5]/$rank_table_count[5]</B></font></CENTER></TD>\n");
+			} else {
+				print("<TD><CENTER>$draw_rank_count[5]/$rank_table_count[5]</CENTER></TD>\n");
+			}
+			if ($draw_rank_count[6] > $rank_limit_array[6]) {
+				print("<TD><CENTER><font color=\"#ff0000\"><B>$draw_rank_count[6]/$rank_table_count[6]</B></font></CENTER></TD>\n");
+			} else {
+				print("<TD><CENTER>$draw_rank_count[6]/$rank_table_count[6]</CENTER></TD>\n");
+			}
+			if ($draw_rank_count[7] > $rank_limit_array[7]) { 
+				print("<TD><CENTER><font color=\"#ff0000\"><B>$draw_rank_count[7]/$rank_table_count[7]</B></font></CENTER></TD>\n");
+			} else {
+				print("<TD><CENTER>$draw_rank_count[7]/$rank_table_count[7]</CENTER></TD>\n");
+			} #200321
+			
+			/*	### 240717 ###
+			// get lh1 table
+			$query1 = "SELECT * FROM ga_f5_limits_by_sumeo ";
+			$query1 .= "WHERE sum  = $row5b[sum] ";
+			$query1 .= "AND   even = $row5b[even] ";
+			$query1 .= "AND   odd  = $row5b[odd] ";
+			$query1 .= "AND   col  = '1' ";
+
+			#echo "$query1<br>";
+			
+			$mysqli_result1 = mysqli_query($mysqli_link, $query1) or die (mysqli_error($mysqli_link));
+
+			$row1 = mysqli_fetch_array($mysqli_result1);
+
+			#print_r ($row1);
+			#echo "<p>";
+			#print_r ($row5b);
+			#echo "<p>";
+
+			if ($row5b['b1'] >= $row1['low'] AND $row5b['b1'] <= $row1['high']) { 
+				print("<TD><CENTER>$row1[5]/$row1[6]</CENTER></TD>\n");
+			} else {
+				print("<TD><CENTER><font color=\"#ff0000\"><B>$row1[low]/$row1[high]</B></font></CENTER></TD>\n");
+			}
+			
+			// get lh2 table
+			$query1 = "SELECT * FROM ga_f5_limits_by_sumeo ";
+			$query1 .= "WHERE sum  = $row5b[sum] ";
+			$query1 .= "AND   even = $row5b[even] ";
+			$query1 .= "AND   odd  = $row5b[odd] ";
+			$query1 .= "AND   col  = '2' ";
+			
+			$mysqli_result1 = mysqli_query($mysqli_link, $query1) or die (mysqli_error($mysqli_link));
+
+			$row1 = mysqli_fetch_array($mysqli_result1);
+
+			if ($row5b[2] >= $row1[5] AND $row5b[2] <= $row1[6]) { 
+				print("<TD><CENTER>$row1[5]/$row1[6]</CENTER></TD>\n");
+			} else {
+				print("<TD><CENTER><font color=\"#ff0000\"><B>$row1[5]/$row1[6]</B></font></CENTER></TD>\n");
+			}
+
+			// get lh3 table
+			$query1 = "SELECT * FROM ga_f5_limits_by_sumeo ";
+			$query1 .= "WHERE sum  = $row5b[sum] ";
+			$query1 .= "AND   even = $row5b[even] ";
+			$query1 .= "AND   odd  = $row5b[odd] ";
+			$query1 .= "AND   col  = '3' ";
+			
+			$mysqli_result1 = mysqli_query($mysqli_link, $query1) or die (mysqli_error($mysqli_link));
+
+			$row1 = mysqli_fetch_array($mysqli_result1);
+
+			if ($row5b[3] >= $row1[5] AND $row5b[3] <= $row1[6]) { 
+				print("<TD><CENTER>$row1[5]/$row1[6]</CENTER></TD>\n");
+			} else {
+				print("<TD><CENTER><font color=\"#ff0000\"><B>$row1[5]/$row1[6]</B></font></CENTER></TD>\n");
+			}
+
+			// get lh4 table
+			$query1 = "SELECT * FROM ga_f5_limits_by_sumeo ";
+			$query1 .= "WHERE sum  = $row5b[sum] ";
+			$query1 .= "AND   even = $row5b[even] ";
+			$query1 .= "AND   odd  = $row5b[odd] ";
+			$query1 .= "AND   col  = '4' ";
+			
+			$mysqli_result1 = mysqli_query($mysqli_link, $query1) or die (mysqli_error($mysqli_link));
+
+			$row1 = mysqli_fetch_array($mysqli_result1);
+
+			if ($row5b[4] >= $row1[5] AND $row5b[4] <= $row1[6]) { 
+				print("<TD><CENTER>$row1[5]/$row1[6]</CENTER></TD>\n");
+			} else {
+				print("<TD><CENTER><font color=\"#ff0000\"><B>$row1[5]/$row1[6]</B></font></CENTER></TD>\n");
+			}
+
+			// get lh5 table
+			$query1 = "SELECT * FROM ga_f5_limits_by_sumeo ";
+			$query1 .= "WHERE sum  = $row5b[sum] ";
+			$query1 .= "AND   even = $row5b[even] ";
+			$query1 .= "AND   odd  = $row5b[odd] ";
+			$query1 .= "AND   col  = '5' ";
+			
+			$mysqli_result1 = mysqli_query($mysqli_link, $query1) or die (mysqli_error($mysqli_link));
+
+			$row1 = mysqli_fetch_array($mysqli_result1);
+
+			if ($row5b[5] >= $row1[5] AND $row5b[5] <= 42) { 
+				print("<TD><CENTER>$row1[5]/$row1[6]</CENTER></TD>\n");
+			} else {
+				print("<TD><CENTER><font color=\"#ff0000\"><B>$row1[5]/$row1[6]</B></font></CENTER></TD>\n");
+			}
+			*/
+			
+			if ($failed <> 0)
+			{
+				print("<TD align=center style='color:red;font-size:75%;' nowrap>failed ($failed)</TD>\n");
+			} else {
+				print("<TD BGCOLOR=\"#57FC39\" style='font-size:75%;' align=center>passed</TD>\n");
+			}
+	
+			
+			print("</TR>\n");
+
+			if ($dcount > 8)
+			{
+				print("<TR><B>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=50>Date</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>b1</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>b2</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>b3</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>b4</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>b5</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>sum</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>rsum</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>even</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>odd</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>rank</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>count</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>seq2</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>seq3</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>mod</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>modx</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>dc1</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>dc1</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>dc2</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>dc3</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>dc4</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>dup1</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>dup2</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>dup3</TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>dup4</TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><CENTER>r0</CENTER></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><CENTER>r1</CENTER></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><CENTER>r2</CENTER></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><CENTER>r3</CENTER></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><CENTER>r4</CENTER></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><CENTER>r5</CENTER></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><CENTER>r6</CENTER></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><CENTER>r7</CENTER></TD>\n");
+				/*
+				print("<TD BGCOLOR=\"#57FC39\"><CENTER>l/h1</CENTER></TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\"><CENTER>l/h2</CENTER></TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\"><CENTER>l/h3</CENTER></TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\"><CENTER>l/h4</CENTER></TD>\n");
+				print("<TD BGCOLOR=\"#57FC39\"><CENTER>l/h5</CENTER></TD>\n");
+				*/
+				print("<TD BGCOLOR=\"#57FC39\" align=center width=25>pass/fail</TD>\n");
+				print("</B></TR>\n");
+
+				$dcount = 0;
+			} else {
+				$dcount++;
+			}
+		}
+
+		//end table
+		print("</TABLE>\n");
+		
+		#print "&nbsp;";
+?>

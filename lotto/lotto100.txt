@@ -1,0 +1,2067 @@
+c:\wamp\www\lotto\
+Difference between 2015-10-01 and 2025-03-13: 3451 Days
+last 1 draws -
+Array ( [0] => 1 [1] => 2 [2] => 14 [3] => 34 [4] => 36 )
+last 2 draws -
+Array ( [0] => 1 [1] => 2 [2] => 3 [3] => 8 [4] => 14 [5] => 24 [6] => 27 [7] => 33 [8] => 34 [9] => 36 )
+last 3 draws -
+Array ( [0] => 1 [1] => 2 [2] => 3 [3] => 8 [4] => 11 [5] => 14 [6] => 18 [7] => 24 [8] => 27 [9] => 33 [10] => 34 [11] => 35 [12] => 36 [13] => 38 [14] => 42 )
+last 4 draws -
+Array ( [0] => 1 [1] => 2 [2] => 3 [3] => 8 [4] => 9 [5] => 10 [6] => 11 [7] => 14 [8] => 15 [9] => 18 [10] => 24 [11] => 27 [12] => 33 [13] => 34 [14] => 35 [15] => 36 [16] => 38 [17] => 42 )
+last 5 draws -
+Array ( [0] => 1 [1] => 2 [2] => 3 [3] => 7 [4] => 8 [5] => 9 [6] => 10 [7] => 11 [8] => 14 [9] => 15 [10] => 18 [11] => 21 [12] => 24 [13] => 25 [14] => 27 [15] => 33 [16] => 34 [17] => 35 [18] => 36 [19] => 38 [20] => 42 )
+rank_table_count -
+Array ( [0] => 1 [1] => 1 [2] => 2 [3] => 2 [4] => 3 [5] => 3 [6] => 1 [7] => 1 )
+############################################ scaffolding_drop_tables ####################################################
+
+DROP TABLE IF EXISTS `temp_cover_100_count_250313`
+CREATE TABLE IF NOT EXISTS `temp_cover_100_count_250313` (`id` int(10) unsigned NOT NULL auto_increment, `sum` int(3) unsigned NOT NULL default '0', `even` tinyint(1) unsigned NOT NULL default '0', `odd` tinyint(1) unsigned NOT NULL default '0', `k_count` tinyint(2) unsigned NOT NULL default '0', `last_updated` date NOT NULL default '1962-08-17', PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1
+
+DROP TABLE IF EXISTS `temp_cover_100_scaffolding_135_250313`
+
+CREATE TABLE IF NOT EXISTS `temp_cover_100_scaffolding_135_250313` (`id` int(10) unsigned NOT NULL auto_increment, `b1` tinyint(2) unsigned NOT NULL default '0', `b2` tinyint(2) unsigned NOT NULL default '0', `b3` tinyint(2) unsigned NOT NULL default '0', `b4` tinyint(2) unsigned NOT NULL default '0', `b5` tinyint(2) unsigned NOT NULL default '0', `sum` int(5) unsigned NOT NULL default '0', `hml` int(3) unsigned NOT NULL default '0', `even` tinyint(1) unsigned NOT NULL default '0', `odd` tinyint(1) unsigned NOT NULL default '0', `d0` tinyint(1) unsigned NOT NULL default '0', `d1` tinyint(1) unsigned NOT NULL default '0', `d2` tinyint(1) unsigned NOT NULL default '0', `d3` tinyint(1) unsigned NOT NULL default '0', `d4` tinyint(1) unsigned NOT NULL default '0', `rank0` tinyint(1) unsigned NOT NULL default '0', `rank1` tinyint(1) unsigned NOT NULL default '0', `rank2` tinyint(1) unsigned NOT NULL default '0', `rank3` tinyint(1) unsigned NOT NULL default '0', `rank4` tinyint(1) unsigned NOT NULL default '0', `rank5` tinyint(1) unsigned NOT NULL default '0', `rank6` tinyint(1) unsigned NOT NULL default '0', `rank7` tinyint(1) unsigned NOT NULL default '0', `mod_tot` tinyint(1) unsigned NOT NULL default '0', `mod_x` tinyint(1) unsigned NOT NULL default '0', `seq2` tinyint(1) unsigned NOT NULL default '0', `seq3` tinyint(1) unsigned NOT NULL default '0', `comb2` tinyint(1) unsigned NOT NULL default '0', `comb3` tinyint(1) unsigned NOT NULL default '0', `comb4` tinyint(1) unsigned NOT NULL default '0', `comb5` tinyint(1) unsigned NOT NULL default '0', `dup1` tinyint(1) unsigned NOT NULL default '0', `dup2` tinyint(1) unsigned NOT NULL default '0', `dup3` tinyint(1) unsigned NOT NULL default '0', `dup4` tinyint(1) unsigned NOT NULL default '0', `dup5` tinyint(1) unsigned NOT NULL default '0', `dup6` tinyint(1) unsigned NOT NULL default '0', `dup7` tinyint(1) unsigned NOT NULL default '0', `dup8` tinyint(1) unsigned NOT NULL default '0', `dup9` tinyint(1) unsigned NOT NULL default '0', `dup10` tinyint(1) unsigned NOT NULL default '0', `pair_sum` mediumint(8) unsigned NOT NULL default '0', `avg` float(4,2) unsigned NOT NULL default '0.00', `median` float(4,2) unsigned NOT NULL default '0.00', `harmean` float(4,2) unsigned NOT NULL default '0.00', `geomean` float(4,2) unsigned NOT NULL default '0.00', `quart1` float(4,2) unsigned NOT NULL default '0.00', `quart2` float(4,2) unsigned NOT NULL default '0.00', `quart3` float(4,2) unsigned NOT NULL default '0.00', `stdev` float(4,2) unsigned NOT NULL default '0.00', `variance` float(6,2) unsigned NOT NULL default '0.00', `avedev` float(4,2) unsigned NOT NULL default '0.00', `kurt` float(4,2) NOT NULL default '0.00', `skew` float(4,2) NOT NULL default '0.00', `devsq` float(6,2) unsigned NOT NULL default '0.00', `wheel_cnt5000` mediumint(5) unsigned NOT NULL default '0', `wheel_percent_wa` float(4,2) unsigned NOT NULL default '0.00', `draw_last` date NOT NULL default '1962-08-17', `draw_count` tinyint(3) unsigned NOT NULL default '0', `y1_sum` float(4,2) NOT NULL default '0.00', `last_updated` date NOT NULL default '1962-08-17', PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1
+
+DROP TABLE IF EXISTS `temp_cover_100_candidates_scaffolding_250313`
+
+CREATE TABLE IF NOT EXISTS `temp_cover_100_candidates_scaffolding_250313` (`id` int(10) unsigned NOT NULL auto_increment, `b1` tinyint(2) unsigned NOT NULL default '0', `b2` tinyint(2) unsigned NOT NULL default '0', `b3` tinyint(2) unsigned NOT NULL default '0', `b4` tinyint(2) unsigned NOT NULL default '0', `b5` tinyint(2) unsigned NOT NULL default '0', `sum` int(5) unsigned NOT NULL default '0', `hml` int(3) unsigned NOT NULL default '0', `even` tinyint(1) unsigned NOT NULL default '0', `odd` tinyint(1) unsigned NOT NULL default '0', `d0` tinyint(1) unsigned NOT NULL default '0', `d1` tinyint(1) unsigned NOT NULL default '0', `d2` tinyint(1) unsigned NOT NULL default '0', `d3` tinyint(1) unsigned NOT NULL default '0', `d4` tinyint(1) unsigned NOT NULL default '0', `rank0` tinyint(1) unsigned NOT NULL default '0', `rank1` tinyint(1) unsigned NOT NULL default '0', `rank2` tinyint(1) unsigned NOT NULL default '0', `rank3` tinyint(1) unsigned NOT NULL default '0', `rank4` tinyint(1) unsigned NOT NULL default '0', `rank5` tinyint(1) unsigned NOT NULL default '0', `rank6` tinyint(1) unsigned NOT NULL default '0', `rank7` tinyint(1) unsigned NOT NULL default '0', `mod_tot` tinyint(1) unsigned NOT NULL default '0', `mod_x` tinyint(1) unsigned NOT NULL default '0', `seq2` tinyint(1) unsigned NOT NULL default '0', `seq3` tinyint(1) unsigned NOT NULL default '0', `comb2` tinyint(1) unsigned NOT NULL default '0', `comb3` tinyint(1) unsigned NOT NULL default '0', `comb4` tinyint(1) unsigned NOT NULL default '0', `comb5` tinyint(1) unsigned NOT NULL default '0', `dup1` tinyint(1) unsigned NOT NULL default '0', `dup2` tinyint(1) unsigned NOT NULL default '0', `dup3` tinyint(1) unsigned NOT NULL default '0', `dup4` tinyint(1) unsigned NOT NULL default '0', `dup5` tinyint(1) unsigned NOT NULL default '0', `dup6` tinyint(1) unsigned NOT NULL default '0', `dup7` tinyint(1) unsigned NOT NULL default '0', `dup8` tinyint(1) unsigned NOT NULL default '0', `dup9` tinyint(1) unsigned NOT NULL default '0', `dup10` tinyint(1) unsigned NOT NULL default '0', `pair_sum` mediumint(8) unsigned NOT NULL default '0', `avg` float(4,2) unsigned NOT NULL default '0.00', `median` float(4,2) unsigned NOT NULL default '0.00', `harmean` float(4,2) unsigned NOT NULL default '0.00', `geomean` float(4,2) unsigned NOT NULL default '0.00', `quart1` float(4,2) unsigned NOT NULL default '0.00', `quart2` float(4,2) unsigned NOT NULL default '0.00', `quart3` float(4,2) unsigned NOT NULL default '0.00', `stdev` float(4,2) unsigned NOT NULL default '0.00', `variance` float(6,2) unsigned NOT NULL default '0.00', `avedev` float(4,2) unsigned NOT NULL default '0.00', `kurt` float(4,2) NOT NULL default '0.00', `skew` float(4,2) NOT NULL default '0.00', `devsq` float(6,2) unsigned NOT NULL default '0.00', `wheel_cnt5000` mediumint(5) unsigned NOT NULL default '0', `wheel_percent_wa` float(4,2) unsigned NOT NULL default '0.00', `draw_last` date NOT NULL default '1962-08-17', `draw_count` tinyint(3) unsigned NOT NULL default '0', `y1_sum` float(4,2) NOT NULL default '0.00', `last_updated` date NOT NULL default '1962-08-17', PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1
+
+############################################ build_dup_rank_tables ####################################################
+
+Dups
+Array ( [0] => 1 [1] => 2 [2] => 14 [3] => 34 [4] => 36 )
+Array ( [0] => 1 [1] => 2 [2] => 3 [3] => 8 [4] => 14 [5] => 24 [6] => 27 [7] => 33 [8] => 34 [9] => 36 )
+Array ( [0] => 1 [1] => 2 [2] => 3 [3] => 8 [4] => 11 [5] => 14 [6] => 18 [7] => 24 [8] => 27 [9] => 33 [10] => 34 [11] => 35 [12] => 36 [13] => 38 [14] => 42 )
+Array ( [0] => 1 [1] => 2 [2] => 3 [3] => 8 [4] => 9 [5] => 10 [6] => 11 [7] => 14 [8] => 15 [9] => 18 [10] => 24 [11] => 27 [12] => 33 [13] => 34 [14] => 35 [15] => 36 [16] => 38 [17] => 42 )
+Rank Count
+SELECT * FROM ga_f5_rank_count_table WHERE date = '2025-03-13' AND draw_limit = '30'
+rank_count_temp:
+Array ( [0] => 0 [1] => 4 [2] => 4 [3] => 2 [4] => 2 [5] => 3 [6] => 7 [7] => 3 [8] => 4 [9] => 5 [10] => 5 [11] => 5 [12] => 5 [13] => 1 [14] => 4 [15] => 5 [16] => 5 [17] => 6 [18] => 4 [19] => 0 [20] => 3 [21] => 4 [22] => 2 [23] => 4 [24] => 4 [25] => 4 [26] => 4 [27] => 4 [28] => 0 [29] => 5 [30] => 3 [31] => 2 [32] => 2 [33] => 3 [34] => 5 [35] => 3 [36] => 7 [37] => 1 [38] => 4 [39] => 3 [40] => 4 [41] => 0 [42] => 5 )
+1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30	31	32	33	34	35	36	37	38	39	40	41	42
+4	4	2	2	3	7	3	4	5	5	5	5	1	4	5	5	6	4	0	3	4	2	4	4	4	4	4	0	5	3	2	2	3	5	3	7	1	4	3	4	0	5
+Rank Limit
+query - SELECT * FROM ga_f5_rank_limit WHERE date = '2025-03-13' AND draw_limit = 30
+rank_limit_temp:
+Array ( [0] => 1 [1] => 1 [2] => 2 [3] => 2 [4] => 3 [5] => 3 [6] => 1 [7] => 1 )
+0	1	2	3	4	5	6	7
+1	1	2	2	3	3	1	1
+############################################ build 100 counts ####################################################
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 1 WHERE id = 91
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 4 WHERE id = 92
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 1 WHERE id = 93
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 4 WHERE id = 94
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 1 WHERE id = 95
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 1 WHERE id = 56
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 11 WHERE id = 57
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 2 WHERE id = 58
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 3 WHERE id = 59
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 12 WHERE id = 60
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 2 WHERE id = 46
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 5 WHERE id = 47
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 8 WHERE id = 48
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 9 WHERE id = 49
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 10 WHERE id = 50
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 5 WHERE id = 81
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 7 WHERE id = 82
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 1 WHERE id = 83
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 3 WHERE id = 84
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 8 WHERE id = 85
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 12 WHERE id = 6
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 3 WHERE id = 7
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 6 WHERE id = 8
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 8 WHERE id = 9
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 9 WHERE id = 10
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 5 WHERE id = 31
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 3 WHERE id = 32
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 6 WHERE id = 33
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 1 WHERE id = 34
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 11 WHERE id = 35
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 6 WHERE id = 76
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 2 WHERE id = 77
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 3 WHERE id = 78
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 6 WHERE id = 79
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 2 WHERE id = 80
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 3 WHERE id = 11
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 2 WHERE id = 12
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 7 WHERE id = 13
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 9 WHERE id = 14
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 4 WHERE id = 15
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 12 WHERE id = 86
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 1 WHERE id = 87
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 10 WHERE id = 88
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 11 WHERE id = 89
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 4 WHERE id = 90
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 12 WHERE id = 21
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 1 WHERE id = 22
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 2 WHERE id = 23
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 9 WHERE id = 24
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 12 WHERE id = 25
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 6 WHERE id = 1
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 8 WHERE id = 2
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 9 WHERE id = 3
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 4 WHERE id = 4
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 1 WHERE id = 5
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 10 WHERE id = 16
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 6 WHERE id = 17
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 2 WHERE id = 18
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 5 WHERE id = 19
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 7 WHERE id = 20
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 10 WHERE id = 36
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 8 WHERE id = 37
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 2 WHERE id = 38
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 4 WHERE id = 39
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 1 WHERE id = 40
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 10 WHERE id = 26
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 13 WHERE id = 27
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 4 WHERE id = 28
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 14 WHERE id = 29
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 10 WHERE id = 30
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 6 WHERE id = 61
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 8 WHERE id = 62
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 5 WHERE id = 63
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 14 WHERE id = 64
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 6 WHERE id = 65
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 9 WHERE id = 71
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 5 WHERE id = 72
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 12 WHERE id = 73
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 11 WHERE id = 74
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 9 WHERE id = 75
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 7 WHERE id = 41
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 4 WHERE id = 42
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 12 WHERE id = 43
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 6 WHERE id = 44
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 2 WHERE id = 45
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 6 WHERE id = 96
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 7 WHERE id = 97
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 9 WHERE id = 98
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 11 WHERE id = 99
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 6 WHERE id = 100
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 13 WHERE id = 51
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 7 WHERE id = 52
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 9 WHERE id = 53
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 17 WHERE id = 54
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 13 WHERE id = 55
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 5 WHERE id = 66
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 12 WHERE id = 67
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 13 WHERE id = 68
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 5 WHERE id = 69
+
+UPDATE temp_cover_100_scaffolding_135_250313 SET b1 = 12 WHERE id = 70
+
+############################################ Col 1 ####################################################
+
+Col1 Count by Sumeo - Georgia Fantasy 5
+SELECT DISTINCT `sum`, `even`, `odd`, `b1` FROM temp_cover_100_scaffolding_135_250313 ORDER BY `sum` ASC
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=82 AND even=3 AND odd=2 AND b1=1
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=82 AND even=3 AND odd=2 AND b1=4
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=83 AND even=2 AND odd=3 AND b1=1
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=83 AND even=2 AND odd=3 AND b1=2
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=83 AND even=2 AND odd=3 AND b1=3
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=83 AND even=2 AND odd=3 AND b1=11
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=83 AND even=2 AND odd=3 AND b1=12
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=86 AND even=3 AND odd=2 AND b1=2
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=86 AND even=3 AND odd=2 AND b1=5
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=86 AND even=3 AND odd=2 AND b1=8
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=86 AND even=3 AND odd=2 AND b1=9
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=86 AND even=3 AND odd=2 AND b1=10
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=95 AND even=2 AND odd=3 AND b1=1
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=95 AND even=2 AND odd=3 AND b1=3
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=95 AND even=2 AND odd=3 AND b1=5
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=95 AND even=2 AND odd=3 AND b1=7
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=95 AND even=2 AND odd=3 AND b1=8
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=96 AND even=3 AND odd=2 AND b1=3
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=96 AND even=3 AND odd=2 AND b1=6
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=96 AND even=3 AND odd=2 AND b1=8
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=96 AND even=3 AND odd=2 AND b1=9
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=96 AND even=3 AND odd=2 AND b1=12
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=97 AND even=2 AND odd=3 AND b1=1
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=97 AND even=2 AND odd=3 AND b1=3
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=97 AND even=2 AND odd=3 AND b1=5
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=97 AND even=2 AND odd=3 AND b1=6
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=97 AND even=2 AND odd=3 AND b1=11
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=101 AND even=2 AND odd=3 AND b1=2
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=101 AND even=2 AND odd=3 AND b1=3
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=101 AND even=2 AND odd=3 AND b1=6
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=103 AND even=2 AND odd=3 AND b1=2
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=103 AND even=2 AND odd=3 AND b1=3
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=103 AND even=2 AND odd=3 AND b1=4
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=103 AND even=2 AND odd=3 AND b1=7
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=103 AND even=2 AND odd=3 AND b1=9
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=106 AND even=3 AND odd=2 AND b1=1
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=106 AND even=3 AND odd=2 AND b1=4
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=106 AND even=3 AND odd=2 AND b1=10
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=106 AND even=3 AND odd=2 AND b1=11
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=106 AND even=3 AND odd=2 AND b1=12
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=107 AND even=2 AND odd=3 AND b1=1
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=107 AND even=2 AND odd=3 AND b1=2
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=107 AND even=2 AND odd=3 AND b1=9
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=107 AND even=2 AND odd=3 AND b1=12
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=110 AND even=3 AND odd=2 AND b1=1
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=110 AND even=3 AND odd=2 AND b1=4
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=110 AND even=3 AND odd=2 AND b1=6
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=110 AND even=3 AND odd=2 AND b1=8
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=110 AND even=3 AND odd=2 AND b1=9
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=112 AND even=3 AND odd=2 AND b1=2
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=112 AND even=3 AND odd=2 AND b1=5
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=112 AND even=3 AND odd=2 AND b1=6
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=112 AND even=3 AND odd=2 AND b1=7
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=112 AND even=3 AND odd=2 AND b1=10
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=116 AND even=3 AND odd=2 AND b1=1
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=116 AND even=3 AND odd=2 AND b1=2
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=116 AND even=3 AND odd=2 AND b1=4
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=116 AND even=3 AND odd=2 AND b1=8
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=116 AND even=3 AND odd=2 AND b1=10
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=117 AND even=2 AND odd=3 AND b1=4
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=117 AND even=2 AND odd=3 AND b1=10
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=117 AND even=2 AND odd=3 AND b1=13
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=117 AND even=2 AND odd=3 AND b1=14
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=120 AND even=3 AND odd=2 AND b1=5
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=120 AND even=3 AND odd=2 AND b1=6
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=120 AND even=3 AND odd=2 AND b1=8
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=120 AND even=3 AND odd=2 AND b1=14
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=121 AND even=2 AND odd=3 AND b1=5
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=121 AND even=2 AND odd=3 AND b1=9
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=121 AND even=2 AND odd=3 AND b1=11
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=121 AND even=2 AND odd=3 AND b1=12
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=123 AND even=2 AND odd=3 AND b1=2
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=123 AND even=2 AND odd=3 AND b1=4
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=123 AND even=2 AND odd=3 AND b1=6
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=123 AND even=2 AND odd=3 AND b1=7
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=123 AND even=2 AND odd=3 AND b1=12
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=126 AND even=1 AND odd=4 AND b1=6
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=126 AND even=1 AND odd=4 AND b1=7
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=126 AND even=1 AND odd=4 AND b1=9
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=126 AND even=1 AND odd=4 AND b1=11
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=135 AND even=2 AND odd=3 AND b1=7
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=135 AND even=2 AND odd=3 AND b1=9
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=135 AND even=2 AND odd=3 AND b1=13
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=135 AND even=2 AND odd=3 AND b1=17
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=139 AND even=2 AND odd=3 AND b1=5
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=139 AND even=2 AND odd=3 AND b1=12
+
+query3 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 WHERE sum=139 AND even=2 AND odd=3 AND b1=13
+
+Sum	Even	Odd	Col1	Count
+82	3	2	1	3
+82	3	2	4	2
+83	2	3	1	1
+83	2	3	2	1
+83	2	3	3	1
+83	2	3	11	1
+83	2	3	12	1
+86	3	2	2	1
+86	3	2	5	1
+86	3	2	8	1
+86	3	2	9	1
+86	3	2	10	1
+Sum	Even	Odd	Col1	Count
+95	2	3	1	1
+95	2	3	3	1
+95	2	3	5	1
+95	2	3	7	1
+95	2	3	8	1
+96	3	2	3	1
+96	3	2	6	1
+96	3	2	8	1
+96	3	2	9	1
+96	3	2	12	1
+97	2	3	1	1
+97	2	3	3	1
+97	2	3	5	1
+Sum	Even	Odd	Col1	Count
+97	2	3	6	1
+97	2	3	11	1
+101	2	3	2	2
+101	2	3	3	1
+101	2	3	6	2
+103	2	3	2	1
+103	2	3	3	1
+103	2	3	4	1
+103	2	3	7	1
+103	2	3	9	1
+106	3	2	1	1
+106	3	2	4	1
+106	3	2	10	1
+Sum	Even	Odd	Col1	Count
+106	3	2	11	1
+106	3	2	12	1
+107	2	3	1	1
+107	2	3	2	1
+107	2	3	9	1
+107	2	3	12	2
+110	3	2	1	1
+110	3	2	4	1
+110	3	2	6	1
+110	3	2	8	1
+110	3	2	9	1
+112	3	2	2	1
+112	3	2	5	1
+Sum	Even	Odd	Col1	Count
+112	3	2	6	1
+112	3	2	7	1
+112	3	2	10	1
+116	3	2	1	1
+116	3	2	2	1
+116	3	2	4	1
+116	3	2	8	1
+116	3	2	10	1
+117	2	3	4	1
+117	2	3	10	2
+117	2	3	13	1
+117	2	3	14	1
+120	3	2	5	1
+Sum	Even	Odd	Col1	Count
+120	3	2	6	2
+120	3	2	8	1
+120	3	2	14	1
+121	2	3	5	1
+121	2	3	9	2
+121	2	3	11	1
+121	2	3	12	1
+123	2	3	2	1
+123	2	3	4	1
+123	2	3	6	1
+123	2	3	7	1
+123	2	3	12	1
+126	1	4	6	2
+Sum	Even	Odd	Col1	Count
+126	1	4	7	1
+126	1	4	9	1
+126	1	4	11	1
+135	2	3	7	1
+135	2	3	9	1
+135	2	3	13	2
+135	2	3	17	1
+139	2	3	5	2
+139	2	3	12	2
+139	2	3	13	1
+Sum	Even	Odd	Col1	Count
+
+Col1 Count by Sumeo - Georgia Fantasy 5
+query2 - SELECT `b1`, count(`b1`) FROM temp_cover_100_scaffolding_135_250313 GROUP BY b1 ORDER BY b1 ASC
+
+Col1	Count
+1	10
+2	9
+3	6
+4	8
+5	8
+6	11
+7	6
+8	6
+9	9
+10	6
+11	5
+12	9
+Col1	Count
+13	4
+14	2
+17	1
+Col1	Count
+
+############################################ Col 5 ####################################################
+
+SELECT DISTINCT sum,even,odd,k_count FROM temp_cover_100_count_250313 ORDER BY `k_count` DESC
+
+col5_4 - SELECT DISTINCT b5 FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 82 AND even = 3 AND odd = 2 ORDER BY sum, even, odd, b5
+
+col5_num_rows4 = 1
+looping - col5_5b - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 82 AND even = 3 AND odd = 2 AND b5 = 0
+
+col5_num_rows5 = 5
+col5_9a - SHOW TABLES LIKE 'temp2_column_sumeo_82_3_2_5'
+
+Table exists.
+col5_6 - SELECT * FROM temp2_column_sumeo_82_3_2_5 WHERE percent_wa >= 0.100 ORDER BY percent_wa DESC
+
+col5_num_rows6 = 3
+>>>>> col5_array: Array ( [0] => 27 [1] => 36 [2] => 39 )
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_82_3_2 WHERE b1 = 1 AND b3 = 27 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 3
+>>>>> b1 = 1
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 1 AND b5 = 27 AND sum = 82 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 20, b5 = 27 WHERE id = 91
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_82_3_2 WHERE b1 = 4 AND b3 = 36 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 13
+>>>>> b1 = 4
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 4 AND b5 = 36 AND sum = 82 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 6, b5 = 36 WHERE id = 92
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_82_3_2 WHERE b1 = 1 AND b3 = 39 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 6
+>>>>> b1 = 1
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 1 AND b5 = 39 AND sum = 82 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 18, b5 = 39 WHERE id = 93
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_82_3_2 WHERE b1 = 4 AND b3 = 27 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 9
+>>>>> b1 = 4
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 4 AND b5 = 27 AND sum = 82 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 20, b5 = 27 WHERE id = 94
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_82_3_2 WHERE b1 = 1 AND b3 = 36 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 10
+>>>>> b1 = 1
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 1 AND b5 = 36 AND sum = 82 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 20, b5 = 36 WHERE id = 95
+col5_4 - SELECT DISTINCT b5 FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 83 AND even = 2 AND odd = 3 ORDER BY sum, even, odd, b5
+
+col5_num_rows4 = 1
+looping - col5_5b - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 83 AND even = 2 AND odd = 3 AND b5 = 0
+
+col5_num_rows5 = 5
+col5_9a - SHOW TABLES LIKE 'temp2_column_sumeo_83_2_3_5'
+
+Table exists.
+col5_6 - SELECT * FROM temp2_column_sumeo_83_2_3_5 WHERE percent_wa >= 0.100 ORDER BY percent_wa DESC
+
+col5_num_rows6 = 5
+>>>>> col5_array: Array ( [0] => 25 [1] => 28 [2] => 30 [3] => 31 [4] => 37 )
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_83_2_3 WHERE b1 = 1 AND b3 = 25 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 6
+>>>>> b1 = 1
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 1 AND b5 = 25 AND sum = 83 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 17, b5 = 25 WHERE id = 56
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_83_2_3 WHERE b1 = 11 AND b3 = 28 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 3
+>>>>> b1 = 11
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 11 AND b5 = 28 AND sum = 83 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 15, b5 = 28 WHERE id = 57
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_83_2_3 WHERE b1 = 2 AND b3 = 30 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 6
+>>>>> b1 = 2
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 2 AND b5 = 30 AND sum = 83 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 15, b5 = 30 WHERE id = 58
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_83_2_3 WHERE b1 = 3 AND b3 = 31 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 12
+>>>>> b1 = 3
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 3 AND b5 = 31 AND sum = 83 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 16, b5 = 31 WHERE id = 59
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_83_2_3 WHERE b1 = 12 AND b3 = 37 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 0
+col5_4 - SELECT DISTINCT b5 FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 86 AND even = 3 AND odd = 2 ORDER BY sum, even, odd, b5
+
+col5_num_rows4 = 1
+looping - col5_5b - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 86 AND even = 3 AND odd = 2 AND b5 = 0
+
+col5_num_rows5 = 5
+col5_9a - SHOW TABLES LIKE 'temp2_column_sumeo_86_3_2_5'
+
+Table exists.
+col5_6 - SELECT * FROM temp2_column_sumeo_86_3_2_5 WHERE percent_wa >= 0.100 ORDER BY percent_wa DESC
+
+col5_num_rows6 = 4
+>>>>> col5_array: Array ( [0] => 28 [1] => 41 [2] => 31 [3] => 23 )
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_86_3_2 WHERE b1 = 2 AND b3 = 28 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 4
+>>>>> b1 = 2
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 2 AND b5 = 28 AND sum = 86 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 20, b5 = 28 WHERE id = 46
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_86_3_2 WHERE b1 = 5 AND b3 = 41 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 5
+>>>>> b1 = 5
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 5 AND b5 = 41 AND sum = 86 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 16, b5 = 41 WHERE id = 47
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_86_3_2 WHERE b1 = 8 AND b3 = 31 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 7
+>>>>> b1 = 8
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 8 AND b5 = 31 AND sum = 86 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 16, b5 = 31 WHERE id = 48
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_86_3_2 WHERE b1 = 9 AND b3 = 23 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 1
+>>>>> b1 = 9
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 9 AND b5 = 23 AND sum = 86 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 18, b5 = 23 WHERE id = 49
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_86_3_2 WHERE b1 = 10 AND b3 = 28 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 5
+>>>>> b1 = 10
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 10 AND b5 = 28 AND sum = 86 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 16, b5 = 28 WHERE id = 50
+col5_4 - SELECT DISTINCT b5 FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 95 AND even = 2 AND odd = 3 ORDER BY sum, even, odd, b5
+
+col5_num_rows4 = 1
+looping - col5_5b - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 95 AND even = 2 AND odd = 3 AND b5 = 0
+
+col5_num_rows5 = 5
+col5_9a - SHOW TABLES LIKE 'temp2_column_sumeo_95_2_3_5'
+
+Table exists.
+col5_6 - SELECT * FROM temp2_column_sumeo_95_2_3_5 WHERE percent_wa >= 0.100 ORDER BY percent_wa DESC
+
+col5_num_rows6 = 4
+>>>>> col5_array: Array ( [0] => 38 [1] => 36 [2] => 32 [3] => 34 )
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_95_2_3 WHERE b1 = 5 AND b3 = 38 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 12
+>>>>> b1 = 5
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 5 AND b5 = 38 AND sum = 95 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 17, b5 = 38 WHERE id = 81
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_95_2_3 WHERE b1 = 7 AND b3 = 36 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 11
+>>>>> b1 = 7
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 7 AND b5 = 36 AND sum = 95 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 17, b5 = 36 WHERE id = 82
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_95_2_3 WHERE b1 = 1 AND b3 = 32 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 14
+>>>>> b1 = 1
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 1 AND b5 = 32 AND sum = 95 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 17, b5 = 32 WHERE id = 83
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_95_2_3 WHERE b1 = 3 AND b3 = 34 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 14
+>>>>> b1 = 3
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 3 AND b5 = 34 AND sum = 95 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 17, b5 = 34 WHERE id = 84
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_95_2_3 WHERE b1 = 8 AND b3 = 38 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 4
+>>>>> b1 = 8
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 8 AND b5 = 38 AND sum = 95 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 17, b5 = 38 WHERE id = 85
+col5_4 - SELECT DISTINCT b5 FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 96 AND even = 3 AND odd = 2 ORDER BY sum, even, odd, b5
+
+col5_num_rows4 = 1
+looping - col5_5b - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 96 AND even = 3 AND odd = 2 AND b5 = 0
+
+col5_num_rows5 = 5
+col5_9a - SHOW TABLES LIKE 'temp2_column_sumeo_96_3_2_5'
+
+Table exists.
+col5_6 - SELECT * FROM temp2_column_sumeo_96_3_2_5 WHERE percent_wa >= 0.100 ORDER BY percent_wa DESC
+
+col5_num_rows6 = 6
+>>>>> col5_array: Array ( [0] => 34 [1] => 37 [2] => 28 [3] => 32 [4] => 33 [5] => 35 )
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_96_3_2 WHERE b1 = 12 AND b3 = 34 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 0
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_96_3_2 WHERE b1 = 3 AND b3 = 34 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 13
+>>>>> b1 = 3
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 3 AND b5 = 34 AND sum = 96 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 18, b5 = 34 WHERE id = 7
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_96_3_2 WHERE b1 = 6 AND b3 = 37 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 14
+>>>>> b1 = 6
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 6 AND b5 = 37 AND sum = 96 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 18, b5 = 37 WHERE id = 8
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_96_3_2 WHERE b1 = 8 AND b3 = 28 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 3
+>>>>> b1 = 8
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 8 AND b5 = 28 AND sum = 96 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 23, b5 = 28 WHERE id = 9
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_96_3_2 WHERE b1 = 9 AND b3 = 32 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 10
+>>>>> b1 = 9
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 9 AND b5 = 32 AND sum = 96 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 18, b5 = 32 WHERE id = 10
+col5_4 - SELECT DISTINCT b5 FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 97 AND even = 2 AND odd = 3 ORDER BY sum, even, odd, b5
+
+col5_num_rows4 = 1
+looping - col5_5b - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 97 AND even = 2 AND odd = 3 AND b5 = 0
+
+col5_num_rows5 = 5
+col5_9a - SHOW TABLES LIKE 'temp2_column_sumeo_97_2_3_5'
+
+Table exists.
+col5_6 - SELECT * FROM temp2_column_sumeo_97_2_3_5 WHERE percent_wa >= 0.100 ORDER BY percent_wa DESC
+
+col5_num_rows6 = 6
+>>>>> col5_array: Array ( [0] => 38 [1] => 35 [2] => 27 [3] => 30 [4] => 39 [5] => 33 )
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_97_2_3 WHERE b1 = 5 AND b3 = 38 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 13
+>>>>> b1 = 5
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 5 AND b5 = 38 AND sum = 97 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 19, b5 = 38 WHERE id = 31
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_97_2_3 WHERE b1 = 3 AND b3 = 35 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 13
+>>>>> b1 = 3
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 3 AND b5 = 35 AND sum = 97 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 19, b5 = 35 WHERE id = 32
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_97_2_3 WHERE b1 = 6 AND b3 = 27 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 6
+>>>>> b1 = 6
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 6 AND b5 = 27 AND sum = 97 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 21, b5 = 27 WHERE id = 33
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_97_2_3 WHERE b1 = 1 AND b3 = 30 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 9
+>>>>> b1 = 1
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 1 AND b5 = 30 AND sum = 97 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 19, b5 = 30 WHERE id = 34
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_97_2_3 WHERE b1 = 11 AND b3 = 39 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 0
+col5_4 - SELECT DISTINCT b5 FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 101 AND even = 2 AND odd = 3 ORDER BY sum, even, odd, b5
+
+col5_num_rows4 = 1
+looping - col5_5b - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 101 AND even = 2 AND odd = 3 AND b5 = 0
+
+col5_num_rows5 = 5
+col5_9a - SHOW TABLES LIKE 'temp2_column_sumeo_101_2_3_5'
+
+Table exists.
+col5_6 - SELECT * FROM temp2_column_sumeo_101_2_3_5 WHERE percent_wa >= 0.100 ORDER BY percent_wa DESC
+
+col5_num_rows6 = 4
+>>>>> col5_array: Array ( [0] => 41 [1] => 38 [2] => 42 [3] => 35 )
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_101_2_3 WHERE b1 = 6 AND b3 = 41 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 13
+>>>>> b1 = 6
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 6 AND b5 = 41 AND sum = 101 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 17, b5 = 41 WHERE id = 76
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_101_2_3 WHERE b1 = 2 AND b3 = 38 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 8
+>>>>> b1 = 2
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 2 AND b5 = 38 AND sum = 101 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 17, b5 = 38 WHERE id = 77
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_101_2_3 WHERE b1 = 3 AND b3 = 42 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 15
+>>>>> b1 = 3
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 3 AND b5 = 42 AND sum = 101 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 17, b5 = 42 WHERE id = 78
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_101_2_3 WHERE b1 = 6 AND b3 = 35 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 13
+>>>>> b1 = 6
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 6 AND b5 = 35 AND sum = 101 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 17, b5 = 35 WHERE id = 79
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_101_2_3 WHERE b1 = 2 AND b3 = 41 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 17
+>>>>> b1 = 2
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 2 AND b5 = 41 AND sum = 101 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 17, b5 = 41 WHERE id = 80
+col5_4 - SELECT DISTINCT b5 FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 103 AND even = 2 AND odd = 3 ORDER BY sum, even, odd, b5
+
+col5_num_rows4 = 1
+looping - col5_5b - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 103 AND even = 2 AND odd = 3 AND b5 = 0
+
+col5_num_rows5 = 5
+col5_9a - SHOW TABLES LIKE 'temp2_column_sumeo_103_2_3_5'
+
+Table exists.
+col5_6 - SELECT * FROM temp2_column_sumeo_103_2_3_5 WHERE percent_wa >= 0.100 ORDER BY percent_wa DESC
+
+col5_num_rows6 = 4
+>>>>> col5_array: Array ( [0] => 38 [1] => 34 [2] => 37 [3] => 39 )
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_103_2_3 WHERE b1 = 3 AND b3 = 38 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 16
+>>>>> b1 = 3
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 3 AND b5 = 38 AND sum = 103 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 19, b5 = 38 WHERE id = 11
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_103_2_3 WHERE b1 = 2 AND b3 = 34 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 6
+>>>>> b1 = 2
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 2 AND b5 = 34 AND sum = 103 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 19, b5 = 34 WHERE id = 12
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_103_2_3 WHERE b1 = 7 AND b3 = 37 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 14
+>>>>> b1 = 7
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 7 AND b5 = 37 AND sum = 103 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 19, b5 = 37 WHERE id = 13
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_103_2_3 WHERE b1 = 9 AND b3 = 39 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 12
+>>>>> b1 = 9
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 9 AND b5 = 39 AND sum = 103 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 19, b5 = 39 WHERE id = 14
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_103_2_3 WHERE b1 = 4 AND b3 = 38 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 8
+>>>>> b1 = 4
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 4 AND b5 = 38 AND sum = 103 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 19, b5 = 38 WHERE id = 15
+col5_4 - SELECT DISTINCT b5 FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 106 AND even = 3 AND odd = 2 ORDER BY sum, even, odd, b5
+
+col5_num_rows4 = 1
+looping - col5_5b - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 106 AND even = 3 AND odd = 2 AND b5 = 0
+
+col5_num_rows5 = 5
+col5_9a - SHOW TABLES LIKE 'temp2_column_sumeo_106_3_2_5'
+
+Table exists.
+col5_6 - SELECT * FROM temp2_column_sumeo_106_3_2_5 WHERE percent_wa >= 0.100 ORDER BY percent_wa DESC
+
+col5_num_rows6 = 3
+>>>>> col5_array: Array ( [0] => 32 [1] => 35 [2] => 34 )
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_106_3_2 WHERE b1 = 12 AND b3 = 32 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 6
+>>>>> b1 = 12
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 12 AND b5 = 32 AND sum = 106 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 18, b5 = 32 WHERE id = 86
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_106_3_2 WHERE b1 = 1 AND b3 = 35 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 6
+>>>>> b1 = 1
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 1 AND b5 = 35 AND sum = 106 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 22, b5 = 35 WHERE id = 87
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_106_3_2 WHERE b1 = 10 AND b3 = 34 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 11
+>>>>> b1 = 10
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 10 AND b5 = 34 AND sum = 106 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 15, b5 = 34 WHERE id = 88
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_106_3_2 WHERE b1 = 11 AND b3 = 32 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 5
+>>>>> b1 = 11
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 11 AND b5 = 32 AND sum = 106 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 18, b5 = 32 WHERE id = 89
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_106_3_2 WHERE b1 = 4 AND b3 = 35 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 14
+>>>>> b1 = 4
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 4 AND b5 = 35 AND sum = 106 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 22, b5 = 35 WHERE id = 90
+col5_4 - SELECT DISTINCT b5 FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 107 AND even = 2 AND odd = 3 ORDER BY sum, even, odd, b5
+
+col5_num_rows4 = 1
+looping - col5_5b - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 107 AND even = 2 AND odd = 3 AND b5 = 0
+
+col5_num_rows5 = 5
+col5_9a - SHOW TABLES LIKE 'temp2_column_sumeo_107_2_3_5'
+
+Table exists.
+col5_6 - SELECT * FROM temp2_column_sumeo_107_2_3_5 WHERE percent_wa >= 0.100 ORDER BY percent_wa DESC
+
+col5_num_rows6 = 5
+>>>>> col5_array: Array ( [0] => 33 [1] => 39 [2] => 38 [3] => 41 [4] => 29 )
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_107_2_3 WHERE b1 = 12 AND b3 = 33 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 6
+>>>>> b1 = 12
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 12 AND b5 = 33 AND sum = 107 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 21, b5 = 33 WHERE id = 21
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_107_2_3 WHERE b1 = 1 AND b3 = 39 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 17
+>>>>> b1 = 1
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 1 AND b5 = 39 AND sum = 107 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 26, b5 = 39 WHERE id = 22
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_107_2_3 WHERE b1 = 2 AND b3 = 38 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 8
+>>>>> b1 = 2
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 2 AND b5 = 38 AND sum = 107 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 21, b5 = 38 WHERE id = 23
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_107_2_3 WHERE b1 = 9 AND b3 = 41 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 11
+>>>>> b1 = 9
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 9 AND b5 = 41 AND sum = 107 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 21, b5 = 41 WHERE id = 24
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_107_2_3 WHERE b1 = 12 AND b3 = 29 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 5
+>>>>> b1 = 12
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 12 AND b5 = 29 AND sum = 107 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 26, b5 = 29 WHERE id = 25
+col5_4 - SELECT DISTINCT b5 FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 110 AND even = 3 AND odd = 2 ORDER BY sum, even, odd, b5
+
+col5_num_rows4 = 1
+looping - col5_5b - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 110 AND even = 3 AND odd = 2 AND b5 = 0
+
+col5_num_rows5 = 5
+col5_9a - SHOW TABLES LIKE 'temp2_column_sumeo_110_3_2_5'
+
+Table exists.
+col5_6 - SELECT * FROM temp2_column_sumeo_110_3_2_5 WHERE percent_wa >= 0.100 ORDER BY percent_wa DESC
+
+col5_num_rows6 = 6
+>>>>> col5_array: Array ( [0] => 34 [1] => 35 [2] => 41 [3] => 37 [4] => 42 [5] => 33 )
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_110_3_2 WHERE b1 = 6 AND b3 = 34 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 13
+>>>>> b1 = 6
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 6 AND b5 = 34 AND sum = 110 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 27, b5 = 34 WHERE id = 1
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_110_3_2 WHERE b1 = 8 AND b3 = 35 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 11
+>>>>> b1 = 8
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 8 AND b5 = 35 AND sum = 110 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 27, b5 = 35 WHERE id = 2
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_110_3_2 WHERE b1 = 9 AND b3 = 41 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 6
+>>>>> b1 = 9
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 9 AND b5 = 41 AND sum = 110 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 22, b5 = 41 WHERE id = 3
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_110_3_2 WHERE b1 = 4 AND b3 = 37 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 15
+>>>>> b1 = 4
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 4 AND b5 = 37 AND sum = 110 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 27, b5 = 37 WHERE id = 4
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_110_3_2 WHERE b1 = 1 AND b3 = 42 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 18
+>>>>> b1 = 1
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 1 AND b5 = 42 AND sum = 110 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 27, b5 = 42 WHERE id = 5
+col5_4 - SELECT DISTINCT b5 FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 112 AND even = 3 AND odd = 2 ORDER BY sum, even, odd, b5
+
+col5_num_rows4 = 1
+looping - col5_5b - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 112 AND even = 3 AND odd = 2 AND b5 = 0
+
+col5_num_rows5 = 5
+col5_9a - SHOW TABLES LIKE 'temp2_column_sumeo_112_3_2_5'
+
+Table exists.
+col5_6 - SELECT * FROM temp2_column_sumeo_112_3_2_5 WHERE percent_wa >= 0.100 ORDER BY percent_wa DESC
+
+col5_num_rows6 = 6
+>>>>> col5_array: Array ( [0] => 36 [1] => 38 [2] => 42 [3] => 32 [4] => 30 [5] => 41 )
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_112_3_2 WHERE b1 = 10 AND b3 = 36 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 12
+>>>>> b1 = 10
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 10 AND b5 = 36 AND sum = 112 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 24, b5 = 36 WHERE id = 16
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_112_3_2 WHERE b1 = 6 AND b3 = 38 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 14
+>>>>> b1 = 6
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 6 AND b5 = 38 AND sum = 112 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 26, b5 = 38 WHERE id = 17
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_112_3_2 WHERE b1 = 2 AND b3 = 42 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 18
+>>>>> b1 = 2
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 2 AND b5 = 42 AND sum = 112 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 26, b5 = 42 WHERE id = 18
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_112_3_2 WHERE b1 = 5 AND b3 = 32 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 7
+>>>>> b1 = 5
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 5 AND b5 = 32 AND sum = 112 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 26, b5 = 32 WHERE id = 19
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_112_3_2 WHERE b1 = 7 AND b3 = 30 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 0
+col5_4 - SELECT DISTINCT b5 FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 116 AND even = 3 AND odd = 2 ORDER BY sum, even, odd, b5
+
+col5_num_rows4 = 1
+looping - col5_5b - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 116 AND even = 3 AND odd = 2 AND b5 = 0
+
+col5_num_rows5 = 5
+col5_9a - SHOW TABLES LIKE 'temp2_column_sumeo_116_3_2_5'
+
+Table exists.
+col5_6 - SELECT * FROM temp2_column_sumeo_116_3_2_5 WHERE percent_wa >= 0.100 ORDER BY percent_wa DESC
+
+col5_num_rows6 = 6
+>>>>> col5_array: Array ( [0] => 41 [1] => 35 [2] => 42 [3] => 40 [4] => 38 [5] => 33 )
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_116_3_2 WHERE b1 = 10 AND b3 = 41 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 14
+>>>>> b1 = 10
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 10 AND b5 = 41 AND sum = 116 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 23, b5 = 41 WHERE id = 36
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_116_3_2 WHERE b1 = 8 AND b3 = 35 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 12
+>>>>> b1 = 8
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 8 AND b5 = 35 AND sum = 116 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 25, b5 = 35 WHERE id = 37
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_116_3_2 WHERE b1 = 2 AND b3 = 42 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 19
+>>>>> b1 = 2
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 2 AND b5 = 42 AND sum = 116 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 25, b5 = 42 WHERE id = 38
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_116_3_2 WHERE b1 = 4 AND b3 = 40 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 17
+>>>>> b1 = 4
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 4 AND b5 = 40 AND sum = 116 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 25, b5 = 40 WHERE id = 39
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_116_3_2 WHERE b1 = 1 AND b3 = 38 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 16
+>>>>> b1 = 1
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 1 AND b5 = 38 AND sum = 116 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 25, b5 = 38 WHERE id = 40
+col5_4 - SELECT DISTINCT b5 FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 117 AND even = 2 AND odd = 3 ORDER BY sum, even, odd, b5
+
+col5_num_rows4 = 1
+looping - col5_5b - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 117 AND even = 2 AND odd = 3 AND b5 = 0
+
+col5_num_rows5 = 5
+col5_9a - SHOW TABLES LIKE 'temp2_column_sumeo_117_2_3_5'
+
+Table exists.
+col5_6 - SELECT * FROM temp2_column_sumeo_117_2_3_5 WHERE percent_wa >= 0.100 ORDER BY percent_wa DESC
+
+col5_num_rows6 = 4
+>>>>> col5_array: Array ( [0] => 31 [1] => 40 [2] => 32 [3] => 41 )
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_117_2_3 WHERE b1 = 10 AND b3 = 31 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 5
+>>>>> b1 = 10
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 10 AND b5 = 31 AND sum = 117 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 27, b5 = 31 WHERE id = 26
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_117_2_3 WHERE b1 = 13 AND b3 = 40 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 7
+>>>>> b1 = 13
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 13 AND b5 = 40 AND sum = 117 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 20, b5 = 40 WHERE id = 27
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_117_2_3 WHERE b1 = 4 AND b3 = 32 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 1
+>>>>> b1 = 4
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 4 AND b5 = 32 AND sum = 117 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 29, b5 = 32 WHERE id = 28
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_117_2_3 WHERE b1 = 14 AND b3 = 41 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 6
+>>>>> b1 = 14
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 14 AND b5 = 41 AND sum = 117 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 20, b5 = 41 WHERE id = 29
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_117_2_3 WHERE b1 = 10 AND b3 = 31 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 5
+>>>>> b1 = 10
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 10 AND b5 = 31 AND sum = 117 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 1
+
+>>>>> pass_fail = 1
+
+>>>>> duplicate found - 10,31
+>>>>> b1 = 10
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 10 AND b5 = 31 AND sum = 117 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 1
+
+>>>>> pass_fail = 1
+
+>>>>> duplicate found - 10,31
+>>>>> b1 = 10
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 10 AND b5 = 31 AND sum = 117 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 1
+
+>>>>> pass_fail = 1
+
+>>>>> duplicate found - 10,31
+>>>>> b1 = 10
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 10 AND b5 = 31 AND sum = 117 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 1
+
+>>>>> pass_fail = 1
+
+>>>>> duplicate found - 10,31
+>>>>> b1 = 10
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 10 AND b5 = 31 AND sum = 117 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 1
+
+>>>>> pass_fail = 1
+
+>>>>> duplicate found - 10,31
+col5_4 - SELECT DISTINCT b5 FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 120 AND even = 3 AND odd = 2 ORDER BY sum, even, odd, b5
+
+col5_num_rows4 = 1
+looping - col5_5b - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 120 AND even = 3 AND odd = 2 AND b5 = 0
+
+col5_num_rows5 = 5
+col5_9a - SHOW TABLES LIKE 'temp2_column_sumeo_120_3_2_5'
+
+Table exists.
+col5_6 - SELECT * FROM temp2_column_sumeo_120_3_2_5 WHERE percent_wa >= 0.100 ORDER BY percent_wa DESC
+
+col5_num_rows6 = 5
+>>>>> col5_array: Array ( [0] => 40 [1] => 35 [2] => 41 [3] => 38 [4] => 39 )
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_120_3_2 WHERE b1 = 6 AND b3 = 40 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 14
+>>>>> b1 = 6
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 6 AND b5 = 40 AND sum = 120 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 28, b5 = 40 WHERE id = 61
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_120_3_2 WHERE b1 = 8 AND b3 = 35 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 10
+>>>>> b1 = 8
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 8 AND b5 = 35 AND sum = 120 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 28, b5 = 35 WHERE id = 62
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_120_3_2 WHERE b1 = 5 AND b3 = 41 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 7
+>>>>> b1 = 5
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 5 AND b5 = 41 AND sum = 120 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 28, b5 = 41 WHERE id = 63
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_120_3_2 WHERE b1 = 14 AND b3 = 38 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 11
+>>>>> b1 = 14
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 14 AND b5 = 38 AND sum = 120 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 24, b5 = 38 WHERE id = 64
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_120_3_2 WHERE b1 = 6 AND b3 = 39 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 13
+>>>>> b1 = 6
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 6 AND b5 = 39 AND sum = 120 AND even = 3 AND odd = 2 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 28, b5 = 39 WHERE id = 65
+col5_4 - SELECT DISTINCT b5 FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 121 AND even = 2 AND odd = 3 ORDER BY sum, even, odd, b5
+
+col5_num_rows4 = 1
+looping - col5_5b - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 121 AND even = 2 AND odd = 3 AND b5 = 0
+
+col5_num_rows5 = 5
+col5_9a - SHOW TABLES LIKE 'temp2_column_sumeo_121_2_3_5'
+
+Table exists.
+col5_6 - SELECT * FROM temp2_column_sumeo_121_2_3_5 WHERE percent_wa >= 0.100 ORDER BY percent_wa DESC
+
+col5_num_rows6 = 2
+>>>>> col5_array: Array ( [0] => 41 [1] => 38 )
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_121_2_3 WHERE b1 = 9 AND b3 = 41 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 8
+>>>>> b1 = 9
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 9 AND b5 = 41 AND sum = 121 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 29, b5 = 41 WHERE id = 71
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_121_2_3 WHERE b1 = 5 AND b3 = 38 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 14
+>>>>> b1 = 5
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 5 AND b5 = 38 AND sum = 121 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 29, b5 = 38 WHERE id = 72
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_121_2_3 WHERE b1 = 12 AND b3 = 41 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 6
+>>>>> b1 = 12
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 12 AND b5 = 41 AND sum = 121 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 25, b5 = 41 WHERE id = 73
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_121_2_3 WHERE b1 = 11 AND b3 = 38 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 8
+>>>>> b1 = 11
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 11 AND b5 = 38 AND sum = 121 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 29, b5 = 38 WHERE id = 74
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_121_2_3 WHERE b1 = 9 AND b3 = 41 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 8
+>>>>> b1 = 9
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 9 AND b5 = 41 AND sum = 121 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 1
+
+>>>>> pass_fail = 1
+
+>>>>> duplicate found - 9,41
+>>>>> b1 = 9
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 9 AND b5 = 41 AND sum = 121 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 1
+
+>>>>> pass_fail = 1
+
+>>>>> duplicate found - 9,41
+>>>>> b1 = 9
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 9 AND b5 = 41 AND sum = 121 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 1
+
+>>>>> pass_fail = 1
+
+>>>>> duplicate found - 9,41
+>>>>> b1 = 9
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 9 AND b5 = 41 AND sum = 121 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 1
+
+>>>>> pass_fail = 1
+
+>>>>> duplicate found - 9,41
+>>>>> b1 = 9
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 9 AND b5 = 41 AND sum = 121 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 1
+
+>>>>> pass_fail = 1
+
+>>>>> duplicate found - 9,41
+>>>>> b1 = 9
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 9 AND b5 = 41 AND sum = 121 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 1
+
+>>>>> pass_fail = 1
+
+>>>>> duplicate found - 9,41
+>>>>> b1 = 9
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 9 AND b5 = 41 AND sum = 121 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 1
+
+>>>>> pass_fail = 1
+
+>>>>> duplicate found - 9,41
+>>>>> b1 = 9
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 9 AND b5 = 41 AND sum = 121 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 1
+
+>>>>> pass_fail = 1
+
+>>>>> duplicate found - 9,41
+col5_4 - SELECT DISTINCT b5 FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 123 AND even = 2 AND odd = 3 ORDER BY sum, even, odd, b5
+
+col5_num_rows4 = 1
+looping - col5_5b - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 123 AND even = 2 AND odd = 3 AND b5 = 0
+
+col5_num_rows5 = 5
+col5_9a - SHOW TABLES LIKE 'temp2_column_sumeo_123_2_3_5'
+
+Table exists.
+col5_6 - SELECT * FROM temp2_column_sumeo_123_2_3_5 WHERE percent_wa >= 0.100 ORDER BY percent_wa DESC
+
+col5_num_rows6 = 6
+>>>>> col5_array: Array ( [0] => 42 [1] => 35 [2] => 38 [3] => 41 [4] => 40 [5] => 37 )
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_123_2_3 WHERE b1 = 7 AND b3 = 42 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 10
+>>>>> b1 = 7
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 7 AND b5 = 42 AND sum = 123 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 25, b5 = 42 WHERE id = 41
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_123_2_3 WHERE b1 = 4 AND b3 = 35 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 6
+>>>>> b1 = 4
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 4 AND b5 = 35 AND sum = 123 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 31, b5 = 35 WHERE id = 42
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_123_2_3 WHERE b1 = 12 AND b3 = 38 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 6
+>>>>> b1 = 12
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 12 AND b5 = 38 AND sum = 123 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 25, b5 = 38 WHERE id = 43
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_123_2_3 WHERE b1 = 6 AND b3 = 41 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 10
+>>>>> b1 = 6
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 6 AND b5 = 41 AND sum = 123 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 25, b5 = 41 WHERE id = 44
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_123_2_3 WHERE b1 = 2 AND b3 = 40 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 5
+>>>>> b1 = 2
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 2 AND b5 = 40 AND sum = 123 AND even = 2 AND odd = 3 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 25, b5 = 40 WHERE id = 45
+col5_4 - SELECT DISTINCT b5 FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 126 AND even = 1 AND odd = 4 ORDER BY sum, even, odd, b5
+
+col5_num_rows4 = 1
+looping - col5_5b - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE sum = 126 AND even = 1 AND odd = 4 AND b5 = 0
+
+col5_num_rows5 = 5
+col5_9a - SHOW TABLES LIKE 'temp2_column_sumeo_126_1_4_5'
+
+Table exists.
+col5_6 - SELECT * FROM temp2_column_sumeo_126_1_4_5 WHERE percent_wa >= 0.100 ORDER BY percent_wa DESC
+
+col5_num_rows6 = 4
+>>>>> col5_array: Array ( [0] => 37 [1] => 41 [2] => 33 [3] => 42 )
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_126_1_4 WHERE b1 = 6 AND b3 = 37 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 4
+>>>>> b1 = 6
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 6 AND b5 = 37 AND sum = 126 AND even = 1 AND odd = 4 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 27, b5 = 37 WHERE id = 96
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_126_1_4 WHERE b1 = 7 AND b3 = 41 ORDER BY y1_sum DESC
+
+col3_num_rows7 = 12
+>>>>> b1 = 7
+
+col_1_3_5_8 - SELECT * FROM temp_cover_100_scaffolding_135_250313 WHERE b1 = 7 AND b5 = 41 AND sum = 126 AND even = 1 AND odd = 4 ORDER BY y1_sum DESC
+
+>>> num_rows8 = 0
+
+>>>>> pass_fail = 1
+
+1 - col5_query_update - UPDATE temp_cover_100_scaffolding_135_250313 SET b3 = 27, b5 = 41 WHERE id = 97
+### compare col1/col5 ###
+
+>>> looping - col5_7 - SELECT * FROM temp2_split_count_1_3_5_126_1_4 WHERE b1 = 9 AND b3 = 33 ORDER BY y1_sum DESC
+

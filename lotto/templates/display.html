@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ game.name }} Display - Lottery Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <style>
+        .table-fixed {
+            table-layout: fixed;
+        }
+        .danger-value {
+            background-color: #FF0000;
+            color: #ffffff;
+            font-weight: bold;
+        }
+        .table-nav {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid mt-4">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Lottery Analysis</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ url_for('display', game_id=game.id) }}">Display</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('pairs', game_id=game.id) }}">Pairs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('rank', game_id=game.id) }}">Rank</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('grid', game_id=game.id) }}">Grid</a>
+                    </li>
+                </ul>
+                <span class="navbar-text">
+                    {{ game.name }} - {{ hml_name|capitalize }} Mode - Limit: {{ limit }}
+                </span>
+            </div>
+        </nav>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h3>{{ game.name }} Display - Limit {{ limit }}</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-nav">
+                            <a href="#unsorted{{ limit }}" class="btn btn-sm btn-outline-primary mr-2">Unsorted {{ limit }}</a>
+                            <a href="#sorted{{ limit }}" class="btn btn-sm btn-outline-primary mr-2">Sorted {{ limit }}</a>
+                            <a href="#pairs{{ limit }}" class="btn btn-sm btn-outline-primary mr-2">Pairs {{ limit }}</a>
+                            <a href="#rank{{ limit }}" class="btn btn-sm btn-outline-primary mr-2">Rank {{ limit }}</a>
+                            <a href="#grid{{ limit }}" class="btn btn-sm btn-outline-primary">Grid {{ limit }}</a>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered table-hover table-fixed">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th width="40">#</th>
+                                        <th>Date</th>
+                                        {% for i in range(1, game.balls_drawn + 1) %}
+                                        <th>B{{ i }}</th>
+                                        {% endfor %}
+                                        {% if game.mega_balls %}
+                                        <th>MB</th>
+                                        {% endif %}
+                                        <th>Sum</th>
+                                        <th>Even</th>
+                                        <th>Odd</th>
+                                        <th>Avg</th>
+                                        <th>Med</th>
+                                        <th>HarM</th>
+                                        <th>GeoM</th>
+                                        <th>Q1</th>
+                                        <th>Q2</th>
+                                        <th>Q3</th>
+                                        <th>StDev</th>
+                                        <th>Var</th>
+                                        <th>AvDev</th>
+                                        <th>Kurt</th>
+                                        <th>Skew</th>
+                                        <th>Y1</th>
+                                        <th>WA</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for draw in draws %}
+                                    <tr>
+                                        <td class="text-center"><strong>{{ loop.index }}</strong></td>
+                                        <td>{{ draw.date }}</td>
+                                        {% for num in draw.numbers %}
+                                        <td class="text-center">{{ num }}</td>
+                                        {% endfor %}
+                                        {% if game.mega_balls %}
+                                        <td class="text-center"><strong>{{ draw.mb }}</strong></td>
+                                        {% endif %}
+                                        <td class="text-center {% if draw.sum < 74 or draw.sum > 144 %}danger-value{% endif %}">{{ draw.sum }}</td>
+                                        <td class="text-center {% if draw.even < 1 %}danger-value{% endif %}">{{ draw.even }}</td>
+                                        <td class="text-center {% if draw.odd < 1 %}danger-value{% endif %}">{{ draw.odd }}</td>
+                                        <td class="text-center">{{ draw.stats.average }}</td>
+                                        <td class="text-center">{{ draw.stats.median }}</td>
+                                        <td class="text-center">{{ draw.stats.harmean }}</td>
+                                        <td class="text-center">{{ draw.stats.geomean }}</td>
+                                        <td class="text-center">{{ draw.stats.quart1 }}</td>
+                                        <td class="text-center">{{ draw.stats.quart2 }}</td>
+                                        <td class="text-center">{{ draw.stats.quart3 }}</td>
+                                        <td class="text-center">{{ draw.stats.stdev }}</td>
+                                        <td class="text-center">{{ draw.stats.variance }}</td>
+                                        <td class="text-center">{{ draw.stats.avedev }}</td>
+                                        <td class="text-center">{{ draw.stats.kurt }}</td>
+                                        <td class="text-center">{{ draw.stats.skew }}</td>
+                                        <td class="text-center">{{ draw.stats.avedev }}</td>
+                                        <td class="text-center">{{ draw.wa }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot class="thead-light">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Date</th>
+                                        {% for i in range(1, game.balls_drawn + 1) %}
+                                        <th>B{{ i }}</th>
+                                        {% endfor %}
+                                        {% if game.mega_balls %}
+                                        <th>MB</th>
+                                        {% endif %}
+                                        <th>Sum</th>
+                                        <th>Even</th>
+                                        <th>Odd</th>
+                                        <th>Avg</th>
+                                        <th>Med</th>
+                                        <th>HarM</th>
+                                        <th>GeoM</th>
+                                        <th>Q1</th>
+                                        <th>Q2</th>
+                                        <th>Q3</th>
+                                        <th>StDev</th>
+                                        <th>Var</th>
+                                        <th>AvDev</th>
+                                        <th>Kurt</th>
+                                        <th>Skew</th>
+                                        <th>Y1</th>
+                                        <th>WA</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a name="unsorted{{ limit }}"></a>
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h3>Unsorted Number Counts - {{ limit }} Draws</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-nav">
+                            <a href="#unsorted{{ limit }}" class="btn btn-sm btn-outline-primary mr-2">Unsorted {{ limit }}</a>
+                            <a href="#sorted{{ limit }}" class="btn btn-sm btn-outline-primary mr-2">Sorted {{ limit }}</a>
+                            <a href="#pairs{{ limit }}" class="btn btn-sm btn-outline-primary mr-2">Pairs {{ limit }}</a>
+                            <a href="#rank{{ limit }}" class="btn btn-sm btn-outline-primary mr-2">Rank {{ limit }}</a>
+                            <a href="#grid{{ limit }}" class="btn btn-sm btn-outline-primary">Grid {{ limit }}</a>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Number</th>
+                                        {% for i in range(1, 11) %}
+                                        <th>{{ i }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for row in range(0, (game.balls // 10) + 1) %}
+                                    <tr>
+                                        <th>{{ row * 10 + 1 }}-{{ min((row + 1) * 10, game.balls) }}</th>
+                                        {% for col in range(1, 11) %}
+                                            {% set num = row * 10 + col %}
+                                            {% if num <= game.balls %}
+                                                {% set count_found = false %}
+                                                {% for stat in number_stats %}
+                                                    {% if stat.number == num %}
+                                                        {% set count_found = true %}
+                                                        <td class="text-center {% if stat.count >= 4 %}bg-success text-white{% endif %}">
+                                                            {{ stat.count }}
+                                                        </td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                                {% if not count_found %}
+                                                    <td class="text-center">0</td>
+                                                {% endif %}
+                                            {% else %}
+                                                <td></td>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a name="sorted{{ limit }}"></a>
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h3>Sorted Number Counts - {{ limit }} Draws</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-nav">
+                            <a href="#unsorted{{ limit }}" class="btn btn-sm btn-outline-primary mr-2">Unsorted {{ limit }}</a>
+                            <a href="#sorted{{ limit }}" class="btn btn-sm btn-outline-primary mr-2">Sorted {{ limit }}</a>
+                            <a href="#pairs{{ limit }}" class="btn btn-sm btn-outline-primary mr-2">Pairs {{ limit }}</a>
+                            <a href="#rank{{ limit }}" class="btn btn-sm btn-outline-primary mr-2">Rank {{ limit }}</a>
+                            <a href="#grid{{ limit }}" class="btn btn-sm btn-outline-primary">Grid {{ limit }}</a>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Number</th>
+                                        <th>Count</th>
+                                        <th>Frequency (%)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for stat in number_stats %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ stat.number }}</td>
+                                        <td>{{ stat.count }}</td>
+                                        <td>{{ stat.frequency }}%</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a name="rank{{ limit }}"></a>
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <a href="{{ url_for('rank', game_id=game.id, limit=limit) }}" class="btn btn-lg btn-warning">
+                    View Detailed Rank Analysis
+                </a>
+            </div>
+        </div>
+
+        <a name="pairs{{ limit }}"></a>
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <a href="{{ url_for('pairs', game_id=game.id, limit=limit) }}" class="btn btn-lg btn-info">
+                    View Detailed Pair Analysis
+                </a>
+            </div>
+        </div>
+
+        <a name="grid{{ limit }}"></a>
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <a href="{{ url_for('grid', game_id=game.id, limit=limit) }}" class="btn btn-lg btn-danger">
+                    View Detailed Grid Analysis
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/jquery-3.5.1.slim.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

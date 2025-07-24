@@ -1,0 +1,193 @@
+<?php
+	$table_temp = 'combo_5a_' . $balls . '_' . $row3[numx] . '_' . $row3[even] . '_' . $row3[odd];
+
+	$curr_date_dash = date("Y-m-d");
+
+	$rank_table_limits = array_fill (0,8,0);
+
+	# copy current table into dated table ###############################################################
+	$curr_date = date("ymd");
+
+	$table_temp_date = $table_temp . "_" . $curr_date;
+
+	$query = "DROP TABLE IF EXISTS $table_temp_date";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$query_copy = "CREATE TABLE $table_temp_date SELECT * FROM $table_temp";
+
+	#echo "$query_copy<br>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query_copy) or die (mysqli_error($mysqli_link));
+
+	#####################################################################################################
+	
+	print("<h3>Count - SumEO = $row3[numx],$row3[even],$row3[odd]</h3>\n");
+	#print("<P>");
+	print("<TABLE BORDER=\"1\">\n");
+
+	$query1 = "SELECT * FROM ga_f5_rank_table ";
+	$query1 .= "WHERE date = '$curr_date_dash' "; 
+	$query1 .= "AND   draw_limit = '30' ";
+	
+	echo "$query1<p>";
+
+	$mysqli_result1 = mysqli_query($mysqli_link, $query1) or die (mysqli_error($mysqli_link));
+
+	$row1 = mysqli_fetch_array($mysqli_result1);
+
+	for ($a = 0; $a <=7; $a++)
+	{
+		if ($row1[$a] = 0)
+		{
+			$rank_table_limits[$a] = 0;
+		} elseif ($row1[$a] >= 1 AND $row1[$a] <= 3) {
+			$rank_table_limits[$a] = 1;
+		} elseif ($row1[$a] >= 6 AND $row1[$a] <= 8) {
+			$rank_table_limits[$a] = 2;
+		} else {
+			$rank_table_limits[$a] = 3;
+		}
+			
+	}
+
+	$query89 = "SELECT * FROM ga_f5_dup_100 ";
+	$query89 .= "WHERE dcount = 2 "; #3
+	$query89 .= "AND count >= 10 "; #7/8
+	$query89 .= "ORDER BY count DESC ";
+	
+	echo "$query89<p>";
+
+	$mysqli_result89 = mysqli_query($mysqli_link, $query89) or die (mysqli_error($mysqli_link));
+
+	// get each row
+	while($row89 = mysqli_fetch_array($mysqli_result89))
+	{
+		//create header row
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Combin</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>b1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>b2</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>b3</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>b4</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>b5</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Count</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>y1_sum</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>comb2</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>comb3</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>comb4</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>comb5</center></TD>\n");
+		print("</B></TR>\n");
+
+		$temp3 = $row89[dup2]+1;
+		$temp4 = $temp3+1;
+
+		############################################################################################
+		$query10 = "SELECT * FROM $table_temp a ";
+		$query10 .= "JOIN combo_5_42_dup_table b ";
+		$query10 .= "ON  a.id = b.id ";
+		$query10 .= "WHERE comb2 >= 9 AND comb5 = 0 ";
+		#$query10 .= "AND   b1 <= '4' ";
+		#$query10 .= "AND rank0 <= $rank_table_limits[0] 
+		#AND rank1 <= $rank_table_limits[1] 
+		#AND rank2 <= $rank_table_limits[2] 
+		#AND rank3 <= $rank_table_limits[3] 
+		#AND rank4 <= $rank_table_limits[4] 
+		#AND rank5 <= $rank_table_limits[5] 
+		#AND rank6 <= $rank_table_limits[6] 
+		#AND rank7 <= $rank_table_limits[7] ";
+		$query10 .= "AND a.rank0 <= 0
+		AND a.rank1 <= 1 
+		AND a.rank2 <= 2
+		AND a.rank3 <= 3
+		AND a.rank4 <= 3 
+		AND a.rank5 <= 2
+		AND a.rank6 <= 1 
+		AND a.rank7 <= 1 ";
+		#$query10 .= "AND dup1 = $row89[dup1] AND dup2 = $row89[dup2] AND dup3 = $row89[dup3]";
+		$query10 .= "AND b.dup1 = $row89[dup1] AND b.dup2 = $row89[dup2] 
+		AND b.dup3 <= $temp3 AND b.dup4 <= $temp3 AND b.dup23 >= 4 and b.dup33 = 5";
+
+		$query10 .= " AND a.comb2 = '10' ";
+		$query10 .= " AND a.comb3 >= '2' ";
+		$query10 .= " AND a.comb3 <= '5' ";
+		$query10 .= " AND a.comb4 = '0' ";
+		$query10 .= " AND A.comb5 = '0' ";
+
+		$query10 .= " AND a.last_updated = '$curr_date' ";
+		
+		$query10 .= "ORDER BY a.y1_sum DESC ";
+		$query10 .= "LIMIT 10 ";
+		
+		echo "$query10<p>";
+
+		$mysqli_result10 = mysqli_query($mysqli_link, $query10) or die (mysqli_error($mysqli_link));
+
+		// get each row
+		while($row10 = mysqli_fetch_array($mysqli_result10))
+		{
+			print("<TR>\n");
+			print("<TD><center>$row10[combin]</center></TD>\n");
+			print("<TD ><center>$row10[b1]</center></TD>\n");
+			print("<TD ><center>$row10[b2]</center></TD>\n");
+			print("<TD ><center>$row10[b3]</center></TD>\n");
+			print("<TD ><center>$row10[b4]</center></TD>\n");
+			print("<TD ><center>$row10[b5]</center></TD>\n");
+			print("<TD align=center>1</TD>\n");
+			if ($row10[y1_sum] >= 25.5)
+			{
+				print("<TD align=center><b>$row10[y1_sum]</b></TD>\n");
+			} else {
+				print("<TD align=center>$row10[y1_sum]</TD>\n");
+			}
+
+			print("<TD align=center>$row10[comb2]</TD>\n");
+			print("<TD align=center>$row10[comb3]</TD>\n");
+			print("<TD align=center>$row10[comb4]</TD>\n");
+			print("<TD align=center>$row10[comb4]</TD>\n");
+			
+			print("<TD align=center>$row10[dup1]</TD>\n");
+			print("<TD align=center>$row10[dup2]</TD>\n");
+			print("<TD align=center>$row10[dup3]</TD>\n");
+			print("<TD align=center>$row10[dup4]</TD>\n");
+
+			print("<TD ><center>$row10[rank0]</center></TD>\n");
+			print("<TD ><center>$row10[rank1]</center></TD>\n");
+			print("<TD ><center>$row10[rank2]</center></TD>\n");
+			print("<TD ><center>$row10[rank3]</center></TD>\n");
+			print("<TD ><center>$row10[rank4]</center></TD>\n");
+			print("<TD ><center>$row10[rank5]</center></TD>\n");
+			print("<TD ><center>$row10[rank6]</center></TD>\n");
+			print("<TD ><center>$row10[rank7]</center></TD>\n");
+
+			print("</TR>\n");
+		}
+
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Combin</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>b1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>b2</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>b3</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>b4</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>b5</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Count</center></TD>\n");
+		print("</B></TR>\n");
+	}
+
+	/*
+	print("<TR><B>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Combin</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b1</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b2</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b3</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b4</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b5</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Count</center></TD>\n");
+	print("</B></TR>\n");
+	*/
+
+	#die();
+
+	//end table
+	#print("</TABLE>\n");
+?>

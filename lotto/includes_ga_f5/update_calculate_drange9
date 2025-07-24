@@ -1,0 +1,38 @@
+<?php
+	$query8 = "SELECT * FROM $draw_prefix";
+	$query8 .= "draws_draw9 ";
+	$query8 .= "WHERE date = '$row[0]' ";
+
+	#print("$query9<br>");
+	
+	$mysqli_result9 = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+	
+	$num_rows9 = mysqli_num_rows($mysqli_result9);
+
+	if (!$num_rows9)
+	{
+		calculate_drange9($draw,$d1,$d2,$d3,$d4,$d5,$d6,$d7,$d8,$d9,$balls);
+
+		$query9 = "INSERT INTO $draw_prefix";
+		$query9 .= "draws_draw9 ";
+		$query9 .= "VALUES('0', ";
+		$query9 .= "'$row[0]', ";
+		$query9 .= "'$d1', ";
+		$query9 .= "'$d2', ";
+		$query9 .= "'$d3', ";
+		$query9 .= "'$d4', ";
+		$query9 .= "'$d5', ";
+		$query9 .= "'$d6', ";
+		$query9 .= "'$d7', ";
+		$query9 .= "'$d8', ";
+		$query9 .= "'$d9') ";
+
+		#print("$query9<br>");
+
+		$mysqli_result9 = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link)); 
+
+		print("<FONT COLOR=RED><H4>*** drange9 $row[0] updated ***</H4></FONT>\n");
+	}
+
+	#die();
+?>

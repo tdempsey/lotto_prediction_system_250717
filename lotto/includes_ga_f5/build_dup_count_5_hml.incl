@@ -1,0 +1,144 @@
+<?php
+
+	$curr_date = date('Y-m-d');
+
+	$drop_tables = 1;
+	
+	if ($drop_tables)
+	{
+		$dup_table = "ga_f5_dup_count5_5_42_";
+		$dup_table .= "$hml";
+
+		$query = "DROP TABLE IF EXISTS temp_dup_";
+		$query .= "$hml ";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query =  "CREATE TABLE IF NOT EXISTS  temp_dup_";
+		$query .= "$hml ( ";
+		$query .= "  `id` int(10) unsigned NOT NULL auto_increment, ";
+		$query .= "  `dup1` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `dup2` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `dup3` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `dup4` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `dup5` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `date` date NOT NULL default '1962-08-17', ";
+		$query .= "  PRIMARY KEY  (`id`) ";
+		$query .= ") ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 "; 
+
+		#print("$query<p>");
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query = "DROP TABLE IF EXISTS $dup_table";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query =  "CREATE TABLE IF NOT EXISTS  $dup_table (";
+		$query .= "  `id` int(10) unsigned NOT NULL auto_increment, ";
+		$query .= "  `dup1` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `dup2` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `dup3` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `dup4` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `dup5` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `date` date NOT NULL default '1962-08-17', ";
+		$query .= "  `count` int(3) unsigned NOT NULL default '0', ";
+		$query .= "  PRIMARY KEY  (`id`) ";
+		$query .= ") ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 "; 
+
+		#print("$query<p>");
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+	}
+
+	$row = array_fill (0,7,0);
+
+	$max_num = 75;
+
+	print("<p align=\"center\"><b><font face=\"Arial, Helvetica, sans-serif\">Build dup count5 5/$max_num</font></b></p>");
+
+	#last 30
+	$query_temp = "SELECT * FROM ga_f5_dup_table ";
+	$query_temp .= "ORDER BY DATE desc LIMIT 90 ";
+
+	echo "a- $query_temp<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query_temp) or die (mysqli_error($mysqli_link));
+
+	while($row = mysqli_fetch_array($mysqli_result))
+	{
+		$query = "INSERT INTO temp_dup_";
+		$query .= "$hml ";
+		$query .= "VALUES ('0', ";
+		$query .= "'$row[dup1]', ";
+		$query .= "'$row[dup2]', ";
+		$query .= "'$row[dup3]', ";
+		$query .= "'$row[dup4]', ";
+		$query .= "'$row[dup5]', ";
+		$query .= "'$row[0]') ";
+		#print "$query<br>";
+		
+		$mysqli_result2 = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$last_date = $row[0];
+
+		#echo "$query<br>";
+	}
+	
+	####################################################################################################3
+
+	#$query_temp = "SELECT DISTINCT dup1,dup2,dup3,dup4 FROM temp_dup ";
+	$query_temp = "SELECT DISTINCT dup1,dup2,dup3,dup4,dup5 FROM temp_dup_";
+	$query_temp .= "$hml ";
+
+	#echo "$query_temp<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query_temp) or die (mysqli_error($mysqli_link));
+
+	while($row = mysqli_fetch_array($mysqli_result))
+	{
+
+		$query_temp = "SELECT * FROM ga_f5_dup_table ";
+		$query_temp .= "WHERE dup1 = $row[dup1] ";
+		$query_temp .= "AND   dup2 = $row[dup2] ";
+		$query_temp .= "AND   dup3 = $row[dup3] ";
+		$query_temp .= "AND   dup4 = $row[dup4] ";
+		$query_temp .= "AND   dup5 = $row[dup5] ";
+		$query_temp .= "AND   date >= '$last_date' ";
+		$query_temp .= "ORDER BY DATE desc ";
+
+		#echo "$query_temp<p>";
+
+		$mysqli_result_temp = mysqli_query($mysqli_link, $query_temp) or die (mysqli_error($mysqli_link));
+
+		$row_temp = mysqli_fetch_array($mysqli_result_temp);
+
+		$num_rows_temp = mysqli_num_rows($mysqli_result_temp);
+
+		$query = "INSERT INTO $dup_table ";
+		$query .= "VALUES ('0', ";;
+		$query .= "'$row_temp[dup1]', ";
+		$query .= "'$row_temp[dup2]', ";
+		$query .= "'$row_temp[dup3]', ";
+		$query .= "'$row_temp[dup4]', ";
+		$query .= "'$row_temp[dup5]', ";
+		$query .= "'$row_temp[date]', ";
+		$query .= "'$num_rows_temp') ";
+
+		#print "$query<br>";
+		
+		$mysqli_result2 = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+	}
+
+	$query_temp = "SELECT * FROM $dup_table ";
+	$query_temp .= "ORDER BY count DESC, dup1 ASC, dup2 ASC, dup3 ASC, dup4 ASC, dup5 ASC ";
+
+	#echo "$query_temp<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query_temp) or die (mysqli_error($mysqli_link));
+
+	while($row = mysqli_fetch_array($mysqli_result))
+	{
+		echo "$row[dup1],$row[dup2],$row[dup3],$row[dup4],$row[dup5] - <b>$row[count]</b><br>";
+	}
+?>

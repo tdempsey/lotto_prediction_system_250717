@@ -1,0 +1,272 @@
+<?php
+		$even_low = 2;
+		$even_high = 3;
+		$odd_low = 2;
+		$odd_high = 3;
+		$d2_1_low = 2;
+		$d2_1_high = 3;
+		$d2_2_low = 2;
+		$d2_2_high = 3;
+		$d0_low = 2;
+		$d0_high = 2;
+		$d1_low = 2;
+		$d1_high = 2;
+		$d2_low = 2;
+		$d2_high = 2;
+		$d3_low = 2;
+		$d3_high = 2;
+		$d4_low = 2;
+		$d4_high = 2;
+		$d5_low = 2;
+		$d5_high = 2;
+		$b1_low = 59;
+		$b1_high = 1;
+		$b2_low = 59;
+		$b2_high = 1;
+		$b3_low = 59;
+		$b3_high = 1;
+		$b4_low = 59;
+		$b4_high = 1;
+		$b5_low = 59;
+		$b5_high = 1;
+
+		$rank0_low = 1000.0;
+		$rank0_high = 0.0;
+		$rank1_low = 1000.0;
+		$rank1_high = 0.0;
+		$rank2_low = 1000.0;
+		$rank2_high = 0.0;
+		$rank3_low = 1000.0;
+		$rank3_high = 0.0;
+		$rank4_low = 1000.0;
+		$rank4_high = 0.0;
+		$rank5_low = 1000.0;
+		$rank5_high = 0.0;
+		$rank6_low = 1000.0;
+		$rank6_high = 0.0;
+
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$curr_date' ";
+		if ($hml)
+		{
+			$query .= "AND   sum >= $range_low  ";
+			$query .= "AND   sum <= $range_high  ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 ";
+
+		print "$query<br>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			if ($row[even] < $even_low)
+			{
+				$even_low = $row[even];
+			}
+
+			if ($row[even] > $even_high)
+			{
+				$even_high = $row[even];
+			}
+
+			if ($row[odd] < $odd_low)
+			{
+				$odd_low = $row[odd];
+			}
+
+			if ($row[odd] > $odd_high)
+			{
+				$odd_high = $row[odd];
+			}
+
+			if ($row[d2_1] < $d2_1_low)
+			{
+				$d2_1_low = $row[d2_1];
+			}
+
+			if ($row[d2_1] > $d2_1_high)
+			{
+				$d2_1_high = $row[d2_1];
+			}
+
+			if ($row[d2_2] < $d2_2_low)
+			{
+				$d2_2_low = $row[d2_2];
+			}
+
+			if ($row[d2_2] > $d2_2_high)
+			{
+				$d2_2_high = $row[d2_2];
+			}
+
+			if ($row[draw0] < $d0_low)
+			{
+				$d0_low = $row[draw0];
+			}
+
+			if ($row[draw0] > $d0_high)
+			{
+				$d0_high = $row[draw0];
+			}
+
+			if ($row[draw1] < $d1_low)
+			{
+				$d1_low = $row[draw1];
+			}
+
+			if ($row[draw1] > $d1_high)
+			{
+				$d1_high = $row[draw1];
+			}
+
+			if ($row[draw2] < $d2_low)
+			{
+				$d2_low = $row[draw2];
+			}
+
+			if ($row[draw2] > $d2_high)
+			{
+				$d2_high = $row[draw2];
+			}
+
+			if ($row[draw3] < $d3_low)
+			{
+				$d3_low = $row[draw3];
+			}
+
+			if ($row[draw3] > $d3_high)
+			{
+				$d3_high = $row[draw3];
+			}
+
+			if ($row[draw4] < $d4_low)
+			{
+				$d4_low = $row[draw4];
+			}
+
+			if ($row[draw4] > $d4_high)
+			{
+				$d4_high = $row[draw4];
+			}
+
+			if ($row[draw5] < $d5_low)
+			{
+				$d5_low = $row[draw5];
+			}
+
+			if ($row[draw5] > $d5_high)
+			{
+				$d5_high = $row[draw5];
+			}
+
+			if ($row[b1] < $b1_low)
+			{
+				$b1_low = $row[b1];
+			}
+
+			if ($row[b1] > $b1_high)
+			{
+				$b1_high = $row[b1];
+			}
+
+			if ($row[b2] < $b2_low)
+			{
+				$b2_low = $row[b2];
+			}
+
+			if ($row[b2] > $b2_high)
+			{
+				$b2_high = $row[b2];
+			}
+
+			if ($row[b3] < $b3_low)
+			{
+				$b3_low = $row[b3];
+			}
+
+			if ($row[b3] > $b3_high)
+			{
+				$b3_high = $row[b3];
+			}
+
+			if ($row[b4] < $b4_low)
+			{
+				$b4_low = $row[b4];
+			}
+
+			if ($row[b4] > $b4_high)
+			{
+				$b4_high = $row[b4];
+			}
+
+			if ($row[b5] < $b5_low)
+			{
+				$b5_low = $row[b5];
+			}
+
+			if ($row[b5] > $b5_high)
+			{
+				$b5_high = $row[b5];
+			}
+
+			$rank_count = array (0);
+
+			$rank_count = BuildRankTable($row[0]); // array 0..balls with total draws for last 26
+
+			$rank_table_count = array_fill (0, 7, 0);
+
+			for($z = 1; $z <= $balls; $z++)
+			{
+				if ($rank_count[$z] >= 6)
+				{
+					$rank_table_count[6]++;
+				} else {
+					$rank_table_count[$rank_count[$z]]++;
+				}
+			}
+
+			$draw_rank_count = array_fill (0, 7, 0);
+
+			for($y = 1; $y <= $balls_drawn; $y++)
+			{
+				if ($rank_count[$row[$y]] >= 6)
+				{
+					$draw_rank_count[6]++;
+				} else {
+					$draw_rank_count[$rank_count[$row[$y]]]++;
+				}
+			}
+
+			for($x = 0; $x <= 6; $x++)
+			{
+				if ($rank_table_count[$x])
+				{
+					$temp_rank = ($draw_rank_count[$x] * $balls) / $rank_table_count[$x];
+				} else {
+					$temp_rank = 0.0;
+				}
+
+				#echo "$x - temp_rank = $temp_rank<br>";
+
+				if ($temp_rank < ${"rank" . $x . "_low"})
+				{
+					${"rank" . $x . "_low"} = $temp_rank;
+				}
+
+				if ($temp_rank > ${"rank" . $x . "_high"})
+				{
+					${"rank" . $x . "_high"} = $temp_rank;
+				}
+			}
+
+			for($x = 0; $x < 0; $x++)
+			{
+				echo "rank$x";
+				echo "_low = ${'rank' . $x . '_low'}<br>";
+				echo "rank$x";
+				echo "_high = ${'rank' . $x . '_high'}<br>";
+			}
+		}
+?>

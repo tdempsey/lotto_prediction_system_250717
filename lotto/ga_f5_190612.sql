@@ -1,0 +1,2 @@
+SELECT * FROM `combo_5_42` WHERE `rank0` <= 1 AND `rank1` <= 1 AND `rank2` <= 3 AND `rank3` <= 3 AND `rank4` <= 2 AND `rank5` <= 1 AND `rank6` <= 1 AND `mod_tot` <= 1 AND `seq2` <= 1 AND `seq3` = 0 AND `comb2` = 10 AND `comb3` >= 8 AND `comb4` <= 2 AND `dup1` <= 1 AND `dup2` <= 1 AND `dup3` <= 2 AND `dup4` <= 2 AND `dup22` >= 4 AND `dup25` = 5 AND `last_updated` = '2019-06-12' ORDER BY `combo_5_42`.`y1_sum` DESC
+	

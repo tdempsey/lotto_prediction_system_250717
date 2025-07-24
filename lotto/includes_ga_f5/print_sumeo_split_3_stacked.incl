@@ -1,0 +1,161 @@
+<?php
+	$table_temp = 'combo_3a_' . $balls . '_' . $row3[numx] . '_' . $row3[even] . '_' . $row3[odd];
+
+	print("<h3>Count - SumEO = $row3[numx],$row3[even],$row3[odd]</h3>\n");
+	#print("<P>");
+	print("<TABLE BORDER=\"1\">\n");
+
+	//create header row
+	print("<TR><B>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Combin</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b1</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b2</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b3</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b4</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b5</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Count</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Y1</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Dup1</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Dup2</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Dup3</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Dup4</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>r0</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>r1</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>r2</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>r3</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>r4</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>r5</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>r6</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>r7</center></TD>\n");
+	print("</B></TR>\n");
+
+	$query8 = "SELECT DISTINCT combin,b1,b2,b3,s61510,y1_sum FROM $table_temp ";
+	$query8 .= "WHERE combin= $combin ";
+	$query8 .= "ORDER BY y1_sum DESC, s61510 DESC "; 
+	$query8 .= "LIMIT 100 "; 
+	
+	#echo "$query8<p>";
+
+	$mysqli_result8 = mysqli_query($mysqli_link, $query8) or die (mysqli_error($mysqli_link));
+
+	// get each row
+	while($row8 = mysqli_fetch_array($mysqli_result8))
+	{
+		print("<TR>\n");
+		print("<TD><center>$row8[combin]</center></TD>\n");
+
+		switch ($combin) {
+			case 1:
+				print("<TD ><center>$row8[b1]</center></TD>\n");
+				print("<TD ><center>$row8[b2]</center></TD>\n");
+				print("<TD ><center>$row8[b3]</center></TD>\n");
+				print("<TD ><center>-</center></TD>\n");
+				print("<TD ><center>-</center></TD>\n");
+				break;
+			case 2:
+				print("<TD ><center>$row8[b1]</center></TD>\n");
+				print("<TD ><center>$row8[b2]</center></TD>\n");
+				print("<TD ><center>-</center></TD>\n");
+				print("<TD ><center>$row8[b3]</center></TD>\n");
+				print("<TD ><center>-</center></TD>\n");
+				break;
+			case 3:
+				print("<TD ><center>$row8[b1]</center></TD>\n");
+				print("<TD ><center>$row8[b2]</center></TD>\n");
+				print("<TD ><center>-</center></TD>\n");
+				print("<TD ><center>-</center></TD>\n");
+				print("<TD ><center>$row8[b3]</center></TD>\n");
+				break;
+			case 4:
+				print("<TD ><center>$row8[b1]</center></TD>\n");
+				print("<TD ><center>-</center></TD>\n");
+				print("<TD ><center>$row8[b2]</center></TD>\n");
+				print("<TD ><center>$row8[b3]</center></TD>\n");
+				print("<TD ><center>-</center></TD>\n");
+				break;
+			case 5:
+				print("<TD ><center>$row8[b1]</center></TD>\n");
+				print("<TD ><center>-</center></TD>\n");
+				print("<TD ><center>$row8[b2]</center></TD>\n");
+				print("<TD ><center>-</center></TD>\n");
+				print("<TD ><center>$row8[b3]</center></TD>\n");
+				break;
+			case 6:
+				print("<TD ><center>$row8[b1]</center></TD>\n");
+				print("<TD ><center>-</center></TD>\n");
+				print("<TD ><center>-</center></TD>\n");
+				print("<TD ><center>$row8[b2]</center></TD>\n");
+				print("<TD ><center>$row8[b3]</center></TD>\n");
+				break;
+			case 7:
+				print("<TD ><center>-</center></TD>\n");
+				print("<TD ><center>$row8[b1]</center></TD>\n");
+				print("<TD ><center>$row8[b2]</center></TD>\n");
+				print("<TD ><center>$row8[b3]</center></TD>\n");
+				print("<TD ><center>-</center></TD>\n");
+				
+				break;
+			case 8:
+				print("<TD ><center>-</center></TD>\n");
+				print("<TD ><center>$row8[b1]</center></TD>\n");
+				print("<TD ><center>$row8[b2]</center></TD>\n");
+				print("<TD ><center>-</center></TD>\n");
+				print("<TD ><center>$row8[b3]</center></TD>\n");
+				
+				break;
+			case 9:
+				
+				print("<TD ><center>-</center></TD>\n");
+				print("<TD ><center>$row8[b1]</center></TD>\n");
+				print("<TD ><center>-</center></TD>\n");
+				print("<TD ><center>$row8[b2]</center></TD>\n");
+				print("<TD ><center>$row8[b3]</center></TD>\n");
+				
+				break;
+			case 10:
+				print("<TD ><center>-</center></TD>\n");
+				print("<TD ><center>-</center></TD>\n");
+				print("<TD ><center>$row8[b1]</center></TD>\n");
+				print("<TD ><center>$row8[b2]</center></TD>\n");
+				print("<TD ><center>$row8[b3]</center></TD>\n");
+				
+				break;
+		}
+
+		print("<TD align=center>$row8[s61510]</TD>\n");
+		print("<TD ><center>$row8[y1_sum]</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>-</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>-</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>-</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>-</center></TD>\n");
+		print("</TR>\n");
+
+		#require ("includes_ga_f5/print_sumeo_split_3_stacked_4.incl");
+		require ("includes_ga_f5/print_sumeo_split_3_stacked_5.incl");
+	}
+
+	print("<TR><B>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Combin</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b1</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b2</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b3</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b4</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b5</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Count</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Y1</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Dup1</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Dup2</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Dup3</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Dup4</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>r1</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>r2</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>r3</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>r4</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>r5</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>r6</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>r7</center></TD>\n");
+	print("</B></TR>\n");
+
+	//end table
+	print("</TABLE>\n");
+?>

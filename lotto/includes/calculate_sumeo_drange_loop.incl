@@ -1,0 +1,326 @@
+<?php
+	for ($x = 28; $x <= 179; $x++)
+	{
+		$query2 = "SELECT * FROM $draw_table_name a ";
+		$query2 .= "JOIN  ga_f5_draws_draw";
+		$query2 .= "$drange b ";
+		$query2 .= "WHERE a.date = b.draw_date ";
+		$query2 .= "AND   a.sum = $x ";
+		$query2 .= "AND   a.even = $row7[even] ";
+		$query2 .= "AND   a.odd  = $row7[odd] ";
+
+		switch ($drange) {
+			case 2:
+				$query2 .= "AND   b.d2_1 = $row6[1] ";
+				$query2 .= "AND   b.d2_2 = $row6[2] ";
+				break;
+			case 3:
+				$query2 .= "AND   b.d3_1 = $row6[1] ";
+				$query2 .= "AND   b.d3_2 = $row6[2] ";
+				$query2 .= "AND   b.d3_3 = $row6[3] ";
+				break;
+			case 4:
+				$query2 .= "AND   b.d4_1 = $row6[1] ";
+				$query2 .= "AND   b.d4_2 = $row6[2] ";
+				$query2 .= "AND   b.d4_3 = $row6[3] ";
+				$query2 .= "AND   b.d4_4 = $row6[4] ";
+				break;
+			case 5:
+				$query2 .= "AND   b.d5_1 = $row6[1] ";
+				$query2 .= "AND   b.d5_2 = $row6[2] ";
+				$query2 .= "AND   b.d5_3 = $row6[3] ";
+				$query2 .= "AND   b.d5_4 = $row6[4] ";
+				$query2 .= "AND   b.d5_5 = $row6[5] ";
+				break;
+			case 6:
+				$query2 .= "AND   b.d6_1 = $row6[1] ";
+				$query2 .= "AND   b.d6_2 = $row6[2] ";
+				$query2 .= "AND   b.d6_3 = $row6[3] ";
+				$query2 .= "AND   b.d6_4 = $row6[4] ";
+				$query2 .= "AND   b.d6_5 = $row6[5] ";
+				$query2 .= "AND   b.d6_6 = $row6[6] ";
+				break;
+			case 7:
+				$query2 .= "AND   b.d7_1 = $row6[1] ";
+				$query2 .= "AND   b.d7_2 = $row6[2] ";
+				$query2 .= "AND   b.d7_3 = $row6[3] ";
+				$query2 .= "AND   b.d7_4 = $row6[4] ";
+				$query2 .= "AND   b.d7_5 = $row6[5] ";
+				$query2 .= "AND   b.d7_6 = $row6[6] ";
+				$query2 .= "AND   b.d7_7 = $row6[7] ";
+				break;
+			case 8:
+				$query2 .= "AND   b.d8_1 = $row6[1] ";
+				$query2 .= "AND   b.d8_2 = $row6[2] ";
+				$query2 .= "AND   b.d8_3 = $row6[3] ";
+				$query2 .= "AND   b.d8_4 = $row6[4] ";
+				$query2 .= "AND   b.d8_5 = $row6[5] ";
+				$query2 .= "AND   b.d8_6 = $row6[6] ";
+				$query2 .= "AND   b.d8_7 = $row6[7] ";
+				$query2 .= "AND   b.d8_8 = $row6[8] ";
+				break;
+			case 9:
+				$query2 .= "AND   b.d8_1 = $row6[1] ";
+				$query2 .= "AND   b.d8_2 = $row6[2] ";
+				$query2 .= "AND   b.d8_3 = $row6[3] ";
+				$query2 .= "AND   b.d8_4 = $row6[4] ";
+				$query2 .= "AND   b.d8_5 = $row6[5] ";
+				$query2 .= "AND   b.d8_6 = $row6[6] ";
+				$query2 .= "AND   b.d8_7 = $row6[7] ";
+				$query2 .= "AND   b.d8_8 = $row6[8] ";
+				$query2 .= "AND   b.d8_8 = $row6[9] ";
+				break;
+			case 10:
+				$query2 .= "AND   b.d8_1 = $row6[1] ";
+				$query2 .= "AND   b.d8_2 = $row6[2] ";
+				$query2 .= "AND   b.d8_3 = $row6[3] ";
+				$query2 .= "AND   b.d8_4 = $row6[4] ";
+				$query2 .= "AND   b.d8_5 = $row6[5] ";
+				$query2 .= "AND   b.d8_6 = $row6[6] ";
+				$query2 .= "AND   b.d8_7 = $row6[7] ";
+				$query2 .= "AND   b.d8_8 = $row6[8] ";
+				$query2 .= "AND   b.d8_8 = $row6[9] ";
+				$query2 .= "AND   b.d8_8 = $row6[10] ";
+				break;
+			default:
+				echo "drange = $drange - greater than 10<br>";
+				die();
+		}
+
+		$query2 .= "AND   a.date >= '2015-10-01' ";
+		$query2 .= "ORDER BY a.date ASC ";
+
+		#echo "$query2<br>";
+
+		$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+
+		$num_rows = mysqli_num_rows($mysqli_result2); 
+
+		#echo "num_rows = $num_rows<br>"; 
+
+		#$sum_tot_array = array_fill (0,16,0);
+		#$sum_tot_array = array_fill (0,300,$sum_tot_temp_array);
+
+		$sum_tot_temp_array = array_fill (0,16,0);
+		$sum_tot_array = array_fill (0,300,$sum_tot_temp_array);
+
+		$temp_count = 0;
+		
+		#while($row2 = mysqli_fetch_array($mysqli_result2))
+		while($row2 = mysqli_fetch_array($mysqli_result2))
+		{
+			# calculate unix date
+			#echo "row2[0] = $row2[0]<br>";
+			$draw_date_array = explode("-","$row2[0]"); ### 210104
+			$draw_date_unix = mktime (0,0,0,$draw_date_array[1],$draw_date_array[2],$draw_date_array[0]); ### 210104
+			
+			#$y = intval($row7[6]/10);
+			#echo "row2[6] = $row2[6]<br>";
+			#echo "draw_date_unix = $draw_date_unix<br>";
+			#echo "year1_unix = $year1_unix<br>";
+			
+			$y = $row2[6];
+
+			#echo "row2[sum] = $row2[sum]<br>";
+		
+			# calculate history
+			if ($draw_date_unix == $day1_unix)
+			{ 
+				for ($d = 0; $d <= 16; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $week1_unix) {
+				for ($d = 1; $d <= 16; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $week2_unix) {
+				for ($d = 2; $d <= 16; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $month1_unix) {
+				for ($d = 3; $d <= 16; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $month3_unix) {
+				for ($d = 4; $d <= 16; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $month6_unix) {
+				for ($d = 5; $d <= 16; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $year1_unix) {
+				for ($d = 6; $d <= 16; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $year2_unix) {
+				for ($d = 7; $d <= 16; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $year3_unix) { 
+				for ($d = 8; $d <= 16; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $year4_unix) { 
+				for ($d = 9; $d <= 16; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $year5_unix) { 
+				for ($d = 10; $d <= 16; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $year6_unix) { 
+				for ($d = 11; $d <= 16; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $d1510_unix) {
+				for ($d = 12; $d <= 16; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $year7_unix) {
+				for ($d = 13; $d <= 16; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $year8_unix) {
+				for ($d = 14; $d <= 16; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $year9_unix) {
+				for ($d = 15; $d <= 16; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $year10_unix) {
+				for ($d = 16; $d <= 16; $d++) {$sum_tot_array[$y][$d]++;}
+			}
+			
+			### 210110
+			#add 1 year to clear
+			if ($first_draw_unix > $year7_unix) {
+				for ($d = 14; $d <= 16; $d++) {$sum_tot_array[$y][$d]=0;}
+			} elseif ($first_draw_unix > $year8_unix) {
+				for ($d = 15; $d <= 16; $d++) {$sum_tot_array[$y][$d]=0;}
+			} elseif ($first_draw_unix > $year9_unix) {
+				for ($d = 16; $d <= 16; $d++) {$sum_tot_array[$y][$d]=0;}
+			} elseif ($first_draw_unix > $year10_unix) {
+				for ($d = 17; $d <= 17; $d++) {$sum_tot_array[$y][$d]=0;}
+			}
+
+			$draw++;
+		}
+
+		$temp_count = $sum_tot_array[$y][13];
+
+		#echo "temp_count = $temp_count<br>";
+
+		#echo "sum_tot_array - ";
+		#print_r($sum_tot_array);
+		#echo "<br>";
+
+		if ($temp_count)	###220411
+		{
+			$col_temp_y1 = number_format(($sum_tot_array[$y][6]/365)*100,2);
+			$col_temp_y5 = number_format(($sum_tot_array[$y][10]/(365*5))*100,2); #200910
+
+			$weighted_average = (
+				#($sum_tot_array[1]/7*100*0.10) + #week1
+				($sum_tot_array[$y][4]/90*100*0.15) +	    #month3	#211229
+				($sum_tot_array[$y][5]/(365/2)*100*0.15) +  #month6	#211229
+				($sum_tot_array[$y][6]/365*100*0.20) +      #year1	#211229
+				#($sum_tot_array[$y][8]/(365*3)*100*0.30) + #year3	#211229
+				($sum_tot_array[$y][11]/(365*5)*100*0.50)); #year5	#211229
+
+			#echo "col_temp_y1 = $col_temp_y1<br>"; 
+			#echo "col_temp_y5 = $col_temp_y5<br>";
+			#echo "weighted_average = $weighted_average<br>";
+
+			#print_r ($sum_tot_array);
+			#echo "<br>";
+
+			$query5 = "INSERT INTO $draw_prefix";
+			$query5 .= "sumeo_drange";	### 220317
+			$query5 .= "$drange ";
+			$query5 .= "VALUES ('0', ";
+			$query5 .= "'$x', ";
+			$query5 .= "'$row7[0]', ";
+			$query5 .= "'$row7[1]', ";
+
+			switch ($drange) {
+			case 2:
+				$query5 .= "$row6[1], ";
+				$query5 .= "$row6[2], ";
+				break;
+			case 3:
+				$query5 .= "$row6[1], ";
+				$query5 .= "$row6[2], ";
+				$query5 .= "$row6[3], ";
+				break;
+			case 4:
+				$query5 .= "$row6[1], ";
+				$query5 .= "$row6[2], ";
+				$query5 .= "$row6[3], ";
+				$query5 .= "$row6[4], ";
+				break;
+			case 5:
+				$query5 .= "$row6[1], ";
+				$query5 .= "$row6[2], ";
+				$query5 .= "$row6[3], ";
+				$query5 .= "$row6[4], ";
+				$query5 .= "$row6[5], ";
+				break;
+			case 6:
+				$query5 .= "$row6[1], ";
+				$query5 .= "$row6[2], ";
+				$query5 .= "$row6[3], ";
+				$query5 .= "$row6[4], ";
+				$query5 .= "$row6[5], ";
+				$query5 .= "$row6[6], ";
+				break;
+			case 7:
+				$query5 .= "$row6[1], ";
+				$query5 .= "$row6[2], ";
+				$query5 .= "$row6[3], ";
+				$query5 .= "$row6[4], ";
+				$query5 .= "$row6[5], ";
+				$query5 .= "$row6[6], ";
+				$query5 .= "$row6[7], ";
+				break;
+			case 8:
+				$query5 .= "$row6[1], ";
+				$query5 .= "$row6[2], ";
+				$query5 .= "$row6[3], ";
+				$query5 .= "$row6[4], ";
+				$query5 .= "$row6[5], ";
+				$query5 .= "$row6[6], ";
+				$query5 .= "$row6[7], ";
+				$query5 .= "$row6[8], ";
+				break;
+			case 9:
+				$query5 .= "$row6[1], ";
+				$query5 .= "$row6[2], ";
+				$query5 .= "$row6[3], ";
+				$query5 .= "$row6[4], ";
+				$query5 .= "$row6[5], ";
+				$query5 .= "$row6[6], ";
+				$query5 .= "$row6[7], ";
+				$query5 .= "$row6[8], ";
+				$query5 .= "$row6[9], ";
+				break;
+			case 10:
+				$query5 .= "$row6[1], ";
+				$query5 .= "$row6[2], ";
+				$query5 .= "$row6[3], ";
+				$query5 .= "$row6[4], ";
+				$query5 .= "$row6[5], ";
+				$query5 .= "$row6[6], ";
+				$query5 .= "$row6[7], ";
+				$query5 .= "$row6[8], ";
+				$query5 .= "$row6[9], ";
+				$query5 .= "$row6[10], ";
+				break;
+			default:
+				echo "drange = $drange - greater than 10<br>";
+				die();
+			}
+
+			for ($d = 0; $d <= 16; $d++)
+			{
+				$query5 .= "'{$sum_tot_array[$y][$d]}',";
+			}
+			$query5 .= "'0',"; 
+			$query5 .= "'$col_temp_y1',";
+			$query5 .= "'$col_temp_y5',";
+			$query5 .= "'$weighted_average')";
+			
+			#echo "$query5<p>";
+		
+			$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+		}
+	}
+
+	/*
+	# copy current table into dateDiff table
+	$currdate_ymd = Date('ymd');
+	$table_temp = $draw_prefix . 'sumeo_drange' . $drange;
+	$table_temp_date = $draw_prefix . '_' . 'sumeo_drange' . $drange . '_' .$currdate_ymd;
+
+	$query = "DROP TABLE IF EXISTS $table_temp_date ";
+
+	echo "$query<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$query_copy = "CREATE TABLE $table_temp_date SELECT * FROM $table_temp ";
+
+	echo "$query_copy<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query_copy) or die (mysqli_error($mysqli_link));
+	*/
+?>

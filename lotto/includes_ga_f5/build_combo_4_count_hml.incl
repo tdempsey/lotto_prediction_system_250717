@@ -1,0 +1,283 @@
+<?php
+
+	$curr_date = date('Y-m-d');
+
+	print_r ($rank_table_count);
+	echo "<br>";
+
+	$temp_rank_array = array_fill (0,7,0);
+
+	for ($r = 0; $r <= 6; $r++)
+	{
+		if ($rank_table_count[$r] <= 5) 
+		{
+			$temp_rank_array[$r] = 1;
+		} elseif ($rank_table_count[$r] <= 8) {
+			$temp_rank_array[$r] = 2;
+		} else {
+			$temp_rank_array[$r] = 3;
+		}
+	}
+
+	print_r ($temp_rank_array);
+	echo "<br>";
+
+	$drop_tables = 1;
+	
+	if ($drop_tables)
+	{
+		$combo_table = "ga_f5_combo_4_42_count";
+		$combo_table .= "$hml";
+
+		$query = "DROP TABLE IF EXISTS temp_combo_";
+		$query .= "$hml ";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query =  "CREATE TABLE IF NOT EXISTS  temp_combo_";
+		$query .= "$hml ( ";
+		$query .= "  `id` int(10) unsigned NOT NULL auto_increment, ";
+		$query .= "  `combo` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `b1` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `b2` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `b3` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `b4` tinyint(2) unsigned NOT NULL default '0', ";
+		#$query .= "  `date` date NOT NULL default '1962-08-17', ";
+		$query .= "  PRIMARY KEY  (`id`) ";
+		$query .= ") ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 "; 
+
+		#print("$query<p>");
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query = "DROP TABLE IF EXISTS $combo_table";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query =  "CREATE TABLE IF NOT EXISTS  $combo_table (";
+		$query .= "  `id` int(10) unsigned NOT NULL auto_increment, ";
+		$query .= "  `combo` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `b1` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `b2` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `b3` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `b4` tinyint(2) unsigned NOT NULL default '0', ";
+		#$query .= "  `date` date NOT NULL default '1962-08-17', ";
+		$query .= "  `count` int(3) unsigned NOT NULL default '0', ";
+		$query .= "  PRIMARY KEY  (`id`) ";
+		$query .= ") ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 "; 
+
+		#print("$query<p>");
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+	}
+
+	$query_temp = "SELECT * FROM combo_5_42 a ";
+	$query_temp .= "JOIN combo_5_42_dr6 b ";
+	$query_temp .= "ON a.id = b.id ";
+	$query_temp .= "WHERE a.sum = $row6[sum] "; 
+	$query_temp .= "AND   a.even = $row6[even]  ";
+	$query_temp .= "AND   a.odd  = $row6[odd]  ";
+	$query_temp .= "AND   b1  <= 7  ";
+	#require ("includes_ga_f5/rank_limit.incl");
+				$query_temp .= "AND   a.rank0 <= $temp_rank_array[0] ";
+				$query_temp .= "AND   a.rank1 <= $temp_rank_array[1] ";
+				$query_temp .= "AND   a.rank2 <= $temp_rank_array[2] ";
+				$query_temp .= "AND   a.rank3 <= $temp_rank_array[3] ";
+				$query_temp .= "AND   a.rank4 <= $temp_rank_array[4] ";
+				$query_temp .= "AND   a.rank5 <= $temp_rank_array[5] ";
+				$query_temp .= "AND   a.rank6 <= $temp_rank_array[6] ";
+	$query_temp .= "AND   a.comb2 = 10 ";
+	$query_temp .= "AND   a.comb3 >= 6 ";
+	$query_temp .= "AND   a.comb4 <= 2 ";
+	$query_temp .= "AND   a.comb5 = 0 ";
+	$query_temp .= "AND   a.dup1 = $row_dup[dup1] ";
+	$query_temp .= "AND   a.dup2 = $row_dup[dup2] ";
+	$query_temp .= "AND   a.dup3 <= ($row_dup[dup2]+1) ";
+	$query_temp .= "AND   a.dup11 >= 3 ";
+	$query_temp .= "AND   a.dup12 >= 4 ";
+	$query_temp .= "AND   last_updated = '$curr_date' ";
+	#$query_temp .= "ORDER BY a.id ASC ";
+
+	echo "a- $query_temp<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query_temp) or die (mysqli_error($mysqli_link));
+
+	while($row = mysqli_fetch_array($mysqli_result))
+	{
+		for ($c = 1; $c <= 5; $c++)
+		{
+			$query = "INSERT INTO temp_combo_";
+			$query .= "$hml ";
+			$query .= "VALUES ('0', ";
+			$query .= "$c, ";
+
+			switch ($c) { 
+				case 1: 
+				   $query .= "$row[1], ";
+				   $query .= "$row[2], ";
+				   $query .= "$row[3], ";
+				   $query .= "$row[4]) ";
+				   break; 
+				case 2: 
+				   $query .= "$row[1], ";
+				   $query .= "$row[2], ";
+				   $query .= "$row[3], ";
+				   $query .= "$row[5]) ";
+				   break; 
+				case 3: 
+				   $query .= "$row[1], ";
+				   $query .= "$row[2], ";
+				   $query .= "$row[4], ";
+				   $query .= "$row[5]) ";
+				   break;
+				case 4: 
+				   $query .= "$row[1], ";
+				   $query .= "$row[3], ";
+				   $query .= "$row[4], ";
+				   $query .= "$row[5]) ";
+				   break; 
+				case 5: 
+				   $query .= "$row[2], ";
+				   $query .= "$row[3], ";
+				   $query .= "$row[4], ";
+				   $query .= "$row[5]) ";
+				   break;
+			}
+
+			#print "$query<br>";
+				
+			$mysqli_result2 = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+		}
+	}
+	
+	####################################################################################################3
+
+	$query_temp2 = "SELECT DISTINCT combo, b1, b2, b3, b4 FROM temp_combo_";
+	$query_temp2 .= "$hml ";
+
+	#echo "$query_temp2<p>";
+
+	$mysqli_result7 = mysqli_query($mysqli_link, $query_temp2) or die (mysqli_error($mysqli_link));
+
+	while($row7 = mysqli_fetch_array($mysqli_result7))
+	{
+
+		$query_temp = "SELECT * FROM temp_combo_";
+		$query_temp .= "$hml ";
+		$query_temp .= "WHERE combo = $row7[combo] "; 
+		$query_temp .= "AND   b1 = $row7[b1]  ";
+		$query_temp .= "AND   b2 = $row7[b2]  ";
+		$query_temp .= "AND   b3 = $row7[b3]  ";
+		$query_temp .= "AND   b4 = $row7[b4]  ";
+		$query_temp .= "ORDER BY id ASC ";
+
+		#echo "$query_temp<p>";
+
+		$mysqli_result_temp = mysqli_query($mysqli_link, $query_temp) or die (mysqli_error($mysqli_link));
+
+		$row_temp = mysqli_fetch_array($mysqli_result_temp);
+
+		$num_rows_temp = mysqli_num_rows($mysqli_result_temp);
+
+		$query9 = "INSERT INTO $combo_table ";
+		$query9 .= "VALUES ('0', ";
+		$query9 .= "'$row7[combo]', ";
+		$query9 .= "'$row7[b1]', ";
+		$query9 .= "'$row7[b2]', ";
+		$query9 .= "'$row7[b3]', ";
+		$query9 .= "'$row7[b4]', ";
+		$query9 .= "'$num_rows_temp') ";
+
+		#print "$query9<br>";
+		
+		$mysqli_result9 = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+	}
+
+	for ($c = 1; $c <= 5; $c++)
+	{
+		$query_temp = "SELECT * FROM $combo_table ";
+		$query_temp .= "WHERE combo = $c ";
+		$query_temp .= "AND count > 3 ";
+		$query_temp .= "ORDER BY count DESC, b1 ASC, b2 ASC, b3 ASC, b4 ASC ";
+
+		#echo "$query_temp<p>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query_temp) or die (mysqli_error($mysqli_link));
+
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			echo "<h2>$row[b1],$row[b2],$row[b3],$row[b4] - <b>$row[count]</h2>";
+
+			$query5 = "SELECT * FROM combo_5_42 a ";
+			$query5 .= "JOIN combo_5_42_dr6 b ";
+			$query5 .= "ON a.id = b.id ";
+			$query5 .= "WHERE a.sum = $row6[sum] "; 
+			$query5 .= "AND   a.even = $row6[even]  ";
+			$query5 .= "AND   a.odd  = $row6[odd]  ";
+			$query5 .= "AND   b1  <= 7  ";
+			#require ("includes_ga_f5/rank_limit.incl");
+				$query5 .= "AND   a.rank0 <= $temp_rank_array[0] ";
+				$query5 .= "AND   a.rank1 <= $temp_rank_array[1] ";
+				$query5 .= "AND   a.rank2 <= $temp_rank_array[2] ";
+				$query5 .= "AND   a.rank3 <= $temp_rank_array[3] ";
+				$query5 .= "AND   a.rank4 <= $temp_rank_array[4] ";
+				$query5 .= "AND   a.rank5 <= $temp_rank_array[5] ";
+				$query5 .= "AND   a.rank6 <= $temp_rank_array[6] ";
+			$query5 .= "AND   a.comb2 = 10 ";
+			$query5 .= "AND   a.comb3 >= 6 ";
+			$query5 .= "AND   a.comb4 <= 2 ";
+			$query5 .= "AND   a.comb5 = 0 ";
+			$query5 .= "AND   a.dup1 = $row_dup[dup1] ";
+			$query5 .= "AND   a.dup2 = $row_dup[dup2] ";
+			$query5 .= "AND   a.dup3 <= ($row_dup[dup2]+1) ";
+			$query5 .= "AND   a.dup11 >= 3 ";
+			$query5 .= "AND   a.dup12 >= 4 ";
+
+			switch ($c) { 
+				case 1: 
+					$query5 .= "AND   b1  = $row[b1]  ";
+					$query5 .= "AND   b2  = $row[b2]  ";
+					$query5 .= "AND   b3  = $row[b3]  ";
+					$query5 .= "AND   b4  = $row[b4]  ";
+				   break; 
+				case 2: 
+					$query5 .= "AND   b1  = $row[b1]  ";
+					$query5 .= "AND   b2  = $row[b2]  ";
+					$query5 .= "AND   b3  = $row[b3]  ";
+					$query5 .= "AND   b5  = $row[b4]  ";
+				   break; 
+				case 3: 
+					$query5 .= "AND   b1  = $row[b1]  ";
+					$query5 .= "AND   b2  = $row[b2]  ";
+					$query5 .= "AND   b4  = $row[b3]  ";
+					$query5 .= "AND   b5  = $row[b4]  ";
+				   break;
+				case 4: 
+					$query5 .= "AND   b1  = $row[b1]  ";
+					$query5 .= "AND   b3  = $row[b2]  ";
+					$query5 .= "AND   b4  = $row[b3]  ";
+					$query5 .= "AND   b5  = $row[b4]  ";
+				   break; 
+				case 5: 
+					$query5 .= "AND   b2  = $row[b1]  ";
+					$query5 .= "AND   b3  = $row[b2]  ";
+					$query5 .= "AND   b4  = $row[b3]  ";
+					$query5 .= "AND   b5  = $row[b4]  ";
+				   break;
+			}
+	
+			$query5 .= "AND  last_updated = '$curr_date' ";
+			$query5 .= "ORDER BY y1_sum DESC ";
+
+			#echo "$query5<p>";
+
+			$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+			while($row5 = mysqli_fetch_array($mysqli_result5))
+			{
+				echo "<p>################################## combo4 - $c ##################################</p>";
+				echo "<b>$row5[b1],$row5[b2],$row5[b3],$row5[b4],$row5[b5] - sum=$row5[sum] - even=$row5[even] - odd=$row5[odd] - avg=$row5[y1_sum] - dup $row5[dup1],$row5[dup2],$row5[dup3],$row5[dup4],$row5[dup5],$row5[dup6],$row5[dup7],$row5[dup8] - eo6 $row6[d1],$row6[d2],$row6[d3],$row6[d4],$row6[d5],$row6[d6]<br></b>";
+			}
+		}
+	}
+?>

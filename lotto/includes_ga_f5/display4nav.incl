@@ -1,0 +1,8 @@
+<?php
+print "<h4><a href=\"#unsorted$combin\">Combin4/1 $combin4_5_1</a> |
+<a href=\"#unsorted$combin\">Combin4/2 $combin4_5_2</a> |
+<a href=\"#unsorted$combin\">Combin4/3 $combin4_5_3</a> |
+<a href=\"#unsorted$combin\">Combin4/4 $combin4_5_4</a> |
+<a href=\"#unsorted$combin\">Combin4/5 $combin4_5_5</a> 
+</h4>";
+?>

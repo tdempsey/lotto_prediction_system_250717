@@ -1,0 +1,23 @@
+<?php
+print("</TABLE>\n");
+
+print "<p>";
+
+//start table
+print("<TABLE BORDER=\"1\">\n");
+
+print("<TR>\n");
+print("<TD BGCOLOR=\"#CCCCCC\">Error</TD>\n");
+print("<TD BGCOLOR=\"#CCCCCC\">Count</TD>\n");
+print("</TR>\n");
+
+for ($x = 0; $x < count($error_table); $x++)
+{
+	print("<TR>\n");
+	print("<TD>$error_table[$x]</TD>\n");
+	print("<TD>$error_table_count[$x]</TD>\n");
+	print("</TR>\n");
+}
+
+print("</TABLE>\n"); 
+?>

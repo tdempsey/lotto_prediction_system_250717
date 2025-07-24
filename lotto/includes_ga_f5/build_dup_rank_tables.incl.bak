@@ -1,0 +1,114 @@
+<?php
+	### Dup 5 last draws
+	$dup_temp = array_fill(0,8,0);
+	
+	print("<h3>Dups</h3>\n");
+
+	// Process the last draws for different ranges
+	for ($x = 1; $x <= 4; $x++) {
+		${"last_".$x."_draws"} = LastDraws($curr_date, $x);
+		// Debugging output for verification (can be removed or commented out in production)
+		print_r(${"last_".$x."_draws"});
+		echo "<br>";
+	}
+	
+	### Rank Count
+	$rank_count_temp = array_fill(0,43,0);
+	
+	print("<h3>Rank Count</h3>\n");
+
+	print("<TABLE BORDER=\"1\">\n");
+
+	print("<TR>\n");
+
+	for ($x = 1; $x <= 42; $x++)
+	{
+		//create header row
+		print("<TD BGCOLOR=\"#CCCCCC\" align=center width=20>$x</TD>\n");
+	}
+	
+	print("</TR>\n");
+
+	print("<TR>\n");
+	
+	### 250110 TDD
+	$query = "SELECT * FROM $draw_prefix";
+	$query .= "rank_count_table ";
+	$query .= "WHERE date = '$curr_date' ";
+	$query .= "AND draw_limit = '30' ";
+
+	echo "$query<br>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$row_count = mysqli_fetch_array($mysqli_result);
+
+	$h = 1;
+
+	for ($g = 3; $g <= 44; $g++)
+	{
+		$rank_count_temp[$h] = $row_count[$g];
+		print("<TD align=center width=20>$row_count[$g]</TD>\n");
+		$h++;
+	}
+	
+	echo "rank_count_temp:<br>";
+	print_r($rank_count_temp);
+	echo "<p>";
+
+	print("</TR>\n");
+
+	//end table
+	print("</TABLE>\n");
+	
+	#################
+	
+	### Rank limit
+	$rank_limit_temp = array_fill(0,8,0);
+	
+	print("<h3>Rank Limit</h3>\n");
+
+	print("<TABLE BORDER=\"1\">\n");
+
+	print("<TR>\n");
+
+	for ($x = 0; $x <= 7; $x++)
+	{
+		//create header row
+		print("<TD BGCOLOR=\"#CCCCCC\" align=center width=20>$x</TD>\n");
+	}
+	
+	print("</TR>\n");
+
+	print("<TR>\n");
+
+	$query = "SELECT * FROM $draw_prefix";
+	$query .= "rank_limit ";
+	$query .= "WHERE date = '$curr_date' ";
+	$query .= "AND   draw_limit = 30 ";
+
+	echo "query - $query<br>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$row_count = mysqli_fetch_array($mysqli_result);
+
+	$h = 0;
+
+	for ($g = 3; $g <= 10; $g++)
+	{
+		$rank_limit_temp[$h] = $row_count[$g];
+		print("<TD align=center width=20>$row_count[$g]</TD>\n");
+		$h++;
+	}
+	
+	echo "rank_limit_temp:<br>";
+	print_r($rank_limit_temp);
+	echo "<p>";
+
+	print("</TR>\n");
+
+	//end table
+	print("</TABLE>\n");
+
+?>

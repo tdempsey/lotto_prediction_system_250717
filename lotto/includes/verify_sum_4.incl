@@ -1,0 +1,134 @@
+<?php
+
+		print("<a name=\"$limit\"><H3>({0.$combo}) Lotto Verify Sum - Combo $combo - $game_name - Limit $limit</H3></a>\n");
+		
+		//start table
+		print("<TABLE BORDER=\"1\">\n");
+	
+		//create header row
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=100>Pass (74-144)</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=100>Pass %</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail (74-144)</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail %</TD>\n");
+		print("</B></TR>\n");
+
+		$today_unix = time ();
+
+		#echo "today_unix = $today_unix<br>";
+
+		$date_temp_seconds = $last_draw_unix - (86400*($limit)); 	
+					
+		// Start date 
+		$date_temp = date('Y/m/d', $date_temp_seconds); 
+
+		#echo "date_temp = $date_temp<br>";
+
+		// get count draw table
+		$query5 = "SELECT * FROM $draw_table_name ";
+		$query5 .= "ORDER BY date DESC ";
+		$query5 .= "LIMIT 30 ";
+
+		#echo "$query5<br>";
+	
+		$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+		$sum_low_high = 0;
+		$sum_good = 0;
+		
+		while ($row5 = mysqli_fetch_array($mysqli_result5))
+		{
+			if ($row5[6] >= 74 AND $row5[6] <= 144)
+			{
+				#echo "row5[6] = $row5[6]<br>";
+				$sum_good++;
+			} else {
+				$sum_low_high++;
+			}
+		}
+
+		$temp1 = number_format(($sum_good/$limit)*100,2);
+
+		$temp2 = $limit-$sum_good;
+
+		$temp3 = number_format(((($temp2)/$limit)*100),2);
+
+		print("<TR>\n");
+		
+		print("<TD align=center>&nbsp;</TD>\n");
+		print("<TD align=center>$sum_good</TD>\n");
+		print("<TD align=center>$temp1 %</TD>\n");
+		print("<TD align=center>$temp2</TD>\n");
+		print("<TD align=center>$temp3 %</TD>\n");
+		print("</B></TR>\n");
+
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center>Pass (70-145)</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center>Pass %</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center>Fail (70-145)</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center>Fail %</TD>\n");
+		print("</B></TR>\n");
+
+		//end table
+		print("</TABLE>\n");
+		
+		echo "<br>";
+
+		#############################################################################################
+
+		//start table
+		print("<TABLE BORDER=\"1\">\n");
+		
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Date</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Sum</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Even</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Odd</TD>\n");
+		print("</B></TR>\n");
+		
+		// get count draw table
+		$query5b = "SELECT * FROM $draw_table_name ";
+		$query5b .= "ORDER BY date DESC ";
+		$query5b .= "LIMIT 30 ";
+
+		#echo "$query5b<br>";
+		
+		$mysqli_result5b = mysqli_query($mysqli_link, $query5b) or die (mysqli_error($mysqli_link));
+
+		#$num_rows = mysqli_num_rows($mysqli_result5b); 
+
+		#echo "num_rows = $num_rows<br>"; 
+		
+		while ($row5b = mysqli_fetch_array($mysqli_result5b))
+		{
+			if ($row5b[6] >= 74 AND $row5b[6] <= 144)
+			{
+				#echo "row5b[6] = $row5b[6]<br>";
+				continue;
+			} else {
+				
+				print("<TR>\n");
+				print("<TD align=center>&nbsp;</TD>\n");
+				print("<TD align=center nowrap>$row5b[date]</TD>\n");
+				print("<TD align=center>$row5b[sum]</TD>\n");
+				print("<TD align=center>$row5b[even]</TD>\n");
+				print("<TD align=center>$row5b[odd]</TD>\n");
+				print("</TR>\n");
+			}
+		}
+		
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Date</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Sum</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Even</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=50>Odd</TD>\n");
+		print("</B></TR>\n");
+
+		//end table
+		print("</TABLE>\n");
+		
+?>

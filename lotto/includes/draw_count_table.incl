@@ -1,0 +1,141 @@
+<?php
+	#echo "<b>hml = $hml in include\draw_count_table.incl</b><p>";
+	
+	if ($hml == 0)
+	{
+		# all
+		$table_temp = $draw_prefix . "temp2a_" . $limit; #180907
+
+		$query9 = "DROP TABLE IF EXISTS $table_temp ";
+
+		echo "$query9<br>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+
+		#$table_temp = $draw_prefix . "temp_" . $limit;
+		$query9 = "CREATE TABLE $table_temp ( ";
+		$query9 .= "num tinyint(3) unsigned NOT NULL, ";
+		$query9 .= "day1 tinyint(3) unsigned NOT NULL default '0', ";
+		$query9 .= "week1 tinyint(3) unsigned NOT NULL default '0', ";
+		$query9 .= "week2 tinyint(3) unsigned NOT NULL default '0', ";
+		$query9 .= "month1 tinyint(3) unsigned NOT NULL default '0', ";
+		$query9 .= "month3 tinyint(3) unsigned NOT NULL default '0', ";
+		$query9 .= "month6 tinyint(3) unsigned NOT NULL default '0', ";
+		$query9 .= "year1 tinyint(3) unsigned NOT NULL default '0', ";
+		$query9 .= "year2 tinyint(3) unsigned NOT NULL default '0', ";
+		$query9 .= "d1510 int(5) unsigned NOT NULL default '0', ";
+		$query9 .= "year4 int(5) unsigned NOT NULL default '0', ";
+		$query9 .= "year5 int(5) unsigned NOT NULL default '0', ";
+		$query9 .= "year6 int(5) unsigned NOT NULL default '0', ";
+		$query9 .= "year7 int(5) unsigned NOT NULL default '0', ";
+		$query9 .= "year8 int(5) unsigned NOT NULL default '0', ";
+		$query9 .= "year9 int(5) unsigned NOT NULL default '0', ";
+		$query9 .= "year10 int(5) unsigned NOT NULL default '0', ";
+		$query9 .= "sigma int(5) unsigned NOT NULL default '0', ";
+		$query9 .= "count int(5) unsigned NOT NULL, ";
+		$query9 .= "percent_wa float (4,1) unsigned NOT NULL default '0', ";
+		$query9 .= "prev_date date NOT NULL default '1962-08-17', ";
+		$query9 .= "date date NOT NULL default '1962-08-17', ";
+		$query9 .= "PRIMARY KEY (num), ";
+		$query9 .= "KEY num (num), ";
+		$query9 .= "UNIQUE num_2 (num) ";
+		$query9 .= ") ";
+
+		#echo "$query9<p>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+	} else {
+		$table_temp = $draw_prefix . "temp2_" . $limit . "_" . $hml;
+
+		$query9 = "DROP TABLE IF EXISTS $table_temp ";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+
+		#$table_temp = $draw_prefix . "temp_" . $limit . "_$hml";
+		$query9 = "CREATE TABLE $table_temp ( ";
+		$query9 .= "num tinyint(3) unsigned NOT NULL, ";
+		$query9 .= "day1 tinyint(3) unsigned NOT NULL default '0', ";
+		$query9 .= "week1 tinyint(3) unsigned NOT NULL default '0', ";
+		$query9 .= "week2 tinyint(3) unsigned NOT NULL default '0', ";
+		$query9 .= "month1 tinyint(3) unsigned NOT NULL default '0', ";
+		$query9 .= "month3 tinyint(3) unsigned NOT NULL default '0', ";
+		$query9 .= "month6 tinyint(3) unsigned NOT NULL default '0', ";
+		$query9 .= "year1 tinyint(3) unsigned NOT NULL default '0', ";
+		$query9 .= "year2 tinyint(3) unsigned NOT NULL default '0', ";
+		$query9 .= "d1510 int(5) unsigned NOT NULL default '0', ";
+		$query9 .= "year3 tinyint(3) unsigned NOT NULL default '0', ";
+		$query9 .= "year4 int(5) unsigned NOT NULL default '0', ";
+		$query9 .= "year5 int(5) unsigned NOT NULL default '0', ";
+		$query9 .= "year6 int(5) unsigned NOT NULL default '0', ";
+		$query9 .= "year7 int(5) unsigned NOT NULL default '0', ";
+		$query9 .= "year8 int(5) unsigned NOT NULL default '0', ";
+		$query9 .= "year9 int(5) unsigned NOT NULL default '0', ";
+		$query9 .= "year10 int(5) unsigned NOT NULL default '0', ";
+		$query9 .= "sigma int(5) unsigned NOT NULL default '0', ";
+		$query9 .= "count int(5) unsigned NOT NULL, ";
+		$query9 .= "percent_wa float (4,1) unsigned NOT NULL default '0', ";
+		$query9 .= "prev_date date NOT NULL default '1962-08-17', ";
+		$query9 .= "date date NOT NULL default '1962-08-17', ";
+		$query9 .= "PRIMARY KEY (num), ";
+		$query9 .= "KEY num (num), ";
+		$query9 .= "UNIQUE num_2 (num) ";
+		$query9 .= ") ";
+
+		#print "$query9<p>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+	}
+
+	for($index=1; $index <= $balls; $index++)
+	{
+		$sigma = 0;
+
+		$weighted_average = (
+			($draw_count_array[$index][1]/7*100*0.10) + #week1
+			($draw_count_array[$index][3]/30*100*0.10) + #month1
+			($draw_count_array[$index][5]/365*100*0.15) + #month6
+			($draw_count_array[$index][6]/(365*3)*100*0.15) + #year1
+			($draw_count_array[$index][10]/(365*5)*100*0.25) + #year5
+			($draw_count_array[$index][13]/(365*8)*100*0.25)); #year8
+
+		$pair_temp_wa = number_format($weighted_average,1);
+
+		$query9 = "INSERT INTO $table_temp ";
+		$query9 .= "VALUES ('$index', ";
+		for ($d = 0; $d <= 15; $d++)
+		{
+			$query9 .= "'{$draw_count_array[$index][$d]}', ";
+			$sigma += $draw_count_array[$index][$d];
+		} 
+		$query9 .= "'$sigma', ";
+		$query9 .= "'$num_array[$index]', ";
+		$query9 .= "'$pair_temp_wa', ";
+		$query9 .= "'$prev_date[$index]', ";
+		$query9 .= "'$num_date[$index]') ";
+
+		#echo "$query9<br>";
+
+		if ($sigma)
+		{
+			#echo "$query9<p>";
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+		}
+	}
+
+	# copy current table into dated table
+	$curr_date = date("ymd");
+
+	$table_temp_date = $table_temp . "_" . $curr_date;
+
+	$query = "DROP TABLE IF EXISTS $table_temp_date";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$query_copy = "CREATE TABLE $table_temp_date SELECT * FROM $table_temp";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query_copy) or die (mysqli_error($mysqli_link));
+
+	#print "<h3>Table <font color=\"#ff0000\">$table_temp</font> Updated!</h3>";
+	print "<h3>Table <font color=\"#ff0000\">$table_temp_date</font> Updated!</h3>";
+?>

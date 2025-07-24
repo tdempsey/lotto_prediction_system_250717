@@ -1,0 +1,199 @@
+<?php
+	$curr_date = date('Y-m-d');
+
+	$drop_tables = 1;
+
+	if ($hml)
+	{
+		$rank_count = array (0);
+
+		$rank_count = BuildRankTable($curr_date); // array 0..balls with total draws for last 26
+
+		$rank_table_count = array_fill (0, 7, 0);
+
+		for($z = 1; $z <= $balls; $z++)
+		{
+			if ($rank_count[$z] >= 6)
+			{
+				$rank_table_count[6]++;
+			} else {
+				$rank_table_count[$rank_count[$z]]++;
+			}
+		}
+	}
+	
+	if ($drop_tables)
+	{
+		$rank_table = "ga_f5_rank_5_39";
+
+		$query = "DROP TABLE IF EXISTS temp_rank ";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query =  "CREATE TABLE IF NOT EXISTS  temp_rank ( ";
+		$query .= "  `id` int(10) unsigned NOT NULL auto_increment, ";
+		$query .= "  `r0` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `r1` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `r2` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `r3` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `r4` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `r5` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `r6` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `date` date NOT NULL default '1962-08-17', ";
+		$query .= "  PRIMARY KEY  (`id`) ";
+		$query .= ") ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 "; 
+
+		print("$query<p>");
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query = "DROP TABLE IF EXISTS $rank_table ";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query =  "CREATE TABLE IF NOT EXISTS  $rank_table ( ";
+		$query .= "  `id` int(10) unsigned NOT NULL auto_increment, ";
+		$query .= "  `r0` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `r1` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `r2` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `r3` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `r4` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `r5` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `r6` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `date` date NOT NULL default '1962-08-17', ";
+		$query .= "  `count` int(3) unsigned NOT NULL default '0', ";
+		$query .= "  PRIMARY KEY  (`id`) ";
+		$query .= ") ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 "; 
+
+		print("$query<p>");
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+	}
+
+	$row = array_fill (0,7,0);
+
+	$max_num = 5;
+
+	print("<p align=\"center\"><b><font face=\"Arial, Helvetica, sans-serif\">Build Rank 5/$max_num</font></b></p>");
+
+	# last 30
+	$query_temp = "SELECT * FROM ga_f5_draws ";
+	$query_temp .= "ORDER BY DATE desc LIMIT 10 ";
+
+	#echo "$query_temp<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query_temp) or die (mysqli_error($mysqli_link));
+
+	while($row = mysqli_fetch_array($mysqli_result))
+	{
+		$query = "INSERT INTO temp_rank ";
+		$query .= "VALUES ('0', ";
+		$query .= "'$row[rank0]', ";
+		$query .= "'$row[rank1]', ";
+		$query .= "'$row[rank2]', ";
+		$query .= "'$row[rank3]', ";
+		$query .= "'$row[rank4]', ";
+		$query .= "'$row[rank5]', ";
+		$query .= "'$row[rank6]', ";
+		$query .= "'$row[0]') ";
+		
+		#print "$query<br>";
+		
+		#$mysqli_result2 = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+	}
+	
+	#last 100 $hml
+	$query_dup = "SELECT * FROM ga_f5_draws ";
+	if ($hml)
+	{
+		$query_dup .= "WHERE sum >= $range_low  ";
+		$query_dup .= "AND   sum <= $range_high  ";
+	}
+	$query_dup .= "ORDER BY date desc LIMIT 10 ";
+
+	echo "rank b - $query_dup<p>";
+
+	$mysqli_result_dup = mysqli_query($query_dup, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+	while($row = mysqli_fetch_array($mysqli_result_dup))
+	{
+		if ($hml)
+		{
+			$draw_rank_count = array_fill (0, 7, 0);
+
+			for($y = 1; $y <= $balls_drawn; $y++)
+			{
+				if ($rank_count[$row[$y]] >= 6)
+				{
+					$draw_rank_count[6]++;
+				} else {
+					$draw_rank_count[$rank_count[$row[$y]]]++;
+				}
+			}
+		}
+
+		$query = "INSERT INTO temp_rank ";
+		$query .= "VALUES ('0', ";
+		$query .= "'$draw_rank_count[0]', ";
+		$query .= "'$draw_rank_count[1]', ";
+		$query .= "'$draw_rank_count[2]', ";
+		$query .= "'$draw_rank_count[3]', ";
+		$query .= "'$draw_rank_count[4]', ";
+		$query .= "'$draw_rank_count[5]', ";
+		$query .= "'$draw_rank_count[6]', ";
+		$query .= "'$row[0]') ";
+		
+		$mysqli_result2 = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$last_date = $row[0];
+
+		echo "b - $query<br>";
+	}
+	
+	##############################################################################################
+
+	$query_temp = "SELECT DISTINCT r0,r1,r2,r3,r4,r5,r6 FROM temp_rank ";
+
+	echo "$query_temp<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query_temp) or die (mysqli_error($mysqli_link));
+
+	while($row = mysqli_fetch_array($mysqli_result))
+	{
+
+		$query_temp = "SELECT * FROM ga_f5_draws ";
+		$query_temp .= "WHERE rank0 = $row[r0] ";
+		$query_temp .= "AND   rank1 = $row[r1] ";
+		$query_temp .= "AND   rank2 = $row[r2] ";
+		$query_temp .= "AND   rank3 = $row[r3] ";
+		$query_temp .= "AND   rank4 = $row[r4] ";
+		$query_temp .= "AND   rank5 = $row[r5] ";
+		$query_temp .= "AND   rank6 = $row[r6] ";
+		$query_temp .= "AND   date >= '2013-11-16' ";
+		$query_temp .= "ORDER BY DATE desc LIMIT 10 ";
+
+		echo "$query_temp<p>";
+
+		$mysqli_result_temp = mysqli_query($mysqli_link, $query_temp) or die (mysqli_error($mysqli_link));
+
+		$row_temp = mysqli_fetch_array($mysqli_result_temp);
+
+		$num_rows_temp = mysqli_num_rows($mysqli_result_temp);
+
+		$query = "INSERT INTO $rank_table ";
+		$query .= "VALUES ('0', ";
+		$query .= "'$row[r0]', ";
+		$query .= "'$row[r1]', ";
+		$query .= "'$row[r2]', ";
+		$query .= "'$row[r3]', ";
+		$query .= "'$row[r4]', ";
+		$query .= "'$row[r5]', ";
+		$query .= "'$row[r6]', ";
+		$query .= "'$row_temp[date]', ";
+		$query .= "'$num_rows_temp') ";
+
+		print "$query<br>";
+		
+		$mysqli_result2 = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+	}
+?>

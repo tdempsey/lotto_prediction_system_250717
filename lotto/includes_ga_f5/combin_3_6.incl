@@ -1,0 +1,170 @@
+<?php
+	for ($c = 1; $c <= 20; $c++)
+	{
+		switch ($c) 
+		{ 
+		   case 1: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[3];
+			   break; 
+		   case 2: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[4];
+			   break; 
+		   case 3: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[5];
+			   break; 
+		   case 4: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[6];
+			   break;
+		   case 5: 
+			   $d1 = $row[1];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   break; 
+		   case 6: 
+			   $d1 = $row[1];
+			   $d2 = $row[3];
+			   $d3 = $row[5];
+			   break;
+		   case 7: 
+			   $d1 = $row[1];
+			   $d2 = $row[3];
+			   $d3 = $row[6];
+			   break;
+		   case 8: 
+			   $d1 = $row[1];
+			   $d2 = $row[4];
+			   $d3 = $row[5];
+			   break;
+		   case 9: 
+			   $d1 = $row[1];
+			   $d2 = $row[4];
+			   $d3 = $row[6];
+			   break;
+		   case 10: 
+			   $d1 = $row[1];
+			   $d2 = $row[5];
+			   $d3 = $row[6];
+			   break;
+		   case 11: 
+			   $d1 = $row[2];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   break; 
+		   case 12: 
+			   $d1 = $row[2];
+			   $d2 = $row[3];
+			   $d3 = $row[5];
+			   break; 
+		   case 13: 
+			   $d1 = $row[2];
+			   $d2 = $row[3];
+			   $d3 = $row[6];
+			   break; 
+		   case 14: 
+			   $d1 = $row[2];
+			   $d2 = $row[4];
+			   $d3 = $row[5];
+			   break;
+		   case 15: 
+			   $d1 = $row[2];
+			   $d2 = $row[4];
+			   $d3 = $row[6];
+			   break; 
+		   case 16: 
+			   $d1 = $row[2];
+			   $d2 = $row[5];
+			   $d3 = $row[6];
+			   break;
+		   case 17: 
+			   $d1 = $row[3];
+			   $d2 = $row[4];
+			   $d3 = $row[5];
+			   break;
+		   case 18: 
+			   $d1 = $row[3];
+			   $d2 = $row[4];
+			   $d3 = $row[6];
+			   break;
+		   case 19: 
+			   $d1 = $row[3];
+			   $d2 = $row[5];
+			   $d3 = $row[6];
+			   break;
+		   case 20: 
+			   $d1 = $row[4];
+			   $d2 = $row[5];
+			   $d3 = $row[6];
+			   break;
+		} 
+
+		$query2 = "SELECT DISTINCT d1, d2, d3, date FROM $table_temp ";
+		$query2 .= "WHERE d1 = $d1 "; 
+		$query2 .= "AND d2 = $d2 "; 
+		$query2 .= "AND d3 = $d3 "; 
+
+		$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+
+		$num_rows = mysqli_num_rows($mysqli_result2);
+
+		$sum = ++$num_rows;
+
+		$query3 = "Insert INTO $table_temp ";
+		$query3 .= "VALUES ( '0', ";
+		$query3 .= "         '$row[0]', ";
+		$query3 .= "         $d1, ";
+		$query3 .= "	     $d2, ";
+		$query3 .= "	     $d3, ";
+		$query3 .= "	     '0') ";
+
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		/*
+		$query3 .= "	     0, ";
+		$query3 .= "	     0, ";
+		$query3 .= "	     0, ";
+		$query3 .= "	     0, ";
+		$query3 .= "	     0, ";
+		$query3 .= "	     0, ";
+		$query3 .= "	     0, ";
+		$query3 .= "	     0, ";
+		$query3 .= "	     0, ";
+		$query3 .= "	     0, ";
+		$query3 .= "	     0, ";
+		$query3 .= "	     0, ";
+		$query3 .= "	     0, ";
+		$query3 .= "	     0, ";
+		$query3 .= "	     0, ";
+		$query3 .= "	     0, ";
+		$query3 .= "	     0, ";
+		$query3 .= "	     0, ";
+		$query3 .= "	     0, ";
+		$query3 .= "	     0) ";
+
+		$query3 = "SELECT DISTINCT d1, d2, d3 FROM $table_temp ";
+		$query3 .= "WHERE d1 = $d1 "; 
+		$query3 .= "AND d2 = $d2 "; 
+		$query3 .= "AND d3 = $d3 ";
+		
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		$num_rows = mysqli_num_rows($mysqli_result3);
+		*/
+
+		$query_update = "UPDATE $table_temp ";
+		$query_update .= "SET sum = $sum ";
+		$query_update .= "WHERE d1 = $d1 ";
+		$query_update .= "AND d2 = $d2 ";
+		$query_update .= "AND d3 = $d3 ";
+
+		$mysqli_result_update = mysqli_query ($mysqli_link, $query_update) or die (mysqli_error($mysqli_link));
+		
+	}
+?>

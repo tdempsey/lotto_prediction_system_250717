@@ -1,0 +1,2464 @@
+<?php
+	// ----------------------------------------------------------------------------------
+	function test_combin_print($limit) #191217
+	{
+		require ("includes/mysqli.php"); 
+
+		#require ("includes/unix.incl");
+
+		global $debug, $draw_prefix, $hml, $range_low, $range_high;
+
+		print("<h3>Combin Report All - Limit $limit</h3>\n");
+
+		$query = "SELECT * FROM ga_f5_draws ";
+		if ($hml)
+		{
+			$query .= "WHERE sum >= $range_low  ";
+			$query .= "AND   sum <= $range_high  ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT $limit ";
+
+		#echo "$query</br>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		print("<TABLE BORDER=\"1\">\n");
+
+		//create header row
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" align=center>Date</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>2</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">&nbsp;3&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">&nbsp;4&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">&nbsp;5&nbsp;</TD>\n");
+		print("</B></TR>\n");
+
+		$total2_failed = 0;
+		$total3_failed = 0;
+		$total4_failed = 0;
+		$total5_failed = 0;
+
+		$last_date = '1962-08-17';
+
+		while($row_draw = mysqli_fetch_array($mysqli_result))
+		{
+			print("<TR>\n");  
+			print("<TD>$row_draw[0]</TD>\n");
+
+			# update combo table
+			$query3 = "SELECT * FROM $draw_prefix";
+			$query3 .= "combo_table ";
+			$query3 .= "WHERE date = '$row_draw[0]' ";
+
+			#echo "$query3<br>";
+
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+			$num_rows_combo = mysqli_num_rows($mysqli_result3); 
+
+			#echo "num_rows_combo = $num_rows_combo<br>";
+
+			if ($num_rows_combo)
+			{
+				$row_combo = mysqli_fetch_array($mysqli_result3); 
+				$total2 = $row_combo[1];
+				$total3 = $row_combo[2];
+				$total4 = $row_combo[3];
+				$total5 = $row_combo[4];
+			} else {
+				$total2 = 0;
+				$total3 = 0;
+				$total4 = 0;
+				$total5 = 0;
+
+				// count 2
+				for ($c = 1; $c <= 10; $c++)
+				{
+					switch ($c) { 
+					   case 1: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   break; 
+					   case 2: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[3];
+						   break; 
+					   case 3: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[4];
+						   break; 
+					   case 4: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[5];
+						   break;
+					   case 5: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[3];
+						   break;
+					   case 6: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[4];
+						   break; 
+					   case 7: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[5];
+						   break; 
+					   case 8: 
+						   $d1 = $row_draw[3];
+						   $d2 = $row_draw[4];
+						   break;
+					   case 9: 
+						   $d1 = $row_draw[3];
+						   $d2 = $row_draw[5];
+						   break;
+					   case 10: 
+						   $d1 = $row_draw[4];
+						   $d2 = $row_draw[5];
+						   break;
+					} 
+
+					$query2 = "SELECT DISTINCT * FROM ga_f5_2_42 ";
+					$query2 .= "WHERE d1 = $d1 ";
+					$query2 .= "  AND d2 = $d2 ";
+					$query2 .= "  AND combo = $c ";
+					$query2 .= "  AND date < '$row_draw[0]' ";
+
+					#echo "$query2<br>";
+
+					$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+					
+					if ($num_rows = mysqli_num_rows($mysqli_result2))
+					{
+						//$total2 += $num_rows;
+						$total2++;
+					}
+
+					#echo "num_rows = $num_rows<br>";
+				}
+
+				// count 3
+				for ($c = 1; $c <= 10; $c++)
+				{
+					switch ($c) { 
+					   case 1: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[3];
+						   break; 
+					   case 2: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[4];
+						   break; 
+					   case 3: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[5];
+						   break; 
+					   case 4: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[4];
+						   break;
+					   case 5: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[5];
+						   break;
+					   case 6: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[4];
+						   $d3 = $row_draw[5];
+						   break; 
+					   case 7: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[4];
+						   break;
+					   case 8: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[5];
+						   break;
+					   case 9: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[4];
+						   $d3 = $row_draw[5];
+						   break;
+					   case 10: 
+						   $d1 = $row_draw[3];
+						   $d2 = $row_draw[4];
+						   $d3 = $row_draw[5];
+						   break;
+					} 
+
+					$query3 = "SELECT DISTINCT * FROM ga_f5_3_42 ";
+					$query3 .= "WHERE d1 = $d1 ";
+					$query3 .= "  AND d2 = $d2 ";
+					$query3 .= "  AND d3 = $d3 ";
+					$query3 .= "  AND combo = $c ";
+					$query3 .= "  AND date < '$row_draw[0]' ";
+
+					#echo "$query3<br>";
+
+					$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+					
+					if ($num_rows = mysqli_num_rows($mysqli_result3))
+					{
+						//$total3 += $num_rows;
+						$total3++;
+					}
+				}
+
+				// count 4
+				for ($c = 1; $c <= 5; $c++)
+				{
+					switch ($c) { 
+					   case 1: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[3];
+						   $d4 = $row_draw[4];
+						   break; 
+					   case 2: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[3];
+						   $d4 = $row_draw[5];
+						   break; 
+					   case 3: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[4];
+						   $d4 = $row_draw[5];
+						   break;
+					   case 4: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[4];
+						   $d4 = $row_draw[5];
+						   break; 
+					   case 5: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[4];
+						   $d4 = $row_draw[5];
+						   break;
+					} 
+
+					$query4 = "SELECT DISTINCT * FROM ga_f5_4_42 ";
+					$query4 .= "WHERE d1 = $d1 ";
+					$query4 .= "  AND d2 = $d2 ";
+					$query4 .= "  AND d3 = $d3 ";
+					$query4 .= "  AND d4 = $d4 ";
+					$query4 .= "  AND combo = $c ";
+					$query4 .= "  AND date < '$row_draw[0]' ";
+
+					#echo "$query4<br>";
+
+					$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+					
+					if ($num_rows = mysqli_num_rows($mysqli_result4))
+					{
+						//$total4 += $num_rows;
+						$total4++;
+					}
+				}
+
+				// count 5
+				$query6 = "SELECT DISTINCT * FROM ga_f5_draws ";
+				$query6 .= "WHERE b1 = $row_draw[b1] ";
+				$query6 .= "  AND b2 = $row_draw[b2] ";
+				$query6 .= "  AND b3 = $row_draw[b3] ";
+				$query6 .= "  AND b4 = $row_draw[b4] ";
+				$query6 .= "  AND b5 = $row_draw[b5] ";
+				$query6 .= "  AND date < '$row_draw[0]' ";
+
+				#echo "$query6<br>";
+
+				$mysqli_result6 = mysqli_query($mysqli_link, $query6) or die (mysqli_error($mysqli_link));
+				
+				if ($num_rows = mysqli_num_rows($mysqli_result6))
+				{
+					//$total5 += $num_rows;
+					$total5++;
+				}
+
+				# update combo table	
+				$query3 = "SELECT * FROM $draw_prefix";
+				$query3 .= "combo_table ";
+				$query3 .= "WHERE date = '$row_draw[0]' ";
+
+				#echo "$query3<br>";
+
+				$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+				$num_rows_combo = mysqli_num_rows($mysqli_result3); 
+
+				combo_table_update($row_draw[0],$total2,$total3,$total4,$total5);
+			}
+
+			if ($total2 == 10)
+			{
+				print("<TD align=center>$total2</TD>\n");
+			} else {
+				print("<TD align=center><font color=\"#ff0000\"><b>$total2</b></font></TD>\n");
+				$total2_failed++;
+			}
+
+			if ($total3 == 10)
+			{
+				print("<TD align=center>$total3</TD>\n");
+			} else {
+				print("<TD align=center><font color=\"#ff0000\"><b>$total3</b></font></TD>\n");
+				$total3_failed++;
+			}
+
+			if ($total4 <= 2)
+			{
+				print("<TD align=center>$total4</TD>\n");
+			} else {
+				print("<TD align=center><font color=\"#ff0000\"><b>$total4</b></font></TD>\n");
+				$total4_failed++;
+			}
+
+			if ($total5 == 0)
+			{
+				print("<TD align=center>$total5</TD>\n");
+			} else {
+				print("<TD align=center><font color=\"#ff0000\"><b>$total5</b></font></TD>\n");
+				$total5_failed++;
+			}
+
+			print("</TR>\n");
+
+			$last_date = $row_draw[0];
+		}
+
+		print("<TR><B>\n");
+		print("<TD align=center align=center>&nbsp;</TD>\n");
+		print("<TD align=center><font color=\"#ff0000\">$total2_failed</font></TD>\n");
+		print("<TD align=center><font color=\"#ff0000\">$total3_failed</font></TD>\n");
+		print("<TD align=center><font color=\"#ff0000\">$total4_failed</font></TD>\n");
+		print("<TD align=center><font color=\"#ff0000\">$total5_failed</font></TD>\n");
+		print("</B></TR>\n");
+
+		print("</TABLE>\n");
+
+		return ($last_date);
+	}
+
+	// ----------------------------------------------------------------------------------
+	function test_combin_print_all($limit) #200103
+	{
+		global $debug, $draw_prefix, $hml, $range_low, $range_high, $date_temp_100, $game, $dateDiff;
+		
+		require ("includes/mysqli.php"); 
+		#require ("includes/last_draw_unix.php");
+
+		$last_draw_unix = findLastDrawDateUnix($game);
+
+		#echo "last_draw_unix = $last_draw_unix<br>";
+		
+		$date_temp_seconds_100 = $last_draw_unix - (86400*(100));
+
+		#echo "date_temp_seconds_100 = $date_temp_seconds_100<br>";
+
+		$date_temp_100 = date('Y/m/d', $date_temp_seconds_100); 
+
+		#echo "date_temp_100 = $date_temp_100<br>";
+
+		print("<h3>Combin Report - All - Limit $limit</h3>\n");
+
+		$query = "SELECT * FROM ga_f5_draws ";
+		if ($hml)
+		{
+			$query .= "WHERE sum >= $range_low  ";
+			$query .= "AND   sum <= $range_high  ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT $limit ";
+
+		#echo "$query</br>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		print("<TABLE BORDER=\"1\">\n");
+
+		//create header row
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" align=center>Date</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>2</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">&nbsp;3&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">&nbsp;4&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">&nbsp;5&nbsp;</TD>\n");
+		print("</B></TR>\n");
+
+		$total2_failed = 0;
+		$total3_failed = 0;
+		$total4_failed = 0;
+		$total5_failed = 0;
+
+		$last_date = '1962-08-17';
+
+		while($row_draw = mysqli_fetch_array($mysqli_result))
+		{
+			print("<TR>\n");  
+			print("<TD>$row_draw[0]</TD>\n");
+
+			# update combo table
+			$query3 = "SELECT * FROM $draw_prefix";
+			$query3 .= "combo_table_all ";
+			$query3 .= "WHERE date = '$row_draw[0]' ";
+
+			#echo "$query3<br>";
+
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+			$num_rows_combo = mysqli_num_rows($mysqli_result3); 
+
+			#echo "num_rows_combo = $num_rows_combo<br>";
+
+			if ($num_rows_combo)
+			{
+				$row_combo = mysqli_fetch_array($mysqli_result3); 
+				$total2 = $row_combo[1];
+				$total3 = $row_combo[2];
+				$total4 = $row_combo[3];
+				$total5 = $row_combo[4];
+			} else {
+				$total2 = 0;
+				$total3 = 0;
+				$total4 = 0;
+				$total5 = 0;
+
+				// count 2
+				for ($c = 1; $c <= 10; $c++)
+				{
+					switch ($c) { 
+					   case 1: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   break; 
+					   case 2: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[3];
+						   break; 
+					   case 3: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[4];
+						   break; 
+					   case 4: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[5];
+						   break;
+					   case 5: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[3];
+						   break;
+					   case 6: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[4];
+						   break; 
+					   case 7: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[5];
+						   break; 
+					   case 8: 
+						   $d1 = $row_draw[3];
+						   $d2 = $row_draw[4];
+						   break;
+					   case 9: 
+						   $d1 = $row_draw[3];
+						   $d2 = $row_draw[5];
+						   break;
+					   case 10: 
+						   $d1 = $row_draw[4];
+						   $d2 = $row_draw[5];
+						   break;
+					} 
+
+					$query2 = "SELECT DISTINCT * FROM ga_f5_2_42 ";
+					$query2 .= "WHERE d1 = $d1 ";
+					$query2 .= "  AND d2 = $d2 ";
+					$query2 .= "  AND combin = $c "; #200103 ???
+					$query2 .= "  AND hml = 0 ";
+					$query2 .= "  AND date < '$row_draw[0]' ";
+
+					echo "$query2<br>";
+
+					$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+					
+					if ($num_rows = mysqli_num_rows($mysqli_result2))
+					{
+						//$total2 += $num_rows;
+						$total2++;
+					}
+
+					#echo "num_rows = $num_rows<br>";
+				}
+
+				// count 3
+				for ($c = 1; $c <= 10; $c++)
+				{
+					switch ($c) { 
+					   case 1: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[3];
+						   break; 
+					   case 2: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[4];
+						   break; 
+					   case 3: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[5];
+						   break; 
+					   case 4: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[4];
+						   break;
+					   case 5: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[5];
+						   break;
+					   case 6: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[4];
+						   $d3 = $row_draw[5];
+						   break; 
+					   case 7: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[4];
+						   break;
+					   case 8: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[5];
+						   break;
+					   case 9: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[4];
+						   $d3 = $row_draw[5];
+						   break;
+					   case 10: 
+						   $d1 = $row_draw[3];
+						   $d2 = $row_draw[4];
+						   $d3 = $row_draw[5];
+						   break;
+					} 
+
+					$query3 = "SELECT DISTINCT * FROM ga_f5_3_42 ";
+					$query3 .= "WHERE d1 = $d1 ";
+					$query3 .= "  AND d2 = $d2 ";
+					$query3 .= "  AND d3 = $d3 ";
+					$query3 .= "  AND combin = $c "; #200103 ???
+					$query3 .= "  AND hml = 0 ";
+					$query3 .= "  AND date < '$row_draw[0]' ";
+
+					#echo "$query3<br>";
+
+					$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+					
+					if ($num_rows = mysqli_num_rows($mysqli_result3))
+					{
+						//$total3 += $num_rows;
+						$total3++;
+					}
+				}
+
+				// count 4
+				for ($c = 1; $c <= 5; $c++)
+				{
+					switch ($c) { 
+					   case 1: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[3];
+						   $d4 = $row_draw[4];
+						   break; 
+					   case 2: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[3];
+						   $d4 = $row_draw[5];
+						   break; 
+					   case 3: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[4];
+						   $d4 = $row_draw[5];
+						   break;
+					   case 4: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[4];
+						   $d4 = $row_draw[5];
+						   break; 
+					   case 5: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[4];
+						   $d4 = $row_draw[5];
+						   break;
+					} 
+
+					$query4 = "SELECT DISTINCT * FROM ga_f5_4_42 ";
+					$query4 .= "WHERE d1 = $d1 ";
+					$query4 .= "  AND d2 = $d2 ";
+					$query4 .= "  AND d3 = $d3 ";
+					$query4 .= "  AND d4 = $d4 ";
+					$query4 .= "  AND combin = $c "; #200103 ???
+					$query4 .= "  AND hml = 0 ";
+					$query4 .= "  AND date < '$row_draw[0]' ";
+
+					#echo "$query4<br>";
+
+					$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+					
+					if ($num_rows = mysqli_num_rows($mysqli_result4))
+					{
+						//$total4 += $num_rows;
+						$total4++;
+					}
+				}
+
+				// count 5
+				$query6 = "SELECT DISTINCT * FROM ga_f5_draws ";
+				$query6 .= "WHERE b1 = $row_draw[b1] ";
+				$query6 .= "  AND b2 = $row_draw[b2] ";
+				$query6 .= "  AND b3 = $row_draw[b3] ";
+				$query6 .= "  AND b4 = $row_draw[b4] ";
+				$query6 .= "  AND b5 = $row_draw[b5] ";
+				$query6 .= "  AND date < '$row_draw[0]' ";
+
+				#echo "$query6<br>";
+
+				$mysqli_result6 = mysqli_query($mysqli_link, $query6) or die (mysqli_error($mysqli_link));
+				
+				if ($num_rows = mysqli_num_rows($mysqli_result6))
+				{
+					//$total5 += $num_rows;
+					$total5++;
+				}
+
+				# update combo table	
+				$query3 = "SELECT * FROM $draw_prefix";
+				$query3 .= "combo_table_all ";
+				$query3 .= "WHERE date = '$row_draw[0]' ";
+
+				#echo "$query3<br>";
+
+				$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+				$num_rows_combo = mysqli_num_rows($mysqli_result3); 
+
+				combo_table_update_all($row_draw[0],$total2,$total3,$total4,$total5);
+			}
+
+			if ($total2 == 10)
+			{
+				print("<TD align=center>$total2</TD>\n");
+			} else {
+				print("<TD align=center><font color=\"#ff0000\"><b>$total2</b></font></TD>\n");
+				$total2_failed++;
+			}
+
+			if ($total3 == 10)
+			{
+				print("<TD align=center>$total3</TD>\n");
+			} else {
+				print("<TD align=center><font color=\"#ff0000\"><b>$total3</b></font></TD>\n");
+				$total3_failed++;
+			}
+
+			if ($total4 <= 2)
+			{
+				print("<TD align=center>$total4</TD>\n");
+			} else {
+				print("<TD align=center><font color=\"#ff0000\"><b>$total4</b></font></TD>\n");
+				$total4_failed++;
+			}
+
+			if ($total5 == 0)
+			{
+				print("<TD align=center>$total5</TD>\n");
+			} else {
+				print("<TD align=center><font color=\"#ff0000\"><b>$total5</b></font></TD>\n");
+				$total5_failed++;
+			}
+
+			print("</TR>\n");
+
+			$last_date = $row_draw[0];
+		}
+
+		print("<TR><B>\n");
+		print("<TD align=center align=center>&nbsp;</TD>\n");
+		print("<TD align=center><font color=\"#ff0000\">$total2_failed</font></TD>\n");
+		print("<TD align=center><font color=\"#ff0000\">$total3_failed</font></TD>\n");
+		print("<TD align=center><font color=\"#ff0000\">$total4_failed</font></TD>\n");
+		print("<TD align=center><font color=\"#ff0000\">$total5_failed</font></TD>\n");
+		print("</B></TR>\n");
+
+		print("</TABLE>\n");
+
+		#print "<br>";
+
+		###########################################################################################
+		print "<p><b>Combin Summary All (100)</b></p>";
+
+		$query4 = "DROP TABLE IF EXISTS $draw_prefix";
+		$query4 .= "combo_summary_all ";
+
+		#echo "$query4<p>";
+
+		$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+		$query4 = "CREATE TABLE $draw_prefix";
+		$query4 .= "combo_summary_all (";
+		$query4 .= "`id` int(5) unsigned NOT NULL auto_increment,";
+		$query4 .= "combin_limit tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "comb2 tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "comb3 tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "comb4 tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "count tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "PRIMARY KEY  (`id`),";
+		$query4 .= "UNIQUE KEY `id_2` (`id`),";
+		$query4 .= "KEY `numx` (`id`)";
+		$query4 .= ") ENGINE=InnoDB DEFAULT CHARSET=latin1;";
+
+		#echo "$query4<p>";
+	
+		$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+		print("<table border=\"1\">\n");
+
+		print("<tr>\n");
+			print("<TD WIDTH=20 BGCOLOR=\"#CCCCCC\" align=center align=center>2</TD>\n");
+			print("<TD WIDTH=20 BGCOLOR=\"#CCCCCC\" align=center align=center>3</TD>\n");
+			print("<TD WIDTH=20 BGCOLOR=\"#CCCCCC\" align=center align=center>4</TD>\n");
+			print("<TD WIDTH=20 BGCOLOR=\"#CCCCCC\" align=center align=center>5</TD>\n");
+			print("<TD WIDTH=20 BGCOLOR=\"#CCCCCC\" align=center>Cnt</TD>\n");
+		print("</tr>\n");
+
+		# select combo2 table #############################################################################
+		#SELECT comb2, count(*) FROM `ga_f5_combo_table_all` WHERE date >= '2022-2-4' GROUP BY `comb2` ORDER BY `comb2` ASC
+		$query3 = "SELECT comb2, count(*) FROM $draw_prefix";
+		$query3 .= "combo_table_all ";
+		$query3 .= "WHERE date >= '$date_temp_100' GROUP BY `comb2` ORDER BY `comb2` ASC ";
+
+		#echo "$query3<br>";
+
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		while ($row3 = mysqli_fetch_array($mysqli_result3))
+		{
+			print("<tr>\n");
+			print("<TD align=center align=center>$row3[0]</TD>\n");
+			print("<TD align=center align=center>&nbsp;</TD>\n");
+			print("<TD align=center align=center>&nbsp;</TD>\n");
+			print("<TD align=center align=center>&nbsp;</TD>\n");
+
+			if ($row3[1] > 5)
+			{
+				print("<TD align=center align=center BGCOLOR=\"#66CC00\"><b>$row3[1]</b></TD>\n");
+			} elseif ($row3[1] > 0) {
+				print("<TD align=center align=center>$row3[1]</TD>\n");
+			} else {
+				#do nothing
+			}
+
+			print("</tr>\n");
+
+			$query_insert2 = "INSERT INTO $draw_prefix";
+			$query_insert2 .= "combo_summary_all ";
+			$query_insert2 .= "VALUES ('0', ";
+			$query_insert2 .= "'2', ";
+			$query_insert2 .= "'$row3[0]', ";
+			$query_insert2 .= "'0', ";
+			$query_insert2 .= "'0', ";
+			$query_insert2 .= "'$row3[1]') "; 
+
+			#echo "$query_insert2<br>";
+	
+			$mysqli_result_insert2 = mysqli_query($mysqli_link, $query_insert2) or die (mysqli_error($mysqli_link));
+		}
+		
+		# select combo2/3 table #############################################################################
+		$query3 = "SELECT comb2, `comb3`, count(*) FROM $draw_prefix";
+		$query3 .= "combo_table_all ";
+		$query3 .= "WHERE date >= '$date_temp_100' GROUP BY `comb2`, `comb3` ORDER BY `comb2`, `comb3` ASC ";
+
+		#echo "$query3<br>";
+
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		while ($row3 = mysqli_fetch_array($mysqli_result3))
+		{
+			print("<tr>\n");
+			print("<TD align=center align=center>$row3[0]</TD>\n");
+			print("<TD align=center align=center>$row3[1]</TD>\n");
+			print("<TD align=center align=center>&nbsp;</TD>\n");
+			print("<TD align=center align=center>&nbsp;</TD>\n");
+
+			if ($row3[2] > 5)
+			{
+				print("<TD align=center align=center BGCOLOR=\"#66CC00\"><b>$row3[2]</b></TD>\n");
+			} elseif ($row3[2] > 5) {
+				print("<TD align=center align=center>$row3[2]</TD>\n");
+			} else {
+				print("<TD align=center align=center>$row3[2]</TD>\n");
+			}
+
+			print("</tr>\n");
+
+			$query_insert3 = "INSERT INTO $draw_prefix";
+			$query_insert3 .= "combo_summary_all ";
+			$query_insert3 .= "VALUES ('0', ";
+			$query_insert3 .= "'3', ";
+			$query_insert3 .= "'$row3[0]', ";
+			$query_insert3 .= "'$row3[1]', ";
+			$query_insert3 .= "'0', ";
+			$query_insert3 .= "'$row3[2]') "; 
+
+			#echo "$query_insert3<br>";
+	
+			$mysqli_result_insert3 = mysqli_query($mysqli_link, $query_insert3) or die (mysqli_error($mysqli_link));
+		}
+
+		# select combo2/3/4 table #############################################################################
+		$query3 = "SELECT comb2, `comb3`, `comb4`, count(*) FROM $draw_prefix";
+		$query3 .= "combo_table_all ";
+		$query3 .= "WHERE date >= '$date_temp_100' GROUP BY `comb2`, `comb3`, `comb4` ORDER BY `comb2`, `comb3`, `comb4` ASC ";
+
+		#echo "$query3<br>";
+
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		while ($row3 = mysqli_fetch_array($mysqli_result3))
+		{
+			print("<tr>\n");
+			print("<TD align=center align=center>$row3[0]</TD>\n");
+			print("<TD align=center align=center>$row3[1]</TD>\n");
+			print("<TD align=center align=center>$row3[2]</TD>\n");
+			print("<TD align=center align=center>&nbsp;</TD>\n");
+
+			if ($row3[3] > 5)
+			{
+				print("<TD align=center align=center BGCOLOR=\"#66CC00\"><b>$row3[3]</b></TD>\n");
+			} elseif ($row3[3] > 3) {
+				print("<TD align=center align=center>$row3[3]</TD>\n");
+			} else {
+				print("<TD align=center align=center>$row3[3]</TD>\n");
+			}
+
+			print("</tr>\n");
+
+			$query_insert4 = "INSERT INTO $draw_prefix";
+			$query_insert4 .= "combo_summary_all ";
+			$query_insert4 .= "VALUES ('0', ";
+			$query_insert4 .= "'4', ";
+			$query_insert4 .= "'$row3[0]', ";
+			$query_insert4 .= "'$row3[1]', ";
+			$query_insert4 .= "'$row3[2]', ";
+			$query_insert4 .= "'$row3[3]') "; 
+
+			#echo "$query_insert4<br>";
+	
+			$mysqli_result_insert4 = mysqli_query($mysqli_link, $query_insert4) or die (mysqli_error($mysqli_link));
+		}
+
+		print("</TABLE>\n");
+
+		$curr_date = date("ymd");
+
+		$table_temp_date = "temp_combo_summary_all_" . $dateDiff;
+
+		$query = "DROP TABLE IF EXISTS $table_temp_date";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query_copy = "CREATE TABLE $table_temp_date SELECT * FROM ga_f5_combo_summary_all";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query_copy) or die (mysqli_error($mysqli_link));
+
+		print "<h3>Table <font color=\"#ff0000\">$table_temp_date</font> Updated!</h3>";
+
+		return ($last_date);
+	}
+
+	// ----------------------------------------------------------------------------------
+	function test_combin_print_hml($limit) #200103
+	{
+		global $debug, $draw_prefix, $hml, $range_low, $range_high, $date_temp_100, $game, $dateDiff;
+		
+		require ("includes/mysqli.php"); 
+		#require ("includes/last_draw_unix.php");
+
+		$last_draw_unix = findLastDrawDateUnix($game);
+
+		#echo "last_draw_unix = $last_draw_unix<br>";
+		
+		$date_temp_seconds_30 = $last_draw_unix - (86400*(29));
+
+		#echo "date_temp_seconds_30 = $date_temp_seconds_30<br>";
+
+		$date_temp_30 = date('Y/m/d', $date_temp_seconds_30); 
+
+		#echo "date_temp_30 = $date_temp_30<br>";
+
+		print("<h3>Combin Report - HML - Limit $limit</h3>\n");
+
+		$query = "SELECT * FROM ga_f5_draws ";
+		if ($hml)
+		{
+			$query .= "WHERE sum >= $range_low  ";
+			$query .= "AND   sum <= $range_high  ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT $limit ";
+
+		#echo "$query</br>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		print("<TABLE BORDER=\"1\">\n");
+
+		//create header row
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" align=center>Date</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>2</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">&nbsp;3&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">&nbsp;4&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">&nbsp;5&nbsp;</TD>\n");
+		print("</B></TR>\n");
+
+		$total2_failed = 0;
+		$total3_failed = 0;
+		$total4_failed = 0;
+		$total5_failed = 0;
+
+		$last_date = '1962-08-17';
+
+		while($row_draw = mysqli_fetch_array($mysqli_result))
+		{
+			$hml = intval($row_draw[6]/10)*10;
+			
+			print("<TR>\n");  
+			print("<TD>$row_draw[0]</TD>\n");
+
+			# update combo table
+			$query3 = "SELECT * FROM $draw_prefix";
+			$query3 .= "combo_table_hml ";
+			$query3 .= "WHERE date = '$row_draw[0]' ";
+
+			#echo "$query3<br>";
+
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+			$num_rows_combo = mysqli_num_rows($mysqli_result3); 
+
+			#echo "num_rows_combo = $num_rows_combo<br>";
+
+			if ($num_rows_combo)
+			{
+				$row_combo = mysqli_fetch_array($mysqli_result3); 
+				$total2 = $row_combo[1];
+				$total3 = $row_combo[2];
+				$total4 = $row_combo[3];
+				$total5 = $row_combo[4];
+			} else {
+				$total2 = 0;
+				$total3 = 0;
+				$total4 = 0;
+				$total5 = 0;
+
+				// count 2
+				for ($c = 1; $c <= 10; $c++)
+				{
+					switch ($c) { 
+					   case 1: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   break; 
+					   case 2: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[3];
+						   break; 
+					   case 3: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[4];
+						   break; 
+					   case 4: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[5];
+						   break;
+					   case 5: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[3];
+						   break;
+					   case 6: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[4];
+						   break; 
+					   case 7: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[5];
+						   break; 
+					   case 8: 
+						   $d1 = $row_draw[3];
+						   $d2 = $row_draw[4];
+						   break;
+					   case 9: 
+						   $d1 = $row_draw[3];
+						   $d2 = $row_draw[5];
+						   break;
+					   case 10: 
+						   $d1 = $row_draw[4];
+						   $d2 = $row_draw[5];
+						   break;
+					} 
+
+					$query2 = "SELECT DISTINCT * FROM ga_f5_2_42 ";
+					$query2 .= "WHERE d1 = $d1 ";
+					$query2 .= "  AND d2 = $d2 ";
+					$query2 .= "  AND combin = $c "; #200103
+					$query2 .= "  AND hml = $hml "; #200103
+					$query2 .= "  AND date < '$row_draw[0]' ";
+
+					#echo "$query2<br>";
+
+					$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+					
+					if ($num_rows = mysqli_num_rows($mysqli_result2))
+					{
+						//$total2 += $num_rows;
+						$total2++;
+					}
+
+					#echo "num_rows = $num_rows<br>";
+				}
+
+				// count 3
+				for ($c = 1; $c <= 10; $c++)
+				{
+					switch ($c) { 
+					   case 1: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[3];
+						   break; 
+					   case 2: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[4];
+						   break; 
+					   case 3: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[5];
+						   break; 
+					   case 4: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[4];
+						   break;
+					   case 5: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[5];
+						   break;
+					   case 6: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[4];
+						   $d3 = $row_draw[5];
+						   break; 
+					   case 7: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[4];
+						   break;
+					   case 8: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[5];
+						   break;
+					   case 9: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[4];
+						   $d3 = $row_draw[5];
+						   break;
+					   case 10: 
+						   $d1 = $row_draw[3];
+						   $d2 = $row_draw[4];
+						   $d3 = $row_draw[5];
+						   break;
+					} 
+
+					$query3 = "SELECT DISTINCT * FROM ga_f5_3_42 ";
+					$query3 .= "WHERE d1 = $d1 ";
+					$query3 .= "  AND d2 = $d2 ";
+					$query3 .= "  AND d3 = $d3 ";
+					$query3 .= "  AND combin = $c "; #200103
+					$query3 .= "  AND hml = $hml "; #200103
+					$query3 .= "  AND date < '$row_draw[0]' ";
+
+					#echo "$query3<br>";
+
+					$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+					
+					if ($num_rows = mysqli_num_rows($mysqli_result3))
+					{
+						//$total3 += $num_rows;
+						$total3++;
+					}
+				}
+
+				// count 4
+				for ($c = 1; $c <= 5; $c++)
+				{
+					switch ($c) { 
+					   case 1: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[3];
+						   $d4 = $row_draw[4];
+						   break; 
+					   case 2: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[3];
+						   $d4 = $row_draw[5];
+						   break; 
+					   case 3: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[4];
+						   $d4 = $row_draw[5];
+						   break;
+					   case 4: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[4];
+						   $d4 = $row_draw[5];
+						   break; 
+					   case 5: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[4];
+						   $d4 = $row_draw[5];
+						   break;
+					} 
+
+					$query4 = "SELECT DISTINCT * FROM ga_f5_4_42 ";
+					$query4 .= "WHERE d1 = $d1 ";
+					$query4 .= "  AND d2 = $d2 ";
+					$query4 .= "  AND d3 = $d3 ";
+					$query4 .= "  AND d4 = $d4 ";
+					$query4 .= "  AND combin = $c "; #200103
+					$query4 .= "  AND hml = $hml "; #200103
+					$query4 .= "  AND date < '$row_draw[0]' ";
+
+					#echo "$query4<br>";
+
+					$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+					
+					if ($num_rows = mysqli_num_rows($mysqli_result4))
+					{
+						//$total4 += $num_rows;
+						$total4++;
+					}
+				}
+
+				// count 5
+				$query6 = "SELECT DISTINCT * FROM ga_f5_draws ";
+				$query6 .= "WHERE b1 = $row_draw[b1] ";
+				$query6 .= "  AND b2 = $row_draw[b2] ";
+				$query6 .= "  AND b3 = $row_draw[b3] ";
+				$query6 .= "  AND b4 = $row_draw[b4] ";
+				$query6 .= "  AND b5 = $row_draw[b5] ";
+				$query6 .= "  AND date < '$row_draw[0]' ";
+
+				#echo "$query6<br>";
+
+				$mysqli_result6 = mysqli_query($mysqli_link, $query6) or die (mysqli_error($mysqli_link));
+				
+				if ($num_rows = mysqli_num_rows($mysqli_result6))
+				{
+					//$total5 += $num_rows;
+					$total5++;
+				}
+
+				# update combo table	
+				$query3 = "SELECT * FROM $draw_prefix";
+				$query3 .= "combo_table_hml ";
+				$query3 .= "WHERE date = '$row_draw[0]' ";
+
+				#echo "$query3<br>";
+
+				$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+				$num_rows_combo = mysqli_num_rows($mysqli_result3); 
+
+				combo_table_update_hml($row_draw[0],$total2,$total3,$total4,$total5);
+			}
+
+			if ($total2 == 10)
+			{
+				print("<TD align=center>$total2</TD>\n");
+			} else {
+				print("<TD align=center><font color=\"#ff0000\"><b>$total2</b></font></TD>\n");
+				$total2_failed++;
+			}
+
+			if ($total3 == 10)
+			{
+				print("<TD align=center>$total3</TD>\n");
+			} else {
+				print("<TD align=center><font color=\"#ff0000\"><b>$total3</b></font></TD>\n");
+				$total3_failed++;
+			}
+
+			if ($total4 <= 2)
+			{
+				print("<TD align=center>$total4</TD>\n");
+			} else {
+				print("<TD align=center><font color=\"#ff0000\"><b>$total4</b></font></TD>\n");
+				$total4_failed++;
+			}
+
+			if ($total5 == 0)
+			{
+				print("<TD align=center>$total5</TD>\n");
+			} else {
+				print("<TD align=center><font color=\"#ff0000\"><b>$total5</b></font></TD>\n");
+				$total5_failed++;
+			}
+
+			print("</TR>\n");
+
+			$last_date = $row_draw[0];
+		}
+
+		print("<TR><B>\n");
+		print("<TD align=center align=center>&nbsp;</TD>\n");
+		print("<TD align=center><font color=\"#ff0000\">$total2_failed</font></TD>\n");
+		print("<TD align=center><font color=\"#ff0000\">$total3_failed</font></TD>\n");
+		print("<TD align=center><font color=\"#ff0000\">$total4_failed</font></TD>\n");
+		print("<TD align=center><font color=\"#ff0000\">$total5_failed</font></TD>\n");
+		print("</B></TR>\n");
+
+		print("</TABLE>\n");
+
+		###########################################################################################
+		print "<p><b>Combin Summary HML (100)</b></p>";
+
+		$query4 = "DROP TABLE IF EXISTS $draw_prefix";
+		$query4 .= "combo_summary_hml ";
+
+		#echo "$query4<p>";
+
+		$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+		$query4 = "CREATE TABLE $draw_prefix";
+		$query4 .= "combo_summary_hml (";
+		$query4 .= "`id` int(5) unsigned NOT NULL auto_increment,";
+		$query4 .= "combin_limit tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "comb2 tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "comb3 tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "comb4 tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "count tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "PRIMARY KEY  (`id`),";
+		$query4 .= "UNIQUE KEY `id_2` (`id`),";
+		$query4 .= "KEY `numx` (`id`)";
+		$query4 .= ") ENGINE=InnoDB DEFAULT CHARSET=latin1;";
+
+		#echo "$query4<p>";
+	
+		$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+		print("<table border=\"1\">\n");
+
+		print("<tr>\n");
+			print("<TD WIDTH=20 BGCOLOR=\"#CCCCCC\" align=center align=center>2</TD>\n");
+			print("<TD WIDTH=20 BGCOLOR=\"#CCCCCC\" align=center align=center>3</TD>\n");
+			print("<TD WIDTH=20 BGCOLOR=\"#CCCCCC\" align=center align=center>4</TD>\n");
+			print("<TD WIDTH=20 BGCOLOR=\"#CCCCCC\" align=center align=center>5</TD>\n");
+			print("<TD WIDTH=20 BGCOLOR=\"#CCCCCC\" align=center>Cnt</TD>\n");
+		print("</tr>\n");
+
+		# select combo2 table #############################################################################
+		#SELECT comb2, count(*) FROM `ga_f5_combo_table_all` WHERE date >= '2022-2-4' GROUP BY `comb2` ORDER BY `comb2` ASC
+		$query3 = "SELECT comb2, count(*) FROM $draw_prefix";
+		$query3 .= "combo_table_hml ";
+		$query3 .= "WHERE date >= '$date_temp_100' GROUP BY `comb2` ORDER BY `comb2` ASC ";
+
+		#echo "$query3<br>";
+
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		while ($row3 = mysqli_fetch_array($mysqli_result3))
+		{
+			print("<tr>\n");
+			print("<TD align=center align=center>$row3[0]</TD>\n");
+			print("<TD align=center align=center>&nbsp;</TD>\n");
+			print("<TD align=center align=center>&nbsp;</TD>\n");
+			print("<TD align=center align=center>&nbsp;</TD>\n");
+
+			if ($row3[1] > 5)
+			{
+				print("<TD align=center align=center BGCOLOR=\"#66CC00\"><b>$row3[1]</b></TD>\n");
+			} elseif ($row3[1] > 0) {
+				print("<TD align=center align=center>$row3[1]</TD>\n");
+			} else {
+				#do nothing
+			}
+
+			print("</tr>\n");
+
+			$query_insert2 = "INSERT INTO $draw_prefix";
+			$query_insert2 .= "combo_summary_hml ";
+			$query_insert2 .= "VALUES ('0', ";
+			$query_insert2 .= "'2', ";
+			$query_insert2 .= "'$row3[0]', ";
+			$query_insert2 .= "'0', ";
+			$query_insert2 .= "'0', ";
+			$query_insert2 .= "'$row3[1]') "; 
+
+			#echo "$query_insert2<br>";
+	
+			$mysqli_result_insert2 = mysqli_query($mysqli_link, $query_insert2) or die (mysqli_error($mysqli_link));
+		}
+		
+		# select combo2/3 table #############################################################################
+		$query3 = "SELECT comb2, `comb3`, count(*) FROM $draw_prefix";
+		$query3 .= "combo_table_hml ";
+		$query3 .= "WHERE date >= '$date_temp_100' GROUP BY `comb2`, `comb3` ORDER BY `comb2`, `comb3` ASC ";
+
+		#echo "$query3<br>";
+
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		while ($row3 = mysqli_fetch_array($mysqli_result3))
+		{
+			print("<tr>\n");
+			print("<TD align=center align=center>$row3[0]</TD>\n");
+			print("<TD align=center align=center>$row3[1]</TD>\n");
+			print("<TD align=center align=center>&nbsp;</TD>\n");
+			print("<TD align=center align=center>&nbsp;</TD>\n");
+
+			if ($row3[2] > 5)
+			{
+				print("<TD align=center align=center BGCOLOR=\"#66CC00\"><b>$row3[2]</b></TD>\n");
+			} elseif ($row3[2] > 3) {
+				print("<TD align=center align=center>$row3[2]</TD>\n");
+			} else {
+				print("<TD align=center align=center>$row3[2]</TD>\n");
+			}
+
+			print("</tr>\n");
+
+			$query_insert3 = "INSERT INTO $draw_prefix";
+			$query_insert3 .= "combo_summary_hml ";
+			$query_insert3 .= "VALUES ('0', ";
+			$query_insert3 .= "'3', ";
+			$query_insert3 .= "'$row3[0]', ";
+			$query_insert3 .= "'$row3[1]', ";
+			$query_insert3 .= "'0', ";
+			$query_insert3 .= "'$row3[2]') "; 
+
+			#echo "$query_insert3<br>";
+	
+			$mysqli_result_insert3 = mysqli_query($mysqli_link, $query_insert3) or die (mysqli_error($mysqli_link));
+		}
+
+		# select combo2/3/4 table #############################################################################
+		$query3 = "SELECT comb2, `comb3`, `comb4`, count(*) FROM $draw_prefix";
+		$query3 .= "combo_table_hml ";
+		$query3 .= "WHERE date >= '$date_temp_100' GROUP BY `comb2`, `comb3`, `comb4` ORDER BY `comb2`, `comb3`, `comb4` ASC ";
+
+		#echo "$query3<br>";
+
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		while ($row3 = mysqli_fetch_array($mysqli_result3))
+		{
+			print("<tr>\n");
+			print("<TD align=center align=center>$row3[0]</TD>\n");
+			print("<TD align=center align=center>$row3[1]</TD>\n");
+			print("<TD align=center align=center>$row3[2]</TD>\n");
+			print("<TD align=center align=center>&nbsp;</TD>\n");
+
+			if ($row3[3] > 5)
+			{
+				print("<TD align=center align=center BGCOLOR=\"#66CC00\"><b>$row3[3]</b></TD>\n");
+			} elseif ($row3[3] > 4) {
+				print("<TD align=center align=center>$row3[3]</TD>\n");
+			} else {
+				print("<TD align=center align=center>$row3[3]</TD>\n");
+			}
+
+			print("</tr>\n");
+
+			$query_insert4 = "INSERT INTO $draw_prefix";
+			$query_insert4 .= "combo_summary_hml ";
+			$query_insert4 .= "VALUES ('0', ";
+			$query_insert4 .= "'4', ";
+			$query_insert4 .= "'$row3[0]', ";
+			$query_insert4 .= "'$row3[1]', ";
+			$query_insert4 .= "'$row3[2]', ";
+			$query_insert4 .= "'$row3[3]') "; 
+
+			#echo "$query_insert4<br>";
+	
+			$mysqli_result_insert4 = mysqli_query($mysqli_link, $query_insert4) or die (mysqli_error($mysqli_link));
+		}
+
+		print("</TABLE>\n");
+
+		$curr_date = date("ymd");
+
+		$table_temp_date = "temp_combo_summary_hml_" . $dateDiff;
+
+		$query = "DROP TABLE IF EXISTS $table_temp_date";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query_copy = "CREATE TABLE $table_temp_date SELECT * FROM ga_f5_combo_summary_all";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query_copy) or die (mysqli_error($mysqli_link));
+
+		print "<h3>Table <font color=\"#ff0000\">$table_temp_date</font> Updated!</h3>";
+
+		return ($last_date);
+	}
+
+	// ----------------------------------------------------------------------------------
+	function test_combin_print_sum($limit) #200103
+	{
+		global $debug, $draw_prefix, $hml, $range_low, $range_high, $date_temp_100, $game, $dateDiff;
+		
+		require ("includes/mysqli.php"); 
+		#require ("includes/last_draw_unix.php");
+
+		$last_draw_unix = findLastDrawDateUnix($game);
+
+		#echo "last_draw_unix = $last_draw_unix<br>";
+		
+		$date_temp_seconds_30 = $last_draw_unix - (86400*(29));
+
+		#echo "date_temp_seconds_30 = $date_temp_seconds_30<br>";
+
+		$date_temp_30 = date('Y/m/d', $date_temp_seconds_30); 
+
+		#echo "date_temp_30 = $date_temp_30<br>";
+
+		print("<h3>Combin Report - Sum - Limit $limit</h3>\n");
+
+		$query = "SELECT * FROM ga_f5_draws ";
+		if ($hml)
+		{
+			$query .= "WHERE sum >= $range_low  ";
+			$query .= "AND   sum <= $range_high  ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT $limit ";
+
+		#echo "$query</br>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		print("<TABLE BORDER=\"1\">\n");
+
+		//create header row
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" align=center>Date</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>2</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">&nbsp;3&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">&nbsp;4&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">&nbsp;5&nbsp;</TD>\n");
+		print("</B></TR>\n");
+
+		$total2_failed = 0;
+		$total3_failed = 0;
+		$total4_failed = 0;
+		$total5_failed = 0;
+
+		$last_date = '1962-08-17';
+
+		while($row_draw = mysqli_fetch_array($mysqli_result))
+		{
+			$hml = $row_draw[6] + 500;
+			
+			print("<TR>\n");  
+			print("<TD>$row_draw[0]</TD>\n");
+
+			# update combo table
+			$query3 = "SELECT * FROM $draw_prefix";
+			$query3 .= "combo_table_sum ";
+			$query3 .= "WHERE date = '$row_draw[0]' ";
+
+			#echo "$query3<br>";
+
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+			$num_rows_combo = mysqli_num_rows($mysqli_result3); 
+
+			#echo "num_rows_combo = $num_rows_combo<br>";
+
+			if ($num_rows_combo)
+			{
+				$row_combo = mysqli_fetch_array($mysqli_result3); 
+				$total2 = $row_combo[1];
+				$total3 = $row_combo[2];
+				$total4 = $row_combo[3];
+				$total5 = $row_combo[4];
+			} else {
+				$total2 = 0;
+				$total3 = 0;
+				$total4 = 0;
+				$total5 = 0;
+
+				// count 2
+				for ($c = 1; $c <= 10; $c++)
+				{
+					switch ($c) { 
+					   case 1: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   break; 
+					   case 2: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[3];
+						   break; 
+					   case 3: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[4];
+						   break; 
+					   case 4: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[5];
+						   break;
+					   case 5: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[3];
+						   break;
+					   case 6: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[4];
+						   break; 
+					   case 7: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[5];
+						   break; 
+					   case 8: 
+						   $d1 = $row_draw[3];
+						   $d2 = $row_draw[4];
+						   break;
+					   case 9: 
+						   $d1 = $row_draw[3];
+						   $d2 = $row_draw[5];
+						   break;
+					   case 10: 
+						   $d1 = $row_draw[4];
+						   $d2 = $row_draw[5];
+						   break;
+					} 
+
+					$query2 = "SELECT DISTINCT * FROM ga_f5_2_42 ";
+					$query2 .= "WHERE d1 = $d1 ";
+					$query2 .= "  AND d2 = $d2 ";
+					$query2 .= "  AND combin = $c "; #200103
+					$query2 .= "  AND hml = $hml "; #200103
+					$query2 .= "  AND date < '$row_draw[0]' ";
+
+					#echo "$query2<br>";
+
+					$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+					
+					if ($num_rows = mysqli_num_rows($mysqli_result2))
+					{
+						//$total2 += $num_rows;
+						$total2++;
+					}
+
+					#echo "num_rows = $num_rows<br>";
+				}
+
+				// count 3
+				for ($c = 1; $c <= 10; $c++)
+				{
+					switch ($c) { 
+					   case 1: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[3];
+						   break; 
+					   case 2: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[4];
+						   break; 
+					   case 3: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[5];
+						   break; 
+					   case 4: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[4];
+						   break;
+					   case 5: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[5];
+						   break;
+					   case 6: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[4];
+						   $d3 = $row_draw[5];
+						   break; 
+					   case 7: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[4];
+						   break;
+					   case 8: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[5];
+						   break;
+					   case 9: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[4];
+						   $d3 = $row_draw[5];
+						   break;
+					   case 10: 
+						   $d1 = $row_draw[3];
+						   $d2 = $row_draw[4];
+						   $d3 = $row_draw[5];
+						   break;
+					} 
+
+					$query3 = "SELECT DISTINCT * FROM ga_f5_3_42 ";
+					$query3 .= "WHERE d1 = $d1 ";
+					$query3 .= "  AND d2 = $d2 ";
+					$query3 .= "  AND d3 = $d3 ";
+					$query3 .= "  AND combin = $c "; #200103
+					$query3 .= "  AND hml = $hml "; #200103
+					$query3 .= "  AND date < '$row_draw[0]' ";
+
+					#echo "$query3<br>";
+
+					$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+					
+					if ($num_rows = mysqli_num_rows($mysqli_result3))
+					{
+						//$total3 += $num_rows;
+						$total3++;
+					}
+				}
+
+				// count 4
+				for ($c = 1; $c <= 5; $c++)
+				{
+					switch ($c) { 
+					   case 1: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[3];
+						   $d4 = $row_draw[4];
+						   break; 
+					   case 2: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[3];
+						   $d4 = $row_draw[5];
+						   break; 
+					   case 3: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[2];
+						   $d3 = $row_draw[4];
+						   $d4 = $row_draw[5];
+						   break;
+					   case 4: 
+						   $d1 = $row_draw[1];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[4];
+						   $d4 = $row_draw[5];
+						   break; 
+					   case 5: 
+						   $d1 = $row_draw[2];
+						   $d2 = $row_draw[3];
+						   $d3 = $row_draw[4];
+						   $d4 = $row_draw[5];
+						   break;
+					} 
+
+					$query4 = "SELECT DISTINCT * FROM ga_f5_4_42 ";
+					$query4 .= "WHERE d1 = $d1 ";
+					$query4 .= "  AND d2 = $d2 ";
+					$query4 .= "  AND d3 = $d3 ";
+					$query4 .= "  AND d4 = $d4 ";
+					$query4 .= "  AND combin = $c "; #200103
+					$query4 .= "  AND hml = $hml "; #200103
+					$query4 .= "  AND date < '$row_draw[0]' ";
+
+					#echo "$query4<br>";
+
+					$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+					
+					if ($num_rows = mysqli_num_rows($mysqli_result4))
+					{
+						//$total4 += $num_rows;
+						$total4++;
+					}
+				}
+
+				// count 5
+				$query6 = "SELECT DISTINCT * FROM ga_f5_draws ";
+				$query6 .= "WHERE b1 = $row_draw[b1] ";
+				$query6 .= "  AND b2 = $row_draw[b2] ";
+				$query6 .= "  AND b3 = $row_draw[b3] ";
+				$query6 .= "  AND b4 = $row_draw[b4] ";
+				$query6 .= "  AND b5 = $row_draw[b5] ";
+				$query6 .= "  AND date < '$row_draw[0]' ";
+
+				#echo "$query6<br>";
+
+				$mysqli_result6 = mysqli_query($mysqli_link, $query6) or die (mysqli_error($mysqli_link));
+				
+				if ($num_rows = mysqli_num_rows($mysqli_result6))
+				{
+					//$total5 += $num_rows;
+					$total5++;
+				}
+
+				# update combo table	
+				$query3 = "SELECT * FROM $draw_prefix";
+				$query3 .= "combo_table_sum ";
+				$query3 .= "WHERE date = '$row_draw[0]' ";
+
+				#echo "$query3<br>";
+
+				$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+				$num_rows_combo = mysqli_num_rows($mysqli_result3); 
+
+				combo_table_update_sum($row_draw[0],$total2,$total3,$total4,$total5);
+			}
+
+			if ($total2 == 10)
+			{
+				print("<TD align=center>$total2</TD>\n");
+			} else {
+				print("<TD align=center><font color=\"#ff0000\"><b>$total2</b></font></TD>\n");
+				$total2_failed++;
+			}
+
+			if ($total3 == 10)
+			{
+				print("<TD align=center>$total3</TD>\n");
+			} else {
+				print("<TD align=center><font color=\"#ff0000\"><b>$total3</b></font></TD>\n");
+				$total3_failed++;
+			}
+
+			if ($total4 <= 2)
+			{
+				print("<TD align=center>$total4</TD>\n");
+			} else {
+				print("<TD align=center><font color=\"#ff0000\"><b>$total4</b></font></TD>\n");
+				$total4_failed++;
+			}
+
+			if ($total5 == 0)
+			{
+				print("<TD align=center>$total5</TD>\n");
+			} else {
+				print("<TD align=center><font color=\"#ff0000\"><b>$total5</b></font></TD>\n");
+				$total5_failed++;
+			}
+
+			print("</TR>\n");
+
+			$last_date = $row_draw[0];
+		}
+
+		print("<TR><B>\n");
+		print("<TD align=center align=center>&nbsp;</TD>\n");
+		print("<TD align=center><font color=\"#ff0000\">$total2_failed</font></TD>\n");
+		print("<TD align=center><font color=\"#ff0000\">$total3_failed</font></TD>\n");
+		print("<TD align=center><font color=\"#ff0000\">$total4_failed</font></TD>\n");
+		print("<TD align=center><font color=\"#ff0000\">$total5_failed</font></TD>\n");
+		print("</B></TR>\n");
+
+		print("</TABLE>\n");
+
+		###########################################################################################
+		print "<p><b>Combin Summary Sum (100)</b></p>";
+
+		$query4 = "DROP TABLE IF EXISTS $draw_prefix";
+		$query4 .= "combo_summary_sum ";
+
+		#echo "$query4<p>";
+
+		$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+		$query4 = "CREATE TABLE $draw_prefix";
+		$query4 .= "combo_summary_sum (";
+		$query4 .= "`id` int(5) unsigned NOT NULL auto_increment,";
+		$query4 .= "combin_limit tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "comb2 tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "comb3 tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "comb4 tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "count tinyint(3) unsigned NOT NULL default '0', ";
+		$query4 .= "PRIMARY KEY  (`id`),";
+		$query4 .= "UNIQUE KEY `id_2` (`id`),";
+		$query4 .= "KEY `numx` (`id`)";
+		$query4 .= ") ENGINE=InnoDB DEFAULT CHARSET=latin1;";
+
+		#echo "$query4<p>";
+	
+		$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+		print("<table border=\"1\">\n");
+
+		print("<tr>\n");
+			print("<TD WIDTH=20 BGCOLOR=\"#CCCCCC\" align=center align=center>2</TD>\n");
+			print("<TD WIDTH=20 BGCOLOR=\"#CCCCCC\" align=center align=center>3</TD>\n");
+			print("<TD WIDTH=20 BGCOLOR=\"#CCCCCC\" align=center align=center>4</TD>\n");
+			print("<TD WIDTH=20 BGCOLOR=\"#CCCCCC\" align=center align=center>5</TD>\n");
+			print("<TD WIDTH=20 BGCOLOR=\"#CCCCCC\" align=center>Cnt</TD>\n");
+		print("</tr>\n");
+
+		# select combo2 table #############################################################################
+		#SELECT comb2, count(*) FROM `ga_f5_combo_table_all` WHERE date >= '2022-2-4' GROUP BY `comb2` ORDER BY `comb2` ASC
+		$query3 = "SELECT comb2, count(*) FROM $draw_prefix";
+		$query3 .= "combo_table_sum ";
+		$query3 .= "WHERE date >= '$date_temp_100' GROUP BY `comb2` ORDER BY `comb2` ASC ";
+
+		#echo "$query3<br>";
+
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		while ($row3 = mysqli_fetch_array($mysqli_result3))
+		{
+			print("<tr>\n");
+			print("<TD align=center align=center>$row3[0]</TD>\n");
+			print("<TD align=center align=center>&nbsp;</TD>\n");
+			print("<TD align=center align=center>&nbsp;</TD>\n");
+			print("<TD align=center align=center>&nbsp;</TD>\n");
+
+			if ($row3[1] > 5)
+			{
+				print("<TD align=center align=center BGCOLOR=\"#66CC00\"><b>$row3[1]</b></TD>\n");
+			} elseif ($row3[1] > 0) {
+				print("<TD align=center align=center>$row3[1]</TD>\n");
+			} else {
+				#do nothing
+			}
+
+			print("</tr>\n");
+
+			$query_insert2 = "INSERT INTO $draw_prefix";
+			$query_insert2 .= "combo_summary_sum ";
+			$query_insert2 .= "VALUES ('0', ";
+			$query_insert2 .= "'2', ";
+			$query_insert2 .= "'$row3[0]', ";
+			$query_insert2 .= "'0', ";
+			$query_insert2 .= "'0', ";
+			$query_insert2 .= "'$row3[1]') "; 
+
+			#echo "$query_insert2<br>";
+	
+			$mysqli_result_insert2 = mysqli_query($mysqli_link, $query_insert2) or die (mysqli_error($mysqli_link));
+		}
+		
+		# select combo2/3 table #############################################################################
+		$query3 = "SELECT comb2, `comb3`, count(*) FROM $draw_prefix";
+		$query3 .= "combo_table_sum ";
+		$query3 .= "WHERE date >= '$date_temp_100' GROUP BY `comb2`, `comb3` ORDER BY `comb2`, `comb3` ASC ";
+
+		#echo "$query3<br>";
+
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		while ($row3 = mysqli_fetch_array($mysqli_result3))
+		{
+			print("<tr>\n");
+			print("<TD align=center align=center>$row3[0]</TD>\n");
+			print("<TD align=center align=center>$row3[1]</TD>\n");
+			print("<TD align=center align=center>&nbsp;</TD>\n");
+			print("<TD align=center align=center>&nbsp;</TD>\n");
+
+			if ($row3[2] > 5)
+			{
+				print("<TD align=center align=center BGCOLOR=\"#66CC00\"><b>$row3[2]</b></TD>\n");
+			} elseif ($row3[2] > 3) {
+				print("<TD align=center align=center>$row3[2]</TD>\n");
+			} else {
+				print("<TD align=center align=center>$row3[2]</TD>\n");
+			}
+
+			print("</tr>\n");
+
+			$query_insert3 = "INSERT INTO $draw_prefix";
+			$query_insert3 .= "combo_summary_sum ";
+			$query_insert3 .= "VALUES ('0', ";
+			$query_insert3 .= "'3', ";
+			$query_insert3 .= "'$row3[0]', ";
+			$query_insert3 .= "'$row3[1]', ";
+			$query_insert3 .= "'0', ";
+			$query_insert3 .= "'$row3[2]') "; 
+
+			#echo "$query_insert3<br>";
+	
+			$mysqli_result_insert3 = mysqli_query($mysqli_link, $query_insert3) or die (mysqli_error($mysqli_link));
+		}
+
+		# select combo2/3/4 table #############################################################################
+		$query3 = "SELECT comb2, `comb3`, `comb4`, count(*) FROM $draw_prefix";
+		$query3 .= "combo_table_sum ";
+		$query3 .= "WHERE date >= '$date_temp_100' GROUP BY `comb2`, `comb3`, `comb4` ORDER BY `comb2`, `comb3`, `comb4` ASC ";
+
+		#echo "$query3<br>";
+
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		while ($row3 = mysqli_fetch_array($mysqli_result3))
+		{
+			print("<tr>\n");
+			print("<TD align=center align=center>$row3[0]</TD>\n");
+			print("<TD align=center align=center>$row3[1]</TD>\n");
+			print("<TD align=center align=center>$row3[2]</TD>\n");
+			print("<TD align=center align=center>&nbsp;</TD>\n");
+
+			if ($row3[3] > 5)
+			{
+				print("<TD align=center align=center BGCOLOR=\"#66CC00\"><b>$row3[3]</b></TD>\n");
+			} elseif ($row3[3] > 3) {
+				print("<TD align=center align=center>$row3[3]</TD>\n");
+			} else {
+				print("<TD align=center align=center>$row3[3]</TD>\n");
+			}
+
+			print("</tr>\n");
+
+			$query_insert4 = "INSERT INTO $draw_prefix";
+			$query_insert4 .= "combo_summary_sum ";
+			$query_insert4 .= "VALUES ('0', ";
+			$query_insert4 .= "'4', ";
+			$query_insert4 .= "'$row3[0]', ";
+			$query_insert4 .= "'$row3[1]', ";
+			$query_insert4 .= "'$row3[2]', ";
+			$query_insert4 .= "'$row3[3]') "; 
+
+			#echo "$query_insert4<br>";
+	
+			$mysqli_result_insert4 = mysqli_query($mysqli_link, $query_insert4) or die (mysqli_error($mysqli_link));
+		}
+
+		print("</TABLE>\n");
+
+		$table_temp_date = "temp_combo_summary_sum_" . $dateDiff;
+
+		$query = "DROP TABLE IF EXISTS $table_temp_date";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query_copy = "CREATE TABLE $table_temp_date SELECT * FROM ga_f5_combo_summary_all";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query_copy) or die (mysqli_error($mysqli_link));
+
+		print "<h3>Table <font color=\"#ff0000\">$table_temp_date</font> Updated!</h3>";
+
+		return ($last_date);
+	}
+
+	// ----------------------------------------------------------------------------------
+	function test_combin($draw_num) 
+	{
+		#echo "test_combin()</b>";
+
+		require ("includes/mysqli.php"); 
+
+		global $debug;
+
+		$total_combin = array_fill (0,7,0);
+		
+		// count 2
+		for ($c = 1; $c <= 10; $c++)
+		{
+			switch ($c) { 
+			   case 1: 
+				   $d1 = $draw_num[1];
+				   $d2 = $draw_num[2];
+				   break; 
+			   case 2: 
+				   $d1 = $draw_num[1];
+				   $d2 = $draw_num[3];
+				   break; 
+			   case 3: 
+				   $d1 = $draw_num[1];
+				   $d2 = $draw_num[4];
+				   break; 
+			   case 4: 
+				   $d1 = $draw_num[1];
+				   $d2 = $draw_num[5];
+				   break;
+			   case 5: 
+				   $d1 = $draw_num[2];
+				   $d2 = $draw_num[3];
+				   break;
+			   case 6: 
+				   $d1 = $draw_num[2];
+				   $d2 = $draw_num[4];
+				   break; 
+			   case 7: 
+				   $d1 = $draw_num[2];
+				   $d2 = $draw_num[5];
+				   break; 
+			   case 8: 
+				   $d1 = $draw_num[3];
+				   $d2 = $draw_num[4];
+				   break;
+			   case 9: 
+				   $d1 = $draw_num[3];
+				   $d2 = $draw_num[5];
+				   break;
+			   case 10: 
+				   $d1 = $draw_num[4];
+				   $d2 = $draw_num[5];
+				   break;
+			} 
+
+			$query2 = "SELECT DISTINCT * FROM ga_f5_2_42 ";
+			$query2 .= "WHERE d1 = $d1 ";
+			$query2 .= "  AND d2 = $d2 ";
+			$query2 .= "  AND combo = $c ";
+
+			#echo "$query2<br>";
+
+			$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+
+			$temp = mysqli_num_rows($mysqli_result2);
+			#echo "mysqli_num_rows = $temp<br>";
+			
+			if (mysqli_num_rows($mysqli_result2))
+			{
+				$total_combin[2]++;
+			}
+		}
+		
+		// count 3
+		for ($c = 1; $c <= 10; $c++)
+		{
+			switch ($c) { 
+			   case 1: 
+				   $d1 = $draw_num[1];
+				   $d2 = $draw_num[2];
+				   $d3 = $draw_num[3];
+				   break; 
+			   case 2: 
+				   $d1 = $draw_num[1];
+				   $d2 = $draw_num[2];
+				   $d3 = $draw_num[4];
+				   break; 
+			   case 3: 
+				   $d1 = $draw_num[1];
+				   $d2 = $draw_num[2];
+				   $d3 = $draw_num[5];
+				   break; 
+			   case 4: 
+				   $d1 = $draw_num[1];
+				   $d2 = $draw_num[3];
+				   $d3 = $draw_num[4];
+				   break;
+			   case 5: 
+				   $d1 = $draw_num[1];
+				   $d2 = $draw_num[3];
+				   $d3 = $draw_num[5];
+				   break;
+			   case 6: 
+				   $d1 = $draw_num[1];
+				   $d2 = $draw_num[4];
+				   $d3 = $draw_num[5];
+				   break; 
+			   case 7: 
+				   $d1 = $draw_num[2];
+				   $d2 = $draw_num[3];
+				   $d3 = $draw_num[4];
+				   break;
+			   case 8: 
+				   $d1 = $draw_num[2];
+				   $d2 = $draw_num[3];
+				   $d3 = $draw_num[5];
+				   break;
+			   case 9: 
+				   $d1 = $draw_num[2];
+				   $d2 = $draw_num[4];
+				   $d3 = $draw_num[5];
+				   break;
+			   case 10: 
+				   $d1 = $draw_num[3];
+				   $d2 = $draw_num[4];
+				   $d3 = $draw_num[5];
+				   break;
+			} 
+
+			$query3 = "SELECT DISTINCT * FROM ga_f5_3_42 ";
+			$query3 .= "WHERE d1 = $d1 ";
+			$query3 .= "  AND d2 = $d2 ";
+			$query3 .= "  AND d3 = $d3 ";
+			$query3 .= "  AND combo = $c ";
+
+			#echo "$query3<br>";
+
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+			$temp = mysqli_num_rows($mysqli_result3);
+			#echo "mysqli_num_rows = $temp<br>";
+			
+			if (mysqli_num_rows($mysqli_result3))
+			{
+				$total_combin[3]++;
+			}
+		}
+
+		// count 4
+		for ($c = 1; $c <= 5; $c++)
+		{
+			switch ($c) { 
+			   case 1: 
+				   $d1 = $draw_num[1];
+				   $d2 = $draw_num[2];
+				   $d3 = $draw_num[3];
+				   $d4 = $draw_num[4];
+				   break; 
+			   case 2: 
+				   $d1 = $draw_num[1];
+				   $d2 = $draw_num[2];
+				   $d3 = $draw_num[3];
+				   $d4 = $draw_num[5];
+				   break; 
+			   case 3: 
+				   $d1 = $draw_num[1];
+				   $d2 = $draw_num[2];
+				   $d3 = $draw_num[4];
+				   $d4 = $draw_num[5];
+				   break;
+			   case 4: 
+				   $d1 = $draw_num[1];
+				   $d2 = $draw_num[3];
+				   $d3 = $draw_num[4];
+				   $d4 = $draw_num[5];
+				   break; 
+			   case 5: 
+				   $d1 = $draw_num[2];
+				   $d2 = $draw_num[3];
+				   $d3 = $draw_num[4];
+				   $d4 = $draw_num[5];
+				   break;
+			} 
+
+			$query4 = "SELECT DISTINCT * FROM ga_f5_4_42 ";
+			$query4 .= "WHERE d1 = $d1 ";
+			$query4 .= "  AND d2 = $d2 ";
+			$query4 .= "  AND d3 = $d3 ";
+			$query4 .= "  AND d4 = $d4 ";
+			$query4 .= "  AND combo = $c ";
+
+			#echo "$query4<br>";
+
+			$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+			
+			if (mysqli_num_rows($mysqli_result4))
+			{
+				$total_combin[4]++;
+			}
+		}
+		
+		// count 5
+		$query6 = "SELECT DISTINCT * FROM ga_f5_draws ";
+		$query6 .= "WHERE b1 = $draw_num[1] ";
+		$query6 .= "  AND b2 = $draw_num[2] ";
+		$query6 .= "  AND b3 = $draw_num[3] ";
+		$query6 .= "  AND b4 = $draw_num[4] ";
+		$query6 .= "  AND b5 = $draw_num[5] ";
+
+		#echo "$query6<br>";
+
+		$mysqli_result6 = mysqli_query($mysqli_link, $query6) or die (mysqli_error($mysqli_link));
+		
+		if ($num_draw_nums = mysqli_num_rows($mysqli_result6))
+		{
+			$total_combin[5]++;
+		}
+
+		return $total_combin;
+	}
+
+// ----------------------------------------------------------------------------------
+	function test_combin_print4($combin,$limit) 
+	{
+		require ("includes/mysqli.php"); 
+
+		global $debug, $draw_prefix, $hml, $range_low, $range_high;
+
+		print("<h3>Combin Report All - Limit $limit - Combin $Combin</h3>\n");
+
+		$query = "SELECT * FROM ga_f5_	draws_4 ";
+		if ($hml)
+		{
+			$query .= "WHERE sum >= $range_low  ";
+			$query .= "AND   sum <= $range_high  ";
+			$query .= "AND   combin = $combin  ";
+		} else {
+			$query .= "WHERE combin = $combin  ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT $limit ";
+
+		#echo "$query<br>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		print("<TABLE BORDER=\"1\">\n");
+
+		//create header row
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" align=center>Date</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>2</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">&nbsp;3&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">&nbsp;4&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\">&nbsp;5&nbsp;</TD>\n");
+		print("</B></TR>\n");
+
+		$total2_failed = 0;
+		$total3_failed = 0;
+		$total4_failed = 0;
+		$total5_failed = 0;
+
+		$last_date = '1962-08-17';
+
+		while($row_draw = mysqli_fetch_array($mysqli_result))
+		{
+			print("<TR>\n");  
+			print("<TD>$row_draw[0]</TD>\n");
+
+			# update combo table
+			$query3 = "SELECT * FROM $draw_prefix";
+			$query3 .= "combo_table_4 ";
+			$query3 .= "WHERE date = '$row_draw[0]' ";
+			$query3 .= "AND   combin = $combin ";
+
+			#echo "$query3<br>";
+
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+			$num_rows_combo = mysqli_num_rows($mysqli_result3); 
+
+			#echo "num_rows_combo = $num_rows_combo<br>";
+
+			if ($num_rows_combo)
+			{
+				$row_combo = mysqli_fetch_array($mysqli_result3); 
+				$total2 = $row_combo[1];
+				$total3 = $row_combo[2];
+				$total4 = $row_combo[3];
+				$total5 = $row_combo[4];
+			} else {
+				$total2 = 0;
+				$total3 = 0;
+				$total4 = 0;
+				$total5 = 0;
+
+				// count 2
+				for ($c = 1; $c <= 6; $c++)
+				{
+					switch ($c) { 
+					   case 1: 
+						   $d1 = $row_draw[2+1];
+						   $d2 = $row_draw[2+2];
+						   break; 
+					   case 2: 
+						   $d1 = $row_draw[2+1];
+						   $d2 = $row_draw[2+3];
+						   break; 
+					   case 3: 
+						   $d1 = $row_draw[2+1];
+						   $d2 = $row_draw[2+4];
+						   break; 
+					   case 4: 
+						   $d1 = $row_draw[2+2];
+						   $d2 = $row_draw[2+3];
+						   break;
+					   case 5: 
+						   $d1 = $row_draw[2+2];
+						   $d2 = $row_draw[2+4];
+						   break; 
+					   case 6: 
+						   $d1 = $row_draw[2+3];
+						   $d2 = $row_draw[2+4];
+						   break;
+					} 
+
+					$query2 = "SELECT DISTINCT * FROM ga_f5_2_42 ";
+					$query2 .= "WHERE d1 = $d1 ";
+					$query2 .= "  AND d2 = $d2 ";
+					#$query2 .= "  AND combo = $c ";
+					$query2 .= "  AND date < '$row_draw[0]' ";
+
+					#echo "$query2<br>";
+
+					$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+					
+					if ($num_rows = mysqli_num_rows($mysqli_result2))
+					{
+						//$total2 += $num_rows;
+						$total2++;
+					}
+
+					#echo "num_rows = $num_rows<br>";
+				}
+
+				// count 3
+				for ($c = 1; $c <= 4; $c++)
+				{
+					switch ($c) { 
+					   case 1: 
+						   $d1 = $row_draw[2+1];
+						   $d2 = $row_draw[2+2];
+						   $d3 = $row_draw[2+3];
+						   break; 
+					   case 2: 
+						   $d1 = $row_draw[2+1];
+						   $d2 = $row_draw[2+2];
+						   $d3 = $row_draw[2+4];
+						   break; 
+					   case 3: 
+						   $d1 = $row_draw[2+1];
+						   $d2 = $row_draw[2+3];
+						   $d3 = $row_draw[2+4];
+						   break;
+					   case 4: 
+						   $d1 = $row_draw[2+2];
+						   $d2 = $row_draw[2+3];
+						   $d3 = $row_draw[2+4];
+						   break;
+					} 
+
+					$query3 = "SELECT DISTINCT * FROM ga_f5_3_42 ";
+					$query3 .= "WHERE d1 = $d1 ";
+					$query3 .= "  AND d2 = $d2 ";
+					$query3 .= "  AND d3 = $d3 ";
+					#$query3 .= "  AND combo = $c ";
+					$query3 .= "  AND date < '$row_draw[0]' ";
+
+					#echo "$query3<br>";
+
+					$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+					
+					if ($num_rows = mysqli_num_rows($mysqli_result3))
+					{
+						//$total3 += $num_rows;
+						$total3++;
+					}
+				}
+
+				// count 4
+				#$d1 = $row_draw[1];
+
+				$query4 = "SELECT DISTINCT date, d1, d2, d3, d4 FROM ga_f5_4_42 ";
+				$query4 .= "WHERE d1 = $row_draw[3] ";
+				$query4 .= "  AND d2 = $row_draw[4] ";
+				$query4 .= "  AND d3 = $row_draw[5] ";
+				$query4 .= "  AND d4 = $row_draw[6] ";
+				$query3 .= "  AND combo = $c ";
+				$query4 .= "  AND date < '$row_draw[0]' ";
+
+				#echo "$query4<br>";
+
+				$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+				
+				if ($num_rows = mysqli_num_rows($mysqli_result4))
+				{
+					//$total4 += $num_rows;
+					$total4++;
+				}
+
+				# update combo table	
+				$query3 = "SELECT * FROM $draw_prefix";
+				$query3 .= "combo_table_4 ";
+				$query3 .= "WHERE date = '$row_draw[0]' ";
+				$query3 .= "AND   combin = $combin ";
+
+				#echo "$query3<br>";
+
+				$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+				$num_rows_combo = mysqli_num_rows($mysqli_result3); 
+
+				combo_table_update4($combin,$row_draw[0],$total2,$total3,$total4,$total5);
+			}
+
+			if ($total2 == 10)
+			{
+				print("<TD align=center>$total2</TD>\n");
+			} else {
+				print("<TD align=center><font color=\"#ff0000\"><b>$total2</b></font></TD>\n");
+				$total2_failed++;
+			}
+
+			if ($total3 == 10)
+			{
+				print("<TD align=center>$total3</TD>\n");
+			} else {
+				print("<TD align=center><font color=\"#ff0000\"><b>$total3</b></font></TD>\n");
+				$total3_failed++;
+			}
+
+			if ($total4 <= 2)
+			{
+				print("<TD align=center>$total4</TD>\n");
+			} else {
+				print("<TD align=center><font color=\"#ff0000\"><b>$total4</b></font></TD>\n");
+				$total4_failed++;
+			}
+
+			if ($total5 == 0)
+			{
+				print("<TD align=center>$total5</TD>\n");
+			} else {
+				print("<TD align=center><font color=\"#ff0000\"><b>$total5</b></font></TD>\n");
+				$total5_failed++;
+			}
+
+			print("</TR>\n");
+
+			$last_date = $row_draw[0];
+		}
+
+		print("<TR><B>\n");
+		print("<TD align=center align=center>&nbsp;</TD>\n");
+		print("<TD align=center><font color=\"#ff0000\">$total2_failed</font></TD>\n");
+		print("<TD align=center><font color=\"#ff0000\">$total3_failed</font></TD>\n");
+		print("<TD align=center><font color=\"#ff0000\">$total4_failed</font></TD>\n");
+		print("<TD align=center><font color=\"#ff0000\">$total5_failed</font></TD>\n");
+		print("</B></TR>\n");
+
+		print("</TABLE>\n");
+
+		return ($last_date);
+	}
+?>

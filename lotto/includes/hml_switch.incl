@@ -1,0 +1,376 @@
+<?php
+	#echo "<b>hml = $hml in lot_display.php</b><p>";
+
+	switch ($game) {
+		case 1;
+			if ($hml == 0) {
+				$range_low = 40;	#gaf5 all
+				$range_high = 179;	#gaf5 all
+			} elseif ($hml == 1) {
+				$range_low = 40;	#gaf5 medium
+				$range_high = 69;	#gaf5 medium
+			} elseif ($hml == 2) {
+				$range_low = 70;	#gaf5 min
+				$range_high = 99;	#gaf5 min
+			} elseif ($hml == 3) {
+				$range_low = 100;	#gaf5 min
+				$range_high = 129;	#gaf5 min
+			} elseif ($hml == 4) {
+				$range_low = 120;	#gaf5 max
+				$range_high = 149;	#gaf5 max
+			} elseif ($hml == 5) {
+				$range_low = 150;	#gaf5 medium
+				$range_high = 179;	#gaf5 medium
+			} elseif ($hml == 30) {
+				$range_low = 30;	#gaf5 max
+				$range_high = 39;	#gaf5 max
+			} elseif ($hml == 40) {
+				$range_low = 40;	#gaf5 max
+				$range_high = 49;	#gaf5 max
+			} elseif ($hml == 50) {
+				$range_low = 50;	#gaf5 max
+				$range_high = 59;	#gaf5 max
+			} elseif ($hml == 60) {
+				$range_low = 60;	#gaf5 max
+				$range_high = 69;	#gaf5 max
+			} elseif ($hml == 70) {
+				$range_low = 70;	#gaf5 max
+				$range_high = 79;	#gaf5 max
+			} elseif ($hml == 80) {
+				$range_low = 80;	#gaf5 max
+				$range_high = 89;	#gaf5 max
+			} elseif ($hml == 90) {
+				$range_low = 90;	#gaf5 max
+				$range_high = 99;	#gaf5 max
+			} elseif ($hml == 100) {
+				$range_low = 100;	#gaf5 max
+				$range_high = 109;	#gaf5 max
+				echo "hml = $hml, range_low = $range_low, range_high = $range_high<p>";
+			} elseif ($hml == 110) {
+				$range_low = 110;	#gaf5 max
+				$range_high = 119;	#gaf5 max
+				echo "hml = $hml, range_low = $range_low, range_high = $range_high<p>";
+			} elseif ($hml == 120) {
+				$range_low = 120;	#gaf5 max
+				$range_high = 129;	#gaf5 max
+				echo "hml = $hml, range_low = $range_low, range_high = $range_high<p>";
+			} elseif ($hml == 130) {
+				$range_low = 130;	#gaf5 max
+				$range_high = 139;	#gaf5 max
+				echo "hml = $hml, range_low = $range_low, range_high = $range_high<p>";
+			} elseif ($hml == 140) {
+				$range_low = 140;	#gaf5 max
+				$range_high = 149;	#gaf5 max
+			} elseif ($hml == 150) {
+				$range_low = 150;	#gaf5 max
+				$range_high = 159;	#gaf5 max
+			} elseif ($hml == 160) {
+				$range_low = 160;	#gaf5 max
+				$range_high = 169;	#gaf5 max
+			} elseif ($hml == 170) {
+				$range_low = 170;	#gaf5 max
+				$range_high = 179;	#gaf5 max
+			} elseif ($hml == 180) {
+				$range_low = 180;	#gaf5 max
+				$range_high = 189;	#gaf5 max
+			} elseif ($hml == 190) {
+				$range_low = 190;	#gaf5 max
+				$range_high = 199;	#gaf5 max
+			} elseif ($hml == 200) {
+				$range_low = 200;	#gaf5 max
+				$range_high = 209;	#gaf5 max
+			} elseif ($hml > 1000 && $hml < 1999) {
+				$range_low = $hml - 1000 - 1;	#sum-1
+				$range_high = $hml - 1000 + 1;	#sum+1
+				$hml_temp = ((intval($hml/10))*10) - 1000;
+				echo "hml = $hml, range_low = $range_low, range_high = $range_high<p>";
+			} elseif ($hml > 2000 && $hml < 2999) {
+				$range_low = $hml - 2000 - 2;	#sum-2
+				$range_high = $hml - 2000 + 2;	#sum+2
+				$hml_temp = ((intval($hml/10))*10) - 2000;
+				$hml_temp2 = $hml - 2000;
+				echo "hml = $hml, range_low = $range_low, range_high = $range_high<p>";
+			} elseif ($hml > 3000 && $hml < 3999) {
+				$range_low = $hml - 3000 - 3;	#sum-3
+				$range_high = $hml - 3000 + 3;	#sum-3
+				$hml_temp2 = $hml - 3000;
+				$hml_temp = ((intval($hml/10))*10) - 3000;
+			} elseif ($hml > 4000 && $hml < 4999) {
+				$range_low = $hml - 4000 - 4;	#sum-4
+				$range_high = $hml - 4000 + 4;	#sum-4
+				$hml_temp2 = $hml - 4000;
+				$hml_temp = ((intval($hml/10))*10) - 4000;
+				echo "hml = $hml, range_low = $range_low, range_high = $range_high<p>";
+			} elseif ($hml > 5000 && $hml < 5999) {
+				$range_low = $hml - 5000 - 5;	#sum-4
+				$range_high = $hml - 5000 + 5;	#sum-4
+				$hml_temp2 = $hml - 5000;
+				$hml_temp = ((intval($hml/10))*10) - 5000;
+				echo "hml = $hml, range_low = $range_low, range_high = $range_high<p>";
+			} elseif ($hml > 6000 && $hml < 6999) {
+				$range_low = $hml - 6000 - 6;	#sum-4
+				$range_high = $hml - 6000 + 6;	#sum-4
+				$hml_temp2 = $hml - 6000;
+				$hml_temp = ((intval($hml/10))*10) - 6000;
+				echo "hml = $hml, range_low = $range_low, range_high = $range_high<p>";
+			} elseif ($hml > 10000 && $hml < 11999) {
+				$range_low =  $hml - 10000;	#single sum #single sum #single sum
+				$range_high =  $hml - 10000;	#single sum #single sum #single sum
+				$hml_temp2 = $hml - 10000;
+				$hml_temp = ((intval($hml/10))*10) - 10000;	#single sum #single sum #single sum
+				echo "hml = $hml, range_low = $range_low, range_high = $range_high<p>";
+			} else {
+				die ("hml incorrect for gaf5 - hml = $hml");
+			}
+			break;
+		case 2;
+			if ($hml == 0) {
+				break;
+			} elseif ($hml == 1) {
+				$range_low = 190;	#gaf5 high
+				$range_high = 249;	#gaf5 high
+			} elseif ($hml == 2) {
+				$range_low = 140;	#gaf5 medium
+				$range_high = 189;	#gaf5 medium
+			} elseif ($hml == 3) {
+				$range_low = 110;	#gaf5 low
+				$range_high = 139;	#gaf5 low
+			} elseif ($hml == 4) {
+				$range_low = 40;	#gaf5 min
+				$range_high = 69;	#gaf5 min
+			} elseif ($hml == 5) {
+				$range_low = 140;	#gaf5 max
+				$range_high = 159;	#gaf5 max
+			} elseif ($hml == 30) {
+				$range_low = 30;	#gaf5 max
+				$range_high = 39;	#gaf5 max
+			} elseif ($hml == 40) {
+				$range_low = 40;	#gaf5 max
+				$range_high = 49;	#gaf5 max
+			} elseif ($hml == 50) {
+				$range_low = 50;	#gaf5 max
+				$range_high = 59;	#gaf5 max
+			} elseif ($hml == 60) {
+				$range_low = 60;	#gaf5 max
+				$range_high = 69;	#gaf5 max
+			} elseif ($hml == 70) {
+				$range_low = 70;	#gaf5 max
+				$range_high = 79;	#gaf5 max
+			} elseif ($hml == 80) {
+				$range_low = 80;	#gaf5 max
+				$range_high = 89;	#gaf5 max
+			} elseif ($hml == 90) {
+				$range_low = 90;	#gaf5 max
+				$range_high = 99;	#gaf5 max
+			} elseif ($hml == 100) {
+				$range_low = 100;	#gaf5 max
+				$range_high = 109;	#gaf5 max
+			} elseif ($hml == 110) {
+				$range_low = 110;	#gaf5 max
+				$range_high = 119;	#gaf5 max
+			} elseif ($hml == 120) {
+				$range_low = 120;	#gaf5 max
+				$range_high = 129;	#gaf5 max
+			} elseif ($hml == 130) {
+				$range_low = 130;	#gaf5 max
+				$range_high = 139;	#gaf5 max
+			} elseif ($hml == 140) {
+				$range_low = 140;	#gaf5 max
+				$range_high = 149;	#gaf5 max
+			} elseif ($hml == 150) {
+				$range_low = 150;	#gaf5 max
+				$range_high = 159;	#gaf5 max
+			} elseif ($hml == 160) {
+				$range_low = 160;	#gaf5 max
+				$range_high = 169;	#gaf5 max
+			} elseif ($hml == 170) {
+				$range_low = 170;	#gaf5 max
+				$range_high = 179;	#gaf5 max
+			} elseif ($hml == 180) {
+				$range_low = 180;	#gaf5 max
+				$range_high = 189;	#gaf5 max
+			} elseif ($hml == 190) {
+				$range_low = 190;	#gaf5 max
+				$range_high = 199;	#gaf5 max
+			} elseif ($hml == 200) {
+				$range_low = 200;	#gaf5 max
+				$range_high = 209;	#gaf5 max
+			} elseif ($hml == 210) {
+				$range_low = 210;	#gaf5 max
+				$range_high = 219;	#gaf5 max
+			} elseif ($hml == 220) {
+				$range_low = 220;	#gaf5 max
+				$range_high = 229;	#gaf5 max
+			} elseif ($hml > 500) {
+				$range_low = $hml - 500;	#gaf5 max
+				$range_high = $hml - 500;	#gaf5 max
+				#echo "hml = $hml, range_low = $range_low, range_high = $range_high<p>";
+			} else {
+				die ("hml incorrect for mm - hml = $hml");
+			}
+			break;
+		case 7;
+			if ($hml == 0) {
+				break;
+			} elseif ($hml == 1) {
+				$range_low = 160;	#pb high
+				$range_high = 189;	#pb high
+			} elseif ($hml == 2) {
+				$range_low = 130;	#pb medium
+				$range_high = 159;	#pb medium
+			} elseif ($hml == 3) {
+				$range_low = 100;	#pb low
+				$range_high = 129;	#pb low
+			} elseif ($hml == 50) {
+				$range_low = 50;	#gaf5 max
+				$range_high = 59;	#gaf5 max
+			} elseif ($hml == 60) {
+				$range_low = 60;	#gaf5 max
+				$range_high = 69;	#gaf5 max
+			} elseif ($hml == 70) {
+				$range_low = 70;	#gaf5 max
+				$range_high = 79;	#gaf5 max
+			} elseif ($hml == 80) {
+				$range_low = 80;	#gaf5 max
+				$range_high = 89;	#gaf5 max
+			} elseif ($hml == 90) {
+				$range_low = 90;	#gaf5 max
+				$range_high = 99;	#gaf5 max
+			} elseif ($hml == 100) {
+				$range_low = 100;	#gaf5 max
+				$range_high = 109;	#gaf5 max
+			} elseif ($hml == 110) {
+				$range_low = 110;	#gaf5 max
+				$range_high = 119;	#gaf5 max
+			} elseif ($hml == 120) {
+				$range_low = 120;	#gaf5 max
+				$range_high = 129;	#gaf5 max
+			} elseif ($hml == 130) {
+				$range_low = 130;	#gaf5 max
+				$range_high = 139;	#gaf5 max
+			} elseif ($hml == 140) {
+				$range_low = 140;	#gaf5 max
+				$range_high = 149;	#gaf5 max
+			} elseif ($hml == 150) {
+				$range_low = 150;	#gaf5 max
+				$range_high = 159;	#gaf5 max
+			} elseif ($hml == 160) {
+				$range_low = 160;	#gaf5 max
+				$range_high = 169;	#gaf5 max
+			} elseif ($hml == 170) {
+				$range_low = 170;	#gaf5 max
+				$range_high = 179;	#gaf5 max
+			} elseif ($hml == 180) {
+				$range_low = 180;	#gaf5 max
+				$range_high = 189;	#gaf5 max
+			} elseif ($hml == 190) {
+				$range_low = 190;	#gaf5 max
+				$range_high = 199;	#gaf5 max
+			} elseif ($hml == 200) {
+				$range_low = 200;	#gaf5 max
+				$range_high = 209;	#gaf5 max
+			} elseif ($hml == 210) {
+				$range_low = 210;	#gaf5 max
+				$range_high = 219;	#gaf5 max
+			} elseif ($hml == 220) {
+				$range_low = 220;	#gaf5 max
+				$range_high = 229;	#gaf5 max
+			} elseif ($hml == 230) {
+				$range_low = 230;	#gaf5 max
+				$range_high = 239;	#gaf5 max
+			} elseif ($hml > 500) {
+				$range_low = $hml - 500;	#gaf5 max
+				$range_high = $hml - 500;	#gaf5 max
+				echo "hml = $hml, range_low = $range_low, range_high = $range_high<p>";
+			} else {
+				die ("hml incorrect for pb - hml = $hml");
+			}
+			break;
+		case 10;
+		case 20;
+			if ($hml == 0) {
+				$range_low = 50;	#gaf5 high
+				$range_high = 149;	#gaf5 high
+				break;
+			} elseif ($hml == 1) {
+				$range_low = 120;	#gaf5 high
+				$range_high = 149;	#gaf5 high
+			} elseif ($hml == 2) {
+				$range_low = 130;	#gaf5 medium
+				$range_high = 159;	#gaf5 medium
+			} elseif ($hml == 3) {
+				$range_low = 50;	#gaf5 low
+				$range_high = 79;	#gaf5 low
+			} elseif ($hml == 4) {
+				$range_low = 40;	#gaf5 min
+				$range_high = 69;	#gaf5 min
+			} elseif ($hml == 5) {
+				$range_low = 140;	#gaf5 max
+				$range_high = 159;	#gaf5 max
+			} elseif ($hml == 30) {
+				$range_low = 30;	#gaf5 max
+				$range_high = 39;	#gaf5 max
+			} elseif ($hml == 40) {
+				$range_low = 40;	#gaf5 max
+				$range_high = 49;	#gaf5 max
+			} elseif ($hml == 50) {
+				$range_low = 50;	#gaf5 max
+				$range_high = 59;	#gaf5 max
+			} elseif ($hml == 60) {
+				$range_low = 60;	#gaf5 max
+				$range_high = 69;	#gaf5 max
+			} elseif ($hml == 70) {
+				$range_low = 70;	#gaf5 max
+				$range_high = 79;	#gaf5 max
+			} elseif ($hml == 80) {
+				$range_low = 80;	#gaf5 max
+				$range_high = 89;	#gaf5 max
+			} elseif ($hml == 90) {
+				$range_low = 90;	#gaf5 max
+				$range_high = 99;	#gaf5 max
+			} elseif ($hml == 100) {
+				$range_low = 100;	#gaf5 max
+				$range_high = 109;	#gaf5 max
+			} elseif ($hml == 110) {
+				$range_low = 110;	#gaf5 max
+				$range_high = 119;	#gaf5 max
+			} elseif ($hml == 120) {
+				$range_low = 120;	#gaf5 max
+				$range_high = 129;	#gaf5 max
+			} elseif ($hml == 130) {
+				$range_low = 130;	#gaf5 max
+				$range_high = 139;	#gaf5 max
+			} elseif ($hml == 140) {
+				$range_low = 140;	#gaf5 max
+				$range_high = 149;	#gaf5 max
+			} elseif ($hml == 150) {
+				$range_low = 150;	#gaf5 max
+				$range_high = 159;	#gaf5 max
+			} elseif ($hml == 160) {
+				$range_low = 160;	#gaf5 max
+				$range_high = 169;	#gaf5 max
+			} elseif ($hml == 170) {
+				$range_low = 170;	#gaf5 max
+				$range_high = 179;	#gaf5 max
+			} elseif ($hml == 180) {
+				$range_low = 180;	#gaf5 max
+				$range_high = 189;	#gaf5 max
+			} elseif ($hml == 190) {
+				$range_low = 190;	#gaf5 max
+				$range_high = 199;	#gaf5 max
+			} elseif ($hml == 200) {
+				$range_low = 200;	#gaf5 max
+				$range_high = 209;	#gaf5 max
+			} elseif ($hml > 600) {
+				$range_low = $hml - 500;	#gaf5 max
+				$range_high = $range_low;	#gaf5 max
+			} elseif ($hml > 300) {
+				$range_low = $hml - 300;	#gaf5 max
+				$range_high = $hml - 309;	#gaf5 max
+				echo "hml = $hml, range_low = $range_low, range_high = $range_high<p>";
+			} else {
+				die ("hml incorrect for gaf5 - hml = $hml");
+			}
+			break;
+	}
+?>

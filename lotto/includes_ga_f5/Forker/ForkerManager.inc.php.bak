@@ -1,0 +1,259 @@
+<?php
+/*
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+*/
+
+define('FORKER_OUTPUT_HTML_TYPE', 'html');
+define('FORKER_OUTPUT_OBJECT_TYPE', 'object');
+
+define('FORKER_HANDLER_EXISTS', 1);
+define('FORKER_HANDLER_CREATED', 0);
+define('FORKER_HANDLER_FOUND', 2);
+define('FORKER_HANDLER_NOT_FOUND', 2);
+
+define('FORKER_GUID_LNEGTH', 32);
+
+define('FORKER_COMMAND_WAITING_STATUS', 0);
+define('FORKER_COMMAND_RUNNING_STATUS', 1);
+define('FORKER_COMMAND_STOPPED_STATUS', 2);
+define('FORKER_COMMAND_ABORTED_STATUS', 3);
+
+define('FORKER_COMMAND_EXIST', 1);
+define('FORKER_COMMAND_ADDED', 2);
+define('FORKER_COMMAND_ERROR', 3);
+define('FORKER_COMMAND_DELETED', 2);
+
+define('FORKER_COMMAND_OUTPUT_SUCCESS', 0);
+define('FORKER_COMMAND_OUTPUT_ERROR', 1);
+define('FORKER_COMMAND_OUTPUT_WAITING', 2);
+
+require_once("C:\wamp\www\lotto\includes\Forker\Forker.php");
+
+class ForkerManager {
+	public static $FORKER_COMMAND_DIR = "C:\wamp\www\lotto\includes\Forker\bin\command";
+
+	public static $COMMAND = "C:\wamp\www\lotto\includes\Forker\bin\forker";
+	public static $PATH = "C:\wamp\bin\php";
+	public static $ASYNC_PATH = "C:\wamp\www\lotto\includes\ForkerAsynchronousForker.php";
+
+	private static $commandGUIDs = array();
+	private static $handlers = array();
+	
+	private function __construct() {}
+
+	public static function setPaths() {
+		self::$FORKER_COMMAND_DIR = "C:\wamp\www\lotto\includes\Forker\bin\command";
+		self::$COMMAND = "C:\wamp\www\lotto\includes\Forker\bin\forker";
+		self::$ASYNC_PATH = "C:\wamp\www\lotto\includes\Forker\AsynchronousForker.php";
+	}
+
+	public static function createHandler($name, &$outError = FORKER_HANDLER_CREATED, $asynchronous = false, &$secure = '') {
+		$outError = FORKER_HANDLER_CREATED;
+		if (array_key_exists($name, self::$handlers)) {
+			$outError = FORKER_HANDLER_EXISTS;
+			return null;
+		}
+
+		$forker = new Forker($name, $asynchronous);
+
+		self::$handlers[$name] = $forker;
+		self::$commandGUIDs[$name] = $forker->getGUID();
+
+		return $forker;
+	}
+
+	public static function getHandler($GUID, &$outError = FORKER_HANDLER_CREATED ) {
+		$outError = FORKER_HANDLER_CREATED;
+
+		$name = null;
+
+		if (!in_array($GUID, self::$commandGUIDs)) {
+			$outError = FORKER_HANDLER_CREATED;
+
+			$name = self::createHandlerByGUID($GUID, $outError);
+
+			if ($outError != FORKER_HANDLER_CREATED) {
+				$outError = FORKER_HANDLER_NOT_FOUND;
+				return null;
+			}
+		}
+		else {
+			$name = array_search($GUID, self::$commandGUIDs);
+		}
+
+		return self::$handlers[$name];
+	}
+
+	public static function createHandlerByGUID($GUID, &$outError = FORKER_HANDLER_CREATED) {
+		$outError = FORKER_HANDLER_CREATED;
+
+		$dir = self::getDir($GUID);
+
+		if (!is_dir($dir)) {
+			$outError = FORKER_HANDLER_NOT_FOUND;
+			self::debug("ForkerManager::createHandlerByGUID - GUID '$GUID' directory not found");
+			return null;
+		}
+
+		$file = self::getCommandsFile($GUID);
+
+		if (!file_exists($file)) {
+			$outError = FORKER_HANDLER_NOT_FOUND;
+			self::debug("ForkerManager::createHandlerByGUID - GUID '$GUID' command file '$file' not found");
+			return null;
+		}
+
+		$xml = simplexml_load_file($file);
+
+		$commandAttr = $xml->attributes();
+
+		$name = (string) $commandAttr['name'];
+		$asynchronous = (string) $commandAttr['async'];
+
+		$forker = new Forker($name, $asynchronous, $GUID);
+
+		$commands = array();
+
+		foreach ($xml->command as $command) {
+			$args = array();
+
+			$argNames = array();
+
+			foreach ($command->names->name as $argName) {
+				$argNames[] = (string) $argName;				
+			}
+
+			$i = 0;
+
+			foreach ($command->args->arg as $arg) {
+				$args[$argNames[$i]] = (string) $arg;
+				$i++;
+			}			
+
+			$commands[] = array((string) $command->name, (string) $command->cmd, $args, (string) $command->id);
+		}
+
+		$forker->setCommands($commands);
+
+		self::$handlers[$name] = $forker;
+
+		return $name;
+	}
+
+
+
+	public static function getCommands($GUID, &$outError = FORKER_HANDLER_CREATED) {
+		if (!in_array($GUID, self::$commandGUIDs)) {
+			$outError = FORKER_HANDLER_EXISTS;
+			return null;
+		}
+
+		return self::$handlers[$name];
+	}
+
+	public static function run($name) {
+		self::$handlers[$name]->run();
+	}
+
+	public static function getGUID(&$outError = false) {
+		$GUID = '';
+
+		do {
+			$GUID = self::getRandomString();
+		}
+		while(is_dir(self::$FORKER_COMMAND_DIR . "\$GUID"));
+
+		mkdir(self::$FORKER_COMMAND_DIR . "\$GUID", 0777, true);
+		chmod(self::$FORKER_COMMAND_DIR . "\$GUID", 0777);
+
+		mkdir(self::$FORKER_COMMAND_DIR . "\$GUID\output", 0777, true);
+		chmod(self::$FORKER_COMMAND_DIR . "\$GUID\output", 0777);
+
+		mkdir(self::$FORKER_COMMAND_DIR . "\$GUID\status", 0777, true);
+		chmod(self::$FORKER_COMMAND_DIR . "\$GUID\status", 0777);
+
+		return $GUID;
+	}
+
+	private static function getRandomString($length = FORKER_GUID_LNEGTH) {
+		$chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890';
+
+		$charLength = (strlen($chars) - 1);
+		$string = $chars{rand(0, $charLength)};
+		
+		for ($i = 1; $i < $length; $i = strlen($string)) {
+			$r = $chars{rand(0, $charLength)};
+			
+			// Make sure the same two characters don't appear next to each other
+			if ($r != $string{$i - 1}) {
+				$string .=  $r;
+			}
+		}
+		
+		// Return the string
+		return $string;
+	}
+
+	public static function transformCommandsForExec($commands, $name, $asynchronous) {
+		$XML = "<commands name='$name' async='$asynchronous'>\n";
+
+		foreach ($commands as $name => $command) {
+			$args = "<args>";
+			$names = "<names>";
+			foreach ($command[1] as $argName => $arg) {
+				$args .= "<arg>$arg</arg>";
+				$names .= "<name>$argName</name>";
+			}
+			$args .= "</args>";
+			$names .= "</names>";
+
+			$XML .= "<command><name>$name</name><cmd>" . $command[0] . "</cmd>$args$names<id>" . $command[2] . "</id><status>" . FORKER_COMMAND_WAITING_STATUS . "</status></command>\n";
+		}
+
+		$XML .= "</commands>";
+
+		return $XML;
+	}
+
+	public static function debug($message) {
+		print "$message<br>\n";
+	}
+
+	public static function getDir($GUID) {
+		return ForkerManager::$FORKER_COMMAND_DIR . "\\" . $GUID;
+	}
+
+	public static function getCommandsFile($GUID) {
+		return self::getDir($GUID) . '\commands.txt';
+	}
+
+	public static function getCommandFile($GUID, $ID) {
+		return self::getDir($GUID) . "/output/.{$ID}";
+	}
+
+	public static function getStatusFile($GUID, $ID) {
+		return self::getDir($GUID) . "\status\.{$ID}";
+	}
+
+	public static function setForkCommandBuffer($forker) {
+		ob_start();
+		register_shutdown_function (array($forker, 'saveData'));
+	}
+}
+ForkerManager::setPaths();
+?>

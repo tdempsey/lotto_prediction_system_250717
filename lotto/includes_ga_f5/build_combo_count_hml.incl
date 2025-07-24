@@ -1,0 +1,139 @@
+<?php
+
+	$combo_table = "ga_f5_comb_count_5_42_";
+	$combo_table .= "$hml ";
+
+	$query = "DROP TABLE IF EXISTS temp_combo_";
+	$query .= "$hml ";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$query =  "CREATE TABLE IF NOT EXISTS  temp_combo_";
+	$query .= "$hml (";
+	$query .= "  `id` int(10) unsigned NOT NULL auto_increment, ";
+	$query .= "  `combo2` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `combo3` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `combo4` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `combo5` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `date` date NOT NULL default '1962-08-17', ";
+	$query .= "  PRIMARY KEY  (`id`) ";
+	$query .= ") ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 "; 
+
+	#print("$query<p>");
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$query = "DROP TABLE IF EXISTS $combo_table ";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$query =  "CREATE TABLE IF NOT EXISTS  $combo_table ( ";
+	$query .= "  `id` int(10) unsigned NOT NULL auto_increment, ";
+	$query .= "  `combo2` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `combo3` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `combo4` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `combo5` tinyint(2) unsigned NOT NULL default '0', ";
+	$query .= "  `date` date NOT NULL default '1962-08-17', ";
+	$query .= "  `count` int(3) unsigned NOT NULL default '0', ";
+	$query .= "  PRIMARY KEY  (`id`) ";
+	$query .= ") ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 "; 
+
+	#print("$query<p>");
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$row = array_fill (0,7,0);
+
+	$max_num = 5;
+
+	print("<p align=\"center\"><b><font face=\"Arial, Helvetica, sans-serif\">Build combo 5/$max_num</font></b></p>");
+
+	$query_temp1 = "SELECT * FROM ga_f5_combo_table a ";
+	$query_temp1 .= "JOIN ga_f5_draws b ON ";
+	$query_temp1 .= "a.date = b.date ";
+	$query_temp1 .= "WHERE a.date > '2017-10-01' "; #151001
+	if ($hml)
+	{
+		$query_temp1 .= "AND   b.sum >= $range_low  ";
+		$query_temp1 .= "AND   b.sum <= $range_high  ";
+		#$query_temp1 .= "AND   a.hml <= $range_low  "; #170726
+	}
+	$query_temp .= "ORDER BY b.date desc LIMIT 90 "; #56
+
+	#echo "$query_temp1<p>";
+
+	$mysqli_result1 = mysqli_query($mysqli_link, $query_temp1) or die (mysqli_error($mysqli_link));
+
+	#$row_temp1 = mysqli_fetch_array($mysqli_result1);
+
+	while($row1 = mysqli_fetch_array($mysqli_result1))
+	{
+		$query1 = "INSERT INTO temp_combo_";
+		$query1 .= "$hml ";
+		$query1 .= "VALUES ('0', ";;
+		$query1 .= "'$row1[comb2]', ";
+		$query1 .= "'$row1[comb3]', ";
+		$query1 .= "'$row1[comb4]', ";
+		$query1 .= "'$row1[comb5]', "; 
+		$query1 .= "'$row1[date]') ";
+		
+		#print "$query1<br>";
+		
+		$mysqli_result2 = mysqli_query($mysqli_link, $query1) or die (mysqli_error($mysqli_link));
+
+		$last_date = $row[0];
+	}
+
+	$query_temp2 = "SELECT DISTINCT combo2,combo3,combo4,combo5 FROM temp_combo_";
+	$query_temp2 .= "$hml ";
+
+	#echo "$query_temp2<p>";
+
+	$mysqli_result2 = mysqli_query($mysqli_link, $query_temp2) or die (mysqli_error($mysqli_link));
+
+	while($row2 = mysqli_fetch_array($mysqli_result2))
+	{
+
+		$query_temp2 = "SELECT * FROM temp_combo_";
+		$query_temp2 .= "$hml ";
+		$query_temp2 .= "WHERE combo2 = $row2[combo2] ";
+		$query_temp2 .= "AND   combo3 = $row2[combo3] ";
+		$query_temp2 .= "AND   combo4 = $row2[combo4] ";
+		$query_temp2 .= "AND   combo5 = $row2[combo5] ";
+		#$query_temp2 .= "AND date <= '$last_date' ";
+		$query_temp2 .= "ORDER BY DATE desc ";
+
+		#echo "$query_temp<p>";
+
+		$mysqli_result_temp2 = mysqli_query($mysqli_link, $query_temp2) or die (mysqli_error($mysqli_link));
+
+		$row_temp2 = mysqli_fetch_array($mysqli_result_temp2);
+
+		$num_rows_temp2 = mysqli_num_rows($mysqli_result_temp2);
+
+		$query3 = "INSERT INTO $combo_table ";
+		$query3 .= "VALUES ('0', ";
+		$query3 .= "'$row_temp2[combo2]', ";
+		$query3 .= "'$row_temp2[combo3]', ";
+		$query3 .= "'$row_temp2[combo4]', ";
+		$query3 .= "'$row_temp2[combo5]', ";
+		$query3 .= "'$row_temp2[date]', ";
+		$query3 .= "'$num_rows_temp2') ";
+
+		#print "$query2<br>";
+		
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+	}
+
+	$query_temp4 = "SELECT * FROM $combo_table ";
+	$query_temp4 .= "ORDER BY count DESC ";
+
+	#echo "$query_temp4<p>";
+
+	$mysqli_result4 = mysqli_query($mysqli_link, $query_temp4) or die (mysqli_error($mysqli_link));
+
+	while($row4 = mysqli_fetch_array($mysqli_result4))
+	{
+		echo "$row4[combo2],$row4[combo3],$row4[combo4],$row4[combo5] - <b>$row4[count]</b><br>";
+	}
+?>

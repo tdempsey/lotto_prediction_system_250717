@@ -1,0 +1,144 @@
+<?php
+
+	#initialize date variables
+	require ("includes/unix.incl");
+
+	#echo "cl - sumeo_table = $sumeo_table<br>";	
+
+	$query4 = "DROP TABLE IF EXISTS $sumeo_table";
+	
+	#print "$query4<p>";
+
+	$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+	$query4 = "CREATE TABLE $sumeo_table (";
+	$query4 .= " id int(10) unsigned NOT NULL auto_increment, ";
+	$query4 .= "sum tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "col tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "even tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "odd tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "low tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "high tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "count tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "PRIMARY KEY  (id),";
+	$query4 .= "UNIQUE KEY `id_2` (id),";
+	$query4 .= "KEY sum (id)";
+	$query4 .= ") ENGINE=InnoDB DEFAULT CHARSET=latin1;";
+
+	#print "$query4<p>";
+
+	$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+	$draw = 1;
+
+	$query7 = "SELECT * FROM ga_f5_sum_count_sum ";
+	#$query7 = "date ";
+	$query7 .= "ORDER BY percent_wa DESC, percent_y4 DESC, percent_y1 DESC ";
+
+	#print "$query7<p>";
+
+	$mysqli_result7 = mysqli_query($mysqli_link, $query7) or die (mysqli_error($mysqli_link));
+	
+	while($row = mysqli_fetch_array($mysqli_result7))
+	{
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date >= '2015-10-01' ";
+		$query .= "AND date <= '$date_temp' ";
+		$query .= "AND sum  = $row[numx] ";
+		$query .= "AND even  = $row[even] ";
+		$query .= "AND odd = $row[odd] ";
+		$query .= "ORDER BY date DESC ";
+
+		#print "$query<p>";
+		
+		$mysqli_result_col = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$num_rows_all = mysqli_num_rows($mysqli_result_col);
+
+		#print "cl -num_rows_all = $num_rows_all<p>";
+		
+		$col1_array = array();
+		$col2_array = array();
+		$col3_array = array();
+		$col4_array = array();
+		$col5_array = array();
+
+		$row_col = array();
+		
+		while($row_col = mysqli_fetch_array($mysqli_result_col))
+		{
+			array_push($col1_array, $row_col[b1]);
+			array_push($col2_array, $row_col[b2]);
+			array_push($col3_array, $row_col[b3]);
+			array_push($col4_array, $row_col[b4]);
+			array_push($col5_array, $row_col[b5]);
+		}
+
+		sort($col1_array);
+		sort($col2_array);
+		sort($col3_array);
+		sort($col4_array);
+		sort($col5_array);
+		
+		$sum_array1 = array_sum($col1_array);
+		$sum_array2 = array_sum($col2_array);
+		$sum_array3 = array_sum($col3_array);
+		$sum_array4 = array_sum($col4_array);
+		$sum_array5 = array_sum($col5_array);
+
+		$sum_count = count($col1_array);
+
+		$low = array_fill(0,6,50);
+		$high = array_fill(0,6,0);
+		
+		for ($h = 1; $h <= 5; $h++)
+		{
+			$temp_array = ${'col'.$h.'_array'};
+
+			foreach ($temp_array as $val) 
+			{
+				if ($val >= ((array_sum($temp_array)/$sum_count)/2)) #removes outliers	
+				{
+					if ($val < $low[$h])
+					{
+						$low[$h] = $val;
+					}
+				}	
+			}
+
+			foreach ($temp_array as $val) 
+			{
+				if ($val <= (array_sum($temp_array)/$sum_count)*2) #removes outliers
+				{
+					$high[$h] = $val;
+				} 
+			}
+
+			$temp = ((array_sum($temp_array)/$sum_count)/2);
+
+			#echo "200112 temp = $temp<br>";
+
+			if ($temp <= 2.9) #200112
+			{
+				$low[1] = 1;
+			}
+
+			#print_r ($row);
+			#echo "<br>";
+			
+			$query5d = "INSERT INTO $sumeo_table ";
+			$query5d .= "VALUES ('0', ";
+			$query5d .= "'$row[numx]',";
+			$query5d .= "'$h',";
+			$query5d .= "'$row[even]',";
+			$query5d .= "'$row[odd]',";
+			$query5d .= "'$low[$h]',";
+			$query5d .= "'$high[$h]',";
+			$query5d .= "'$sum_count')";
+			
+			#print "$query5d<p>";
+		
+			$mysqli_result5d = mysqli_query($mysqli_link, $query5d) or die (mysqli_error($mysqli_link));
+		}
+	}
+?>

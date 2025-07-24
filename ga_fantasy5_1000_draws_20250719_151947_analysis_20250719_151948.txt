@@ -1,0 +1,202 @@
+================================================================================
+GA FANTASY 5 DRAW ANALYSIS REPORT
+Generated: 2025-07-19 15:19:48
+Data source: ga_fantasy5_1000_draws_20250719_151947.csv
+Total draws analyzed: 1000
+================================================================================
+
+=== SUM DISTRIBUTION ===
+Sum range: 70 - 139
+Average sum: 106.15
+Most common sums:
+  Sum 101: 27 times (2.7%)
+  Sum 102: 26 times (2.6%)
+  Sum 109: 24 times (2.4%)
+  Sum 111: 24 times (2.4%)
+  Sum 110: 24 times (2.4%)
+  Sum 98: 23 times (2.3%)
+  Sum 97: 23 times (2.3%)
+  Sum 104: 23 times (2.3%)
+  Sum 100: 22 times (2.2%)
+  Sum 114: 22 times (2.2%)
+
+=== POSITION ANALYSIS (Col1-Col5) ===
+
+Column 1 - Top 10 most frequent:
+  2: 124 times (12.4%)
+  4: 118 times (11.8%)
+  1: 118 times (11.8%)
+  3: 106 times (10.6%)
+  6: 101 times (10.1%)
+  8: 82 times (8.2%)
+  5: 65 times (6.5%)
+  9: 54 times (5.4%)
+  7: 49 times (4.9%)
+  12: 37 times (3.7%)
+
+Column 2 - Top 10 most frequent:
+  13: 72 times (7.2%)
+  9: 66 times (6.6%)
+  10: 66 times (6.6%)
+  16: 65 times (6.5%)
+  11: 62 times (6.2%)
+  12: 61 times (6.1%)
+  17: 61 times (6.1%)
+  15: 59 times (5.9%)
+  8: 58 times (5.8%)
+  19: 50 times (5.0%)
+
+Column 3 - Top 10 most frequent:
+  24: 74 times (7.4%)
+  21: 72 times (7.2%)
+  28: 65 times (6.5%)
+  22: 64 times (6.4%)
+  19: 63 times (6.3%)
+  20: 63 times (6.3%)
+  25: 53 times (5.3%)
+  23: 51 times (5.1%)
+  18: 50 times (5.0%)
+  17: 49 times (4.9%)
+
+Column 4 - Top 10 most frequent:
+  31: 81 times (8.1%)
+  30: 81 times (8.1%)
+  32: 72 times (7.2%)
+  29: 57 times (5.7%)
+  33: 57 times (5.7%)
+  24: 55 times (5.5%)
+  27: 53 times (5.3%)
+  26: 49 times (4.9%)
+  35: 48 times (4.8%)
+  28: 47 times (4.7%)
+
+Column 5 - Top 10 most frequent:
+  41: 132 times (13.2%)
+  42: 101 times (10.1%)
+  39: 99 times (9.9%)
+  37: 91 times (9.1%)
+  38: 86 times (8.6%)
+  35: 75 times (7.5%)
+  40: 74 times (7.4%)
+  36: 70 times (7.0%)
+  33: 58 times (5.8%)
+  32: 53 times (5.3%)
+
+=== OVERALL NUMBER FREQUENCY ===
+Total number picks: 5000
+Expected frequency per number: 119.0
+
+HOTTEST numbers (most frequent):
+  24: 147 times (2.94%)
+  4: 143 times (2.86%)
+  8: 140 times (2.80%)
+  6: 140 times (2.80%)
+  41: 138 times (2.76%)
+  12: 136 times (2.72%)
+  2: 136 times (2.72%)
+  21: 136 times (2.72%)
+  32: 134 times (2.68%)
+  31: 132 times (2.64%)
+
+COLDEST numbers (least frequent):
+  10: 107 times (2.14%)
+  27: 105 times (2.10%)
+  23: 104 times (2.08%)
+  18: 101 times (2.02%)
+  42: 101 times (2.02%)
+  14: 91 times (1.82%)
+  5: 90 times (1.80%)
+  7: 85 times (1.70%)
+  40: 82 times (1.64%)
+  34: 72 times (1.44%)
+
+All numbers 1-42 were drawn at least once
+
+=== EVEN/ODD DISTRIBUTION ===
+Even number counts per draw:
+  2 even, 3 odd: 505 draws (50.5%)
+  3 even, 2 odd: 495 draws (49.5%)
+
+=== DECADE DISTRIBUTION ===
+Numbers by decade:
+  1-9: 1101 numbers (22.0%)
+  10-19: 1184 numbers (23.7%)
+  20-29: 1203 numbers (24.1%)
+  30-39: 1191 numbers (23.8%)
+  40-42: 321 numbers (6.4%)
+
+=== SEQUENTIAL ANALYSIS ===
+Sequential pairs per draw:
+  0 pairs: 681 draws (68.1%)
+  1 pairs: 319 draws (31.9%)
+Sequential triplets per draw:
+  0 triplets: 1000 draws (100.0%)
+
+=== RANK DISTRIBUTION ANALYSIS ===
+Numbers by rank level (frequency groups):
+  r0 = freq 7+ (worst), r7 = freq 0 (best)
+  r0: 0 numbers (0.0%)
+  r1: 0 numbers (0.0%)
+  r2: 2003 numbers (40.1%)
+  r3: 823 numbers (16.5%)
+  r4: 877 numbers (17.5%)
+  r5: 644 numbers (12.9%)
+  r6: 406 numbers (8.1%)
+  r7: 247 numbers (4.9%)
+
+=== SCORE DISTRIBUTION ===
+Score range: 41.5150 - 80.0005
+Average score: 62.3978
+Score distribution by 5-point ranges:
+  40-44: 3 draws (0.3%)
+  45-49: 42 draws (4.2%)
+  50-54: 108 draws (10.8%)
+  55-59: 196 draws (19.6%)
+  60-64: 259 draws (25.9%)
+  65-69: 244 draws (24.4%)
+  70-74: 114 draws (11.4%)
+  75-79: 33 draws (3.3%)
+  80-84: 1 draws (0.1%)
+
+=== HISTORICAL DUPLICATE ANALYSIS ===
+Duplicates from most recent draw (Dup1):
+  0 numbers: 580 draws (58.0%)
+  1 numbers: 420 draws (42.0%)
+Duplicates from last 2 draws (Dup2):
+  0 numbers: 328 draws (32.8%)
+  1 numbers: 472 draws (47.2%)
+  2 numbers: 200 draws (20.0%)
+Duplicates from last 3 draws (Dup3):
+  0 numbers: 244 draws (24.4%)
+  1 numbers: 453 draws (45.3%)
+  2 numbers: 266 draws (26.6%)
+  3 numbers: 37 draws (3.7%)
+
+=== GAP AND RANGE ANALYSIS ===
+Number range per draw (max - min):
+  Average range: 30.8
+  Range distribution: 15 to 41
+Most common ranges:
+  Range 31: 80 draws (8.0%)
+  Range 33: 77 draws (7.7%)
+  Range 35: 65 draws (6.5%)
+  Range 27: 62 draws (6.2%)
+  Range 29: 61 draws (6.1%)
+
+Gaps between consecutive numbers:
+  Average gap: 6.7
+Gap distribution:
+  Gap 0: 319 times (8.0%)
+  Gap 1: 286 times (7.1%)
+  Gap 2: 411 times (10.3%)
+  Gap 3: 281 times (7.0%)
+  Gap 4: 394 times (9.8%)
+  Gap 5: 247 times (6.2%)
+  Gap 6: 344 times (8.6%)
+  Gap 7: 219 times (5.5%)
+  Gap 8: 271 times (6.8%)
+  Gap 9: 132 times (3.3%)
+
+================================================================================
+ANALYSIS COMPLETE
+================================================================================

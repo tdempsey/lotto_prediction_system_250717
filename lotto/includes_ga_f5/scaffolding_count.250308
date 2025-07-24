@@ -1,0 +1,531 @@
+<?php
+	###############################################################################################
+	### read sumeo
+	###############################################################################################
+
+	$sumx_count = array_fill (0,30,0);
+	
+	$query = "SELECT * FROM ga_f5_sum ";
+	$query .= "WHERE percent_wa > 0.0 "; 
+	$query .= "ORDER BY percent_wa DESC ";
+
+	#echo "$query<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+	
+	while($row = mysqli_fetch_array($mysqli_result))
+	{
+		$t = $row['numx'];
+		
+		$sumx_count[$t] = $row['percent_wa'] * 10;
+	}
+
+	#print_r ($sumx_count);
+
+	$temp_count = array_sum($sumx_count);
+
+	#echo "<p>count = $temp_count</p>";
+
+	$s = 9;
+
+	do {
+		$sumx_count[$s]++;
+		$temp_count = array_sum($sumx_count);
+		#echo "<p>count = $temp_count</p>";
+		$s++;
+	} while ($temp_count < 1000);
+
+	#echo "<p>count = $temp_count</p>";
+
+	#print_r ($sumx_count);
+
+	#echo "<p>";
+
+	// Begin the table
+	#echo "<table border='1'>"; // Add table border for visibility
+	#echo "<tr><th>Index</th><th>Value</th></tr>"; // Table headers
+
+	// Loop through the array to create table rows
+	foreach ($sumx_count as $index => $value) {
+		#echo "<tr><td>$index</td><td>$value</td></tr>";
+	}
+
+	// End the table
+	#echo "</table>";
+
+	#echo "<p>";
+
+	###############################################################################################
+	### build percent table
+	###############################################################################################
+	### 50-70 ###
+	for ($x = 5; $x <= 7; $x++)
+	{
+		$y = $x * 10;
+		$z = $y + 9;
+
+		$temp_dateDiif = $dateDiff-1;
+		$query5 = "SELECT * FROM ga_f5_sum_count_sum_";
+		$query5 .= "$temp_dateDiif ";
+		$query5 .= " WHERE `numx` >= $y AND `numx` <= $z ORDER BY `percent_wa` DESC";
+
+		echo "<p>$query5</p>";
+
+		$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+		$count = 0;
+		$wa_sum = 0.0;
+
+		while($row5 = mysqli_fetch_array($mysqli_result5))
+		{
+			#echo "<tr><td>$row5[numx]</td><td>$row5[even]</td><td>$row5[odd]</td><td>$row5[percent_wa]</td></tr>";
+
+			$count++;
+			$wa_sum += $row5['percent_wa'];
+		}
+
+		#echo "<p>count = $count</p>";
+		#echo "<p>wa_sum = $wa_sum</p>";
+
+		mysqli_data_seek($mysqli_result5, 0);
+
+		$percent_sum = 0.00;
+		$k_sum = 0;
+		$k_array = array_fill(0,25,0);
+		$count = 0;
+
+		#echo "<table border='1'>"; // Add table border for visibility
+
+		// Begin the table
+		#echo "<tr><th>Sum</th><th>Even</th><th>Odd</th><th>percent_wa</th><th>percent</th><th>1k_count</th></tr>"; // Table headers
+		
+		while($row5 = mysqli_fetch_array($mysqli_result5))
+		{
+			$percent = $row5['percent_wa']/$wa_sum*100;
+			$temp = number_format($percent, 2, '.', '');
+			$percent_sum += $temp;
+			$index_sumx_count = intval($row5['numx']/10);
+			$k = intval((intval($temp+0.5)/100) * $sumx_count[$index_sumx_count]);
+			$k_sum += $k;
+			$k_array[$count] = $k;
+			
+			if ($k > 0)
+			{
+				$count++;
+
+				#echo "<tr><td>$row5[numx]</td><td align=center>$row5[even]</td><td align=center>$row5[odd]</td><td align=center>$row5[percent_wa]</td><td>$temp %</td><td align=center>$k</td></tr>";
+
+				$query_nc = "INSERT INTO $temp_table1 ";
+				$query_nc .= "VALUES ('0', ";
+				$query_nc .= "'$row5[numx]',";
+				$query_nc .= "'$row5[even]',";
+				$query_nc .= "'$row5[odd]',";
+				$query_nc .= "'$k',";
+				$query_nc .= "'1962-08-17')";
+
+				#echo "query_nc = $query_nc<br>";
+
+				$mysqli_result_nc = mysqli_query($mysqli_link, $query_nc) or die (mysqli_error($mysqli_link));
+			}
+		}
+
+		// End the table
+		#echo "</table>";
+
+		$s = 0;
+
+		do {
+			$k_array[$s]++;
+			$temp_count = array_sum($k_array);
+			#echo "<p>count = $temp_count</p>";
+			$s++;
+		} while ($temp_count < $sumx_count[$index_sumx_count]);
+
+		$count_all += $temp_count;
+
+		#echo "<p>";
+
+		#print_r ($k_array);
+	}
+
+	### 80-130 ###
+	for ($x = 8; $x <= 13; $x++)
+	{
+		$y = $x * 10;
+		$z = $y + 9;
+		
+		$temp_dateDiif = $dateDiff-1;
+		$query8 = "SELECT * FROM ga_f5_sum_count_sum_";
+		$query8 .= "$temp_dateDiif ";
+		$query8 .= " WHERE `numx` >= $y AND `numx` <= $z AND `percent_wa` >= 0.5 ORDER BY `percent_wa` DESC";	### 240723 ###
+		
+		#$query8 = "SELECT * FROM `ga_f5_sum_count_sum` WHERE `numx` >= $y AND `numx` <= $z AND `percent_wa` >= 0.5 ORDER BY `percent_wa` DESC";
+
+		#echo "<p>$query8</p>";
+
+		$mysqli_result8 = mysqli_query($mysqli_link, $query8) or die (mysqli_error($mysqli_link));
+
+		$count = 0;
+		$wa_sum = 0.0;
+
+		while($row8 = mysqli_fetch_array($mysqli_result8))
+		{
+			#echo "<tr><td>$row8[numx]</td><td>$row8[even]</td><td>$row8[odd]</td><td>$row8[percent_wa]</td></tr>";
+
+			$count++;
+			$wa_sum += $row8['percent_wa'];
+		}
+
+		mysqli_data_seek($mysqli_result8, 0);
+
+		$percent_sum = 0.00;
+		$k_sum = 0;
+		$k_array = array_fill(0,65,0);
+		$count = 0;
+
+		#echo "<table border='1'>"; // Add table border for visibility
+
+		// Begin the table
+		#echo "<tr><th>Sum</th><th>Even</th><th>Odd</th><th>percent_wa</th><th>percent</th><th>1k_count</th></tr>"; // Table headers
+		
+		while($row8 = mysqli_fetch_array($mysqli_result8))
+		{
+			$percent = $row8['percent_wa']/$wa_sum*100;
+			$temp = number_format($percent, 2, '.', '');
+			$percent_sum += $temp;
+			$index_sumx_count = intval($row8['numx']/10);
+			$k = intval((intval($temp+0.5)/100) * $sumx_count[$index_sumx_count]);
+			$k_sum += $k;
+			$k_array[$count] = $k;
+			if ($k > 0)
+			{
+				$count++;
+				#echo "<tr><td>$row8[numx]</td><td align=center>$row8[even]</td><td align=center>$row8[odd]</td><td align=center>$row8[percent_wa]</td><td>$temp %</td><td align=center>$k</td></tr>";
+
+				if ($drop_tables)
+				{
+					$query_nc = "INSERT INTO $temp_table1 ";
+					$query_nc .= "VALUES ('0', ";
+					$query_nc .= "'$row8[numx]',";
+					$query_nc .= "'$row8[even]',";
+					$query_nc .= "'$row8[odd]',";
+					$query_nc .= "'$k', ";
+					$query_nc .= "'1962-08-07')";
+
+					#echo "query_nc = $query_nc<br>";
+
+					$mysqli_result_nc = mysqli_query($mysqli_link, $query_nc) or die (mysqli_error($mysqli_link));
+				} 
+			}
+		}
+
+		// End the table
+		#echo "</table>";
+
+		$s = 0;
+
+		do {
+			$k_array[$s]++;
+			$temp_count = array_sum($k_array);
+			#echo "<p>count = $temp_count</p>";
+			$s++;
+		} while ($temp_count < $sumx_count[$index_sumx_count]);
+
+		$count_all += $temp_count;
+
+		#echo "<p>";
+	}
+
+	### 140-170 ###
+	for ($x = 14; $x <= 17; $x++)
+	{
+		$y = $x * 10;
+		$z = $y + 9;
+
+		$temp_dateDiif = $dateDiff-1;
+		$query15 = "SELECT * FROM ga_f5_sum_count_sum_";
+		$query15 .= "$temp_dateDiif ";
+		$query15 .= " WHERE `numx` >= $y AND `numx` <= $z ORDER BY `percent_wa` DESC";	### 240723 ###
+
+		#echo "<p>$query15</p>";
+
+		$mysqli_result15 = mysqli_query($mysqli_link, $query15) or die (mysqli_error($mysqli_link));
+
+		$count = 0;
+		$wa_sum = 0.0;
+
+		while($row15 = mysqli_fetch_array($mysqli_result15))
+		{
+			#echo "<tr><td>$row15[numx]</td><td>$row15[even]</td><td>$row15[odd]</td><td>$row15[percent_wa]</td></tr>";
+
+			$count++;
+			$wa_sum += $row15['percent_wa'];
+		}
+
+		mysqli_data_seek($mysqli_result15, 0);
+
+		$percent_sum = 0.00;
+		$k_sum = 0;
+		$k_array = array_fill(0,65,0);
+		$count = 0;
+
+		#echo "<table border='1'>"; // Add table border for visibility
+
+		// Begin the table
+		#echo "<tr><th>Sum</th><th>Even</th><th>Odd</th><th>percent_wa</th><th>percent</th><th>1k_count</th></tr>"; // Table headers
+		
+		while($row15 = mysqli_fetch_array($mysqli_result15))
+		{
+			$percent = $row15['percent_wa']/$wa_sum*100;
+			$temp = number_format($percent, 2, '.', '');
+			$percent_sum += $temp;
+			$index_sumx_count = intval($row15['numx']/10);
+			$k = intval((intval($temp+0.5)/100) * $sumx_count[$index_sumx_count]);
+			$k_sum += $k;
+			$k_array[$count] = $k;
+			if ($k > 0)
+			{
+				$count++;
+				#echo "<tr><td>$row15[numx]</td><td align=center>$row15[even]</td><td align=center>$row15[odd]</td><td align=center>$row15[percent_wa]</td><td>$temp %</td><td align=center>$k</td></tr>";
+
+				if ($drop_tables)
+				{
+					$query_nc = "INSERT INTO $temp_table1 ";
+					$query_nc .= "VALUES ('0', ";
+					$query_nc .= "'$row15[numx]',";
+					$query_nc .= "'$row15[even]',";
+					$query_nc .= "'$row15[odd]',";
+					$query_nc .= "'$k', ";
+					$query_nc .= "'1962-08-07')";
+
+					#echo "query_nc = $query_nc<br>";
+
+					$mysqli_result_nc = mysqli_query($mysqli_link, $query_nc) or die (mysqli_error($mysqli_link));
+				} 
+			}
+		}
+
+		// End the table
+		#echo "</table>";
+
+		#print_r ($k_array);
+
+		$s = 0;
+
+		do {
+			$k_array[$s]++;
+			$temp_count = array_sum($k_array);
+			#echo "<p>count = $temp_count</p>";
+			$s++;
+		} while ($temp_count < $sumx_count[$index_sumx_count]);
+
+		$count_all += $temp_count;
+
+		#echo "<p>";
+	}
+	
+	#########################################################################################################
+	### Fix counts
+	#########################################################################################################
+	$query_tt = "SELECT sum(`k_count`) FROM $temp_table1";
+
+	#echo "$query_tt<br>";
+
+	$mysqli_result_tt = mysqli_query($mysqli_link, $query_tt) or die (mysqli_error($mysqli_link));
+
+	$row_tt = mysqli_fetch_array($mysqli_result_tt);
+
+	$k_count_total = $row_tt[0];
+
+	$query3 = "SELECT * FROM $temp_table1 ";
+	$query3 .= "WHERE sum >= 80 ";	###240321
+	$query3 .= "AND   sum <= 119 ";
+	$query3 .= "AND   even >= 2 ";
+	$query3 .= "AND   even <= 3 ";
+	$query3 .= "ORDER BY k_count DESC  ";
+
+	#echo "<p>$query3</p>";
+
+	$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+	$count = 0;
+	$wa_sum = 0.0;
+
+	while($row3 = mysqli_fetch_array($mysqli_result3) AND $k_count_total < 1000)
+	{
+		$k_temp = $row3['k_count'] + 5;
+		
+		$query_update = "UPDATE $temp_table1 ";
+		$query_update .= "SET k_count = $k_temp ";
+		$query_update .= "WHERE id = $row3[id] ";
+
+		#echo "$query_update<p>";
+
+		$mysqli_result_update = mysqli_query ($mysqli_link, $query_update) or die (mysqli_error($mysqli_link));
+
+		$k_count_total+= 5;
+
+		#echo "k_count total = $k_count_total<br>";
+	}
+
+	$query_tt = "SELECT sum(`k_count`) FROM $temp_table1";
+
+	#echo "$query_tt<br>";
+
+	$mysqli_result_tt = mysqli_query($mysqli_link, $query_tt) or die (mysqli_error($mysqli_link));
+
+	$row_tt = mysqli_fetch_array($mysqli_result_tt);
+
+	#echo "<p>k_count total = $row_tt[0]</p>";
+
+	$query3 = "SELECT * FROM $temp_table1 ORDER BY k_count DESC ";
+
+	#echo "<p>$query3</p>";
+
+	$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+	$count = 0;
+	$wa_sum = 0.0;
+
+	### plan ###
+
+	#########################################################################################################
+	### #echo decade count
+	#########################################################################################################
+	#echo "<p>";
+
+	// Begin the table
+	#echo "<table border='1'>"; // Add table border for visibility
+	#echo "<tr><th>Index</th><th>Value</th></tr>"; // Table headers
+
+	// Loop through the array to create table rows
+	foreach ($sumx_count as $index => $value) {
+		#echo "<tr><td>$index</td><td>$value</td></tr>";
+	}
+
+	// End the table
+	#echo "</table>";
+
+	$count = 1;
+
+	### select 1k_count for each sumeo ################################################################################
+	$query3 = "SELECT DISTINCT sum,even,odd,k_count FROM $temp_table1 ";
+	$query3 .= "ORDER BY `k_count` DESC  ";
+
+	#echo "<p>query3 - $query3</p>";
+
+	$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+	while($row3 = mysqli_fetch_array($mysqli_result3))	
+	{
+		#echo "<b>row3 - $row3[sum], $row3[even], $row3[odd] - $row3[k_count]</b><br>";
+
+		# build draws table sumeo and k_count
+		for ($c = 1; $c <= $row3[3]; $c++)
+		{
+			$query7= "INSERT INTO $temp_table2 ";
+			$query7.= "VALUES ('0', ";
+			$query7.= "'0', ";
+			$query7.= "'0', ";
+			$query7.= "'0', ";
+			$query7.= "'0', ";
+			$query7.= "'0', ";
+			$query7.= "'$row3[sum]', ";
+			$query7.= "'0', ";
+			$query7.= "'$row3[even]', ";
+			$query7.= "'$row3[odd]', ";
+			for ($t = 6; $t <= 52; $t++)
+			{
+				$query7.= "'0', ";
+			}
+			$query7.= "'1962-08-17', ";
+			$query7.= "'0', ";
+			$query7.= "'0', ";
+			$query7.= "'1962-08-17') ";
+
+			#echo "$query7<br>";
+
+			$mysqli_result_7 = mysqli_query($mysqli_link, $query7) or die (mysqli_error($mysqli_link));
+		}	
+	}
+
+	### reset mysqli pointer ### 
+	mysqli_data_seek($mysqli_result3,0);
+
+	### reread sum_count_sum and add col1 based on temp_count
+	while($row3 = mysqli_fetch_array($mysqli_result3))	
+	{
+		$temp_table4 = 'temp2_column_sumeo_' . $row3['sum'] . '_' . $row3['even'] . '_' . $row3['odd'] . '_1';
+
+		### build col1 array
+		$col1_array = [];
+
+		#$temp_table4 = 'temp2_column_sumeo_' . $row3['sum'] . '_' . $row3['even'] . '_' . $row3['odd'] . '_1';
+
+		$query2 = "SELECT * FROM $temp_table4 ";
+		#$query2 .= "WHERE percent_wa >= 0.1 ";
+		$query2 .= "WHERE percent_wa >= 0.100 ";	###240629
+		$query2 .= "ORDER BY percent_wa DESC ";
+
+		#echo "<p>$query2</p>";
+
+		$mysqli_result_2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+
+		$num_rows_2 = mysqli_num_rows($mysqli_result_2);
+
+		if (!$num_rows_2)
+		{
+			$query2 = "SELECT * FROM $temp_table4 ";
+			#$query2 .= "WHERE percent_wa >= 0.1 ";
+			#$query2 .= "WHERE year1 > 0 ";	### 242608
+			$query2 .= "ORDER BY percent_wa DESC ";
+
+			#echo "<p>$query2</p>";
+
+			$mysqli_result_2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+
+			$num_rows_2 = mysqli_num_rows($mysqli_result_2);
+		}
+
+		while($row2 = mysqli_fetch_array($mysqli_result_2))
+		{	
+			$col1_array[] = $row2['num'];
+		}
+
+		#print_r ($col1_array);	### fix 240618
+
+		### read sumeo from $temp_table2
+		$d = 0;
+
+		$query8 = "SELECT * FROM $temp_table2  ";
+		$query8 .= "WHERE sum = $row3[sum] ";
+		$query8 .= "AND even = $row3[even] ";
+		$query8 .= "AND odd = $row3[odd] ";
+
+		#echo "<p>$query8</p>";
+
+		$mysqli_result8 = mysqli_query($mysqli_link, $query8) or die (mysqli_error($mysqli_link));
+
+		$q = 0;
+
+		while($row8 = mysqli_fetch_array($mysqli_result8))
+		{
+			#echo "id = $row8[id]<br>";
+
+			$query_update = "UPDATE $temp_table2 ";
+			$query_update .= "SET b1 = $col1_array[$q] ";
+			$query_update .= "WHERE id = $row8[id] ";
+
+			#echo "$query_update<p>";
+
+			$mysqli_result_update = mysqli_query ($mysqli_link, $query_update) or die (mysqli_error($mysqli_link));
+
+			if ($q > ($num_rows_2-2))
+			{
+				$q = 0;
+			} else {
+				$q++;
+			}
+		}
+	}	
+?>

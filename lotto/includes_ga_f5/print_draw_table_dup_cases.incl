@@ -1,0 +1,214 @@
+<?php
+	function print_draw_table_dup_cases($combo,$sum,$even,$odd,$d4_1,$d4_2,$d4_3,$d4_4)
+	{
+		require ("includes/mysqli.php"); 
+
+		global $draw_prefix,$dup_range_all,$hml,$rank_limit,$curr_date,$draw_table_name,$range_low,$range_high,
+		$b1_low,$b1_high,$b2_low,$b2_high,$b3_low,$b3_high,$b4_low,$b4_high,$b5_low,$b5_high,$balls,$hml_low,$hml_high;
+
+		echo "<h1>--- print case hml = $hml ---</h1>";
+
+		require ("includes/combo_switch_2.incl");
+		require ("includes_ga_f5/decade_draw_range.incl");
+
+		$draw_count = 0;
+
+		############################################################################
+		
+		$rank_limit = array_fill (0,7,0);
+
+		for ($x = 0; $x <= 5; $x++)
+		{
+			$query = "SELECT count(*) FROM ga_f5_temp2_26 ";
+			$query .= "WHERE count = $x ";
+
+			#echo "$query<br>";
+
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+			$row_count = mysqli_fetch_array($mysqli_result);
+
+			if ($row_count[0] <= 3)
+			{
+				$rank_limit[$x] = 1;
+			#} elseif ($row_count[0] > 3) {
+			#	$rank_limit[$x] = 3;
+			} else {
+				$rank_limit[$x] = intval($row_count[0]/3);
+			}
+		}
+
+		$query = "SELECT count(*) FROM ga_f5_temp2_26 ";
+		$query .= "WHERE count >= 6 ";
+
+		#echo "$query<br>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$row_count = mysqli_fetch_array($mysqli_result);
+
+		if ($row_count[0] <= 3)
+		{
+			$rank_limit[6] = 1;
+		} else {
+			$rank_limit[6] = intval($row_count[0]/3);
+		}
+
+		### rank buffer ### change to increase rank_limit by 1
+		for ($t = 0; $t <= 6; $t++)
+		{
+			#$rank_limit[$x]++;
+		}
+
+		$hml9 = $hml + 9;
+		
+		$sum_array = array();
+		
+		$count_col12_all = 0;
+
+		### cases ###
+		#$sql7 = "SELECT DISTINCT sum, b1, b3, even, odd, d4_1, d4_2, d4_3, d4_4  FROM temp_cases_";
+		$sql7 = "SELECT * FROM temp_cases_";
+		$sql7 .= "$hml ";
+		$sql7 .= "WHERE sum = $sum "; 
+		#$sql7 .= "AND even = $even ";
+		#$sql7 .= "AND odd = $odd ";
+		$sql7 .= "AND d4_1 = $d4_1 ";
+		$sql7 .= "AND d4_2 = $d4_2 ";
+		$sql7 .= "AND d4_3 = $d4_3 ";
+		$sql7 .= "AND d4_4 = $d4_4 ";
+		$sql7 .= "ORDER BY id ASC ";
+
+		echo "$sql7<br>";
+
+		$mysqli_result7 = mysqli_query($sql7, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$count_col12 = 0;
+
+		while($row7 = mysqli_fetch_array($mysqli_result7))
+		{
+			$query_comb12 = "SELECT * FROM combo_5_42 ";
+			
+			$query_comb12 .= "WHERE b1 = $row7[b1] ";
+			$query_comb12 .= "AND b3 = $row7[b3] ";
+			$query_comb12 .= "AND sum = $row7[sum] ";
+			$query_comb12 .= " AND even = $row7[even] ";
+			$query_comb12 .= " AND odd = $row7[odd] ";
+			$query_comb12 .= " AND d4_1 = $row7[d4_1] ";
+			$query_comb12 .= " AND d4_2 = $row7[d4_2] ";
+			$query_comb12 .= " AND d4_3 = $row7[d4_3] ";
+			$query_comb12 .= " AND d4_4 = $row7[d4_4] ";
+			$query_comb12 .= "AND d0 = $row7[d0] ";
+			$query_comb12 .= "AND d1 = $row7[d1] ";
+			$query_comb12 .= "AND d2 = $row7[d2] ";
+			#$query_comb12 .= "AND d3 = $row7[d3] ";
+			#$query_comb12 .= "AND d4 = $row7[d4] ";
+			$query_comb12 .= "AND d3 <= 1 ";
+			$query_comb12 .= "AND d4 <= 1 ";
+			$query_comb12 .= "AND   dup1 = $row7[dup1] ";
+			$query_comb12 .= "AND   dup2 = $row7[dup2] ";
+			$query_comb12 .= "AND   dup3 = $row7[dup3] ";
+			$query_comb12 .= "AND   dup4 = $row7[dup4] ";
+
+			# change for 40s
+			#$query_comb12 .= "AND   dup7 <= 3 "; #150423
+			#$query_comb12 .= "AND   dup9 <= 4 "; #150423
+			#$query_comb12 .= "AND   dup12 >= 3 "; #150423
+			#$query_comb12 .= "AND   dup19 >= 4 "; #150423
+			#$query_comb12 .= "AND   dup25 = 5 ";  #150423
+			 
+			#$query_comb12 .= "AND comb2 = $row7[comb2] ";
+			#$query_comb12 .= "AND comb3 = $row7[comb3] ";
+			#$query_comb12 .= "AND comb4 = $row7[comb4] ";
+			#$query_comb12 .= "AND comb5 = $row7[comb5] ";
+			
+			$query_comb12 .= "AND comb2 = 6 ";
+			$query_comb12 .= "AND comb3 <= 3 ";
+			$query_comb12 .= "AND comb4 <= 1 ";
+			$query_comb12 .= "AND comb5 = 0 ";
+
+			$query_comb12 .= "AND seq2 <= 1 ";
+			$query_comb12 .= "AND mod_tot <= 1 ";
+
+			$query_comb12 .= "AND   rank0 <= $rank_limit[0] ";
+			$query_comb12 .= "AND   rank1 <= $rank_limit[1] ";
+			$query_comb12 .= "AND   rank2 <= $rank_limit[2] ";
+			$query_comb12 .= "AND   rank3 <= $rank_limit[3] ";
+			$query_comb12 .= "AND   rank4 <= $rank_limit[4] ";
+			$query_comb12 .= "AND   rank5 <= $rank_limit[5] ";
+			$query_comb12 .= "AND   rank6 <= $rank_limit[6] ";
+
+			/*
+
+			$query_comb12 .= "AND   rank0 = $row_rank[r0] ";
+			$query_comb12 .= "AND   rank1 = $row_rank[r1] ";
+			$query_comb12 .= "AND   rank2 = $row_rank[r2] ";
+			$query_comb12 .= "AND   rank3 = $row_rank[r3] ";
+			$query_comb12 .= "AND   rank4 = $row_rank[r4] ";
+			$query_comb12 .= "AND   rank5 = $row_rank[r5] ";
+			$query_comb12 .= "AND   rank6 = $row_rank[r6] ";
+			$query_comb12 .= "AND   rank0 <= $rank_limit[0] ";
+			$query_comb12 .= "AND   rank1 <= $rank_limit[1] ";
+			$query_comb12 .= "AND   rank2 <= $rank_limit[2] ";
+			$query_comb12 .= "AND   rank3 <= $rank_limit[3] ";
+			$query_comb12 .= "AND   rank4 <= $rank_limit[4] ";
+			$query_comb12 .= "AND   rank5 <= $rank_limit[5] ";
+			$query_comb12 .= "AND   rank6 <= $rank_limit[6] ";
+
+			$query_comb12 .= "AND   b1 >= $b1_low ";
+			$query_comb12 .= "AND   b1 <= $b1_high ";
+			$query_comb12 .= "AND   b2 >= $b2_low ";
+			$query_comb12 .= "AND   b2 <= $b2_high ";
+			$query_comb12 .= "AND   b3 >= $b3_low ";
+			$query_comb12 .= "AND   b3 <= $b3_high ";
+			$query_comb12 .= "AND   b4 >= $b4_low ";
+			$query_comb12 .= "AND   b4 <= $b4_high ";
+			$query_comb12 .= "AND   b5 >= $b5_low ";
+			$query_comb12 .= "AND   b5 <= $b5_high ";
+			*/
+			$query_comb12 .= "AND   last_updated = '$curr_date' ";
+			
+			$query_comb12 .= "ORDER BY y1_sum DESC ";
+
+			echo "$query_comb12<p>";
+
+			if ($b1_low < 42)
+			{
+				#echo "$query_comb12<p>";
+				#die();
+			}
+
+			if ($row7[b1] <= 30)
+			{
+				$mysqli_result_col12 = mysqli_query($query_comb12, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+				$num_rows_col12 = mysqli_num_rows($mysqli_result_col12);
+
+				#if ($num_rows_col12 AND $count_col12 <= 10 AND $count_draw < 1)
+				if ($num_rows_col12 AND $count_col12 < 6)
+				{
+					echo "<strong>rows found - $num_rows_col12</strong><br>";
+
+					$row_col12 = mysqli_fetch_array($mysqli_result_col12);
+					echo "draw - <strong>$row_draw[draw0],$row_draw[draw1],$row_draw[draw2],$row_draw[draw3]</strong><br>";
+					echo "combo - <b>$row7[combo2],$row7[combo3],$row7[combo4],$row7[combo5]</b><br>";
+					echo "dup - <b>$row_col12[dup1],$row_col12[dup2],$row_col12[dup3]...$row_col12[dup25](dup25)</b><br>";
+					echo "$row_col12[sum]-$row_col12[b1]-$row_col12[b2]-$row_col12[b3]-$row_col12[b4]-$row_col12[b5]--$row_col12[y1_sum]<br>";
+					$count_combo++;
+					$count_dup++;
+					$count_draw++;
+					$count_col12++;
+					$count_col12_draw++;
+					$count_col12_dup++;
+					$count_col12_combo++;
+					$count_col12_all++;
+					echo "count_col12 = $count_col12,count_combo = $count_combo,count_dup = $count_dup,count_draw = $count_draw,<br>";
+					echo "--------------------------------------------------------------<br>";
+					insert_draw_table_small($row_col12[id],$combo,$row_col12[b1]);
+					###
+				}
+			}
+		}
+		###################################################################################################	
+	}
+?>

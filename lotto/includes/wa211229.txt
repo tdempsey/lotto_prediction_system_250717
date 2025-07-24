@@ -1,0 +1,32 @@
+		$weighted_average = (
+			#($sum_tot_array[1]/7*100*0.10) + #week1
+			($sum_tot_array[$x][4]/90*100*0.10) + #month3
+			($sum_tot_array[$x][5]/(365/2)*100*0.20) + #month6
+			($sum_tot_array[$x][6]/365*100*0.20) + #year1
+			($sum_tot_array[$x][8]/(365*3)*100*0.20) + #year3
+			($sum_tot_array[$x][10]/(365*3)*100*0.10) + #year5
+			($sum_tot_array[$x][12]/(365*7)*100*0.20)); #year7
+
+		if ($sum_tot_array[$x][$s] > 100)
+			{
+				print("<TD bgcolor=\"#FF0033\" align=center>{$sum_tot_array[$x][$s]}</TD>\n");
+			} elseif ($sum_tot_array[$x][$s] > 50) {
+				print("<TD bgcolor=\"#FA9c05\" align=center>{$sum_tot_array[$x][$s]}</TD>\n");
+			} elseif ($sum_tot_array[$x][$s] > 10) {
+				print("<TD bgcolor=\"#CCFF66\" align=center>{$sum_tot_array[$x][$s]}</TD>\n");
+			} elseif ($sum_tot_array[$x][$s] > 1) {
+				print("<TD bgcolor=\"#CCFF66\" align=center>{$sum_tot_array[$x][$s]}</TD>\n");
+			} elseif ($sum_tot_array[$x][$s] == 1) {
+				print("<TD bgcolor=\"#F1F1F1\" align=center>{$sum_tot_array[$x][$s]}</TD>\n");
+			} else {
+				print("<TD align=center>{$sum_tot_array[$x][$s]}</TD>\n");
+			}
+
+			echo "y,row[1] = $row[1]<br>";
+
+			echo "draw_date_unix = $draw_date_unix<br>";
+			echo "year1 = $year1_unix<br>";
+			echo "year2 = $year2_unix<br>";
+			echo "year3 = $year3_unix<br>";
+4			echo "year4 = $year4_unix<br>";
+			echo "year5 = $year5_unix<br>";

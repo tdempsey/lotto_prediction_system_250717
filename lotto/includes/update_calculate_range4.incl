@@ -1,0 +1,18 @@
+<?php
+	calculate_drange4($draw,$d1,$d2,$d3,$d4,$balls);
+
+	$query4 = "INSERT INTO $draw_prefix";
+	$query4 = "draws_draw4 ";
+	$query4 .= "VALUES('0', ";
+	$query4 .= "'$d1', ";
+	$query4 .= "'$d2', ";
+	$query4 .= "'$d3', ";
+	$query4 .= "'$d4', ";
+	$query4 .= "'$row[0]') ";
+
+	print("$query4<br>");
+
+	$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link)); 
+
+	#print("<FONT COLOR=RED><H4>*** $row[0] updated ***</H4></FONT>\n");
+?>

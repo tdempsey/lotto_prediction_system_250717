@@ -1,0 +1,1 @@
+$sql = 'SELECT DISTINCT num1 , num2 , count FROM `fl_f5_temp_2_5000` WHERE 1 ORDER BY `fl_f5_temp_2_5000` . `count` DESC';

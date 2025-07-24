@@ -1,0 +1,164 @@
+<?php
+
+	$curr_date = date('Y-m-d');
+
+	$drop_tables = 1;
+	
+	if ($drop_tables)
+	{
+		$query = "DROP TABLE IF EXISTS temp_draw_combo_";
+		$query .= "$hml";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query =  "CREATE TABLE IF NOT EXISTS  temp_draw_combo_";
+		$query .= "$hml ( ";
+		$query .= "  `id` int(10) unsigned NOT NULL auto_increment, ";
+		$query .= "  `nums2` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `combo2` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `nums3` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `combo3` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `nums4` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `combo4` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `date` date NOT NULL default '1962-08-17', ";
+		$query .= "  PRIMARY KEY  (`id`) ";
+		$query .= ") ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 "; 
+
+		print("$query<p>");
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$draw_table = "$draw_prefix";
+		$draw_table .= "combo_count_";
+		$draw_table .= "$balls_drawn";
+		$draw_table .= "_$balls";
+		$draw_table .= "_$hml";
+
+		$query = "DROP TABLE IF EXISTS $draw_table ";
+
+		echo "$query<br>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$query =  "CREATE TABLE IF NOT EXISTS  $draw_table ( ";
+		$query .= "  `id` int(10) unsigned NOT NULL auto_increment, ";
+		$query .= "  `nums2` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `combo2` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `nums3` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `combo3` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `nums4` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `combo4` tinyint(2) unsigned NOT NULL default '0', ";
+		$query .= "  `date` date NOT NULL default '1962-08-17', ";
+		$query .= "  `count` int(3) unsigned NOT NULL default '0', ";
+		$query .= "  PRIMARY KEY  (`id`) ";
+		$query .= ") ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ";
+
+		print("$query<p>");
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+	}
+
+	$max_num = 39;
+
+	print("<p align=\"center\"><b><font face=\"Arial, Helvetica, sans-serif\">Build draw 5/$max_num</font></b></p>");
+
+	$query_temp = "SELECT * FROM $draw_table_name ";
+	$query_temp .= "WHERE date <= '$curr_date' ";
+	if ($hml)
+	{
+		$query_temp .= "AND   sum >= $range_low  ";
+		$query_temp .= "AND   sum <= $range_high  ";
+	}
+	$query_temp .= "ORDER BY DATE desc LIMIT 50 ";
+
+	echo "$query_temp<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query_temp) or die (mysqli_error($mysqli_link));
+
+	$row_temp = mysqli_fetch_array($mysqli_result);
+
+	$draw_count = array_fill (0, 6, 0);
+
+	while($row = mysqli_fetch_array($mysqli_result))
+	{
+		#$draw = array($row[draw0],$row[draw1],$row[draw2],$row[draw3]);
+
+		#$draw_count = calculate_draw_count($draw); 
+
+		$query = "INSERT INTO temp_draw_combo_";
+		$query .= "$hml ";
+		$query .= "VALUES ('0', ";
+		$query .= "'$row[nums_total_2]', ";
+		$query .= "'$row[combo_total_2]', ";
+		$query .= "'$row[nums_total_3]', ";
+		$query .= "'$row[combo_total_3]', ";
+		$query .= "'$row[nums_total_4]', ";
+		$query .= "'$row[combo_total_4]', ";
+		$query .= "'$row[0]') ";
+		
+		#print "$query<br>";
+		
+		$mysqli_result2 = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$last_date = $row[0];
+	}
+
+	$query_temp = "SELECT * FROM temp_draw_combo_";
+	$query_temp .= "$hml ";
+
+	echo "$query_temp<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query_temp) or die (mysqli_error($mysqli_link));
+
+	$nums_total_2_low = 0;
+	$nums_total_2_high = 0;
+	$combo_total_2_low = 0;
+	$combo_total_2_high = 0;
+	$nums_total_3_low = 0;
+	$nums_total_3_high = 0;
+	$combo_total_3_low = 0;
+	$combo_total_3_high = 0;
+	$nums_total_4_low = 0;
+	$nums_total_4_high = 0;
+	$combo_total_4_low = 0;
+	$combo_total_4_high = 0;
+
+	$nums_total_2_temp = array();
+	$nums_total_3_temp = array();
+	$nums_total_4_temp = array();
+
+	while($row = mysqli_fetch_array($mysqli_result))
+	{
+		array_push ($nums_total_2_temp, $row[nums_total_2]);
+		array_push ($combo_total_2_temp, $row[combo_total_2]);
+		array_push ($nums_total_3_temp, $row[nums_total_3]);
+		array_push ($combo_total_3_temp, $row[combo_total_3]);
+		array_push ($nums_total_4_temp, $row[nums_total_4]);
+		array_push ($combo_total_4_temp, $row[combo_total_4]);
+	}
+
+	sort ($nums_total_2_temp);
+	sort ($combo_total_2_temp);
+	sort ($nums_total_3_temp);
+	sort ($combo_total_3_temp);
+	sort ($nums_total_4_temp);
+	sort ($combo_total_4_temp);
+
+	print_r ($nums_total_2_temp);
+
+	$combo_total_2_low = $nums_total_2_temp[1];
+	$combo_total_2_high = $combo_total_2_temp[8];
+	$combo_total_3_low = $nums_total_3_temp[1];
+	$combo_total_3_high = $combo_total_3_temp[8];
+	$combo_total_4_low = $nums_total_4_temp[1];
+	$combo_total_4_high = $combo_total_4_temp[8];
+
+	
+	echo "combo_total_2_low = $combo_total_2_low<br>";
+	echo "combo_total_2_high = $combo_total_2_high<br>";
+	echo "combo_total_3_low = $combo_total_3_low<br>";
+	echo "combo_total_3_high = $combo_total_3_high<br>";
+	echo "combo_total_4_low = $combo_total_4_low<br>";
+	echo "combo_total_4_high = $combo_total_4_high<br>";
+
+?>

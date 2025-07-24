@@ -1,0 +1,62 @@
+Here’s a diagram-style breakdown of a **Lottery Prediction Ecosystem**. The structure includes the main components you mentioned: **Draws**, **Analyze**, **Test & Verify**, **Scripts**, **Supporting Files**, and the **Cover System**.
+
+---
+
+### 🎯 **Lottery Prediction Ecosystem**
+
+```plaintext
+                              ┌────────────────────┐
+                              │   Lottery Draws    │
+                              │ (Historical + Live)│
+                              └────────┬───────────┘
+                                       │
+           ┌───────────────────────────▼────────────────────────────┐
+           │                   Preprocessing Layer                  │
+           │  (Clean, Format, Remove Duplicates, Normalize Formats) │
+           └────────┬───────────────────┬───────────────────────────┘
+                    │                   │
+     ┌──────────────▼────────────┐  ┌───▼───────────────────────────┐
+     │     Analysis Engine       │  │     Statistical Models        │
+     │ ─ Frequencies             │  │ ─ Probabilities               │
+     │ ─ Hot/Cold Numbers        │  │ ─ Repeats, Pairs, Sums, Gaps  │
+     │ ─ Even/Odd, Prime, MOD    │  │ ─ ML Models (optional)        │
+     └──────────────┬────────────┘  └──────────────┬────────────────┘
+                    │                              │
+     ┌──────────────▼────────────┐   ┌─────────────▼──────────────┐
+     │     Cover System Engine   │   │     Testing & Verification │
+     │ ─ Generates number sets   │   │ ─ Simulates past outcomes  │
+     │ ─ Applies constraints     │   │ ─ Validates predictions    │
+     │ ─ Budget-based filtering  │   │ ─ Accuracy reporting       │
+     └──────────────┬────────────┘   └─────────────┬──────────────┘
+                    │                              │
+     ┌──────────────▼────────────┐   ┌─────────────▼──────────────┐
+     │     Output & Export       │   │    Performance Metrics     │
+     │ ─ Suggested number sets   │   │ ─ Charts, logs, scores     │
+     │ ─ CSV, PDF, Database dump │   │ ─ Success rate             │
+     └──────────────┬────────────┘   └─────────────┬──────────────┘
+                    │                              │
+           ┌────────▼────────┐           ┌─────────▼─────────────┐
+           │ Scripts & Tools │           │   Supporting Files    │
+           │ ─ Python, Bash   │           │ ─ draw_history.csv   │
+           │ ─ Notebook utils │           │ ─ config.json        │
+           │ ─ Batch runners  │           │ ─ strategies.yaml    │
+           └─────────────────┘           └───────────────────────┘
+```
+
+---
+
+### 🗂️ Key Components Explained
+
+* **Lottery Draws**: Live or historic winning numbers (manually entered or scraped).
+* **Preprocessing**: Cleans up data into a usable format.
+* **Analysis Engine**: Performs stats-based evaluation (frequencies, trends).
+* **Statistical Models**: Deeper mathematical or ML analysis.
+* **Cover System Engine**: Strategically generates combinations for play.
+* **Testing & Verification**: Simulates strategies against known results.
+* **Scripts**: Automate workflows (e.g., generate, analyze, simulate).
+* **Supporting Files**: Data files, config, strategy definitions.
+* **Output & Performance**: Final picks, visual charts, and performance scores.
+
+---
+
+Would you like this diagram turned into a **graphical image**, **flowchart using Mermaid or PlantUML**, or a **PDF handout**?

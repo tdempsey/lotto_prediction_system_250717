@@ -1,0 +1,7 @@
+<?
+	// Database connection credentials
+	$host = 'localhost';
+	$username = 'root';
+	$password = '';
+	$database = 'ga_f5_lotto';
+?>

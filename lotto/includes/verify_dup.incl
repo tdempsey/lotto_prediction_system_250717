@@ -1,0 +1,350 @@
+<?php		
+		###################################### Dup1 ###################################################
+
+		
+		print("<a name=\"$limit\"><H3>(13) Lotto Verify Dup1 - $game_name - Limit $limit</H3></a>\n");
+		
+		//start table
+		print("<TABLE BORDER=\"1\">\n");
+	
+		//create header row
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=150>Pass (dup1 <= 1)</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=100>Pass %</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail (dup1 > 1)</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail %</TD>\n");
+		print("</B></TR>\n");
+
+		$today_unix = time ();
+
+		#echo "today_unix = $today_unix<br>";
+
+		$date_temp_seconds = $last_draw_unix - (86400*($limit-4));	
+					
+		// Start date 
+		$date_temp = date('Y/m/d', $date_temp_seconds); 
+
+		// get count draw table
+		$query7 = "SELECT count(*) FROM ga_f5_dup_table ";
+		$query7 .= "WHERE date >= '$date_temp' ";
+		$query7 .= "AND dup1 > 1 ";
+
+		#echo "$query7<br>";
+	
+		$mysqli_result7 = mysqli_query($mysqli_link, $query7) or die (mysqli_error($mysqli_link));
+
+		$row5 = mysqli_fetch_array($mysqli_result7);
+
+		$temp1 = number_format(($row5[0]/$limit)*100,2);
+
+		$temp2 = $limit-$row5[0];
+
+		$temp3 = number_format(((($limit-$row5[0])/$limit)*100),2);
+
+		print("<TR>\n");
+		
+		print("<TD align=center>&nbsp;</TD>\n");
+		print("<TD align=center>$temp2</TD>\n");
+		print("<TD align=center>$temp3 %</TD>\n");
+		print("<TD align=center>$row5[0]</TD>\n");
+		print("<TD align=center>$temp1 %</TD>\n");
+		print("</B></TR>\n");
+
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=150>Pass (dup1 <= 1)</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=100>Pass %</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail (dup1 > 1)</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail %</TD>\n");
+		print("</B></TR>\n");
+
+		//end table
+		print("</TABLE>\n");
+		
+		echo "<br>";
+
+		if ($row5[0])
+		{
+			//start table
+			print("<TABLE BORDER=\"1\">\n");
+			
+			print("<TR><B>\n");
+			print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=150>Date</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Dup1</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Dup2</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Dup3</TD>\n");
+			print("</B></TR>\n");
+			
+			// get count draw table
+			$query7b = "SELECT * FROM  ga_f5_dup_table ";
+			$query7b .= "WHERE date >= '$date_temp' ";
+			$query7b .= "AND dup1 > 1 ";
+			$query7b .= "ORDER BY date DESC ";	
+
+			#echo "$query7b<br>";
+			
+			$mysqli_result7b = mysqli_query($mysqli_link, $query7b) or die (mysqli_error($mysqli_link));
+			
+			while ($row7b = mysqli_fetch_array($mysqli_result7b))
+			{
+				print("<TR>\n");
+				print("<TD align=center>&nbsp;</TD>\n");
+				print("<TD align=center nowrap>$row7b[date]</TD>\n");
+				print("<TD align=center>$row7b[dup1]</TD>\n");
+				print("<TD align=center>$row7b[dup2]</TD>\n");
+				print("<TD align=center>$row7b[dup3]</TD>\n");
+				print("</TR>\n");
+			}
+			
+			print("<TR><B>\n");
+			print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=150>Date</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Dup1</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Dup2</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Dup3</TD>\n");
+			print("</B></TR>\n");
+
+			//end table
+			print("</TABLE>\n");
+		}
+
+		###################################### Dup2 ###################################################
+
+		print("<a name=\"$limit\"><H3>(14) Lotto Verify Dup2 - $game_name - Limit $limit</H3></a>\n");
+		
+		//start table
+		print("<TABLE BORDER=\"1\">\n");
+	
+		//create header row
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=150>Pass (dup2 <= 2)</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=100>Pass %</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail (dup2 > 2)</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail %</TD>\n");
+		print("</B></TR>\n");
+
+		$today_unix = time ();
+
+		##echo "today_unix = $today_unix<br>";
+
+		$date_temp_seconds = $last_draw_unix - (86400*$limit);	
+					
+		// Start date 
+		$date_temp = date('Y/m/d', $date_temp_seconds); 
+
+		// get count draw table
+		$query7 = "SELECT count(*) FROM ga_f5_dup_table ";
+		$query7 .= "WHERE date >= '$date_temp' ";
+		$query7 .= "AND dup2 > 2 ";
+
+		#echo "$query7<br>";
+	
+		$mysqli_result7 = mysqli_query($mysqli_link, $query7) or die (mysqli_error($mysqli_link));
+
+		$row5 = mysqli_fetch_array($mysqli_result7);
+
+		$temp1 = number_format(($row5[0]/$limit)*100,2);
+
+		$temp2 = $limit-$row5[0];
+
+		$temp3 = number_format(((($limit-$row5[0])/$limit)*100),2);
+
+		print("<TR>\n");
+		
+		print("<TD align=center>&nbsp;</TD>\n");
+		print("<TD align=center>$temp2</TD>\n");
+		print("<TD align=center>$temp3 %</TD>\n");
+		print("<TD align=center>$row5[0]</TD>\n");
+		print("<TD align=center>$temp1 %</TD>\n");
+		print("</B></TR>\n");
+
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=150>Pass (dup2 <= 2)</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=100>Pass %</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail (dup2 > 2)</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail %</TD>\n");
+		print("</B></TR>\n");
+
+		//end table
+		print("</TABLE>\n");
+		
+		echo "<br>";
+
+		if ($row5[0])
+		{
+			//start table
+			print("<TABLE BORDER=\"1\">\n");
+			
+			print("<TR><B>\n");
+			print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=150>Date</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Dup1</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Dup2</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Dup3</TD>\n");
+			print("</B></TR>\n");
+			
+			// get count draw table
+			$query7b = "SELECT * FROM ga_f5_dup_table ";
+			$query7b .= "WHERE date >= '$date_temp' ";
+			$query7b .= "AND dup2 > 2 ";
+			$query7b .= "ORDER BY date DESC ";
+
+			#echo "$query7b<br>";
+			
+			$mysqli_result7b = mysqli_query($mysqli_link, $query7b) or die (mysqli_error($mysqli_link));
+
+			$num_rows = mysqli_num_rows($mysqli_result7b); 
+			
+			while ($row7b = mysqli_fetch_array($mysqli_result7b))
+			{
+				print("<TR>\n");
+				print("<TD align=center>&nbsp;</TD>\n");
+				print("<TD align=center>$row7b[date]</TD>\n");
+				print("<TD align=center>$row7b[dup1]</TD>\n");
+				print("<TD align=center>$row7b[dup2]</TD>\n");
+				print("<TD align=center>$row7b[dup3]</TD>\n");
+				print("</TR>\n");
+			}
+			
+			print("<TR><B>\n");
+			print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=150>Date</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Dup1</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Dup2</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Dup3</TD>\n");
+			print("</B></TR>\n");
+
+			//end table
+			print("</TABLE>\n");
+		}
+
+		###################################### Dup3 ###################################################
+
+		print("<a name=\"$limit\"><H3>(15) Lotto Verify Dup3 - $game_name - Limit $limit</H3></a>\n");
+		
+		//start table
+		print("<TABLE BORDER=\"1\">\n");
+	
+		//create header row
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=150>Pass (dup3 <= 3)</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=100>Pass %</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail (dup3 > 2)</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail %</TD>\n");
+		print("</B></TR>\n");
+
+		$today_unix = time ();
+
+		#echo "today_unix = $today_unix<br>";
+
+		$date_temp_seconds = $last_draw_unix - (86400*$limit);	
+					
+		// Start date 
+		$date_temp = date('Y/m/d', $date_temp_seconds); 
+
+		// get count draw table
+		$query7b = "SELECT count(*) FROM ga_f5_dup_table ";
+		$query7b .= "WHERE date >= '$date_temp' ";
+		$query7b .= "AND dup3 > 3 ";
+		$query7b .= "ORDER BY date DESC ";
+
+		#echo "$query7b<br>";
+	
+		$mysqli_result7b = mysqli_query($mysqli_link, $query7b) or die (mysqli_error($mysqli_link));
+
+		$row5 = mysqli_fetch_array($mysqli_result7b);
+
+		$temp1 = number_format(($row5[0]/$limit)*100,2);
+
+		$temp2 = $limit-$row5[0];
+
+		$temp3 = number_format(((($limit-$row5[0])/$limit)*100),2);
+
+		print("<TR>\n");
+		
+		print("<TD align=center>&nbsp;</TD>\n");
+		print("<TD align=center>$temp2</TD>\n");
+		print("<TD align=center>$temp3 %</TD>\n");
+		print("<TD align=center>$row5[0]</TD>\n");
+		print("<TD align=center>$temp1 %</TD>\n");
+		print("</B></TR>\n");
+
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=150>Pass (dup3 <= 3)</TD>\n");
+		print("<TD BGCOLOR=\"#57FC39\" align=center width=100>Pass %</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail (dup3 > 2)</TD>\n");
+		print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Fail %</TD>\n");
+		print("</B></TR>\n");
+
+		//end table
+		print("</TABLE>\n");
+		
+		echo "<br>";
+		if ($row5[0])
+		{
+			//start table
+			print("<TABLE BORDER=\"1\">\n");
+			
+			print("<TR><B>\n");
+			print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=150>Date</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Dup1</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Dup2</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Dup3</TD>\n");
+			print("</B></TR>\n");
+			
+			// get count draw table
+			$query7b = "SELECT * FROM ga_f5_dup_table ";
+			$query7b .= "WHERE date >= '$date_temp' ";
+			$query7b .= "AND dup3 > 3 ";
+			$query7b .= "ORDER BY date DESC ";
+
+			#echo "$query7b<br>";
+			
+			$mysqli_result7b = mysqli_query($mysqli_link, $query7b) or die (mysqli_error($mysqli_link));
+
+			$num_rows = mysqli_num_rows($mysqli_result7b); 
+			
+			while ($row7b = mysqli_fetch_array($mysqli_result7b))
+			{
+				print("<TR>\n");
+				print("<TD align=center>&nbsp;</TD>\n");
+				print("<TD align=center>$row7b[date]</TD>\n");
+				print("<TD align=center>$row7b[dup1]</TD>\n");
+				print("<TD align=center>$row7b[dup2]</TD>\n");
+				print("<TD align=center>$row7b[dup3]</TD>\n");
+				print("</TR>\n");
+			}
+			
+			print("<TR><B>\n");
+			print("<TD BGCOLOR=\"#CCCCCC\" width=20>&nbsp;</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=150>Date</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Dup1</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Dup2</TD>\n");
+			print("<TD BGCOLOR=\"#FC5B39\" align=center width=100>Dup3</TD>\n");
+			print("</B></TR>\n");
+
+			//end table
+			print("</TABLE>\n");
+		}
+
+		##############################################################################################
+
+		/*
+		<script src="C:\Bitnami\wampstack-7.2.31-0\apache2\htdocs\Chart.js"></script>
+		<script>
+		    #var myChart = new Chart(ctx, {...});
+		</script>
+		
+
+		require(['path/to/chartjs/dist/Chart.min.js'], function(Chart){
+		    #var myChart = new Chart(ctx, {...});
+		});
+		*/
+?>

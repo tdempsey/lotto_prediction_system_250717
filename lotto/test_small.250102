@@ -1,0 +1,183 @@
+<?php
+
+	// add tables population for combos, pairs
+	// add test for missing draws
+	// recalcu;ate draw includes
+	// add db class
+	// error checking - all modules
+	// fix pair count
+
+	//////////////////////////////////////////
+	//////////// uncomment combin.incl ga f5
+	//////////////////////////////////////////
+
+	// Game ----------------------------- Game
+	$game = 1; // Georgia Fantasy 5
+	//$game = 2; // Georgia Mega Millions
+	//$game = 3; // Georgia Lotto South
+	#$game = 4; // Florida Fantasy 5
+	//$game = 5; // Florida Mega Money
+	//$game = 6; // Florida Lotto
+	#$game = 7; // Powerball
+	// Game ----------------------------- Game
+
+	set_time_limit(0);
+	
+	$curr_date = date('Y-m-d');
+	
+	require ("includes/games_switch.incl");
+	require ("includes/last_draws.php");
+	require ("includes/calculate_rank.php");
+
+	//require ("includes/mysqli.php");
+	require ("includes/mysqli.php");
+	
+	$debug = 1;
+
+	if ($debug)
+	{
+		ini_set('display_errors', '1');
+		ini_set('display_startup_errors', '1');
+		error_reporting(E_ALL);
+	}
+
+	###################################################################################################################
+	function check_dup_rank($draw)
+	{
+		global $dup_temp, $rank_temp, $last_1_draws, $last_2_draws, $last_3_draws, $last_4_draws;
+		
+		// Initialize the rank table counts
+		$rank_table_count = array_fill(0, 8, 0);
+
+		// Count the ranks based on the given rank thresholds
+		for ($z = 1; $z <= 42; $z++) {
+			if ($rank_count[$z] >= 7) {
+				$rank_table_count[7]++;
+			} else {
+				$rank_table_count[$rank_count[$z]]++;
+			}
+		}
+
+		// Calculate duplicates in the current draw
+		foreach ($draw as $number) {
+			$last_dup[$number]++;
+		}
+
+		// Store duplicate counts and rank results
+		$dup_temp = [];
+		foreach ($last_dup as $key => $count) {
+			if ($count > 1) {
+				$dup_temp[$key] = $count;
+			}
+		}
+
+		// Build the rank_temp array with the rank_table_count
+		$rank_temp = $rank_table_count;
+	}
+	###################################################################################################################
+	
+	### Dup 5 last draws
+	$dup_temp = array_fill(0,8,0);
+	
+	print("<h3>Dups</h3>\n");
+
+	// Initialize an array to track duplicate counts
+	$last_dup = array_fill(0, 51, 0);
+
+	// Process the last draws for different ranges
+	for ($x = 1; $x <= 4; $x++) {
+		${"last_".$x."_draws"} = LastDraws($curr_date, $x);
+		// Debugging output for verification (can be removed or commented out in production)
+		print_r(${"last_".$x."_draws"});
+		echo "<br>";
+	}
+
+	
+	### Rank limit
+	$rank_temp = array_fill(0,8,0);
+	
+	print("<h3>Rank Limit</h3>\n");
+
+	print("<TABLE BORDER=\"1\">\n");
+
+	print("<TR>\n");
+
+	for ($x = 0; $x <= 7; $x++)
+	{
+		//create header row
+		print("<TD BGCOLOR=\"#CCCCCC\" align=center width=20>$x</TD>\n");
+	}
+	
+	print("</TR>\n");
+
+	print("<TR>\n");
+
+	$query = "SELECT * FROM $draw_prefix";
+	$query .= "rank_limit ";
+	$query .= "WHERE date = '$curr_date' ";
+	$query .= "AND   draw_limit = 30 ";
+
+	#echo "query - $query<br>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$row_count = mysqli_fetch_array($mysqli_result);
+
+	$rank_table[$x] = $row_count[0];
+
+	for ($g = 3; $g <= 10; $g++)
+	{
+		print("<TD align=center width=20>$row_count[$g]</TD>\n");
+	}
+
+	print("</TR>\n");
+
+	//end table
+	print("</TABLE>\n");
+	
+	// Output for debugging or further usage
+	
+	//start HTML page
+	print("<HTML>\n");
+	print("<HEAD>\n");
+	print("<TITLE>Small Test</TITLE>\n");
+	print("</HEAD>\n");
+	
+	print("<BODY>\n");
+
+	### get count draw table
+	$query5 = "SELECT * FROM $draw_table_name ";
+	$query5 .= "WHERE date >= '2015-10-01' ";
+	$query5 .= "ORDER BY date DESC ";
+
+	echo "<p>$query5</p>";
+
+	$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+	$num_rows5 = mysqli_num_rows($mysqli_result5);
+
+	echo "<p>num_rows5 = $num_rows5</p>";
+
+	while ($row5 = mysqli_fetch_array($mysqli_result5))
+	{
+		$draw = array ();
+		$rank_temp = array_fill(0,8,0);
+		$dup_temp = array_fill(0,8,0);
+
+		for ($x = 1; $x <= $balls_drawn; $x++)
+		{
+			array_push($draw, $row5[$x]);
+		}
+
+		sort ($draw);
+		
+		print_r ($draw);
+		echo "<br>";
+		
+		check_dup_rank($draw, $dup_temp, $rank_temp);
+	}
+
+	print("<h2>Completed!</h2>");
+
+	print("</BODY>\n");
+?>

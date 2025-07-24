@@ -1,0 +1,49 @@
+<?php
+		$even_low = 2;
+		$even_high = 3;
+		$odd_low = 2;
+		$odd_high = 3;
+		$d501_low = 2;
+		$d501_high = 3;
+		$d502_low = 2;
+		$d502_high = 3;
+		$d0_low = 2;
+		$d0_high = 2;
+		$d1_low = 2;
+		$d1_high = 2;
+		$d2_low = 2;
+		$d2_high = 2;
+		$d3_low = 2;
+		$d3_high = 2;
+		$d4_low = 2;
+		$d4_high = 2;
+		$d5_low = 2;
+		$d5_high = 2;
+		$b2_low = 59;
+		$b2_high = 1;
+		$b3_low = 59;
+		$b3_high = 1;
+		$b4_low = 59;
+		$b4_high = 1;
+		$b5_low = 59;
+		$b5_high = 1;
+
+		$query = "SELECT MIN(even) FROM $draw_table_name ";
+		$query .= "WHERE date < '$curr_date' ";
+		if ($hml)
+		{
+			$query .= "AND   sum >= $range_low  ";
+			$query .= "AND   sum <= $range_high  ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 ";
+
+		print "$query<br>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			
+		}
+?>

@@ -1,0 +1,151 @@
+<?php
+	#$game = 6;
+
+	switch ($game):
+		case 1:
+			$game_name = "Georgia Fantasy 5";
+			$db_name = "georgia_fantasy_5";
+			$draw_table_name = "ga_f5_draws";
+			$draw_prefix = "ga_f5_";
+			$game_includes = "includes_ga_f5";
+			$balls = 42;
+			$balls_drawn = 5;
+			$mega_balls = 0; // 0 no megaball
+			require ("includes_ga_f5/config.incl");
+			break;
+		case 2:
+			$game_name = "Mega Millions";
+			//$draw_table = "mm_draws";
+			$draw_table_name = "mm_draws";
+			$draw_prefix = "mm_";
+			$game_includes = "includes_mm";
+			$balls = 75;
+			$balls_drawn = 5;
+			$mega_balls = 15; // 0 no megaball
+			require ("includes_mm/config.incl");
+			break;
+		case 3:
+			$game_name = "Georgia 5";
+			//$draw_table = "mm_draws";
+			$draw_table_name = "georgia_5_draws";
+			$draw_prefix = "georgia_5_";
+			$game_includes = "includes_georgia5";
+			$balls = 9;
+			$balls_drawn = 5;
+			$mega_balls = 0; // 0 no megaball
+			require ("includes_georgia5/config.incl");
+			break;
+		case 4:
+			$game_name = "Jumbo";
+			$draw_table_name = "jumbo_draws";
+			$draw_prefix = "jumbo_";
+			$game_includes = "includes_jumbo";
+			$balls = 47;
+			$balls_drawn = 6;
+			$mega_balls = 0; // 0 no megaball
+			$grid_26_flag = 1;
+			$grid_all_flag = 29;
+			$grid_col_flag = 14;
+			require ("includes_jumbo/config.incl");
+			break;
+		case 6:
+			$game_name = "Florida Lotto";
+			//$draw_table = "fl_draws";
+			$draw_table_name = "fl_draws";
+			$draw_prefix = "fl_";
+			$game_includes = "includes_fl";
+			$balls = 53; 
+			$balls_drawn = 6;
+			$mega_balls = 0; // 0 no megaball
+			$grid_26_flag = 1;
+			$grid_all_flag = 11;
+			$grid_col_flag = 5;
+			require ("includes/fl_config.incl");
+			break;
+		case 7:
+			$game_name = "Powerball";
+			$draw_table_name = "pb_draws";
+			$draw_prefix = "pb_";
+			$game_includes = "includes_pb";
+			$balls = 69; 
+			$balls_drawn = 5;
+			$mega_balls = 26; // 0 no megaball
+			$grid_26_flag = 1;
+			$grid_all_flag = 11;
+			$grid_col_flag = 5;
+			require ("includes_pb/config.incl");
+			break;
+		 case 8:
+			$game_name = "Georgia Cash 3";
+			$draw_table = "ga_cash3_draws";
+			$draw_table_name = "ga_cash3_draws";
+			$draw_prefix = "ga_cash3_";
+			$game_includes = "includes_ga_cash3";
+			$balls = 10; 
+			$balls_drawn = 3;
+			$mega_balls = 0; // 0 no megaball
+			$grid_26_flag = 1;
+			$grid_all_flag = 11;
+			$grid_col_flag = 5;
+			require ("includes/ga_cash3_config.incl");
+			break;
+		 case 9:
+			$game_name = "Georgia Cash 4";
+			$draw_table = "ga_cash4_draws";
+			$draw_table_name = "ga_cash4_draws";
+			$draw_prefix = "ga_cash5_";
+			$game_includes = "includes_ga_cash4";
+			$balls = 10; 
+			$balls_drawn = 4;
+			$mega_balls = 0; // 0 no megaball
+			$grid_26_flag = 1;
+			$grid_all_flag = 11;
+			$grid_col_flag = 5;
+			require ("includes/ga_cash4_config.incl");
+			break;
+		case 10:
+			$game_name = "All or Nothing";
+			$draw_table = "aon_draws";
+			$draw_table_name = "aon_draws";
+			$draw_prefix = "aon_";
+			$game_includes = "includes_aon";
+			$balls = 24; 
+			$balls_drawn = 12;
+			$mega_balls = 0; // 0 no megaball
+			$grid_26_flag = 1;
+			$grid_all_flag = 11;
+			$grid_col_flag = 5;
+			require ("includes/aon_config.incl");
+			break;
+		case 20:
+			$game_name = "All or Nothing Negative";
+			$draw_table = "aon_draws_negative";
+			$draw_table_name = "aon_draws_negative";
+			$draw_prefix = "aon_neg_";
+			$game_includes = "includes_aon";
+			$balls = 24; 
+			$balls_drawn = 12;
+			$mega_balls = 0; // 0 no megaball
+			$grid_26_flag = 1;
+			$grid_all_flag = 11;
+			$grid_col_flag = 5;
+			require ("includes/aon_config.incl");
+			break;
+		case 30:
+			$game_name = "Monopoly";
+			$draw_table = "mmc_draws";
+			$draw_table_name = "mmc_draws";
+			$draw_prefix = "mmc_";
+			$game_includes = "includes_mmc";
+			$balls = 52; 
+			$balls_drawn = 5;
+			$mega_balls = 28; // 0 no megaball
+			$grid_26_flag = 1;
+			$grid_all_flag = 11;
+			$grid_col_flag = 5;
+			require ("includes/mmc_config.incl");
+			break;
+		default:
+			exit ('<h1><font color="#ff0000">No game selected in function lot_display.php - error code in game_switch.incl</font></h1>');
+	endswitch;
+?>

@@ -1,0 +1,1 @@
+SELECT DISTINCT num1,num2 FROM `ga_f5_combo_pair_1_2104` WHERE `year3` > 0 AND`percent_wa` > 0.0 ORDER BY `ga_f5_combo_pair_1_2104`.`num1` ASC

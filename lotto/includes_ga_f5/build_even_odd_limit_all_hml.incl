@@ -1,0 +1,53 @@
+<?php
+	
+	$draw_combo_temp_array = array_fill (0,2,0);
+	$draw_combo_temp_array_2 = array_fill (0,2,$draw_combo_temp_array);
+	#$draw_combo_temp_array_3 = array_fill (0,25,$draw_combo_temp_array_2);
+	$evenodd_range_all = array_fill (0,13,$draw_combo_temp_array_2);
+	$temp1 = array();
+	$temp2 = array();
+	$temp3 = array();
+	$temp4 = array();
+	$temp5 = array();
+	$temp6 = array();
+	$temp7 = array();
+
+	$query_temp = "SELECT * FROM ga_f5_draws ";
+	$query_temp .= "WHERE sum >= $range_low  ";
+	$query_temp .= "AND   sum <= $range_high  ";
+	$query_temp .= "ORDER BY date desc LIMIT 10 ";
+
+	echo "$query_temp<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query_temp) or die (mysqli_error($mysqli_link));
+
+	while($row = mysqli_fetch_array($mysqli_result))
+	{
+		array_push ($temp1, $row[even]);
+		array_push ($temp2, $row[odd]);
+		array_push ($temp3, $row[d501]);
+		array_push ($temp4, $row[d502]);
+		array_push ($temp5, $row[draw0]);
+		array_push ($temp6, $row[draw1]);
+		array_push ($temp7, $row[draw2]);	
+	}
+
+	sort ($temp1);
+	sort ($temp2);
+	sort ($temp3);
+	sort ($temp4);
+	sort ($temp5);
+	sort ($temp6);
+	sort ($temp7);
+
+	for ($x = 1; $x <= 7; $x++)
+	{
+		$evenodd_range_all[$x][0] = ${temp.$x}[1];
+		$evenodd_range_all[$x][1] = ${temp.$x}[8];
+	}
+	
+	print_r ($evenodd_range_all);
+
+	#echo "<h1>even_odd end<h1>";
+
+?>

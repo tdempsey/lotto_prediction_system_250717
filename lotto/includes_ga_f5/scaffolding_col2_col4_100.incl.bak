@@ -1,0 +1,216 @@
+<?php
+	### 241024 ### read 135 from sumeo table by percent_wa
+	
+	### read $temp_table2
+	$query3 = "SELECT * FROM $temp_table2 ";
+	$query3 .= "WHERE b3 > 0 ";
+	$query3 .= "ORDER BY id ASC ";
+
+	echo "<p>query3 - $query3</p>";
+
+	$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+	
+	$num_rows3 = mysqli_num_rows($mysqli_result3);
+
+	echo "num_rows3 = $num_rows3 <b>(sum,even,odd,k_count)</b><br>";
+	
+	while($row3 = mysqli_fetch_array($mysqli_result3))
+	{	
+		$query4 = "SELECT * FROM combo_5_42 ";
+		$query4 .= "WHERE sum = $row3[sum] AND even = $row3[even] AND odd = $row3[odd] ";
+		$query4 .= "AND b1 = $row3[b1] AND b3 = $row3[b3] AND b5 = $row3[b5] ";
+		$query4 .= "AND seq2 <= 1 AND seq3 = 0 AND mod_tot <= 1 AND mod_x = 0 ";
+		$query4 .= "LIMIT 1 ";
+
+		echo "<p>query4 - $query4</p>";
+
+		$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+		
+		$num_rows4 = mysqli_num_rows($mysqli_result4);
+
+		echo "num_rows4 = $num_rows4<br>";
+		
+		if ($row4 = mysqli_fetch_array($mysqli_result4))
+		{	
+			### check fort duplicates ### 241115
+			$query5a = "SELECT * FROM $temp_table2 ";
+			$query5a .= "WHERE sum = $row4[sum] AND even = $row4[even] AND odd = $row4[odd] ";
+			$query5a .= "AND b1 = $row4[b1] AND b2 = $row4[b2] AND b3 = $row3[b3] AND b4 = $row4[b4] AND b5 = $row4[b5] ";
+
+			echo "<p>query5a - $query5a</p>";
+
+			$mysqli_result5a = mysqli_query($mysqli_link, $query5a) or die (mysqli_error($mysqli_link));
+			
+			$num_rows5a = mysqli_num_rows($mysqli_result5a);
+			
+			$no_dup = 0;
+			
+			while($no_dup == 0)
+			{
+				$row5a = mysqli_fetch_array($mysqli_result5a);
+				
+				echo "num_rows5a = $num_rows5a<br>";
+				
+				if ($num_rows5) 
+				{
+					$query_update = "UPDATE $temp_table2 ";
+					$query_update .= "SET b2 = $row4[b2], ";
+					$query_update .= "    b4 = $row4[b4] ";
+					$query_update .= "WHERE id = $row3[id] ";
+
+					echo "<p>col5_query_update = $query_update<p>";
+
+					$mysqli_result_update = mysqli_query ($mysqli_link, $query_update) or die (mysqli_error($mysqli_link));
+					
+					$no_dup = 1;
+				}
+			}
+		}
+		
+	}
+	
+	/*
+	while($row3 = mysqli_fetch_array($mysqli_result3))
+	{	
+		$table_candidates = 'temp_candidates_' . $row3['sum'] . '_' . $row3['even'] . '_' . $row3['odd']. '_234' ;	### 240711 ###
+		
+		### read sum_count_sum and each b1,b5 
+		$query4 = "SELECT * FROM $table_candidates ";
+		$query4 .= "WHERE sum = $row3[sum] ";
+		$query4 .= "AND even = $row3[even] ";
+		$query4 .= "AND odd = $row3[odd] ";
+		
+		echo "<p>quesry4 - $query4</p>";
+
+		$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+		$num_rows4 = mysqli_num_rows($mysqli_result4);
+
+		echo "num_rows4 = $num_rows4 <b>(DISTINCT b1, b5)</b><br>";
+		
+		$table_candidates = 'temp_candidates_' . $row3['sum'] . '_' . $row3['even'] . '_' . $row3['odd']. '_234' ;	### 240711 ###
+			
+		$query5 = "DROP TABLE IF EXISTS $table_candidates ";	### 240806 ###
+		
+		echo "<p>>>>>>>>>>> $query5</p>";
+
+		$mysqli_resul5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+		
+		$query5 = "CREATE TABLE $table_candidates LIKE combo_5_42";
+		
+		echo "<p>>>>>>>>>>> $query5</p>";
+		
+		$mysqli_resul5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+		while($row4 = mysqli_fetch_array($mysqli_result4))
+		{
+			$query6 = "SELECT * FROM ga_f5_draw_summary_by_sumeo2 ";
+			$query6 .= "WHERE sum = $row3[sum] ";
+			$query6 .= "AND even = $row3[even] ";
+			$query6 .= "AND odd = $row3[odd] ";
+			$query6 .= "AND percent_wa >= 0.100 ";		
+			$query6 .= "ORDER BY percent_wa DESC ";
+			
+			echo "<p>>>>>>>>>>> query6-$query6</p>";
+			
+			$mysqli_result6 = mysqli_query($mysqli_link, $query6) or die (mysqli_error($mysqli_link));
+			
+			$num_rows6 = mysqli_num_rows($mysqli_result6);
+
+			echo ">>>>>>>>>> num_rows6 = $num_rows6 <b>(ga_f5_draw_summary_by_sumeo2)</b><br>";
+			
+			while($row6 = mysqli_fetch_array($mysqli_result6))
+			{
+				$query7 = "SELECT * FROM combo_5_42 ";
+				$query7 .= "WHERE sum = $row3[sum] ";
+				$query7 .= "AND even = $row3[even] ";
+				$query7 .= "AND odd = $row3[odd] ";
+				$query7 .= "AND b1 = $row4[b1] ";	### b1 ###
+				$query7 .= "AND b5 = $row4[b5] ";	### b5 ###
+				$query7 .= "AND seq2 <= 1 ";		### 240724 ###	
+				$query7 .= "AND seq3 = 0 ";		### 240724 ###	
+				$query7 .= "AND mod_tot <= 1 ";		### 240724 ###	
+				$query7 .= "AND mod_x = 0 ";		### 240724 ###	
+				$query7 .= "AND d0 = $row6[d0] ";	### 240729 ###	
+				$query7 .= "AND d1 = $row6[d1] ";	### 240729 ###
+				$query7 .= "AND d2 = $row6[d2] ";	### 240729 ###
+				$query7 .= "AND d3 = $row6[d3] ";	### 240729 ###
+				$query7 .= "AND d4 = $row6[d4] ";	### 240729 ###
+				
+				echo "<p>query7 = $query7</p>";
+				
+				$mysqli_result7 = mysqli_query($mysqli_link, $query7) or die (mysqli_error($mysqli_link));
+				
+				$num_rows7 = mysqli_num_rows($mysqli_result7);
+
+				echo ">>>>>>>>>> num_rows7 = $num_rows7 <b>(combo_5_42 dc)<br></b>";
+				
+				while($row7 = mysqli_fetch_array($mysqli_result7))
+				{
+					$query8 = "SELECT * FROM combo_5_42 ";
+					$query8 .= "WHERE id = $row7[id] ";
+
+					echo ">>>>>>>>>> query8 = $query8<br>";
+
+					$mysqli_result8 = mysqli_query($mysqli_link, $query8) or die (mysqli_error($mysqli_link));
+					
+					$num_rows8 = mysqli_num_rows($mysqli_result8);
+					
+					if (!$num_rows8) 
+					{
+						$query18 = "INSERT INTO $table_candidates ";
+						$query18 .= "SELECT * FROM combo_5_42 ";
+						$query18 .= "WHERE id = $row7[id] ";
+
+						echo ">>>>>>>>>> query18 = $query8<br>";
+
+						$mysqli_result18 = mysqli_query($mysqli_link, $query18) or die (mysqli_error($mysqli_link));
+					}
+					
+					#die();	### 240828 ###
+				}
+			}
+			
+			/*
+			
+			### add dc filter ### 240724 ###
+			### add rank filter ### 240724 ###
+			### add dup filter ### 240724 ###
+			### update y1_sum ### 240724 ###
+			
+			### add dc filter 240728 ###
+			$query1 = "SELECT * FROM ga_f5_draws ";
+			$query1 .= "ORDER BY date DESC ";
+			$query1 .= "LIMIT 0,30 ";
+
+			echo "$query1<br>";
+
+			$mysqli_result1 = mysqli_query($mysqli_link, $query1) or die (mysqli_error($mysqli_link));
+
+			while($row = mysqli_fetch_array($mysqli_result1))
+			{
+				$query7 = "SELECT * FROM $table_candidates ";
+				$query7 .= "ORDER BY id ASC ";
+				
+				echo "<p>$query7</p>";
+				
+				$mysqli_result7 = mysqli_query($mysqli_link, $query7) or die (mysqli_error($mysqli_link));
+				
+				$num_rows7 = mysqli_num_rows($mysqli_result7);
+
+				echo "num_rows7 = $num_rows7<br>";
+
+				while($row7 = mysqli_fetch_array($mysqli_result7))
+				{
+					die();	
+				}
+			}
+			
+		}
+	}
+	*/
+
+# SELECT b1, b3, b5, COUNT(*) AS count FROM temp_cover_1k_scaffolding_135_240915 WHERE b1 <> 0 AND b3 <> 0 AND b5 <> 0 GROUP BY b1, b3, b5 ORDER BY count DESC;
+# SELECT b1, b3, b5, COUNT(*) AS count FROM temp_cover_1k_scaffolding_135_240915 GROUP BY b1, b3, b5 ORDER BY count DESC;
+# SELECT b1, b3, b5, COUNT(*) AS count FROM `temp_cover_1k_scaffolding_135_240928` GROUP BY b1, b3, b5 ORDER BY `count` DESC
+?>

@@ -1,0 +1,320 @@
+<?php
+
+		#require ("includes/mysqli.php"); 
+
+		#global $draw_prefix,$hml,$dup_range_all,$rank_limit,$curr_date;
+
+		$draw_count = 0;
+
+		############################################################################
+		
+		$rank_limit = array_fill (0,7,0);
+
+		for ($x = 0; $x <= 5; $x++)
+		{
+			$query = "SELECT count(*) FROM ga_f5_temp2_26 ";
+			$query .= "WHERE count = $x ";
+
+			echo "$query<br>";
+
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+			$row_count = mysqli_fetch_array($mysqli_result);
+
+			if ($row_count[0] <= 3)
+			{
+				$rank_limit[$x] = 1;
+			#} elseif ($row_count[0] > 3) {
+			#	$rank_limit[$x] = 3;
+			} else {
+				$rank_limit[$x] = intval($row_count[0]/3);
+			}
+		}
+
+		$query = "SELECT count(*) FROM ga_f5_temp2_26 ";
+		$query .= "WHERE count >= 6 ";
+
+		echo "$query<br>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$row_count = mysqli_fetch_array($mysqli_result);
+
+		if ($row_count[0] <= 3)
+		{
+			$rank_limit[6] = 1;
+		} else {
+			$rank_limit[6] = intval($row_count[0]/3);
+		}
+
+		$hml9 = $hml + 9;
+		
+		$sum_array = array();
+		/*
+		$query_sm = "SELECT * FROM ga_f5_sum_table ";
+		$query_sm .= "WHERE sum >= $hml ";
+		$query_sm .= "AND   sum <= $hml9 ";
+		#$query_sm .= "AND   month1 > 0 ";
+		$query_sm .= "AND   month6 > 1 ";
+		$query_sm .= "ORDER BY percent_5000 DESC  ";
+
+		print "$query_sm<br>";
+
+		$mysqli_result_sm = mysqli_query($query_sm, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$num_rows_sm = mysqli_num_rows($mysqli_result_sm);
+
+		echo "num_rows_sm = $num_rows_sm<br>";
+
+		while($row_sm = mysqli_fetch_array($mysqli_result_sm))
+		{
+			array_push ($sum_array, $row_sm[sum]);	
+		}
+
+		#$sum_array = array (105, 106);
+		#$sum_array = array (86,87);
+		#$sum_array = array (118,119);
+
+		echo "<strong>sum_array = </strong>";
+		print_r ($sum_array);
+		echo "<br>";
+		*/
+		$count_col12_all = 0;
+
+		#while($row_dt = mysqli_fetch_array($mysqli_result_dt))
+		#foreach ($sum_array as $sum_select)
+		#{
+			### wheel ###
+			if ($hml > 500)
+			{
+				$hml_temp = $hml - 500;
+				$sql_wheel = "SELECT * FROM `ga_f5_wheel_sum_table` WHERE `sum` = $hml_temp AND `wa` >= 0.2 ORDER BY `month6` DESC LIMIT 5";
+			} else {
+				$sql_wheel = "SELECT * FROM `ga_f5_wheel_sum_table` WHERE `sum` >= $hml AND `sum` <= $hml9 AND `wa` >= 0.2 ORDER BY `month6` DESC LIMIT 5";
+			}
+			
+			echo "$sql_wheel<br>";
+
+			$mysqli_result_wheel = mysqli_query($sql_wheel, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+			while($row_wheel = mysqli_fetch_array($mysqli_result_wheel))
+			{
+				echo "<h2>sum = $row_wheel[sum] - $row_wheel[even],$row_wheel[odd],$row_wheel[d2_1],$row_wheel[d2_2] - $row_wheel[wa]%</h2>";
+
+				$count_col12 = 0;
+
+				### b1 ##########################################################################################
+				
+				$col1_array = array();
+
+				$query_ct = "SELECT * FROM ga_f5_column_1_$hml ";
+				#$query_ct .= "WHERE num <= 7 ";
+				#$query_ct .= "WHERE percent_y1 > 1.0";
+				$query_ct .= "WHERE percent_y1 > 0.0";
+				$query_ct .= "ORDER BY percent_y1 DESC";
+
+				#print "$query_ct<br>";
+
+				$mysqli_result_ct = mysqli_query($query_ct, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+				$num_rows_ct = mysqli_num_rows($mysqli_result_ct);
+
+				#echo "num_rows_ct = $num_rows_ct<br>";
+
+				while($row_ct = mysqli_fetch_array($mysqli_result_ct))
+				{
+					array_push ($col1_array, $row_ct[num]);	
+				}
+
+				echo "<strong>col1_array = </strong>";
+				print_r ($col1_array);
+				echo "<br>";
+
+				### b3 ##########################################################################################
+				
+				$col3_array = array();
+
+				$query_ct = "SELECT * FROM ga_f5_column_3_$hml ";
+				#$query_ct .= "WHERE num <= 9 ";
+				#$query_ct .= "WHERE percent_y1 > 1.0";
+				$query_ct .= "WHERE percent_y1 >= 0.0";
+				$query_ct .= "ORDER BY percent_y1 DESC";
+
+				#print "$query_ct<br>";
+
+				$mysqli_result_ct = mysqli_query($query_ct, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+				$num_rows_ct = mysqli_num_rows($mysqli_result_ct);
+
+				#echo "num_rows_ct = $num_rows_ct<br>";
+
+				while($row_ct = mysqli_fetch_array($mysqli_result_ct))
+				{
+					array_push ($col3_array, $row_ct[num]);	
+				}
+
+				echo "<strong>col3_array =</strong> ";
+				print_r ($col3_array);
+				echo "<br>";
+
+				### combo ###
+				$sql7 = "SELECT * FROM `ga_f5_combo_count_5_42_$hml` WHERE count >= 5 ORDER BY `count` DESC LIMIT 4 ";
+
+				echo "$sql7<br>";
+
+				$mysqli_result7 = mysqli_query($sql7, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+				while($row7 = mysqli_fetch_array($mysqli_result7))
+				{
+					$count_combo = 0;
+
+					### draw ###
+					$sql_draw = "SELECT * FROM `ga_f5_draw_count_5_42_$hml` WHERE `count` >= 6 ORDER BY `count` DESC  ";
+
+					#echo "$sql_draw<br>";
+
+					$mysqli_result_draw = mysqli_query($sql_draw, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+					while($row_draw = mysqli_fetch_array($mysqli_result_draw))
+					{
+						#echo "-----------------------------------------<br>";
+						require ("includes_ga_f5/eo50_draw_range.incl");
+
+						if (!$max_b)
+						{
+							#echo "<strong>max_b = $max_b</strong><br>";
+							continue;
+						}
+
+						#echo "<strong>max_b = $max_b</strong><br>";
+
+						$count_draw = 0;
+						
+						#echo "<h2>draw - $row_draw[draw0],$row_draw[draw1],$row_draw[draw2],$row_draw[draw3]</h2><br>";
+
+						### dup ###
+						$sql = "SELECT * FROM ga_f5_dup_5_42_$hml WHERE `dup1` <= 1 AND `dup2` <= 2 AND `dup3` <= 2 AND `count` > 0 ORDER BY `count` DESC LIMIT 5 ";
+
+						#echo "$sql<br>";
+
+						$mysqli_result_dup = mysqli_query($sql, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+						#echo "rows = $num_rows8<br>";
+
+						while($row = mysqli_fetch_array($mysqli_result_dup))
+						{	
+							$count_dup = 0;
+
+							###
+							#echo "count_col12 = $count_col12<br>";
+							if ($count_col12 <= 10 AND $max_b > 1)
+							#if ($count_col12 < 10 AND $count_combo < 2 AND $count_draw < 2 AND $count_dup < 2)
+							{
+								foreach ($col1_array as $col1_select)
+								{
+									foreach ($col3_array as $col3_select)
+									{
+										$query_comb12 = "SELECT * FROM combo_5_42 ";
+										$query_comb12 .= "WHERE ";
+										$query_comb12 .= "sum = $row_wheel[sum] ";
+										$query_comb12 .= " AND even = $row_wheel[even] ";
+										$query_comb12 .= " AND odd = $row_wheel[odd] ";
+										$query_comb12 .= " AND d2_1 = $row_wheel[d2_1] ";
+										$query_comb12 .= " AND d2_2 = $row_wheel[d2_2] ";
+										$query_comb12 .= "AND d0 = $row_draw[draw0] ";
+										$query_comb12 .= "AND d1 = $row_draw[draw1] ";
+										$query_comb12 .= "AND d2 = $row_draw[draw2] ";
+										$query_comb12 .= "AND d3 = $row_draw[draw3] ";
+										$query_comb12 .= "AND   dup1 = $row[dup1] ";
+										$query_comb12 .= "AND   dup2 = $row[dup2] ";
+										$query_comb12 .= "AND   dup3 = $row[dup3] ";
+										
+										#for ($g = 4; $g <= 25; $g++)
+										/*
+										for ($g = 4; $g <= 10; $g++)
+										{
+											$query_comb12 .= "AND   dup";
+											$query_comb12 .= "$g >= {$dup_range_all[$g][0]} ";
+											$query_comb12 .= "AND   dup";
+											$query_comb12 .= "$g <= {$dup_range_all[$g][1]} ";
+										}
+										*/
+										$query_comb12 .= "AND   dup20 = 5 ";
+										 
+										$query_comb12 .= "AND comb2 = $row7[combo2] ";
+										$query_comb12 .= "AND comb3 = $row7[combo3] ";
+										$query_comb12 .= "AND comb4 = $row7[combo4] ";
+										$query_comb12 .= "AND comb5 = $row7[combo5] ";
+										$query_comb12 .= "AND seq2 <= 1 ";
+										$query_comb12 .= "AND mod_tot <= 1 ";
+										$query_comb12 .= "AND mod_x = 0 ";
+										#$query_comb12 .= "AND   b1 > 1 ";
+										$query_comb12 .= "AND   b1 >= $b1_low AND b1 <= $b1_high ";
+										$query_comb12 .= "AND   b2 >= $b2_low AND b2 <= $b2_high ";
+										$query_comb12 .= "AND   b3 >= $b3_low AND b3 <= $b3_high ";
+										$query_comb12 .= "AND   b4 >= $b4_low AND b4 <= $b4_high ";
+										$query_comb12 .= "AND   b5 >= $b5_low AND b5 <= $b5_high ";
+										$query_comb12 .= "AND   b3 = $col3_select ";
+										$query_comb12 .= "AND   b1 = $col1_select ";
+										$query_comb12 .= "AND   combo_total_3 <= 1 ";
+										#$query_comb12 .= "AND   combo_total_3 <= 2 ";
+										$query_comb12 .= "AND   combo_total_4 = 0 ";
+										#$query_comb12 .= "AND   combo_total_4 <= 1 ";
+										
+										$query_comb12 .= "AND   rank0 <= $rank_limit[0] ";
+										$query_comb12 .= "AND   rank1 <= $rank_limit[1] ";
+										$query_comb12 .= "AND   rank2 <= $rank_limit[2] ";
+										$query_comb12 .= "AND   rank3 <= $rank_limit[3] ";
+										$query_comb12 .= "AND   rank4 <= $rank_limit[4] ";
+										$query_comb12 .= "AND   rank5 <= $rank_limit[5] ";
+										$query_comb12 .= "AND   rank6 <= $rank_limit[6] ";
+										
+										$query_comb12 .= "AND   b1 >= $b1_low ";
+										$query_comb12 .= "AND   b1 <= $b1_high ";
+										$query_comb12 .= "AND   b2 >= $b2_low ";
+										$query_comb12 .= "AND   b2 <= $b2_high ";
+										$query_comb12 .= "AND   b3 >= $b3_low ";
+										$query_comb12 .= "AND   b3 <= $b3_high ";
+										$query_comb12 .= "AND   b4 >= $b4_low ";
+										$query_comb12 .= "AND   b4 <= $b4_high ";
+										$query_comb12 .= "AND   b5 >= $b5_low ";
+										$query_comb12 .= "AND   b5 <= $b5_high ";
+
+										$query_comb12 .= "AND   last_updated = '$curr_date' ";
+										
+										$query_comb12 .= "ORDER BY y1_sum DESC ";
+
+										if ($b1_low < 59)
+										{
+											#echo "$query_comb12<p>";
+										}
+
+										$mysqli_result_col12 = mysqli_query($query_comb12, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+										$num_rows_col12 = mysqli_num_rows($mysqli_result_col12);
+
+										if ($num_rows_col12 AND $count_col12 <= 10 AND $count_draw < 1)
+										{
+											$row_col12 = mysqli_fetch_array($mysqli_result_col12);
+											echo "draw - <strong>$row_draw[draw0],$row_draw[draw1],$row_draw[draw2],$row_draw[draw3]</strong><br>";
+											echo "combo - <b>$row7[combo2],$row7[combo3],$row7[combo4],$row7[combo5]</b><br>";
+											echo "dup - <b>$row[dup1],$row[dup2],$row[dup3]</b><br>";
+											echo "$row_col12[sum]-$row_col12[b1]-$row_col12[b2]-$row_col12[b3]-$row_col12[b4]-$row_col12[b5]--$row_col12[y1_sum]<br>";
+											$count_combo++;
+											$count_dup++;
+											$count_draw++;
+											$count_col12++;
+											$count_col12_all++;
+											echo "count_col12 = $count_col12,count_combo = $count_combo,count_dup = $count_dup,count_draw = $count_draw,<br>";
+											echo "--------------------------------------------------------------<br>";
+											###
+										}
+									} #3
+								} #1
+							}#col12 count
+						} #dup
+					} #draw
+				} #dup
+			} #wheel
+		#} #sum
+?>

@@ -1,0 +1,28 @@
+To Do
+-----
+
+general
+-------
+- find lottery files (and outline)
+- object-oriented programming
+- new display template - Drupal
+- db class
+- for-loop test - combo
+- atwood using combo limit
+
+lot_display.php
+---------------
+- add tables population for combos, pairs
+- add test for missing draws
+- recalculate draw includes
+- add db class
+- error checking - all modules
+	- create include module
+	- can called parameters be positional
+- fix pair count
+
+strategies
+----------
+- atwood
+- stemming
+- profiles

@@ -1,0 +1,41 @@
+<?php
+	function pair_draw_filter($b1,$b2,$combo)
+	{
+		require ("includes/mysqli.php"); 
+
+		global $draw_prefix,$dup_range_all,$hml,$rank_count,$rank_limit,$curr_date,$draw_table_name,$range_low,$range_high,$b1_low,$b1_high,$b2_low,$b2_high,$b3_low,$b3_high,$b4_low,$b4_high,$b5_low,$b5_high;
+
+		$pair_passed = 1;
+
+		$draw_rank_count = array_fill (0, 7, 0);
+
+		if ($rank_count[$b1] >= 6)
+		{
+			$draw_rank_count[6]++;
+			$temp_rank = 6;
+		} else {
+			$temp_rank = $rank_count[$b1];
+			$draw_rank_count[$temp_rank]++;
+		}
+
+		if ($rank_count[$b2] >= 6)
+		{
+			$draw_rank_count[6]++;
+			$temp_rank = 6;
+		} else {
+			$temp_rank = $rank_count[$b2];
+			$draw_rank_count[$temp_rank]++;
+		}
+
+		for ($t = 0; $t <= 6; $t++)
+		{
+			if ($draw_rank_count[$t] > $rank_limit[$t])
+			{
+				$pair_passed = 0;
+				echo "pair rank failed - $b1,$b2 - drcount $draw_rank_count[$t] > rlimit $rank_limit[$t]<br>";
+			}
+		}
+
+		return $pair_passed;
+	}
+?>

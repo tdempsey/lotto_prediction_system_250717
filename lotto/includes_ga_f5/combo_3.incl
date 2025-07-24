@@ -1,0 +1,54 @@
+<?php
+	switch ($z) { 
+	   case 1: 
+		   $query_temp2 .= "AND d1 = $row[1] ";
+		   $query_temp2 .= "AND d2 = $row[2] ";
+		   $query_temp2 .= "AND d3 = $row[3] ";
+		   break; 
+	   case 2: 
+		   $query_temp2 .= "AND d1 = $row[1] ";
+		   $query_temp2 .= "AND d2 = $row[2] ";
+		   $query_temp2 .= "AND d3 = $row[4] ";
+		   break; 
+	   case 3: 
+		   $query_temp2 .= "AND d1 = $row[1] ";
+		   $query_temp2 .= "AND d2 = $row[2] ";
+		   $query_temp2 .= "AND d3 = $row[5] ";
+		   break; 
+	   case 4: 
+		   $query_temp2 .= "AND d1 = $row[1] ";
+		   $query_temp2 .= "AND d2 = $row[3] ";
+		   $query_temp2 .= "AND d3 = $row[4] ";
+		   break;
+	   case 5: 
+		   $query_temp2 .= "AND d1 = $row[1] ";
+		   $query_temp2 .= "AND d2 = $row[3] ";
+		   $query_temp2 .= "AND d3 = $row[5] ";
+		   break;
+	   case 6: 
+		   $query_temp2 .= "AND d1 = $row[1] ";
+		   $query_temp2 .= "AND d2 = $row[4] ";
+		   $query_temp2 .= "AND d3 = $row[5] ";
+		   break; 
+	   case 7: 
+		   $query_temp2 .= "AND d1 = $row[2] ";
+		   $query_temp2 .= "AND d2 = $row[3] ";
+		   $query_temp2 .= "AND d3 = $row[4] ";
+		   break;
+	   case 8: 
+		   $query_temp2 .= "AND d1 = $row[2] ";
+		   $query_temp2 .= "AND d2 = $row[3] ";
+		   $query_temp2 .= "AND d3 = $row[5] ";
+		   break;
+	   case 9: 
+		   $query_temp2 .= "AND d1 = $row[2] ";
+		   $query_temp2 .= "AND d2 = $row[4] ";
+		   $query_temp2 .= "AND d3 = $row[5] ";
+		   break;
+	   case 10: 
+		   $query_temp2 .= "AND d1 = $row[3] ";
+		   $query_temp2 .= "AND d2 = $row[4] ";
+		   $query_temp2 .= "AND d3 = $row[5] ";
+		   break;
+	} 
+?>

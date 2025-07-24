@@ -1,0 +1,54 @@
+<?php
+	$table_temp = 'combo_2_' . $balls . '_' . $row3[numx] . '_' . $row3[even] . '_' . $row3[odd] . '_m2';
+
+	print("<h3>Count - SumEO_m2 = $row3[numx],$row3[even],$row3[odd]</h3>\n");
+	#print("<P>");
+	print("<TABLE BORDER=\"1\">\n");
+
+	//create header row
+	print("<TR><B>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Combin</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b1</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b2</center></TD>\n");
+	#print("<TD BGCOLOR=\"#CCCCCC\"><center>b3</center></TD>\n");
+	#print("<TD BGCOLOR=\"#CCCCCC\"><center>b4</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Count</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Y1</center></TD>\n");
+	print("</B></TR>\n");
+
+	############################################################################################
+	$query8 = "SELECT DISTINCT combin,b1,b2,s61510 FROM $table_temp ";
+	$query8 .= "WHERE combin= $combin ";
+	$query8 .= "ORDER BY s61510 DESC ";
+	$query8 .= "LIMIT 100 ";
+	
+	echo "$query8<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query8) or die (mysqli_error($mysqli_link));
+
+	// get each row
+	while($row8 = mysqli_fetch_array($mysqli_result))
+	{
+		print("<TR>\n");
+		print("<TD><center>$row8[combin]</center></TD>\n");
+		print("<TD><center>$row8[b1]</center></TD>\n");
+		print("<TD><center>$row8[b2]</center></TD>\n");
+		#print("<TD><center>$row8[b3]</center></TD>\n");
+		#print("<TD><center>$row8[b4]</center></TD>\n");
+		print("<TD align=center>$row8[s61510]</TD>\n");
+		print("</TR>\n");
+	}
+
+	print("<TR><B>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Combin</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b1</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>b2</center></TD>\n");
+	#print("<TD BGCOLOR=\"#CCCCCC\"><center>b3</center></TD>\n");
+	#print("<TD BGCOLOR=\"#CCCCCC\"><center>b4</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Count</center></TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>Y1</center></TD>\n");
+	print("</B></TR>\n");
+
+	//end table
+	print("</TABLE>\n");
+?>

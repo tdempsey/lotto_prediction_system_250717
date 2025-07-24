@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ game.name }} Rank Analysis - Lottery Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <style>
+        .number-item {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 50%;
+            margin: 5px;
+            font-weight: bold;
+        }
+        .high-frequency {
+            background-color: #99ff00;
+        }
+        .medium-frequency {
+            background-color: #99ffff;
+        }
+        .low-frequency {
+            background-color: #f0f0f0;
+        }
+        .progress {
+            height: 5px;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid mt-4">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Lottery Analysis</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('display', game_id=game.id) }}">Display</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('pairs', game_id=game.id) }}">Pairs</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ url_for('rank', game_id=game.id) }}">Rank</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('grid', game_id=game.id) }}">Grid</a>
+                    </li>
+                </ul>
+                <span class="navbar-text">
+                    {{ game.name }} - Limit: {{ limit }}
+                </span>
+            </div>
+        </nav>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-warning text-dark">
+                        <h3>{{ game.name }} Rank Analysis - Limit {{ limit }}</h3>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ url_for('rank', game_id=game.id) }}" method="get" class="form-inline mb-4">
+                            <div class="form-group mr-2">
+                                <label for="limitSelect">Limit: </label>
+                                <select name="limit" id="limitSelect" class="form-control form-control-sm ml-2" onchange="this.form.submit()">
+                                    <option value="5" {% if limit == 5 %}selected{% endif %}>5 draws</option>
+                                    <option value="7" {% if limit == 7 %}selected{% endif %}>7 draws</option>
+                                    <option value="14" {% if limit == 14 %}selected{% endif %}>14 draws</option>
+                                    <option value="21" {% if limit == 21 %}selected{% endif %}>21 draws</option>
+                                    <option value="26" {% if limit == 26 %}selected{% endif %}>26 draws</option>
+                                    <option value="30" {% if limit == 30 %}selected{% endif %}>30 draws</option>
+                                    <option value="50" {% if limit == 50 %}selected{% endif %}>50 draws</option>
+                                    <option value="100" {% if limit == 100 %}selected{% endif %}>100 draws</option>
+                                </select>
+                            </div>
+                        </form>
+
+                        <h4 class="mb-3">Number Frequency Ranking</h4>
+
+                        <div class="table-responsive mb-4">
+                            <table class="table table-sm table-bordered table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Number</th>
+                                        <th>Count</th>
+                                        <th>Frequency (%)</th>
+                                        <th>Distribution</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in rank_data %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ item.number }}</td>
+                                        <td>{{ item.count }}</td>
+                                        <td>{{ item.frequency }}%</td>
+                                        <td>
+                                            <div class="progress">
+                                                <div class="progress-bar {% if item.frequency > 25 %}bg-success{% elif item.frequency > 15 %}bg-info{% elif item.frequency > 10 %}bg-warning{% else %}bg-danger{% endif %}" 
+                                                     role="progressbar" 
+                                                     style="width: {{ item.frequency * 3 }}%" 
+                                                     aria-valuenow="{{ item.frequency }}" 
+                                                     aria-valuemin="0" 
+                                                     aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4 class="mb-3">Visual Number Distribution</h4>
+
+                        <div class="number-distribution mb-4">
+                            {% for item in rank_data %}
+                                {% if item.frequency > 25 %}
+                                    <div class="number-item high-frequency">{{ item.number }}</div>
+                                {% elif item.frequency > 15 %}
+                                    <div class="number-item medium-frequency">{{ item.number }}</div>
+                                {% else %}
+                                    <div class="number-item low-frequency">{{ item.number }}</div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        <h4 class="mb-3">Hot Numbers (Appeared Most)</h4>
+                        <div class="hot-numbers mb-3">
+                            {% for item in rank_data[:10] %}
+                                <div class="number-item high-frequency">{{ item.number }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <h4 class="mb-3">Cold Numbers (Appeared Least)</h4>
+                        <div class="cold-numbers mb-3">
+                            {% for item in rank_data[-10:] %}
+                                <div class="number-item low-frequency">{{ item.number }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/jquery-3.5.1.slim.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

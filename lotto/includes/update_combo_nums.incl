@@ -1,0 +1,23 @@
+<?php
+
+	$query3 = "UPDATE $draw_table_name ";
+	$query3 .= "SET nums_total_2 = $temp_nums_count_2, ";
+	$query3 .= "    combo_total_2 = $temp_combo_count_2, ";
+	$query3 .= "    nums_total_3 = $temp_nums_count_3, ";
+	$query3 .= "    combo_total_3 = $temp_combo_count_3, ";
+	$query3 .= "    nums_total_4 = $temp_nums_count_4, ";
+	$query3 .= "    combo_total_4 = $temp_combo_count_4 ";
+	
+	if ($game == 10 OR $game == 20)
+	{
+		$query3 .= "WHERE id = '$row[id]' ";
+	} else {
+		$query3 .= "WHERE date = '$row[0]' ";
+	}
+
+	#print("$query3\n");
+
+	$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+	#print("<FONT COLOR=RED><H4>*** $row[0] updated ***</H4></FONT>\n");
+?>

@@ -1,0 +1,7 @@
+<?php
+	$curr_date = date('Ymd');
+	$curr_date_dash = date('Y-m-d');
+	$curr_date_all = date('Y-m-d H:i:s');
+	$next_draw_Ymd = findNextDrawDate($game);
+	$date_nodash = str_replace("-", "", $next_draw_Ymd);
+?>

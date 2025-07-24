@@ -1,0 +1,16 @@
+<?php
+	calculate_33($draw,$d3_1,$d3_2,$d3_3,$balls);
+	calculate_25($draw,$d4_1,$d4_2,$d4_3,$d4_4,$balls);
+	#calculate_20($draw,$d5_1,$d5_2,$d5_3,$d5_4,$d5_5,$balls);
+
+	$query3 = "UPDATE $draw_table_name ";
+	$query3 .= "SET d3_1=$d3_1, d3_2=$d3_2, d3_3=$d3_3, ";
+	$query3 .= "d4_1=$d4_1, d4_2=$d4_2, d4_3=$d4_3, d4_4=$d4_4 ";
+	$query3 .= "WHERE date = '$row[0]' ";
+
+	print("$query3<br>");
+
+	$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link)); 
+
+	print("<FONT COLOR=RED><H4>*** $row[0] updated ***</H4></FONT>\n");
+?>

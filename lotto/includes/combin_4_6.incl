@@ -1,0 +1,163 @@
+<?php
+	for ($c = 1; $c <= 15; $c++)
+	{
+		switch ($c) 
+		{ 
+		   case 1: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[3];
+			   $d4 = $row[4];
+			   break; 
+		   case 2: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[3];
+			   $d4 = $row[5];
+			   break; 
+		   case 3: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[3];
+			   $d4 = $row[6];
+			   break;
+		   case 4: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[4];
+			   $d4 = $row[5];
+			   break; 
+		   case 5: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[4];
+			   $d4 = $row[6];
+			   break;
+		   case 6: 
+			   $d1 = $row[1];
+			   $d2 = $row[2];
+			   $d3 = $row[5];
+			   $d4 = $row[6];
+			   break; 
+		   case 7: 
+			   $d1 = $row[1];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   $d4 = $row[5];
+			   break; 
+		   case 8: 
+			   $d1 = $row[1];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   $d4 = $row[6];
+			   break;
+		   case 9: 
+			   $d1 = $row[1];
+			   $d2 = $row[3];
+			   $d3 = $row[5];
+			   $d4 = $row[6];
+			   break; 
+		   case 10: 
+			   $d1 = $row[1];
+			   $d2 = $row[4];
+			   $d3 = $row[5];
+			   $d4 = $row[6];
+			   break;
+		   case 11: 
+			   $d1 = $row[2];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   $d4 = $row[5];
+			   break; 
+		   case 12: 
+			   $d1 = $row[2];
+			   $d2 = $row[3];
+			   $d3 = $row[4];
+			   $d4 = $row[6];
+			   break; 
+		   case 13: 
+			   $d1 = $row[2];
+			   $d2 = $row[3];
+			   $d3 = $row[5];
+			   $d4 = $row[6];
+			   break;
+		   case 14: 
+			   $d1 = $row[2];
+			   $d2 = $row[4];
+			   $d3 = $row[5];
+			   $d4 = $row[6];
+			   break; 
+		   case 15: 
+			   $d1 = $row[3];
+			   $d2 = $row[4];
+			   $d3 = $row[5];
+			   $d4 = $row[6];
+			   break;
+		} 
+
+		$query4 = "Insert INTO $table_temp ";
+		$query4 .= "VALUES ( '0', ";
+		$query4 .= "         '$row[0]', ";
+		$query4 .= "         $d1, ";
+		$query4 .= "	     $d2, ";
+		$query4 .= "	     $d3, ";
+		$query4 .= "	     $d4, ";
+		$query4 .= "	     '0') ";
+
+		$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+		$query2 = "SELECT DISTINCT d1, d2, d3, d4, date FROM $table_temp ";
+		$query2 .= "WHERE d1 = $d1 "; 
+		$query2 .= "AND d2 = $d2 "; 
+		$query2 .= "AND d3 = $d3 "; 
+		$query2 .= "AND d4 = $d4 "; 
+
+		$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+
+		$num_rows = mysqli_num_rows($mysqli_result2);
+		
+		/*
+		$query4 .= "	     0, ";
+		$query4 .= "	     0, ";
+		$query4 .= "	     0, ";
+		$query4 .= "	     0, ";
+		$query4 .= "	     0, ";
+		$query4 .= "	     0, ";
+		$query4 .= "	     0, ";
+		$query4 .= "	     0, ";
+		$query4 .= "	     0, ";
+		$query4 .= "	     0, ";
+		$query4 .= "	     0, ";
+		$query4 .= "	     0, ";
+		$query4 .= "	     0, ";
+		$query4 .= "	     0, ";
+		$query4 .= "	     0, ";
+		$query4 .= "	     0, ";
+		$query4 .= "	     0, ";
+		$query4 .= "	     0, ";
+		$query4 .= "	     0, ";
+		$query4 .= "	     0) ";
+		
+		$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+		
+
+		$query4 = "SELECT DISTINCT d1, d2, d3, d4 FROM $table_temp ";
+		$query4 .= "WHERE d1 = $d1 "; 
+		$query4 .= "AND d2 = $d2 "; 
+		$query4 .= "AND d3 = $d3 ";
+		$query4 .= "AND d4 = $d4 ";
+
+		$num_rows = mysqli_num_rows($mysqli_result4);
+		*/
+
+		$query_update = "UPDATE $table_temp ";
+		$query_update .= "SET sum = $num_rows ";
+		$query_update .= "WHERE d1 = $d1 ";
+		$query_update .= "AND d2 = $d2 ";
+		$query_update .= "AND d3 = $d3 ";
+		$query_update .= "AND d4 = $d4 ";
+
+		$mysqli_result_update = mysqli_query ($mysqli_link, $query_update) or die (mysqli_error($mysqli_link));
+		
+	}
+?>

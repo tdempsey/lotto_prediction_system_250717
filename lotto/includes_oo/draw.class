@@ -1,0 +1,45 @@
+<?php
+
+class Draw {
+    private $mysqli_link;
+    private $table_name;
+
+    public function __construct($mysqli_link, $table_name) {
+        $this->mysqli_link = $mysqli_link;
+        $this->table_name = $table_name;
+    }
+
+    public function addDraw($drawData) {
+        // Assuming $drawData is an associative array with the draw details
+        // Add code here to insert a new draw into the database
+    }
+
+    public function getRecentDraws($limit) {
+        $query = "SELECT * FROM {$this->table_name} ORDER BY date DESC LIMIT $limit";
+        $result = mysqli_query($this->mysqli_link, $query) or die(mysqli_error($this->mysqli_link));
+
+        $rows = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $rows[] = $row;
+        }
+
+        return $rows;
+    }
+
+    public function getDrawById($drawId) {
+        $query = "SELECT * FROM {$this->table_name} WHERE id = $drawId";
+        $result = mysqli_query($this->mysqli_link, $query) or die(mysqli_error($this->mysqli_link));
+
+        return mysqli_fetch_assoc($result);
+    }
+
+    // Additional methods related to draw operations can be added here
+}
+
+// Usage example
+// $mysqli_link = new mysqli("localhost", "username", "password", "database_name");
+// $draw = new Draw($mysqli_link, "draw_table_name");
+// $recentDraws = $draw->getRecentDraws(10);
+// $specificDraw = $draw->getDrawById(1);
+
+?>

@@ -1,0 +1,140 @@
+<?php
+	#########################################################################################################
+	### echo col1 count group by sumeo
+	#########################################################################################################
+	print("<H3>Col1 Count by Sumeo - $game_name</H3>\n");
+	
+	// Begin the table
+	print "<p><table border='1'></p>"; // Add table border for visibility
+	print "<tr><th>Sum</th><th>Even</th><th>Odd</th><th>Col1</th><th>Count</th></tr>"; // Table headers
+
+	# $temp_table2 = 'temp_cover_1k_scaffolding_' .  $currdate;
+	#$query2 = "SELECT sum,b1,count(b1) FROM $temp_table2 ";	### 240525
+	#$query2 .= "GROUP BY sum ";
+	#$query2 .= "ORDER BY count(b1) DESC ";
+	
+	$count = 1;
+
+	$query2 = "SELECT DISTINCT `sum`, `even`, `odd`, `b1`  
+	FROM $temp_table2  
+	ORDER BY `sum` ASC";
+
+	echo "<p>[1]query2 -$query2</p>";
+
+	$mysqli_result_2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+
+	while($row2 = mysqli_fetch_array($mysqli_result_2))
+	{
+		$query3 = "SELECT `b1`, count(`b1`)
+		FROM $temp_table2 
+		WHERE sum=$row2[sum] AND even=$row2[even] AND odd=$row2[odd] AND b1=$row2[b1]";
+
+		echo "<p>query3 - $query3</p>";
+
+		$mysqli_result_3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		$row3 = mysqli_fetch_array($mysqli_result_3);
+
+		if ($count > 12)
+		{
+			print "<tr><th>Sum</th><th>Even</th><th>Odd</th><th>Col1</th><th>Count</th></tr>";
+			$count = 1;
+
+		} else {
+			$count++;
+		}
+
+		print "<tr><td align=center>$row2[0]</td><td align=center>$row2[1]</td><td align=center>$row2[2]</td><td align=center><b>$row2[3]</b></td><td align=center>$row3[1]</td></tr>";
+	}
+
+	print "<tr><th>Sum</th><th>Even</th><th>Odd</th><th>Col1</th><th>Count</th></tr>";
+
+	// End the table
+	print "</table>";
+	
+	#########################################################################################################
+	### echo col1 count
+	#########################################################################################################
+	print("<H3>Col1 Count by Sumeo - $game_name</H3>\n");
+	
+	// Begin the table
+	print "<p><table border='1'></p>"; // Add table border for visibility
+	print "<tr><th>Col1</th><th>Count</th></tr>"; // Table headers
+
+	# $temp_table2 = 'temp_cover_1k_scaffolding_' .  $currdate;
+	#$query2 = "SELECT sum,b1,count(b1) FROM $temp_table2 ";	### 240525
+	#$query2 .= "GROUP BY sum ";
+	#$query2 .= "ORDER BY count(b1) DESC ";
+
+	$query2 = "SELECT `b1`, count(`b1`)  
+	FROM $temp_table2  
+	GROUP BY b1 ORDER BY b1 ASC";
+
+	echo "<p>[1]query2 - $query2</p>";
+
+	$mysqli_result_2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+	
+	$count = 1;
+
+	while($row2 = mysqli_fetch_array($mysqli_result_2))
+	{
+		if ($count > 12)
+		{
+			print "<tr><th>Col1</th><th>Count</th></tr>";
+			$count = 1;
+
+		} else {
+			$count++;
+		}
+
+		print "<tr><td align=center><b>$row2[0]</b></td><td align=center>$row2[1]</td></tr>";
+	}
+
+	print "<tr><th>Col1</th><th>Count</th></tr>";
+
+	// End the table
+	print "</table>";
+	
+	/*
+	<?php
+	$servername = "localhost";
+	$username = "your_username";
+	$password = "your_password";
+	$dbname = "your_database";
+
+	// Create connection
+	$conn = new mysqli($servername, $username, $password, $dbname);
+
+	// Check connection
+	if ($conn->connect_error) {
+	    die("Connection failed: " . $conn->connect_error);
+	}
+
+	// SQL query
+	$sql = "SELECT `b5`, count(`b5`) AS count FROM temp_cover_1k_scaffolding_135_240728 GROUP BY `b5` ORDER BY `b5` ASC";
+	$result = $conn->query($sql);
+
+	if ($result->num_rows > 0) {
+	    echo "<table border='1'>
+		    <tr>
+			<th>b5</th>
+			<th>Count</th>
+		    </tr>";
+	    // Output data of each row
+	    while($row = $result->fetch_assoc()) {
+		echo "<tr>
+			<td>" . htmlspecialchars($row['b5']) . "</td>
+			<td>" . htmlspecialchars($row['count']) . "</td>
+		      </tr>";
+	    }
+	    echo "</table>";
+	} else {
+	    echo "0 results";
+	}
+
+	// Close connection
+	$conn->close();
+	?>
+
+	*/
+?>

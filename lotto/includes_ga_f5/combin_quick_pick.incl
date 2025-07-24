@@ -1,0 +1,213 @@
+<?php
+	$total2 = 0;
+	$total3 = 0;
+	$total4 = 0;
+	$total5 = 0;
+
+	// count 2
+	for ($c = 1; $c <= 10; $c++)
+	{
+		switch ($c) { 
+		   case 1: 
+			   $d1 = $row4a[1];
+			   $d2 = $row4a[2];
+			   break; 
+		   case 2: 
+			   $d1 = $row4a[1];
+			   $d2 = $row4a[3];
+			   break; 
+		   case 3: 
+			   $d1 = $row4a[1];
+			   $d2 = $row4a[4];
+			   break; 
+		   case 4: 
+			   $d1 = $row4a[1];
+			   $d2 = $row4a[5];
+			   break;
+		   case 5: 
+			   $d1 = $row4a[2];
+			   $d2 = $row4a[3];
+			   break;
+		   case 6: 
+			   $d1 = $row4a[2];
+			   $d2 = $row4a[4];
+			   break; 
+		   case 7: 
+			   $d1 = $row4a[2];
+			   $d2 = $row4a[5];
+			   break; 
+		   case 8: 
+			   $d1 = $row4a[3];
+			   $d2 = $row4a[4];
+			   break;
+		   case 9: 
+			   $d1 = $row4a[3];
+			   $d2 = $row4a[5];
+			   break;
+		   case 10: 
+			   $d1 = $row4a[4];
+			   $d2 = $row4a[5];
+			   break;
+		} 
+
+		$query2 = "SELECT DISTINCT * FROM ga_f5_2_42 ";
+		$query2 .= "WHERE d1 = $d1 ";
+		$query2 .= "  AND d2 = $d2 ";
+		$query2 .= "  AND combo = $c ";
+		$query2 .= "  AND date < '$curr_date_dash' ";
+
+		#echo "$query2<br>";
+
+		$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+		
+		if ($num_rows = mysqli_num_rows($mysqli_result2))
+		{
+			//$total2 += $num_rows;
+			$total2++;
+		}
+
+		#echo "num_rows = $num_rows<br>";
+	}
+
+	// count 3
+	for ($c = 1; $c <= 10; $c++)
+	{
+		switch ($c) { 
+		   case 1: 
+			   $d1 = $row4a[1];
+			   $d2 = $row4a[2];
+			   $d3 = $row4a[3];
+			   break; 
+		   case 2: 
+			   $d1 = $row4a[1];
+			   $d2 = $row4a[2];
+			   $d3 = $row4a[4];
+			   break; 
+		   case 3: 
+			   $d1 = $row4a[1];
+			   $d2 = $row4a[2];
+			   $d3 = $row4a[5];
+			   break; 
+		   case 4: 
+			   $d1 = $row4a[1];
+			   $d2 = $row4a[3];
+			   $d3 = $row4a[4];
+			   break;
+		   case 5: 
+			   $d1 = $row4a[1];
+			   $d2 = $row4a[3];
+			   $d3 = $row4a[5];
+			   break;
+		   case 6: 
+			   $d1 = $row4a[1];
+			   $d2 = $row4a[4];
+			   $d3 = $row4a[5];
+			   break; 
+		   case 7: 
+			   $d1 = $row4a[2];
+			   $d2 = $row4a[3];
+			   $d3 = $row4a[4];
+			   break;
+		   case 8: 
+			   $d1 = $row4a[2];
+			   $d2 = $row4a[3];
+			   $d3 = $row4a[5];
+			   break;
+		   case 9: 
+			   $d1 = $row4a[2];
+			   $d2 = $row4a[4];
+			   $d3 = $row4a[5];
+			   break;
+		   case 10: 
+			   $d1 = $row4a[3];
+			   $d2 = $row4a[4];
+			   $d3 = $row4a[5];
+			   break;
+		} 
+
+		$query3 = "SELECT DISTINCT * FROM ga_f5_3_42 ";
+		$query3 .= "WHERE d1 = $d1 ";
+		$query3 .= "  AND d2 = $d2 ";
+		$query3 .= "  AND d3 = $d3 ";
+		$query3 .= "  AND combo = $c ";
+		$query3 .= "  AND date < '$curr_date_dash' ";
+
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		
+		if ($num_rows = mysqli_num_rows($mysqli_result3))
+		{
+			//$total3 += $num_rows;
+			$total3++;
+		}
+	}
+
+	// count 4
+	for ($c = 1; $c <= 5; $c++)
+	{
+		switch ($c) { 
+		   case 1: 
+			   $d1 = $row4a[1];
+			   $d2 = $row4a[2];
+			   $d3 = $row4a[3];
+			   $d4 = $row4a[4];
+			   break; 
+		   case 2: 
+			   $d1 = $row4a[1];
+			   $d2 = $row4a[2];
+			   $d3 = $row4a[3];
+			   $d4 = $row4a[5];
+			   break; 
+		   case 3: 
+			   $d1 = $row4a[1];
+			   $d2 = $row4a[2];
+			   $d3 = $row4a[4];
+			   $d4 = $row4a[5];
+			   break;
+		   case 4: 
+			   $d1 = $row4a[1];
+			   $d2 = $row4a[3];
+			   $d3 = $row4a[4];
+			   $d4 = $row4a[5];
+			   break; 
+		   case 5: 
+			   $d1 = $row4a[2];
+			   $d2 = $row4a[3];
+			   $d3 = $row4a[4];
+			   $d4 = $row4a[5];
+			   break;
+		} 
+
+		$query4 = "SELECT DISTINCT date, d1, d2, d3, d4 FROM ga_f5_4_42 ";
+		$query4 .= "WHERE d1 = $d1 ";
+		$query4 .= "  AND d2 = $d2 ";
+		$query4 .= "  AND d3 = $d3 ";
+		$query4 .= "  AND d4 = $d4 ";
+		$query3 .= "  AND combo = $c ";
+		$query4 .= "  AND date < '$curr_date_dash' ";
+
+		$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+		
+		if ($num_rows = mysqli_num_rows($mysqli_result4))
+		{
+			//$total4 += $num_rows;
+			$total4++;
+		}
+	}
+
+	// count 5
+	$query6 = "SELECT DISTINCT * FROM ga_f5_draws ";
+	$query6 .= "WHERE b1 = $row4a[b1] ";
+	$query6 .= "  AND b2 = $row4a[b2] ";
+	$query6 .= "  AND b3 = $row4a[b3] ";
+	$query6 .= "  AND b4 = $row4a[b4] ";
+	$query6 .= "  AND b5 = $row4a[b5] ";
+	$query6 .= "  AND date < '$curr_date_dash' ";
+
+	$mysqli_result6 = mysqli_query($mysqli_link, $query6) or die (mysqli_error($mysqli_link));
+	
+	if ($num_rows = mysqli_num_rows($mysqli_result6))
+	{
+		//$total5 += $num_rows;
+		$total5++;
+	}	
+?>

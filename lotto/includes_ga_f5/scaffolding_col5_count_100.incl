@@ -1,0 +1,335 @@
+<?php
+	### read temp_cover_100_count_yymmdd ### 
+	$query3 = "SELECT DISTINCT sum,even,odd,k_count FROM $temp_table1 ";
+	$query3 .= "ORDER BY `k_count` DESC  ";
+
+	echo "<p>$query3</p>";
+
+	$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+	### reread sum_count_sum 
+	while($row3 = mysqli_fetch_array($mysqli_result3))	
+	{
+		### read sum_count_sum and b5 DISTINCT
+		$query4 = "SELECT DISTINCT b5 FROM $temp_table2 ";
+		$query4 .= "WHERE sum = $row3[sum] ";
+		$query4 .= "AND even = $row3[even] ";
+		$query4 .= "AND odd = $row3[odd] ";
+		$query4 .= "ORDER BY sum, even, odd, b5 ";
+
+		echo "<p>col5_4 - $query4</p>";
+
+		$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+		$num_rows4 = mysqli_num_rows($mysqli_result4);
+
+		echo "col5_num_rows4 = $num_rows4<br>";
+
+		while($row4 = mysqli_fetch_array($mysqli_result4))
+		{
+			### read sum_count_sum and each b5 
+			$query5 = "SELECT * FROM $temp_table2 ";
+			$query5 .= "WHERE sum = $row3[sum] ";
+			$query5 .= "AND even = $row3[even] ";
+			$query5 .= "AND odd = $row3[odd] ";
+			$query5 .= "AND b5 = $row4[b5] ";	### b5 ###
+
+			echo "<p><b>looping</b> - col5_5b - $query5</p>";
+
+			$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+			$num_rows5 = mysqli_num_rows($mysqli_result5);
+
+			echo "col5_num_rows5 = $num_rows5<br>";
+
+			$q = 0;
+
+			#$tableName = 'temp2_split_count_1_5_' . $row3['sum'] . '_' . $row3['even'] . '_' . $row3['odd'];
+
+			$tableName = 'temp2_column_sumeo_' . $row3['sum'] . '_' . $row3['even'] . '_' . $row3['odd']. '_5' ;	### 240711 ###
+
+			$query9 = "SHOW TABLES LIKE '$tableName'";
+
+			$mysqli_result9 = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+
+			echo "<p>col5_9a - $query9</p>";
+
+			$num_rows9 = mysqli_num_rows($mysqli_result9);
+
+			if ($num_rows9 > 0) {
+				### build col5 array ###########################################################################################
+					$col5_array = [];
+
+					if ($num_rows9 > 0) {
+					echo "Table exists.";
+
+					### read sum_count_sum and b5 to build col5_array ######################################################
+					
+					$query6 = "SELECT * FROM $tableName ";	### 240711 ###
+					#$query6 .= "WHERE percent_wa >= 0.100 ";
+					$query6 .= "WHERE percent_wa >= 0.040 ";	### 250314 ###
+					$query6 .= "ORDER BY percent_wa DESC "; 
+
+					echo "<p>col5_6 - $query6</p>";
+
+					$mysqli_result6 = mysqli_query($mysqli_link, $query6) or die (mysqli_error($mysqli_link));
+
+					$num_rows6 = mysqli_num_rows($mysqli_result6);
+
+					echo "col5_num_rows6 = $num_rows6<br>";
+
+					while($row6 = mysqli_fetch_array($mysqli_result6))
+					{
+						$col5_array[] = $row6['num'];
+					}
+
+					echo ">>>>> col5_array: ";	### 241128 ###
+					print_r ($col5_array);
+					echo "<br>";          
+
+					while($row5 = mysqli_fetch_array($mysqli_result5))
+					{ 
+						### compare col1/col5 ###
+						#echo "<span style=\"background-color: yellow;\"### compare col1/col5 ###</span><br>";
+						echo "<p><strong>### compare col1/col5 ###</strong></p>";
+						
+						if ($num_rows6) 
+						{
+							$tableSplit2 = 'temp2_split_count_1_3_5_' . $row3['sum'] . '_' . $row3['even'] . '_' . $row3['odd'];	### 240711 ###
+							
+							$query7 = "SELECT * FROM $tableSplit2 ";	### 240904 ###
+							$query7 .= "WHERE b1 = $row5[b1] ";
+							$query7 .= "AND   b3 = $col5_array[$q] ";
+							$query7 .= "ORDER BY y1_sum DESC "; 
+
+							echo "<p>>>> <b>looping</b> - col5_7 - $query7</p>";
+
+							$mysqli_result7 = mysqli_query($mysqli_link, $query7) or die (mysqli_error($mysqli_link));
+
+							$num_rows7 = mysqli_num_rows($mysqli_result7);
+
+							echo "col3_num_rows7 = $num_rows7<br>";
+
+							#$row7 = mysqli_fetch_array($mysqli_result7);	
+						
+							$not_dup = 1;	### 241125 ###
+
+							while($row7 = mysqli_fetch_array($mysqli_result7))	### 241125 ### 
+							{
+								echo "<p><strong>>>>>> b1 = $row5[b1]</strong></p>";
+								
+								if ($num_rows6 AND $num_rows7)	### 240430
+								{
+									$query8 = "SELECT * FROM $temp_table2 ";	### 240904 ###
+									$query8 .= "WHERE b1 = $row5[b1] ";
+									$query8 .= "AND   b5 = $col5_array[$q] ";
+									$query8 .= "AND   sum = $row3[sum] ";
+									$query8 .= "AND   even = $row3[even] ";
+									$query8 .= "AND   odd = $row3[odd] ";
+									$query8 .= "ORDER BY y1_sum DESC "; 
+
+									echo "<p>col_1_3_5_8 - $query8</p>";
+
+									$mysqli_result8 = mysqli_query($mysqli_link, $query8) or die (mysqli_error($mysqli_link));
+									
+									$row8 = mysqli_fetch_array($mysqli_result8);
+									
+									$num_rows8 = mysqli_num_rows($mysqli_result8);
+									
+									echo "<p>>>> num_rows8 = $num_rows8</p>";
+									
+									$pass_fail = 1;
+									
+									echo "<p>>>>>> pass_fail = $pass_fail</p>";	### 241130 ###
+										
+									### test filters ###
+									
+									if ($num_rows8 AND $pass_fail) 
+									{
+										echo "<span style=\"background-color: yellow;\">>>>>> duplicate found - $row8[b1],$row8[b5]</span><br>";
+										continue;
+									} else {
+										$query_update = "UPDATE $temp_table2 ";
+										$query_update .= "SET b3 = $row7[b2], ";	### 250112 ############################################################
+										$query_update .= " b5 = $col5_array[$q] ";	### 250112 ############################################################
+										$query_update .= "WHERE id = $row5[id] ";
+
+										if ($q > ($num_rows6-2))
+										{
+											$q = 0;
+										} else {
+											$q++;
+										}
+
+										echo "1 - col5_query_update - $query_update<br>";
+
+										$mysqli_result_update = mysqli_query ($mysqli_link, $query_update) or die (mysqli_error($mysqli_link));
+										
+										break;	### 241125 ###
+									}
+								} elseif ($num_rows6) {
+									$query_update = "UPDATE $temp_table2 ";
+									$query_update .= "SET b5 = $col5_array[$q] ";
+									$query_update .= "WHERE id = $row5[id] ";
+
+									if ($q > ($num_rows6-2))
+									{
+										$q = 0;
+									} else {
+										$q++;
+									}
+
+									echo "2 - col5_query_update - $query_update<br>";
+
+									$mysqli_result_update = mysqli_query ($mysqli_link, $query_update) or die (mysqli_error($mysqli_link));
+										
+									break;	### 241125 ###
+								}
+							} 
+						} ### 241125 ###	
+						#die();
+					} 
+				}	
+			}
+			/*
+			} else {
+				echo ">>>>> Table does not exist.<br>";
+				echo ">>>>> running split_sumeo_5 - $row5[sum],$row5[even],$row5[odd]<br>";
+				split_sumeo_5 ($row5['sum'],$row5['even'],$row5['odd']);
+			}
+			*/
+		}
+	}
+
+	#########################################################################################################
+	### echo col5 count group by sumeo ### 240701 ###
+	#########################################################################################################
+	// Begin the table
+	print("<H3>Col5 Count by Sumeo - $game_name</H3>\n");
+	
+	print "<p><table border='1'></p>"; // Add table border for visibility
+	print "<tr><th>Sum</th><th>Even</th><th>Odd</th><th>Col5</th><th>Count</th></tr>"; // Table headers
+
+	$query2 = "SELECT DISTINCT `sum`, `even`, `odd`, `b5`  
+	FROM $temp_table2  
+	ORDER BY `sum` ASC";
+
+	#cho "<p>$query2</p>";
+
+	$mysqli_result_2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+	
+	$count = 1;
+
+	while($row2 = mysqli_fetch_array($mysqli_result_2))
+	{
+		$query3 = "SELECT `b5`, count(`b5`)
+		FROM $temp_table2 
+		WHERE sum=$row2[sum] AND even=$row2[even] AND odd=$row2[odd] AND b5=$row2[b5]";
+
+		echo "<p>$query3</p>";
+
+		$mysqli_result_3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		$row3 = mysqli_fetch_array($mysqli_result_3);
+
+		if ($count > 12)
+		{
+			print "<tr><th>Sum</th><th>Even</th><th>Odd</th><th>Col5</th><th>Count</th></tr>";
+			$count = 1;
+
+		} else {
+			$count++;
+		}
+
+		print "<tr><td align=center>$row2[0]</td><td align=center>$row2[1]</td><td align=center>$row2[2]</td><td align=center><b>$row2[3]</b></td><td align=center>$row3[1]</td></tr>";
+	}
+
+	print "<tr><th>Sum</th><th>Even</th><th>Odd</th><th>Col5</th><th>Count</th></tr>";
+
+	// End the table
+	print "</table>";
+	
+	#########################################################################################################
+	### echo col5 count 
+	######################################################
+	// Begin the table
+	print("<H3>Col5 Count by Sumeo - $game_name</H3>\n");
+	
+	print "<p><table border='1'></p>"; // Add table border for visibility
+	print "<tr><th>Col5</th><th>Count</th></tr>"; // Table headers
+
+	$query2 = "SELECT `b5`, count(`b5`)  
+	FROM $temp_table2  
+	GROUP BY b5 ORDER BY b5 ASC";
+
+	echo "<p>$query2</p>";
+
+	$mysqli_result_2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+	
+	$count = 1;
+
+	while($row2 = mysqli_fetch_array($mysqli_result_2))
+	{
+		if ($count > 12)
+		{
+			print "<tr><th>Col5</th><th>Count</th></tr>";
+			$count = 1;
+
+		} else {
+			$count++;
+		}
+
+		print "<tr><td align=center><b>$row2[0]</b></td><td align=center>$row2[1]</td></tr>";
+	}
+
+	print "<tr><th>Col5</th><th>Count</th></tr>";
+
+	// End the table
+	print "</table>";
+
+	### 240620 copied end ###
+	
+	/*
+	<?php
+	$servername = "localhost";
+	$username = "your_username";
+	$password = "your_password";
+	$dbname = "your_database";
+
+	// Create connection
+	$conn = new mysqli($servername, $username, $password, $dbname);
+
+	// Check connection
+	if ($conn->connect_error) {
+	    die("Connection failed: " . $conn->connect_error);
+	}
+
+	// SQL query
+	$sql = "SELECT `b5`, count(`b5`) AS count FROM temp_cover_1k_scaffolding_135_240728 GROUP BY `b5` ORDER BY `b5` ASC";
+	$result = $conn->query($sql);
+
+	if ($result->num_rows > 0) {
+	    echo "<table border='1'>
+		    <tr>
+			<th>b5</th>
+			<th>Count</th>
+		    </tr>";
+	    // Output data of each row
+	    while($row = $result->fetch_assoc()) {
+		echo "<tr>
+			<td>" . htmlspecialchars($row['b5']) . "</td>
+			<td>" . htmlspecialchars($row['count']) . "</td>
+		      </tr>";
+	    }
+	    echo "</table>";
+	} else {
+	    echo "0 results";
+	}
+
+	// Close connection
+	$conn->close();
+	?>
+
+	*/
+
+?>

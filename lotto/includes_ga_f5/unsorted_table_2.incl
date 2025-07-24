@@ -1,0 +1,157 @@
+<?php
+	if ($hml == 0)
+	{
+		$table_temp = $draw_prefix . "temp2a_2_" . $combin . "_" . $limit;
+
+		//start table unsorted --------------------------------------------------------
+		print("<P>");
+		print("<h2>Unsorted Num - Combin $combin - Limit $limit</h2>\n");
+		print("<TABLE BORDER=\"1\">\n");
+
+		//create header row
+		print("<TR><B>\n");
+
+		print("<TD BGCOLOR=\"#CCCCCC\">Unsorted</TD>\n");
+		for ($x = 1; $x <= 30; $x++)
+		{
+			print("<TD BGCOLOR=\"#CCCCCC\" align=center width=20>$x</TD>\n");
+		}
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Total</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Prev</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>AVG</center></TD>\n");
+		print("</B></TR>\n");
+
+		#echo "combin = $combin<br>";
+
+		$table_temp = $draw_prefix . "temp2a_2_" . $combin . "_" . $limit; 
+
+		// Table
+		$query9 = "DROP TABLE IF EXISTS $table_temp ";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+
+		$query9 = "CREATE TABLE $table_temp ( ";
+		$query9 .= "num int(5) unsigned NOT NULL, ";
+		$query9 .= "count int(5) unsigned NOT NULL, ";
+		$query9 .= "prev_date date NOT NULL default '1962-08-17', ";
+		$query9 .= "date date NOT NULL default '1962-08-17', ";
+		$query9 .= "percent_wa float(4,1) unsigned NOT NULL default '0.0', ";
+		$query9 .= "PRIMARY KEY (num), ";
+		$query9 .= "KEY num (num), ";
+		$query9 .= "UNIQUE num_2 (num) ";
+		$query9 .= ") ";
+
+		echo "$query9<br>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+
+		$table_temp_all = $draw_prefix . "temp2a_2_all_" . $limit;
+
+		if ($combin == 1)
+		{
+			$table_temp_all = $draw_prefix . "temp2a_2_all_" . $limit; 
+
+			// Table
+			$query9 = "DROP TABLE IF EXISTS $table_temp_all ";
+
+			$mysqli_result = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+
+			$query9 = "CREATE TABLE $table_temp_all ( ";
+			$query9 .= "id int(5) unsigned NOT NULL auto_increment, ";
+			$query9 .= "num int(5) unsigned NOT NULL, ";
+			$query9 .= "combin tinyint(3) unsigned NOT NULL, ";
+			$query9 .= "count int(5) unsigned NOT NULL, ";
+			$query9 .= "prev_date date NOT NULL default '1962-08-17', ";
+			$query9 .= "date date NOT NULL default '1962-08-17', ";
+			$query9 .= "percent_wa float(4,1) unsigned NOT NULL default '0.0', ";
+			$query9 .= "PRIMARY KEY (id), ";
+			$query9 .= "KEY num (id), ";
+			$query9 .= "UNIQUE num_2 (id) ";
+			$query9 .= ") ";
+
+			echo "$query9<br>";
+
+			$mysqli_result = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+		}
+
+		for($index=1; $index <= $balls; $index++)
+		{
+			print("<TR>\n");
+			print("<TD><center>$index</center></TD>\n");
+			for ($x = 1; $x <= 30; $x++)
+			{
+				if ($num_array_count[$index][$x])
+				{
+					print("<TD BGCOLOR=\"#33FFFF\" width=20><center>&nbsp;x&nbsp;<center></TD>\n");
+				} else {
+					print("<TD align=center width=20>&nbsp;-&nbsp;</TD>\n");
+				}
+			}
+			print("<TD align=center>$num_array[$index]</TD>\n");
+			if ($prev_date[$index] == '1962-08-17')
+			{
+				print("<TD><font color=\"#ff0033\">$prev_date[$index]</font></TD>\n");
+			} else {
+				print("<TD>$prev_date[$index]</TD>\n");
+			}
+			if ($num_date[$index] == '1962-08-17')
+			{
+				print("<TD><font color=\"#ff0033\">$num_date[$index]</font></TD>\n");
+			} else {
+				print("<TD>$num_date[$index]</TD>\n");
+			}
+			
+			if ($num_array[$index] > 0)
+			{
+				$percent_wa = number_format(($num_array[$index]/$limit)+0.05,2);
+			} else {
+				$percent_wa = 0.0;
+			}
+
+			print("<TD>$percent_wa</TD>\n");
+
+			print("</TR>\n");
+
+			$query9 = "INSERT INTO $table_temp ";
+			$query9 .= "VALUES ('$index', ";
+			$query9 .= "'$num_array[$index]', ";
+			$query9 .= "'$prev_date[$index]', ";
+			$query9 .= "'$num_date[$index]', ";
+			$query9 .= "'$percent_wa') ";
+			
+			print("$query<br>");
+
+			$mysqli_result = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+
+			$query9 = "INSERT INTO $table_temp_all ";
+			$query9 .= "VALUES (0, ";
+			$query9 .= "'$index', ";
+			$query9 .= "'$combin', ";
+			$query9 .= "'$num_array[$index]', ";
+			$query9 .= "'$prev_date[$index]', ";
+			$query9 .= "'$num_date[$index]', ";
+			$query9 .= "'$percent_wa') ";
+			
+			print("$query9<BR>");
+
+			$mysqli_result = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+		}
+
+		//end table
+		print("</TABLE>\n");
+
+		print "<h3>Table <font color=\"#ff0000\">$table_temp</font> Updated!</h3>";
+	} 
+
+	//end table
+	print("</TABLE>\n");
+
+	print "<h3>Table <font color=\"#ff0000\">$table_temp</font> Updated!</h3>";
+
+	//end table
+	print("</TABLE>\n");
+
+	print "<h3>Table <font color=\"#ff0000\">$table_temp</font> Updated!</h3>";
+	
+?>

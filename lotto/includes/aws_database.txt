@@ -1,0 +1,6 @@
+database-1.cluster-cvtdpxymcrrv.us-east-1.rds.amazonaws.com
+
+admin
+
+
+BjU7If6ByhywLJDaJqlx

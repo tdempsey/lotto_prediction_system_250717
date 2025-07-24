@@ -1,0 +1,294 @@
+	# ---- ba 1 ----
+	$query = "SELECT * FROM $draw_prefix";
+	$query .= "filter_limits ";
+	$query .= "WHERE col1 = '0' "; 
+	$query .= "AND col_pos = '1' ";
+	$query .= "AND date = '$curr_date' ";
+	$query .= "AND limit_type = 'ba' ";
+
+	print("<p>$query</p>");
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$num_rows_limit = mysqli_num_rows($mysqli_result);
+
+	if (!$num_rows_limit)
+	{
+		die ("No limit found - ba 1 - all");
+	}
+
+	$row_limit_ba1 = mysqli_fetch_array($mysqli_result);
+	# ---- ba 1 end ----
+
+	# ---- average ----
+	$query = "SELECT * FROM $draw_prefix";
+	$query .= "filter_limits ";
+	$query .= "WHERE col1 = '0' "; 
+	$query .= "AND date = '$curr_date' ";
+	$query .= "AND limit_type = 'av' ";
+
+	print("<p>$query</p>");
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$num_rows_limit = mysqli_num_rows($mysqli_result);
+
+	if (!$num_rows_limit)
+	{
+		die ("No limit found - av - all");
+	}
+
+	$row_limit_average = mysqli_fetch_array($mysqli_result);
+	# ---- average end ----
+
+	# ---- median ----
+	$query = "SELECT * FROM $draw_prefix";
+	$query .= "filter_limits ";
+	$query .= "WHERE col1 = '0' "; 
+	$query .= "AND date = '$curr_date' ";
+	$query .= "AND limit_type = 'md' ";
+
+	print("<p>$query</p>");
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$num_rows_limit = mysqli_num_rows($mysqli_result);
+
+	if (!$num_rows_limit)
+	{
+		die ("No limit found - md - all");
+	}
+
+	$row_limit_median = mysqli_fetch_array($mysqli_result);
+	# ---- median end ----
+
+	# ---- harmean ----
+	$query = "SELECT * FROM $draw_prefix";
+	$query .= "filter_limits ";
+	$query .= "WHERE col1 = '0' "; 
+	$query .= "AND date = '$curr_date' ";
+	$query .= "AND limit_type = 'hm' ";
+
+	print("<p>$query</p>");
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$num_rows_limit = mysqli_num_rows($mysqli_result);
+
+	if (!$num_rows_limit)
+	{
+		die ("No limit found - hm - all");
+	}
+
+	$row_limit_harmean = mysqli_fetch_array($mysqli_result);
+	# ---- harmean end ----
+
+	# ---- geomean ----
+	$query = "SELECT * FROM $draw_prefix";
+	$query .= "filter_limits ";
+	$query .= "WHERE col1 = '0' "; 
+	$query .= "AND date = '$curr_date' ";
+	$query .= "AND limit_type = 'gm' ";
+
+	print("<p>$query</p>");
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$num_rows_limit = mysqli_num_rows($mysqli_result);
+
+	if (!$num_rows_limit)
+	{
+		die ("No limit found - gm - all");
+	}
+
+	$row_limit_geomean = mysqli_fetch_array($mysqli_result);
+	# ---- geomean end ----
+
+	# ---- quart1 ----
+	$query = "SELECT * FROM $draw_prefix";
+	$query .= "filter_limits ";
+	$query .= "WHERE col1 = '0' "; 
+	$query .= "AND date = '$curr_date' ";
+	$query .= "AND limit_type = 'q1' ";
+
+	print("<p>$query</p>");
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$num_rows_limit = mysqli_num_rows($mysqli_result);
+
+	if (!$num_rows_limit)
+	{
+		die ("No limit found - q1 - all");
+	}
+
+	$row_limit_quart1 = mysqli_fetch_array($mysqli_result);
+	# ---- quart1 end ----
+
+	# ---- quart2 ----
+	$query = "SELECT * FROM $draw_prefix";
+	$query .= "filter_limits ";
+	$query .= "WHERE col1 = '0' "; 
+	$query .= "AND date = '$curr_date' ";
+	$query .= "AND limit_type = 'q2' ";
+
+	print("<p>$query</p>");
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$num_rows_limit = mysqli_num_rows($mysqli_result);
+
+	if (!$num_rows_limit)
+	{
+		die ("No limit found - q2 - all");
+	}
+
+	$row_limit_quart1 = mysqli_fetch_array($mysqli_result);
+	# ---- quart2 end ----
+
+	# ---- quart3 ----
+	$query = "SELECT * FROM $draw_prefix";
+	$query .= "filter_limits ";
+	$query .= "WHERE col1 = '0' "; 
+	$query .= "AND date = '$curr_date' ";
+	$query .= "AND limit_type = 'q3' ";
+
+	print("<p>$query</p>");
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$num_rows_limit = mysqli_num_rows($mysqli_result);
+
+	if (!$num_rows_limit)
+	{
+		die ("No limit found - q3 - all");
+	}
+
+	$row_limit_quart1 = mysqli_fetch_array($mysqli_result);
+	# ---- quart3 end ----
+
+	# ---- stdev ----
+	$query = "SELECT * FROM $draw_prefix";
+	$query .= "filter_limits ";
+	$query .= "WHERE col1 = '0' "; 
+	$query .= "AND date = '$curr_date' ";
+	$query .= "AND limit_type = 'sd' ";
+
+	print("<p>$query</p>");
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$num_rows_limit = mysqli_num_rows($mysqli_result);
+
+	if (!$num_rows_limit)
+	{
+		die ("No limit found - sd - all");
+	}
+
+	$row_limit_stdev = mysqli_fetch_array($mysqli_result);
+	# ---- stdev end ----
+
+	# ---- variance ----
+	$query = "SELECT * FROM $draw_prefix";
+	$query .= "filter_limits ";
+	$query .= "WHERE col1 = '0' "; 
+	$query .= "AND date = '$curr_date' ";
+	$query .= "AND limit_type = 'vr' ";
+
+	print("<p>$query</p>");
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$num_rows_limit = mysqli_num_rows($mysqli_result);
+
+	if (!$num_rows_limit)
+	{
+		die ("No limit found - vr - all");
+	}
+
+	$row_limit_variance = mysqli_fetch_array($mysqli_result);
+	# ---- variance end ----
+
+	# ---- avedev ----
+	$query = "SELECT * FROM $draw_prefix";
+	$query .= "filter_limits ";
+	$query .= "WHERE col1 = '0' "; 
+	$query .= "AND date = '$curr_date' ";
+	$query .= "AND limit_type = 'ad' ";
+
+	print("<p>$query</p>");
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$num_rows_limit = mysqli_num_rows($mysqli_result);
+
+	if (!$num_rows_limit)
+	{
+		die ("No limit found - ad - all");
+	}
+
+	$row_limit_avedev = mysqli_fetch_array($mysqli_result);
+	# ---- avedev end ----
+
+	# ---- kurt ----
+	$query = "SELECT * FROM $draw_prefix";
+	$query .= "filter_limits ";
+	$query .= "WHERE col1 = '0' "; 
+	$query .= "AND date = '$curr_date' ";
+	$query .= "AND limit_type = 'kt' ";
+
+	print("<p>$query</p>");
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$num_rows_limit = mysqli_num_rows($mysqli_result);
+
+	if (!$num_rows_limit)
+	{
+		die ("No limit found - kt - all");
+	}
+
+	$row_limit_kurt = mysqli_fetch_array($mysqli_result);
+	# ---- kurt end ----
+
+	# ---- skew ----
+	$query = "SELECT * FROM $draw_prefix";
+	$query .= "filter_limits ";
+	$query .= "WHERE col1 = '0' "; 
+	$query .= "AND date = '$curr_date' ";
+	$query .= "AND limit_type = 'sk' ";
+
+	print("<p>$query</p>");
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$num_rows_limit = mysqli_num_rows($mysqli_result);
+
+	if (!$num_rows_limit)
+	{
+		die ("No limit found - sk - all");
+	}
+
+	$row_limit_skew = mysqli_fetch_array($mysqli_result);
+	# ---- skew end ----
+
+	# ---- devsq ----
+	$query = "SELECT * FROM $draw_prefix";
+	$query .= "filter_limits ";
+	$query .= "WHERE col1 = '0' "; 
+	$query .= "AND date = '$curr_date' ";
+	$query .= "AND limit_type = 'ds' ";
+
+	print("<p>$query</p>");
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$num_rows_limit = mysqli_num_rows($mysqli_result);
+
+	if (!$num_rows_limit)
+	{
+		die ("No limit found - ds - all");
+	}
+
+	$row_limit_devsq = mysqli_fetch_array($mysqli_result);
+	# ---- devsq end ----

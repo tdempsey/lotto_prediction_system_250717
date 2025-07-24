@@ -1,0 +1,129 @@
+<?php
+for (1)
+{
+	$query2 = "SELECT date, draw0, draw1, draw2, draw3, draw4 FROM $draw_table_name ";
+	$query2 .= "WHERE sum = $row6[6] ";
+	$query2 .= "AND   even = $row6[7] ";
+	$query2 .= "AND   odd = $row6[8] ";
+	$query2 .= "AND   draw0 = $row7[0] ";
+	$query2 .= "AND   draw1 = $row7[1] ";
+	$query2 .= "AND   draw2 = $row7[2] ";
+	$query2 .= "AND   draw3 = $row7[3] ";
+	$query2 .= "AND   draw4 = $row7[4] ";
+	$query2 .= "ORDER BY date ASC ";
+
+	echo "$query2<br>";
+
+	$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+
+	$num_rows = mysqli_num_rows($mysqli_result2); 
+
+	#echo "num_rows = $num_rows<br>"; 
+
+	#$draw_count_temp_array = array_fill (0,16,0);
+	#$draw_count_array = array_fill (0,300,$draw_count_temp_array);
+	$draw_count_array = array_fill (0,16,0);
+	
+	while($row2 = mysqli_fetch_array($mysqli_result2))
+	{
+		$draw_date_array = explode("-","$row2[0]"); ### 210104
+		$draw_date_unix = mktime (0,0,0,$draw_date_array[1],$draw_date_array[2],$draw_date_array[0]); ### 210104
+		
+		$y = $row2[0];
+	
+		# calculate history
+		if ($draw_date_unix == $day1_unix)
+		{ 
+			for ($d = 0; $d <= 16; $d++) {$draw_count_array[$d]++;}
+		} elseif ($draw_date_unix > $week1_unix) {
+			for ($d = 1; $d <= 16; $d++) {$draw_count_array[$d]++;}
+		} elseif ($draw_date_unix > $week2_unix) {
+			for ($d = 2; $d <= 16; $d++) {$draw_count_array[$d]++;}
+		} elseif ($draw_date_unix > $month1_unix) {
+			for ($d = 3; $d <= 16; $d++) {$draw_count_array[$d]++;}
+		} elseif ($draw_date_unix > $month3_unix) {
+			for ($d = 4; $d <= 16; $d++) {$draw_count_array[$d]++;}
+		} elseif ($draw_date_unix > $month6_unix) {
+			for ($d = 5; $d <= 16; $d++) {$draw_count_array[$d]++;}
+		} elseif ($draw_date_unix > $year1_unix) {
+			for ($d = 6; $d <= 16; $d++) {$draw_count_array[$d]++;}
+		} elseif ($draw_date_unix > $year2_unix) {
+			for ($d = 7; $d <= 16; $d++) {$draw_count_array[$d]++;}
+		} elseif ($draw_date_unix > $year3_unix) { 
+			for ($d = 8; $d <= 16; $d++) {$draw_count_array[$d]++;}
+		} elseif ($draw_date_unix > $year4_unix) { 
+			for ($d = 9; $d <= 16; $d++) {$draw_count_array[$d]++;}
+		} elseif ($draw_date_unix > $year5_unix) { 
+			for ($d = 10; $d <= 16; $d++) {$draw_count_array[$d]++;}
+		} elseif ($draw_date_unix > $year6_unix) { 
+			for ($d = 11; $d <= 16; $d++) {$draw_count_array[$d]++;}
+		} elseif ($draw_date_unix > $d1510_unix) {
+			for ($d = 12; $d <= 16; $d++) {$draw_count_array[$d]++;}
+		} elseif ($draw_date_unix > $year7_unix) {
+			for ($d = 13; $d <= 16; $d++) {$draw_count_array[$d]++;}
+		} elseif ($draw_date_unix > $year8_unix) {
+			for ($d = 14; $d <= 16; $d++) {$draw_count_array[$d]++;}
+		} elseif ($draw_date_unix > $year9_unix) {
+			for ($d = 15; $d <= 16; $d++) {$draw_count_array[$d]++;}
+		} elseif ($draw_date_unix > $year10_unix) {
+			for ($d = 16; $d <= 16; $d++) {$draw_count_array[$d]++;}
+		}
+		
+		$draw++;
+	}
+
+	$temp_count = $draw_count_array[13];
+
+	#echo "temp_count = $temp_count<br>";
+
+	#echo "draw_count_array - ";
+	#print_r($draw_count_array);
+	#echo "<br>";
+
+	if ($temp_count)
+	{
+		$col_temp_y1 = number_format(($draw_count_array[6]/365)*100,2);
+		$col_temp_y5 = number_format(($draw_count_array[10]/(365*5))*100,2); #200910
+
+		$weighted_average = (
+			#($draw_count_array[1]/7*100*0.10) + #week1
+			($draw_count_array[4]/90*100*0.15) +	    #month3	#211229
+			($draw_count_array[5]/(365/2)*100*0.15) +  #month6	#211229
+			($draw_count_array[6]/365*100*0.20) +      #year1	#211229
+			#($draw_count_array[8]/(365*3)*100*0.30) + #year3	#211229
+			($draw_count_array[11]/(365*5)*100*0.50)); #year5	#211229
+
+		#echo "col_temp_y1 = $col_temp_y1<br>"; 
+		#echo "col_temp_y5 = $col_temp_y5<br>";
+		#echo "weighted_average = $weighted_average<br>";
+
+		#print_r ($draw_count_array);
+		#echo "<br>";
+
+		$query5 = "INSERT INTO $draw_prefix";
+		$query5 .= "draw_count_range ";
+		$query5 .= "VALUES ('0', ";
+		$query5 .= "'$x', ";
+		$query5 .= "'$row6[6]', ";
+		$query5 .= "'$row6[7]', ";
+		$query5 .= "'$row6[8]', ";
+		$query5 .= "'$row7[0]', ";
+		$query5 .= "'$row7[1]', ";
+		$query5 .= "'$row7[2]', ";
+		$query5 .= "'$row7[3]', ";
+		$query5 .= "'$row7[4]', ";
+		for ($d = 0; $d <= 16; $d++)
+		{
+			$query5 .= "'{$draw_count_array[$d]}',";
+		}
+		$query5 .= "'0',"; 
+		$query5 .= "'$col_temp_y1',";
+		$query5 .= "'$col_temp_y5',";
+		$query5 .= "'$weighted_average')";
+		
+		print "$query5<p>";
+	
+		$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+	}
+}
+?>

@@ -1,0 +1,11 @@
+<?php
+	function rootSum($num) {
+	  $sum = 0;
+	  while ($num > 0) {
+	    $digit = $num mod 10; 
+	    $sum += sqrt($digit);
+	    $num = floor($num / 10);
+	  }
+	  return $sum;
+	}
+?>

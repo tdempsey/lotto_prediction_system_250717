@@ -1,0 +1,37 @@
+<?php
+	for ($x = 1; $x <= 3; $x++)
+	{
+		${last_.$x._draws} = LastxDraws($row[0],$x);
+	}
+
+	//count duplicate draws
+	for ($rp = 0; $rp < 6; $rp++)
+	{	
+		for ($x = 0 ; $x < count($last_1_draws); $x++)
+		{
+			if ($prev_draw[$rp] == $last_1_draws[$x]) {
+				$dup_count_last[1]++;
+			}
+		}
+			
+		for ($x = 0 ; $x < count($last_2_draws); $x++)
+		{
+			if ($prev_draw[$rp] == $last_2_draws[$x]) {
+				$dup_count_last[2]++;
+			}
+		}
+
+		for ($x = 0 ; $x < count($last_3_draws); $x++)
+		{
+			if ($prev_draw[$rp] == $last_3_draws[$x]) {
+				$dup_count_last[3]++;
+			}
+		}
+	}
+
+	// build last draw 1-40
+	for ($x = 1; $x <= 40; $x++)
+	{
+		${last_.$x._draws} = LastxDraws($curr_date_dash,$x);
+	}
+?>

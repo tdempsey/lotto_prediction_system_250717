@@ -1,0 +1,155 @@
+<?php
+		echo "<b>\include_ga_f5|enter draw_count_loop.incl</b><br>";
+		
+		$sum_tot_temp_array = array_fill (0,18,0);
+		$sum_tot_array = array_fill (0,300,$sum_tot_temp_array);
+
+		$query9 = "SELECT * FROM $draw_table_name ";
+		$query9 .= "WHERE date >= '2015-10-01' ";
+		$query9 .= "AND sum = $row_eo[6] ";
+		$query9 .= "AND even = $row_eo[7] ";
+		$query9 .= "AND odd = $row_eo[8] ";
+		$query9 .= "ORDER BY date DESC ";
+
+		print "$query9<p>";
+
+		$mysqli_result9 = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+
+		$num_rows_all = mysqli_num_rows($mysqli_result9);
+		
+		while($row = mysqli_fetch_array($mysqli_result9))
+		{
+			echo "row[0] = $row[0]<br>";
+
+			# calculate unix date
+			$draw_date_array = explode("-","$row[0]"); ### 210104
+				$draw_date_unix = mktime (0,0,0,$draw_date_array[1],$draw_date_array[2],$draw_date_array[0]); ### 210104
+
+			#echo "draw_date_unix = $draw_date_unix<br>";
+			#echo "year1 = $year1<br>";
+
+			#$num_array_count[$y][$z]++;
+			
+			$y = $row[6]; ### 201223 sum
+
+			#echo "draw_date_unix = $draw_date_unix<br>";
+
+			##echo "day1_unix = $day1_unix<br>";
+
+			echo "sum - row[6] = $row[6]<br>";
+
+			#echo "draw_date_array<br>"; #201108
+			#print_r ($draw_date_array);
+			#echo "<br>";
+
+			#echo "draw_date_unix = $draw_date_unix<br>";
+		
+			# calculate history
+			if ($draw_date_unix == $day1_unix)
+			{ 
+				for ($d = 0; $d <= 15; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $week1_unix) {
+				for ($d = 1; $d <= 15; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $week2_unix) {
+				for ($d = 2; $d <= 15; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $month1_unix) {
+				for ($d = 3; $d <= 15; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $month3_unix) {
+				for ($d = 4; $d <= 15; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $month6_unix) {
+				for ($d = 5; $d <= 15; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $year1_unix) {
+				for ($d = 6; $d <= 15; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $year2_unix) {
+				for ($d = 7; $d <= 15; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $year3_unix) {
+				for ($d = 8; $d <= 15; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $year4_unix) {
+				for ($d = 9; $d <= 15; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $year5_unix) {
+				for ($d = 10; $d <= 15; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $year6_unix) {
+				for ($d = 11; $d <= 15; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $year7_unix) {
+				for ($d = 12; $d <= 15; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $year8_unix) {
+				for ($d = 13; $d <= 15; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $year9_unix) {
+				for ($d = 14; $d <= 15; $d++) {$sum_tot_array[$y][$d]++;}
+			} elseif ($draw_date_unix > $year10_unix) {
+				for ($d = 15; $d <= 15; $d++) {$sum_tot_array[$y][$d]++;}
+			}
+
+			#add 1 year to clear
+			if ($first_draw_unix > $year7_unix) {
+				for ($d = 13; $d <= 15; $d++) {$sum_tot_array[$y][$d]=0;}
+			} elseif ($first_draw_unix > $year8) {
+				for ($d = 14; $d <= 15; $d++) {$sum_tot_array[$y][$d]=0;}
+			} elseif ($first_draw_unix > $year9) {
+				for ($d = 15; $d <= 15; $d++) {$sum_tot_array[$y][$d]=0;}
+			} elseif ($first_draw_unix > $year10) {
+				for ($d = 16; $d <= 16; $d++) {$sum_tot_array[$y][$d]=0;}
+			}
+
+			/*
+			if ($prev_date[$y] == '1962-08-17' || $prev_date[$y] == $num_date[$y])
+			{
+				$prev_date[$y] = $row[0];
+			}
+
+			if ($row[0] > $num_date[$y])
+			{	
+				$prev_date[$y] = $num_date[$y];
+				$num_date[$y] = $row[0];
+			}
+			*/
+		}
+
+		for ($x = 1; $x <= 1; $x++)
+		{
+			$col_temp_y1 = number_format(($sum_tot_array[$y][6]/365)*100,1);
+			$col_temp_y4 = number_format(($sum_tot_array[$y][9]/(365*4))*100,1);
+
+			$weighted_average = (
+				#($sum_tot_array[$y][1]/7*100*0.10) + #week1
+				#($sum_tot_array[$y][3]/30*100*0.10) + #month1
+				($sum_tot_array[$y][5]/(365/2)*100*0.20) + #month6
+				($sum_tot_array[$y][6]/365*100*0.50) + #year1 #200111
+				($sum_tot_array[$y][8]/(365*3)*100*0.10) + #year3
+				($sum_tot_array[$y][10]/(365*5)*100*0.20)); #year5 #200111
+
+			/*
+			$weighted_average = (
+				#($sum_tot_array[1]/7*100*0.10) + #week1
+				($sum_tot_array[4]/90*100*0.10) + #month3
+				($sum_tot_array[5]/(365/2)*100*0.20) + #month6
+				($sum_tot_array[6]/365*100*0.50) + #year1
+				($sum_tot_array[8]/(365*3)*100*0.10) + #year3
+				($sum_tot_array[11]/(365*5)*100*0.10)); #year5
+			*/
+
+			$query5 = "INSERT INTO $draw_prefix";
+			$query5 .= "sum_count_sum ";
+			$query5 .= "VALUES ('0', "; 
+			$query5 .= "'$row_eo[sum]',";
+			$query5 .= "'$row_eo[even]',";
+			$query5 .= "'$row_eo[odd]',";
+			for ($d = 0; $d <= 15; $d++)
+			{
+				$query5 .= "'{$sum_tot_array[$y][$d]}',";
+			}
+			$query5 .= "'{$sum_tot_array[$y][15]}',"; ### 201223
+			#$query5 .= "'0',"; 
+			$query5 .= "'$col_temp_y1',";
+			$query5 .= "'$col_temp_y4',";
+			$query5 .= "'$weighted_average')";
+			
+			print "$query5<p>";
+		
+			$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+		}
+
+		echo "<b>exit draw_count_loop.incl</b><br>";
+
+		#die();
+?>

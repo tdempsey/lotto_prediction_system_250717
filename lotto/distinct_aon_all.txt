@@ -1,0 +1,18 @@
+2
+SELECT DISTINCT `d1`,`d2`,`combo`,`combo_count`,`col1`,`col2` FROM `aon_2_24` ORDER BY `aon_2_24`.`combo_count` DESC
+
+3
+SELECT DISTINCT `d1`,`d2`, `d3`,`combo`,`combo_count`,`col1`,`col2` ,`col3` FROM `aon_3_24` ORDER BY `aon_3_24`.`combo_count` DESC
+
+SELECT DISTINCT `d1`,`d2`, `d3`,`combo`,`combo_count`,`col1`,`col2` ,`col3` FROM `aon_3_24` WHERE `draw_sum` >= 130 AND `draw_sum` <= 139 ORDER BY `aon_3_24`.`combo_count` DESC
+
+4
+SELECT DISTINCT `d1`,`d2`,`d3`,`d4`,`combo`,`combo_count`,`col1`,`col2` ,`col3`,`col4` FROM `aon_4_24` ORDER BY `aon_4_24`.`combo_count` DESC
+
+5
+SELECT DISTINCT `d1`,`d2`,`d3`,`d4`,`d5`,`combo`,`combo_count`,`col1`,`col2` ,`col3`,`col4`,`col5` FROM `aon_5_24` ORDER BY `aon_5_24`.`combo_count` DESC
+
+SELECT DISTINCT `d1`,`d2`,`d3`,`d4`,`d5`,`combo`,`combo_count`,`col1`,`col2` ,`col3`,`col4`,`col4` FROM `aon_5_24` WHERE `combo_count` > 1 ORDER BY `aon_5_24`.`combo_count` DESC
+
+6
+SELECT DISTINCT `d1`,`d2`,`d3`,`d4`,`d5`,`d5`,`combo`,`combo_count`,`col1`,`col2` ,`col3`,`col4`,`col5`,`col6` FROM `aon_6_24` ORDER BY `aon_6_24`.`combo_count` DESC

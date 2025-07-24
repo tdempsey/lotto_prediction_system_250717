@@ -1,0 +1,3796 @@
+<?php
+	### updated to 10 nunbers for range
+	function lot_filter_limit_sum ($next_draw_date) #good
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# sum limit all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+
+		##echo "$query<br>";
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+
+		$num_rows_sum = mysqli_num_rows($mysqli_result);
+		
+		$sum_array = array();
+		$x = 0;
+
+		# get each row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			if ($row[sum] > 0 && $x < $num_rows_sum)
+			{
+				$sum_array[$x++] = $row[sum];
+			}
+		}
+
+		sort($sum_array);
+
+		#print_r ($sum_array);
+
+		$mid_count = intval(count($sum_array)/2);
+
+		$low = $sum_array[0];
+		$mid = intval(($sum_array[$mid_count-1]+$sum_array[$mid_count])/2);
+		$high = $sum_array[count($sum_array)-1];
+
+		$range = $high - $low;
+		#echo "<p>range = $range</p>";
+
+		$query3 = "Insert INTO $draw_prefix";
+		$query3 .= "filter_limits ";
+		$query3 .= "VALUES ( '0', ";
+		$query3 .= "         '$next_draw_date', ";
+		$query3 .= "         'sm', ";
+		$query3 .= "         '$hml', ";
+		$query3 .= "         '0', "; #col1
+		$query3 .= "         '0', ";
+		$query3 .= "         '$low', ";
+		$query3 .= "         '$mid', ";
+		$query3 .= "         '$high', ";
+		$query3 .= "         '$range', ";
+		$query3 .= "         '0.0', ";
+		$query3 .= "         '0.0', ";
+		$query3 .= "         '0.0', ";
+		$query3 .= "         '0.0') ";
+
+		##print "$query3<p>";
+		
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND   sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+
+			##print "$query<p>";
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+
+			$num_rows_sum = mysqli_num_rows($mysqli_result);
+			
+			$sum_array = array();
+			$y = 0;
+
+			# get each row
+			while($row = mysqli_fetch_array($mysqli_result))
+			{
+				if ($row[sum] > 0)
+				{
+					$sum_array[$y++] = $row[sum];
+				}
+			}
+
+			sort($sum_array);
+
+			#print_r ($sum_array);
+
+			$mid_count = intval(count($sum_array)/2);
+
+			$low = $sum_array[0];
+			$mid = intval(($sum_array[$mid_count-1]+$sum_array[$mid_count])/2);
+			$high = $sum_array[count($sum_array)-1];
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'sm', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '$x', "; #col1
+			$query3 .= "         '0', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0') ";
+
+			##print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}	
+	}
+
+	### updated to 10 munbers for range
+	### updated high for balls_drawn
+	function lot_filter_limit_balls ($next_draw_date) #good
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# ball limit col1 = all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND   sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+
+		#print "$query<p>";
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+		
+		$num_rows = mysqli_num_rows($mysqli_result);
+
+		for ($b = 1; $b <= $balls_drawn; $b++)
+		{
+			$ball_array = array();
+			$y = 0;
+
+			if ($num_rows)
+			{
+				mysqli_data_seek($mysqli_result,0);
+
+				# get each row
+				while($row = mysqli_fetch_array($mysqli_result))
+				{
+					#$draw_array = array(0,$row[b1],$row[b2],$row[b3],$row[b4],$row[b5]);
+
+					#sort($draw_array);
+					
+					$ball_array[$y++] = $row[$b];
+				}
+
+				sort($ball_array);
+			}
+
+			#print_r ($ball_array);
+
+			$mid_count = intval(count($ball_array)/2);
+
+			if (count($ball_array) == 0)
+			{
+				$low = 0;
+				$mid = 0;
+				$high = 0;
+			} elseif (count($ball_array) > 1) {
+				$low = $ball_array[0];
+				$mid = intval(($ball_array[$mid_count-1]+$ball_array[$mid_count])/2);
+
+				if ($b == $balls_drawn && $hml < 500)
+				{
+					$high = $ball_array[count($ball_array)-1]; ### $balls
+				} else {
+					$high = $ball_array[count($ball_array)-1];
+				}
+			} else {
+				$low = $ball_array[0];
+				$mid = $ball_array[0];
+
+				if ($b == $balls_drawn && $hml < 500)
+				{
+					$high = $ball_array[count($ball_array)-1]; ### $balls
+				} else {
+					$high = $ball_array[count($ball_array)-1];
+				}
+			}
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'ba', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '0', "; #col1
+			$query3 .= "         '$b', "; #ball x
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND   sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+
+			#print "$query<p>";
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+
+			$num_rows = mysqli_num_rows($mysqli_result);
+
+			for ($b = 1; $b <= $balls_drawn; $b++)
+			{
+				$ball_array = array();
+				$y = 0;
+
+				if ($num_rows)
+				{
+					mysqli_data_seek($mysqli_result,0);
+
+					# get each row
+					while($row = mysqli_fetch_array($mysqli_result))
+					{
+						#$draw_array = array(0,$row[b1],$row[b2],$row[b3],$row[b4],$row[b5]);
+
+						#sort($draw_array);
+						
+						$ball_array[$y++] = $row[$b];
+					}
+
+					sort($ball_array);
+				}
+
+				#print_r ($ball_array);
+
+				$mid_count = intval(count($ball_array)/2);
+
+				if (count($ball_array) == 0)
+				{
+					$low = 0;
+					$mid = 0;
+					$high = 0;
+				} elseif (count($ball_array) > 1) {
+					$low = $ball_array[0];
+					$mid = intval(($ball_array[$mid_count-1]+$ball_array[$mid_count])/2);
+
+					if ($b == $balls_drawn && $hml < 500)
+					{
+						$high = $ball_array[count($ball_array)-1]; ### $balls
+					} else {
+						$high = $ball_array[count($ball_array)-1];
+					}
+				} else {
+					$low = $ball_array[0];
+					$mid = $ball_array[0];
+
+					if ($b == $balls_drawn && $hml < 500)
+					{
+						$high = $ball_array[count($ball_array)-1]; ### $balls
+					} else {
+						$high = $ball_array[count($ball_array)-1];
+					}
+				}
+
+				$range = $high - $low;
+				#echo "<p>range = $range</p>";
+
+				$query3 = "Insert INTO $draw_prefix";
+				$query3 .= "filter_limits ";
+				$query3 .= "VALUES ( '0', ";
+				$query3 .= "         '$next_draw_date', ";
+				$query3 .= "         'ba', ";
+				$query3 .= "         '$hml', ";
+				$query3 .= "         '$x', "; #col1
+				$query3 .= "         '$b', "; #ball x
+				$query3 .= "         '$low', ";
+				$query3 .= "         '$mid', ";
+				$query3 .= "         '$high', ";
+				$query3 .= "         '$range', ";
+				$query3 .= "         '0.0', ";
+				$query3 .= "         '0.0', ";
+				$query3 .= "         '0.0', ";
+				$query3 .= "         '0.0') ";
+
+				#print "$query3<p>";
+				
+				$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+			}
+		}
+		
+	}
+
+	function lot_filter_limit_even ($next_draw_date) #good
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# sum limit all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND   sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+		
+		$sum_array = array();
+		$x = 0;
+
+		# get each row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			$sum_array[$x++] = $row[even];
+		}
+
+		sort($sum_array);
+
+		#print_r ($sum_array);
+
+		if (count($sum_array) == 0)
+		{
+			$low = 0;
+			$mid = 0;
+			$high = 0;
+		} elseif (count($sum_array) == 2) {
+			$low = $sum_array[0];
+			$mid = $sum_array[0];
+			$high = $sum_array[1];
+		} elseif (count($sum_array) > 1) {
+			$low = $sum_array[1];
+			$mid = intval(($sum_array[4]+$sum_array[5])/2);
+			$high = $sum_array[count($sum_array)-2];
+		} else {
+			$low = $sum_array[0];
+			$mid = $sum_array[0];
+			$high = $sum_array[0];
+		}
+
+		$range = $high - $low;
+		#echo "<p>range = $range</p>";
+
+		$query3 = "Insert INTO $draw_prefix";
+		$query3 .= "filter_limits ";
+		$query3 .= "VALUES ( '0', ";
+		$query3 .= "         '$next_draw_date', ";
+		$query3 .= "         'ev', ";
+		$query3 .= "         '$hml', ";
+		$query3 .= "         '0', "; #col1
+		$query3 .= "         '0', ";
+		$query3 .= "         '$low', ";
+		$query3 .= "         '$mid', ";
+		$query3 .= "         '$high', ";
+		$query3 .= "         '$range', ";
+		$query3 .= "         '0.0', ";
+		$query3 .= "         '0.0', ";
+		$query3 .= "         '0.0', ";
+		$query3 .= "         '0.0') ";
+
+		#print "$query3<p>";
+		
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND   sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+			
+			$sum_array = array();
+			$y = 0;
+
+			# get each row
+			while($row = mysqli_fetch_array($mysqli_result))
+			{
+				$sum_array[$y++] = $row[even];
+			}
+
+			sort($sum_array);
+
+			#print_r ($sum_array);
+
+			if (count($sum_array) == 0)
+			{
+				$low = 0;
+				$mid = 0;
+				$high = 0;
+			} elseif (count($sum_array) == 2) {
+				$low = $sum_array[0];
+				$mid = $sum_array[0];
+				$high = $sum_array[1];
+			} elseif (count($sum_array) > 1) {
+				$low = $sum_array[1];
+				$mid = intval(($sum_array[4]+$sum_array[5])/2);
+				$high = $sum_array[count($sum_array)-2];
+			} else {
+				$low = $sum_array[0];
+				$mid = $sum_array[0];
+				$high = $sum_array[0];
+			}
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'ev', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '$x', "; #col1
+			$query3 .= "         '0', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}	
+	}
+
+	function lot_filter_limit_odd ($next_draw_date) #good
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# sum limit all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND   sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+		
+		$sum_array = array();
+		$x = 0;
+
+		# get each row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			$sum_array[$x++] = $row[odd];
+		}
+
+		sort($sum_array);
+
+		#print_r ($sum_array);
+
+		if (count($sum_array) == 0)
+		{
+			$low = 0;
+			$mid = 0;
+			$high = 0;
+		} elseif (count($sum_array) == 2) {
+			$low = $sum_array[0];
+			$mid = $sum_array[0];
+			$high = $sum_array[1];
+		} elseif (count($sum_array) > 1) {
+			$low = $sum_array[1];
+			$mid = intval(($sum_array[4]+$sum_array[5])/2);
+			$high = $sum_array[count($sum_array)-2];
+		} else {
+			$low = $sum_array[0];
+			$mid = $sum_array[0];
+			$high = $sum_array[0];
+		}
+
+		$range = $high - $low;
+		#echo "<p>range = $range</p>";
+
+		$query3 = "Insert INTO $draw_prefix";
+		$query3 .= "filter_limits ";
+		$query3 .= "VALUES ( '0', ";
+		$query3 .= "         '$next_draw_date', ";
+		$query3 .= "         'od', ";
+		$query3 .= "         '$hml', ";
+		$query3 .= "         '0', "; #col1
+		$query3 .= "         '0', ";
+		$query3 .= "         '$low', ";
+		$query3 .= "         '$mid', ";
+		$query3 .= "         '$high', ";
+		$query3 .= "         '$range', ";
+		$query3 .= "         '0.0', ";
+		$query3 .= "         '0.0', ";
+		$query3 .= "         '0.0', ";
+		$query3 .= "         '0.0') ";
+
+		#print "$query3<p>";
+		
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND   sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+			
+			$sum_array = array();
+			$y = 0;
+
+			# get each row
+			while($row = mysqli_fetch_array($mysqli_result))
+			{
+				$sum_array[$y++] = $row[odd];
+			}
+
+			sort($sum_array);
+
+			#print_r ($sum_array);
+
+			if (count($sum_array) == 0)
+			{
+				$low = 0;
+				$mid = 0;
+				$high = 0;
+			} elseif (count($sum_array) == 2) {
+				$low = $sum_array[0];
+				$mid = $sum_array[0];
+				$high = $sum_array[1];
+			} elseif (count($sum_array) > 1) {
+				$low = $sum_array[1];
+				$mid = intval(($sum_array[4]+$sum_array[5])/2);
+				$high = $sum_array[count($sum_array)-2];
+			} else {
+				$low = $sum_array[0];
+				$mid = $sum_array[0];
+				$high = $sum_array[0];
+			}
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'od', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '$x', "; #col1
+			$query3 .= "         '0', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}	
+	}
+
+	function lot_filter_limit_d2_1 ($next_draw_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# sum limit all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND   sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+		
+		$sum_array = array();
+		$x = 0;
+
+		# get each row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			$sum_array[$x++] = $row[d2_1];
+		}
+
+		sort($sum_array);
+
+		#print_r ($sum_array);
+
+		if (count($sum_array) == 0)
+		{
+			$low = 0;
+			$mid = 0;
+			$high = 0;
+		} elseif (count($sum_array) > 1) {
+			$low = $sum_array[0];
+			$mid = intval(($sum_array[4]+$sum_array[5])/2);
+			$high = $sum_array[count($sum_array)-1];
+		} else {
+			$low = $sum_array[0];
+			$mid = $sum_array[0];
+			$high = $sum_array[0];
+		}
+
+		$range = $high - $low;
+		#echo "<p>range = $range</p>";
+
+		$query3 = "Insert INTO $draw_prefix";
+		$query3 .= "filter_limits ";
+		$query3 .= "VALUES ( '0', ";
+		$query3 .= "         '$next_draw_date', ";
+		$query3 .= "         'd1', ";
+		$query3 .= "         '$hml', ";
+		$query3 .= "         '0', "; #col1
+		$query3 .= "         '0', ";
+		$query3 .= "         '$low', ";
+		$query3 .= "         '$mid', ";
+		$query3 .= "         '$high', ";
+		$query3 .= "         '$range', ";
+		$query3 .= "         '0.0', ";
+		$query3 .= "         '0.0', ";
+		$query3 .= "         '0.0', ";
+		$query3 .= "         '0.0') ";
+
+		#print "$query3<p>";
+		
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND   sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+			
+			$sum_array = array();
+			$y = 0;
+
+			# get each row
+			while($row = mysqli_fetch_array($mysqli_result))
+			{
+				$sum_array[$y++] = $row[d2_1];
+			}
+
+			sort($sum_array);
+
+			#print_r ($sum_array);
+
+			if (count($sum_array) == 0)
+			{
+				$low = 0;
+				$mid = 0;
+				$high = 0;
+			} elseif (count($sum_array) > 1) {
+				$low = $sum_array[0];
+				$mid = intval(($sum_array[4]+$sum_array[5])/2);
+				$high = $sum_array[count($sum_array)-1];
+			} else {
+				$low = $sum_array[0];
+				$mid = $sum_array[0];
+				$high = $sum_array[0];
+			}
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'd1', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '$x', "; #col1
+			$query3 .= "         '0', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}	
+	}
+
+	function lot_filter_limit_draw ($next_draw_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# sum limit all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND   sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+
+		#print "$query<p>";
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+
+		$num_rows = mysqli_num_rows($mysqli_result);
+		
+		for ($d = 12; $d <= 16; $d++)
+		{
+			$draw_array = array();
+			$x = 0;
+
+			if ($num_rows)
+			{
+				mysqli_data_seek($mysqli_result,0); 
+
+				# get each row
+				while($row = mysqli_fetch_array($mysqli_result))
+				{
+					$draw_array[$x++] = $row[$d];
+				}
+
+				sort($draw_array);
+			}
+
+			#print_r ($draw_array);
+
+			if (count($draw_array) == 0)
+			{
+				$low = 0;
+				$mid = 0;
+				$high = 0;
+			} elseif (count($draw_array) > 1) {
+				$low = $draw_array[0];
+				$mid = intval(($draw_array[4]+$draw_array[5])/2);
+				$high = $draw_array[count($draw_array)-1];
+			} else {
+				$low = $draw_array[0];
+				$mid = $draw_array[0];
+				$high = $draw_array[0];
+			}
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$draw_pos =  $d - 11;
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'dr', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '0', "; #col1
+			$query3 .= "         '$draw_pos', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND   sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+
+			#print "$query<p>";
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+			$num_rows = mysqli_num_rows($mysqli_result);
+			
+			for ($d = 11; $d <= 16; $d++)
+			{
+				$draw_array = array();
+				$y = 0;
+
+				if ($num_rows)
+				{
+					mysqli_data_seek($mysqli_result,0); 
+
+					# get each row
+					while($row = mysqli_fetch_array($mysqli_result))
+					{
+						$draw_array[$y++] = $row[$d];
+					}
+
+					sort($draw_array);
+				}
+
+				#print_r ($draw_array);
+
+				if (count($draw_array) == 0)
+				{
+					$low = 0;
+					$mid = 0;
+					$high = 0;
+				} elseif (count($draw_array) > 1) {
+					$low = $draw_array[0];
+					$mid = intval(($draw_array[4]+$draw_array[5])/2);
+					$high = $draw_array[count($draw_array)-1];
+				} else {
+					$low = $draw_array[0];
+					$mid = $draw_array[0];
+					$high = $draw_array[0];
+				}
+
+				$range = $high - $low;
+				#echo "<p>range = $range</p>";
+
+				$draw_pos =  $d - 11;
+
+				$query3 = "Insert INTO $draw_prefix";
+				$query3 .= "filter_limits ";
+				$query3 .= "VALUES ( '0', ";
+				$query3 .= "         '$next_draw_date', ";
+				$query3 .= "         'dr', ";
+				$query3 .= "         '$hml', ";
+				$query3 .= "         '$x', "; #col1
+				$query3 .= "         '$draw_pos', ";
+				$query3 .= "         '$low', ";
+				$query3 .= "         '$mid', ";
+				$query3 .= "         '$high', ";
+				$query3 .= "         '$range', ";
+				$query3 .= "         '0.0', ";
+				$query3 .= "         '0.0', ";
+				$query3 .= "         '0.0', ";
+				$query3 .= "         '0.0') ";
+
+				#print "$query3<p>";
+				
+				$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+			}
+		}	
+	}
+
+	function lot_filter_limit_rank ($next_draw_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# sum limit all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND   sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+
+		#print "$query<p>";
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+		
+		$num_rows = mysqli_num_rows($mysqli_result);
+		
+		for ($r = 18; $r <= 24; $r++)
+		{
+			$rank_array = array();
+			$x = 0;
+
+			if ($num_rows)
+			{
+				mysqli_data_seek($mysqli_result,0); 
+
+				# get each row
+				while($row = mysqli_fetch_array($mysqli_result))
+				{
+					$rank_array[$x++] = $row[$r];
+				}
+
+				sort($rank_array);
+			}
+
+			#print_r ($rank_array);
+
+			$low = $rank_array[0];
+			$mid = intval(($rank_array[4]+$rank_array[5])/2);
+			$high = $rank_array[count($rank_array)-2];
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$rank_pos =  $r - 15;
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'rn', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '0', "; #col1
+			$query3 .= "         '$rank_pos', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";	
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND   sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+
+			#print "$query<p>";
+			
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+			$num_rows = mysqli_num_rows($mysqli_result);
+
+			for ($r = 15; $r <= 21; $r++)
+			{
+				$rank_array = array();
+				$y = 0;
+
+				if ($num_rows)
+				{
+					mysqli_data_seek($mysqli_result,0); 
+
+					# get each row
+					while($row = mysqli_fetch_array($mysqli_result))
+					{
+						$rank_array[$y++] = $row[$r];
+					}
+
+					sort($rank_array);
+				}
+
+				#print_r ($rank_array);
+
+				$low = $rank_array[0];
+				$mid = intval(($rank_array[4]+$rank_array[5])/2);
+				$high = $rank_array[count($rank_array)-2];
+
+				$range = $high - $low;
+				#echo "<p>range = $range</p>";
+
+				$rank_pos =  $r - 15;
+
+				$query3 = "Insert INTO $draw_prefix";
+				$query3 .= "filter_limits ";
+				$query3 .= "VALUES ( '0', ";
+				$query3 .= "         '$next_draw_date', ";
+				$query3 .= "         'rn', ";
+				$query3 .= "         '$hml', ";
+				$query3 .= "         '$x', "; #col1
+				$query3 .= "         '$rank_pos', ";
+				$query3 .= "         '$low', ";
+				$query3 .= "         '$mid', ";
+				$query3 .= "         '$high', ";
+				$query3 .= "         '$range', ";
+				$query3 .= "         '0.0', ";
+				$query3 .= "         '0.0', ";
+				$query3 .= "         '0.0', ";
+				$query3 .= "         '0.0') ";
+
+				#print "$query3<p>";
+				
+				$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+			}
+		}	
+	}
+
+	function lot_filter_limit_dup ($next_draw_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# dup limit all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND   sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+
+		#echo "$query<br>";
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$num_rows = mysqli_num_rows($mysqli_result);
+		
+		for ($d = 1; $d <= 10; $d++)
+		{
+			$dup_array = array();
+			$x = 0;
+
+			if ($num_rows)
+			{
+				mysqli_data_seek($mysqli_result,0); 
+
+				# get each row
+				while($row = mysqli_fetch_array($mysqli_result))
+				{
+					$query_dup = "SELECT * FROM $draw_prefix";
+					$query_dup .= "dup_table ";
+					$query_dup .= "WHERE date = '$row[0]' "; 
+
+					#echo "$query_dup<br>";
+		
+					$mysqli_result_dup = mysqli_query($query_dup, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+					$num_rows_dup = mysqli_num_rows($mysqli_result_dup); 
+
+					echo "num_rows_dup = $num_rows_dup<p>";
+
+					if ($num_rows_dup)
+					{
+						$row_dup = mysqli_fetch_array($mysqli_result_dup);
+
+						$dup_array[$x++] = $row_dup[$d];
+					}
+				}
+
+				sort($dup_array);
+			}
+
+			#print_r ($dup_array);
+
+			$low = $dup_array[0];
+			$mid = intval(($dup_array[4]+$dup_array[5])/2);
+			$high = $dup_array[count($dup_array)-2];
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'dp', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '0', "; #col1
+			$query3 .= "         '$d', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND   sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+
+			#echo "$query<br>";
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+			
+			for ($d = 1; $d <= 10; $d++)
+			{
+				$dup_array = array();
+				$y = 0;
+
+				if ($num_rows)
+				{
+					mysqli_data_seek($mysqli_result,0); 
+
+					# get each row
+					while($row = mysqli_fetch_array($mysqli_result))
+					{
+						$query_dup = "SELECT * FROM $draw_prefix";
+						$query_dup .= "dup_table ";
+						$query_dup .= "WHERE date = '$row[0]' "; 
+
+						#echo "$query_dup<br>";
+			
+						$mysqli_result_dup = mysqli_query($query_dup, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+						$num_rows_dup = mysqli_num_rows($mysqli_result_dup); 
+
+						echo "num_rows_dup = $num_rows_dup<p>";
+
+						if ($num_rows_dup)
+						{
+							$row_dup = mysqli_fetch_array($mysqli_result_dup);
+
+							echo "d = $d - $row[0] - row_dup[$d] = $row_dup[$d]<p>";
+
+							$dup_array[$y++] = $row_dup[$d];
+						}
+					}
+
+					sort($dup_array);
+				}
+
+				#print_r ($dup_array);
+
+				$low = $dup_array[0];
+				$mid = intval(($dup_array[4]+$dup_array[5])/2);
+				$high = $dup_array[count($dup_array)-2];
+
+				$range = $high - $low;
+				#echo "<p>range = $range</p>";
+
+				$query3 = "Insert INTO $draw_prefix";
+				$query3 .= "filter_limits ";
+				$query3 .= "VALUES ( '0', ";
+				$query3 .= "         '$next_draw_date', ";
+				$query3 .= "         'dp', ";
+				$query3 .= "         '$hml', ";
+				$query3 .= "         '$x', "; #col1
+				$query3 .= "         '$d', ";
+				$query3 .= "         '$low', ";
+				$query3 .= "         '$mid', ";
+				$query3 .= "         '$high', ";
+				$query3 .= "         '$range', ";
+				$query3 .= "         '0.0', ";
+				$query3 .= "         '0.0', ";
+				$query3 .= "         '0.0', ";
+				$query3 .= "         '0.0') ";
+
+				#print "$query3<p>";
+				
+				$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+			}
+		}	
+	}
+
+	function lot_filter_limit_combo ($next_draw_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+
+		#print "$query<p>";
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+
+		$comb_array_2 = array();
+		$comb_array_3 = array();
+		$comb_array_4 = array();
+		$comb_array_5 = array();
+		$y = 0;
+
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			$query_temp2 = "SELECT * FROM $draw_prefix";
+			$query_temp2 .= "combo_table ";
+			$query_temp2 .= "WHERE date = '$row[0]' ";
+
+			#print "$query_temp2<p>";
+
+			$mysqli_result_temp2 = mysqli_query($query_temp2, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+			$num_rows_combo = mysqli_num_rows($mysqli_result_temp2); 
+
+			echo "num_rows_combo = $num_rows_combo<p>";
+
+			if ($num_rows_combo)
+			{
+				$row_temp2 = mysqli_fetch_array($mysqli_result_temp2);
+
+				echo "row_temp2[c4] = $row_temp2[c4]<br>";
+
+				$comb_array_2[$y] = $row_temp2[c2];
+				$comb_array_3[$y] = $row_temp2[c3];
+				$comb_array_4[$y] = $row_temp2[c4];
+				$comb_array_5[$y] = $row_temp2[c5];
+				$y++;
+			} else {
+				$total_combin = array_fill (0,7,0);
+				$total_combin = test_combin($row);
+				combo_table_update($row[0],$total_combin[2],$total_combin[3],$total_combin[4],$total_combin[5]);
+				$comb_array_2[$y] = $total_combin[2];
+				$comb_array_3[$y] = $total_combin[3];
+				$comb_array_4[$y] = $total_combin[4];
+				$comb_array_5[$y] = $total_combin[5];
+				$y++;
+			}
+		}
+
+		sort($comb_array_2);
+		#print_r ($comb_array_2);
+		sort($comb_array_3);
+		#print_r ($comb_array_3);	
+		sort($comb_array_4);
+		#print_r ($comb_array_4);
+		sort($comb_array_5);
+		#print_r ($comb_array_5);
+
+		for ($c = 2; $c <= 5; $c++)
+		{
+			$low = ${comb_array_.$c}[1];
+			$mid = intval((${comb_array_.$c}[4]+${comb_array_.$c}[5])/2);
+			$high = ${comb_array_.$c}[count(${comb_array_.$c})-2];
+
+			$range = $high - $low;
+			#echo "<p>range ($c) = $range</p>";
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'cb', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '0', "; #col1
+			$query3 .= "         '$c', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+
+			#print "$query<p>";
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+			
+			$comb_array_2 = array();
+			$comb_array_3 = array();
+			$comb_array_4 = array();
+			$comb_array_5 = array();
+			$y = 0;
+
+			while($row = mysqli_fetch_array($mysqli_result))
+			{
+				$query_temp2 = "SELECT * FROM $draw_prefix";
+				$query_temp2 .= "combo_table ";
+				$query_temp2 .= "WHERE date = '$row[0]' ";
+
+				#print "$query_temp2<p>";
+
+				$mysqli_result_temp2 = mysqli_query($query_temp2, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+				$row_temp2 = mysqli_fetch_array($mysqli_result_temp2);
+
+				$num_rows_combo = mysqli_num_rows($mysqli_result_temp2); 
+
+				echo "num_rows_combo = $num_rows_combo<p>";
+
+				if ($num_rows_combo)
+				{
+					$row_temp2 = mysqli_fetch_array($mysqli_result_temp2);
+
+					echo "row_temp2[c4] = $row_temp2[c4]<br>";
+
+					$comb_array_2[$y] = $row_temp2[c2];
+					$comb_array_3[$y] = $row_temp2[c3];
+					$comb_array_4[$y] = $row_temp2[c4];
+					$comb_array_5[$y] = $row_temp2[c5];
+					$y++;
+				} else {
+					$total_combin = array_fill (0,7,0);
+					$total_combin = test_combin($row);
+					combo_table_update($row[0],$total_combin[2],$total_combin[3],$total_combin[4],$total_combin[5]);
+					echo "total_combin[2] = $total_combin[2]<br>";
+					$comb_array_2[$y] = $total_combin[2];
+					$comb_array_3[$y] = $total_combin[3];
+					$comb_array_4[$y] = $total_combin[4];
+					$comb_array_5[$y] = $total_combin[5];
+					$y++;
+				}
+			}
+
+			sort($comb_array_2);
+			#print_r ($comb_array_2);
+			sort($comb_array_3);
+			#print_r ($comb_array_3);
+			sort($comb_array_4);
+			#print_r ($comb_array_4);
+			sort($comb_array_5);
+			#print_r ($comb_array_5);
+
+			for ($c = 2; $c <= 5; $c++)
+			{
+				$low = ${comb_array_.$c}[1];
+				$mid = intval((${comb_array_.$c}[4]+${comb_array_.$c}[5])/2);
+				$high = ${comb_array_.$c}[count(${comb_array_.$c})-2];
+
+				$range = $high - $low;
+				#echo "<p>range ($c) = $range</p>";
+
+				$query3 = "Insert INTO $draw_prefix";
+				$query3 .= "filter_limits ";
+				$query3 .= "VALUES ( '0', ";
+				$query3 .= "         '$next_draw_date', ";
+				$query3 .= "         'cb', ";
+				$query3 .= "         '$hml', ";
+				$query3 .= "         '$x', "; #col1
+				$query3 .= "         '$c', ";
+				$query3 .= "         '$low', ";
+				$query3 .= "         '$mid', ";
+				$query3 .= "         '$high', ";
+				$query3 .= "         '$range', ";
+				$query3 .= "         '0.0', ";
+				$query3 .= "         '0.0', ";
+				$query3 .= "         '0.0', ";
+				$query3 .= "         '0.0') ";
+
+				#print "$query3<p>";
+				
+				$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+			}
+		}	
+	}
+
+	function lot_filter_limit_combo_count ($next_draw_date,$combo)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		$query_temp1 = "SELECT * FROM $draw_prefix";
+		$query_temp1 .= "$combo";
+		$query_temp1 .= "_";
+		$query_temp1 .= "$balls ";
+		$query_temp1 .= "ORDER BY combo DESC ";
+		$query_temp1 .= "LIMIT 1 ";
+
+		#print "$query_temp1<p>";
+	
+		$mysqli_result_temp1 = mysqli_query($query_temp1, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$row_temp1 = mysqli_fetch_array($mysqli_result_temp1);
+
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query5 .= "AND sum >= $range_low ";
+			$query5 .= "AND sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+
+		#print "$query<p>";
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+
+		for ($z = 1; $z <= $row_temp1[combo]; $z++)
+		{
+			$comb_array = array();
+			$y = 0;
+
+			mysqli_data_seek($mysqli_result, 0);
+
+			while($row = mysqli_fetch_array($mysqli_result))
+			{
+				echo "<b>$row[1] - $row[2] - $row[3] - $row[4] - $row[5]</b><p>";
+
+				$query_temp2 = "SELECT * FROM $draw_prefix";
+				$query_temp2 .= "$combo";
+				$query_temp2 .= "_";
+				$query_temp2 .= "$balls ";
+				$query_temp2 .= "WHERE date < '$row[0]' ";
+				$query_temp2 .= "AND combo = $z ";
+				$temp_combo = "combo_" . $combo . ".incl";
+				require ("$game_includes/$temp_combo");
+
+				#print "$query_temp2<p>";
+
+				$mysqli_result_temp2 = mysqli_query($query_temp2, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+				$row_temp2 = mysqli_fetch_array($mysqli_result_temp2);
+
+				$num_rows = mysqli_num_rows($mysqli_result_temp2);
+
+				echo "num_rows = $num_rows<p>";
+
+				$comb_array[$y] = $num_rows;
+				$y++;
+			}
+
+			sort($comb_array);
+
+			#print_r ($comb_array);
+
+			$low = $comb_array[0];
+			$mid = intval(($comb_array[4]+$comb_array[5])/2);
+			$high = $comb_array[count($comb_array)-2];
+
+			$range = $high - $low;
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'c$combo', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '0', "; #col1
+			$query3 .= "         '$z', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+
+			#print "$query<p>";
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+
+			for ($z = 1; $z <= $row_temp1[combo]; $z++)
+			{
+				$comb_array = array();
+				$y = 0;
+
+				mysqli_data_seek($mysqli_result, 0);
+
+				while($row = mysqli_fetch_array($mysqli_result))
+				{
+					#echo "<b>$row[1] - $row[2] - $row[3] - $row[4] - $row[5]</b><p>";
+
+					$query_temp2 = "SELECT * FROM $draw_prefix";
+					$query_temp2 .= "$combo";
+					$query_temp2 .= "_";
+					$query_temp2 .= "$balls ";
+					$query_temp2 .= "WHERE date < '$row[0]' ";
+					$query_temp2 .= "AND combo = $z ";
+					$temp_combo = "combo_" . $combo . ".incl";
+					require ("$game_includes/$temp_combo");
+
+					#print "$query_temp2<p>";
+
+					$mysqli_result_temp2 = mysqli_query($query_temp2, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+					$row_temp2 = mysqli_fetch_array($mysqli_result_temp2);
+
+					$num_rows = mysqli_num_rows($mysqli_result_temp2);
+
+					#echo "num_rows = $num_rows<p>";
+
+					$comb_array[$y] = $num_rows;
+					$y++;
+				}
+
+				sort($comb_array);
+
+				#print_r ($comb_array);
+
+				for ($c = 2; $c <= 5; $c++)
+				{
+					$low = $comb_array[0];
+					$mid = intval(($comb_array[4]+$comb_array[5])/2);
+					$high = $comb_array[count($comb_array)-2];
+
+					$range = $high - $low;
+
+					$query3 = "Insert INTO $draw_prefix";
+					$query3 .= "filter_limits ";
+					$query3 .= "VALUES ( '0', ";
+					$query3 .= "         '$next_draw_date', ";
+					$query3 .= "         'c$combo', ";
+					$query3 .= "         '$hml', ";
+					$query3 .= "         '$x', "; #col1
+					$query3 .= "         '$z', ";
+					$query3 .= "         '$low', ";
+					$query3 .= "         '$mid', ";
+					$query3 .= "         '$high', ";
+					$query3 .= "         '$range', ";
+					$query3 .= "         '0.0', ";
+					$query3 .= "         '0.0', ";
+					$query3 .= "         '0.0', ";
+					$query3 .= "         '0.0') ";
+
+					#print "$query3<p>";
+					
+					$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+				}
+			}
+		}
+	}
+
+	function lot_filter_limit_modx ($next_draw_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# sum limit all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+		
+		$sum_array = array();
+		$x = 0;
+
+		# get each row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			$sum_array[$x++] = $row[23];
+		}
+
+		sort($sum_array);
+
+		#print_r ($sum_array);
+
+		$low = $sum_array[0];
+		$mid = intval(($sum_array[4]+$sum_array[5])/2);
+		$high = $sum_array[count($sum_array)-1];
+
+		$range = $high - $low;
+		#echo "<p>range = $range</p>";
+
+		$query3 = "Insert INTO $draw_prefix";
+		$query3 .= "filter_limits ";
+		$query3 .= "VALUES ( '0', ";
+		$query3 .= "         '$next_draw_date', ";
+		$query3 .= "         'mx', ";
+		$query3 .= "         '0', "; #col1
+		$query3 .= "         '0', ";
+		$query3 .= "         '$low', ";
+		$query3 .= "         '$mid', ";
+		$query3 .= "         '$high', ";
+		$query3 .= "         '$range', ";
+		$query3 .= "         '0.0', ";
+		$query3 .= "         '0.0', ";
+		$query3 .= "         '0.0', ";
+		$query3 .= "         '0.0') ";
+
+		#print "$query3<p>";
+		
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+			
+			$sum_array = array();
+			$y = 0;
+
+			# get each row
+			while($row = mysqli_fetch_array($mysqli_result))
+			{
+				$sum_array[$y++] = $row[23];
+			}
+
+			sort($sum_array);
+
+			#print_r ($sum_array);
+
+			$low = $sum_array[0];
+			$mid = intval(($sum_array[4]+$sum_array[5])/2);
+			$high = $sum_array[count($sum_array)-1];
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'mx', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '$x', "; #col1
+			$query3 .= "         '0', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}	
+	}
+
+	function lot_filter_limit_mod ($next_draw_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# sum limit all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+		
+		$sum_array = array();
+		$x = 0;
+
+		# get each row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			$sum_array[$x++] = $row[22];
+		}
+
+		sort($sum_array);
+
+		#print_r ($sum_array);
+
+		$low = $sum_array[0];
+		$mid = intval(($sum_array[4]+$sum_array[5])/2);
+		$high = $sum_array[count($sum_array)-1];
+
+		$range = $high - $low;
+		#echo "<p>range = $range</p>";
+
+		$query3 = "Insert INTO $draw_prefix";
+		$query3 .= "filter_limits ";
+		$query3 .= "VALUES ( '0', ";
+		$query3 .= "         '$next_draw_date', ";
+		$query3 .= "         'mo', ";
+		$query3 .= "         '$hml', ";
+		$query3 .= "         '0', "; #col1
+		$query3 .= "         '0', ";
+		$query3 .= "         '$low', ";
+		$query3 .= "         '$mid', ";
+		$query3 .= "         '$high', ";
+		$query3 .= "         '$range', ";
+		$query3 .= "         '0.0', ";
+		$query3 .= "         '0.0', ";
+		$query3 .= "         '0.0', ";
+		$query3 .= "         '0.0') ";
+
+		#print "$query3<p>";
+		
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+			
+			$sum_array = array();
+			$y = 0;
+
+			# get each row
+			while($row = mysqli_fetch_array($mysqli_result))
+			{
+				$sum_array[$y++] = $row[22];
+			}
+
+			sort($sum_array);
+
+			#print_r ($sum_array);
+
+			$low = $sum_array[0];
+			$mid = intval(($sum_array[4]+$sum_array[5])/2);
+			$high = $sum_array[count($sum_array)-1];
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'mo', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '$x', "; #col1
+			$query3 .= "         '0', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}	
+	}
+	
+	function lot_filter_limit_d2_2 ($next_draw_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# sum limit all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+		
+		$sum_array = array();
+		$x = 0;
+
+		# get each row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			$sum_array[$x++] = $row[d2_2];
+		}
+
+		sort($sum_array);
+
+		#print_r ($sum_array);
+
+		if (count($sum_array) == 0)
+		{
+			$low = 0;
+			$mid = 0;
+			$high = 0;
+		} elseif (count($sum_array) > 1) {
+			$low = $sum_array[0];
+			$mid = intval(($sum_array[4]+$sum_array[5])/2);
+			$high = $sum_array[count($sum_array)-1];
+		} else {
+			$low = $sum_array[0];
+			$mid = $sum_array[0];
+			$high = $sum_array[0];
+		}
+
+		$range = $high - $low;
+		#echo "<p>range = $range</p>";
+
+		$query3 = "Insert INTO $draw_prefix";
+		$query3 .= "filter_limits ";
+		$query3 .= "VALUES ( '0', ";
+		$query3 .= "         '$next_draw_date', ";
+		$query3 .= "         'd2', ";
+		$query3 .= "         '$hml', ";
+		$query3 .= "         '0', "; #col1
+		$query3 .= "         '0', ";
+		$query3 .= "         '$low', ";
+		$query3 .= "         '$mid', ";
+		$query3 .= "         '$high', ";
+		$query3 .= "         '$range', ";
+		$query3 .= "         '0.0', ";
+		$query3 .= "         '0.0', ";
+		$query3 .= "         '0.0', ";
+		$query3 .= "         '0.0') ";
+
+		#print "$query3<p>";
+		
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+			
+			$sum_array = array();
+			$y = 0;
+
+			# get each row
+			while($row = mysqli_fetch_array($mysqli_result))
+			{
+				$sum_array[$y++] = $row[d2_2];
+			}
+
+			sort($sum_array);
+
+			#print_r ($sum_array);
+
+			if (count($sum_array) == 0)
+			{
+				$low = 0;
+				$mid = 0;
+				$high = 0;
+			} elseif (count($sum_array) > 1) {
+				$low = $sum_array[0];
+				$mid = intval(($sum_array[4]+$sum_array[5])/2);
+				$high = $sum_array[count($sum_array)-1];
+			} else {
+				$low = $sum_array[0];
+				$mid = $sum_array[0];
+				$high = $sum_array[0];
+			}
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'd2', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '$x', "; #col1
+			$query3 .= "         '0', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0', ";
+			$query3 .= "         '0.0') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}	
+	}
+
+	function lot_filter_limit_average ($next_draw_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# sum limit all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+		
+		$sum_array = array();
+		$x = 0;
+
+		# get each row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			$sum_array[$x++] = ($row[b1]+$row[b2]+$row[b3]+$row[b4]+$row[b5])/5;
+		}
+
+		sort($sum_array);
+
+		#print_r ($sum_array);
+
+		$low = $sum_array[0];
+		$mid = intval(($sum_array[4]+$sum_array[5])/2);
+		$high = $sum_array[count($sum_array)-1];
+
+		$range = $high - $low;
+		#echo "<p>range = $range</p>";
+
+		$query3 = "Insert INTO $draw_prefix";
+		$query3 .= "filter_limits ";
+		$query3 .= "VALUES ( '0', ";
+		$query3 .= "         '$next_draw_date', ";
+		$query3 .= "         'av', ";
+		$query3 .= "         '$hml', ";
+		$query3 .= "         '0', "; #col1
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '$low', ";
+		$query3 .= "         '$mid', ";
+		$query3 .= "         '$high', ";
+		$query3 .= "         '$range') ";
+
+		#print "$query3<p>";
+		
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+			
+			$sum_array = array();
+			$y = 0;
+
+			# get each row
+			while($row = mysqli_fetch_array($mysqli_result))
+			{
+				$sum_array[$y++] = ($row[b1]+$row[b2]+$row[b3]+$row[b4]+$row[b5])/5;
+			}
+
+			sort($sum_array);
+
+			#print_r ($sum_array);
+
+			$low = $sum_array[0];
+			$mid = intval(($sum_array[4]+$sum_array[5])/2);
+			$high = $sum_array[count($sum_array)-1];
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'av', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '$x', "; #col1
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}	
+	}
+
+	function lot_filter_limit_median ($next_draw_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# sum limit all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+		
+		$sum_array = array();
+		$x = 0;
+
+		# get each row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			if ($row[median] != 0.00)
+			{
+				$sum_array[$x++] = $row[median];
+			}
+		}
+
+		sort($sum_array);
+
+		#print_r ($sum_array);
+
+		$low = $sum_array[0];
+		$mid = intval(($sum_array[4]+$sum_array[5])/2);
+		$high = $sum_array[count($sum_array)-1];
+
+		$range = $high - $low;
+		#echo "<p>range = $range</p>";
+
+		$query3 = "Insert INTO $draw_prefix";
+		$query3 .= "filter_limits ";
+		$query3 .= "VALUES ( '0', ";
+		$query3 .= "         '$next_draw_date', ";
+		$query3 .= "         'md', ";
+		$query3 .= "         '$hml', ";
+		$query3 .= "         '0', "; #col1
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '$low', ";
+		$query3 .= "         '$mid', ";
+		$query3 .= "         '$high', ";
+		$query3 .= "         '$range') ";
+
+		#print "$query3<p>";
+		
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+			
+			$sum_array = array();
+			$y = 0;
+
+			# get each row
+			while($row = mysqli_fetch_array($mysqli_result))
+			{
+				if ($row[median] != 0.00)
+				{
+					$sum_array[$y++] = $row[median];
+				}
+			}
+
+			sort($sum_array);
+
+			#print_r ($sum_array);
+
+			$low = $sum_array[0];
+			$mid = intval(($sum_array[4]+$sum_array[5])/2);
+			$high = $sum_array[count($sum_array)-1];
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'md', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '$x', "; #col1
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}	
+	}
+
+	function lot_filter_limit_harmean ($next_draw_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# sum limit all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+		
+		$sum_array = array();
+		$x = 0;
+
+		# get each row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			if ($row[harmean] != 0.00)
+			{
+				$sum_array[$x++] = $row[harmean];
+			}
+		}
+
+		sort($sum_array);
+
+		#print_r ($sum_array);
+
+		$low = $sum_array[0];
+		$mid = intval(($sum_array[4]+$sum_array[5])/2);
+		$high = $sum_array[count($sum_array)-1];
+
+		$range = $high - $low;
+		#echo "<p>range = $range</p>";
+
+		$query3 = "Insert INTO $draw_prefix";
+		$query3 .= "filter_limits ";
+		$query3 .= "VALUES ( '0', ";
+		$query3 .= "         '$next_draw_date', ";
+		$query3 .= "         'hm', ";
+		$query3 .= "         '$hml', ";
+		$query3 .= "         '0', "; #col1
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '$low', ";
+		$query3 .= "         '$mid', ";
+		$query3 .= "         '$high', ";
+		$query3 .= "         '$range') ";
+
+		#print "$query3<p>";
+		
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND sum <= $range_high ";
+			}
+			$query .= "AND date < '$next_draw_date' ";
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+			
+			$sum_array = array();
+			$y = 0;
+
+			# get each row
+			while($row = mysqli_fetch_array($mysqli_result))
+			{
+				if ($row[harmean] != 0.00)
+				{
+					$sum_array[$y++] = $row[harmean];
+				}
+			}
+
+			sort($sum_array);
+
+			#print_r ($sum_array);
+
+			$low = $sum_array[0];
+			$mid = intval(($sum_array[4]+$sum_array[5])/2);
+			$high = $sum_array[count($sum_array)-1];
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'hm', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '$x', "; #col1
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}	
+	}
+
+	function lot_filter_limit_geomean ($next_draw_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# sum limit all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+		
+		$sum_array = array();
+		$x = 0;
+
+		# get each row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			$sum_array[$x++] = $row[geomean];
+		}
+
+		sort($sum_array);
+
+		#print_r ($sum_array);
+
+		$low = $sum_array[0];
+		$mid = intval(($sum_array[4]+$sum_array[5])/2);
+		$high = $sum_array[count($sum_array)-1];
+
+		$range = $high - $low;
+		#echo "<p>range = $range</p>";
+
+		$query3 = "Insert INTO $draw_prefix";
+		$query3 .= "filter_limits ";
+		$query3 .= "VALUES ( '0', ";
+		$query3 .= "         '$next_draw_date', ";
+		$query3 .= "         'gm', ";
+		$query3 .= "         '$hml', ";
+		$query3 .= "         '0', "; #col1
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '$low', ";
+		$query3 .= "         '$mid', ";
+		$query3 .= "         '$high', ";
+		$query3 .= "         '$range') ";
+
+		#print "$query3<p>";
+		
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+			
+			$sum_array = array();
+			$y = 0;
+
+			# get each row
+			while($row = mysqli_fetch_array($mysqli_result))
+			{
+				$sum_array[$y++] = $row[geomean];
+			}
+
+			sort($sum_array);
+
+			#print_r ($sum_array);
+
+			$low = $sum_array[0];
+			$mid = intval(($sum_array[4]+$sum_array[5])/2);
+			$high = $sum_array[count($sum_array)-1];
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'gm', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '$x', "; #col1
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}	
+	}
+
+	function lot_filter_limit_quart1 ($next_draw_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# sum limit all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+		
+		$sum_array = array();
+		$x = 0;
+
+		# get each row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			if ($row[quart1] != 0.00)
+			{
+				$sum_array[$x++] = $row[quart1];
+			}
+		}
+
+		sort($sum_array);
+
+		#print_r ($sum_array);
+
+		$low = $sum_array[0];
+		$mid = intval(($sum_array[4]+$sum_array[5])/2);
+		$high = $sum_array[count($sum_array)-1];
+
+		$range = $high - $low;
+		#echo "<p>range = $range</p>";
+
+		$query3 = "Insert INTO $draw_prefix";
+		$query3 .= "filter_limits ";
+		$query3 .= "VALUES ( '0', ";
+		$query3 .= "         '$next_draw_date', ";
+		$query3 .= "         'q1', ";
+		$query3 .= "         '$hml', ";
+		$query3 .= "         '0', "; #col1
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '$low', ";
+		$query3 .= "         '$mid', ";
+		$query3 .= "         '$high', ";
+		$query3 .= "         '$range') ";
+
+		#print "$query3<p>";
+		
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+			
+			$sum_array = array();
+			$y = 0;
+
+			# get each row
+			while($row = mysqli_fetch_array($mysqli_result))
+			{
+				if ($row[quart1] != 0.00)
+				{
+					$sum_array[$y++] = $row[quart1];
+				}
+			}
+
+			sort($sum_array);
+
+			#print_r ($sum_array);
+
+			$low = $sum_array[0];
+			$mid = intval(($sum_array[4]+$sum_array[5])/2);
+			$high = $sum_array[count($sum_array)-1];
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'q1', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '$x', "; #col1
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}	
+	}
+
+	function lot_filter_limit_quart2 ($next_draw_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# sum limit all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+		
+		$sum_array = array();
+		$x = 0;
+
+		# get each row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			if ($row[quart2] != 0.00)
+			{
+				$sum_array[$x++] = $row[quart2];
+			}
+		}
+
+		sort($sum_array);
+
+		#print_r ($sum_array);
+
+		$low = $sum_array[0];
+		$mid = intval(($sum_array[4]+$sum_array[5])/2);
+		$high = $sum_array[count($sum_array)-1];
+
+		$range = $high - $low;
+		#echo "<p>range = $range</p>";
+
+		$query3 = "Insert INTO $draw_prefix";
+		$query3 .= "filter_limits ";
+		$query3 .= "VALUES ( '0', ";
+		$query3 .= "         '$next_draw_date', ";
+		$query3 .= "         'q2', ";
+		$query3 .= "         '$hml', ";
+		$query3 .= "         '0', "; #col1
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '$low', ";
+		$query3 .= "         '$mid', ";
+		$query3 .= "         '$high', ";
+		$query3 .= "         '$range') ";
+
+		#print "$query3<p>";
+		
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+			
+			$sum_array = array();
+			$y = 0;
+
+			# get each row
+			while($row = mysqli_fetch_array($mysqli_result))
+			{
+				if ($row[quart2] != 0.00)
+				{
+					$sum_array[$y++] = $row[quart2];
+				}
+			}
+
+			sort($sum_array);
+
+			#print_r ($sum_array);
+
+			$low = $sum_array[0];
+			$mid = intval(($sum_array[4]+$sum_array[5])/2);
+			$high = $sum_array[count($sum_array)-1];
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'q2', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '$x', "; #col1
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}	
+	}
+
+	function lot_filter_limit_quart3 ($next_draw_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# sum limit all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+		
+		$sum_array = array();
+		$x = 0;
+
+		# get each row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			if ($row[quart3] != 0.00)
+			{
+				$sum_array[$x++] = $row[quart3];
+			}
+		}
+
+		sort($sum_array);
+
+		#print_r ($sum_array);
+
+		$low = $sum_array[0];
+		$mid = intval(($sum_array[4]+$sum_array[5])/2);
+		$high = $sum_array[count($sum_array)-1];
+
+		$range = $high - $low;
+		#echo "<p>range = $range</p>";
+
+		$query3 = "Insert INTO $draw_prefix";
+		$query3 .= "filter_limits ";
+		$query3 .= "VALUES ( '0', ";
+		$query3 .= "         '$next_draw_date', ";
+		$query3 .= "         'q3', ";
+		$query3 .= "         '$hml', ";
+		$query3 .= "         '0', "; #col1
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '$low', ";
+		$query3 .= "         '$mid', ";
+		$query3 .= "         '$high', ";
+		$query3 .= "         '$range') ";
+
+		#print "$query3<p>";
+		
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+			
+			$sum_array = array();
+			$y = 0;
+
+			# get each row
+			while($row = mysqli_fetch_array($mysqli_result))
+			{
+				if ($row[quart3] != 0.00)
+				{
+					$sum_array[$y++] = $row[quart3];
+				}
+			}
+
+			sort($sum_array);
+
+			#print_r ($sum_array);
+
+			$low = $sum_array[0];
+			$mid = intval(($sum_array[4]+$sum_array[5])/2);
+			$high = $sum_array[count($sum_array)-1];
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'q3', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '$x', "; #col1
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}	
+	}
+
+	function lot_filter_limit_stdev ($next_draw_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# sum limit all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+		
+		$sum_array = array();
+		$x = 0;
+
+		# get each row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			if ($row[stdev] != 0.00)
+			{
+				$sum_array[$x++] = $row[stdev];
+			}
+		}
+
+		sort($sum_array);
+
+		#print_r ($sum_array);
+
+		$low = $sum_array[0];
+		$mid = intval(($sum_array[4]+$sum_array[5])/2);
+		$high = $sum_array[count($sum_array)-1];
+
+		$range = $high - $low;
+		#echo "<p>range = $range</p>";
+
+		$query3 = "Insert INTO $draw_prefix";
+		$query3 .= "filter_limits ";
+		$query3 .= "VALUES ( '0', ";
+		$query3 .= "         '$next_draw_date', ";
+		$query3 .= "         'sd', ";
+		$query3 .= "         '$hml', ";
+		$query3 .= "         '0', "; #col1
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '$low', ";
+		$query3 .= "         '$mid', ";
+		$query3 .= "         '$high', ";
+		$query3 .= "         '$range') ";
+
+		#print "$query3<p>";
+		
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+			
+			$sum_array = array();
+			$y = 0;
+
+			# get each row
+			while($row = mysqli_fetch_array($mysqli_result))
+			{
+				if ($row[stdev] != 0.00)
+				{
+					$sum_array[$y++] = $row[stdev];
+				}
+			}
+
+			sort($sum_array);
+
+			#print_r ($sum_array);
+
+			$low = $sum_array[0];
+			$mid = intval(($sum_array[4]+$sum_array[5])/2);
+			$high = $sum_array[count($sum_array)-1];
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'sd', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '$x', "; #col1
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}	
+	}
+
+	function lot_filter_limit_variance ($next_draw_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# sum limit all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+		
+		$sum_array = array();
+		$x = 0;
+
+		# get each row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			if ($row[variance] != 0.00)
+			{
+				$sum_array[$x++] = $row[variance];
+			}
+		}
+
+		sort($sum_array);
+
+		#print_r ($sum_array);
+
+		$low = $sum_array[0];
+		$mid = intval(($sum_array[4]+$sum_array[5])/2);
+		$high = $sum_array[count($sum_array)-1];
+
+		$range = $high - $low;
+		#echo "<p>range = $range</p>";
+
+		$query3 = "Insert INTO $draw_prefix";
+		$query3 .= "filter_limits ";
+		$query3 .= "VALUES ( '0', ";
+		$query3 .= "         '$next_draw_date', ";
+		$query3 .= "         'vr', ";
+		$query3 .= "         '$hml', ";
+		$query3 .= "         '0', "; #col1
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '$low', ";
+		$query3 .= "         '$mid', ";
+		$query3 .= "         '$high', ";
+		$query3 .= "         '$range') ";
+
+		#print "$query3<p>";
+		
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+			
+			$sum_array = array();
+			$y = 0;
+
+			# get each row
+			while($row = mysqli_fetch_array($mysqli_result))
+			{
+				if ($row[variance] != 0.00)
+				{
+					$sum_array[$y++] = $row[variance];
+				}
+			}
+
+			sort($sum_array);
+
+			#print_r ($sum_array);
+
+			$low = $sum_array[0];
+			$mid = intval(($sum_array[4]+$sum_array[5])/2);
+			$high = $sum_array[count($sum_array)-1];
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'vr', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '$x', "; #col1
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}	
+	}
+
+	function lot_filter_limit_avedev ($next_draw_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# sum limit all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+		
+		$sum_array = array();
+		$x = 0;
+
+		# get each row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			if ($row[avedev] != 0.00)
+			{
+				$sum_array[$x++] = $row[avedev];
+			}
+		}
+
+		sort($sum_array);
+
+		#print_r ($sum_array);
+
+		$low = $sum_array[0];
+		$mid = intval(($sum_array[4]+$sum_array[5])/2);
+		$high = $sum_array[count($sum_array)-1];
+
+		$range = $high - $low;
+		#echo "<p>range = $range</p>";
+
+		$query3 = "Insert INTO $draw_prefix";
+		$query3 .= "filter_limits ";
+		$query3 .= "VALUES ( '0', ";
+		$query3 .= "         '$next_draw_date', ";
+		$query3 .= "         'ad', ";
+		$query3 .= "         '$hml', ";
+		$query3 .= "         '0', "; #col1
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '$low', ";
+		$query3 .= "         '$mid', ";
+		$query3 .= "         '$high', ";
+		$query3 .= "         '$range') ";
+
+		#print "$query3<p>";
+		
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+			
+			$sum_array = array();
+			$y = 0;
+
+			# get each row
+			while($row = mysqli_fetch_array($mysqli_result))
+			{
+				if ($row[avedev] != 0.00)
+				{
+					$sum_array[$y++] = $row[avedev];
+				}
+			}
+
+			sort($sum_array);
+
+			#print_r ($sum_array);
+
+			$low = $sum_array[0];
+			$mid = intval(($sum_array[4]+$sum_array[5])/2);
+			$high = $sum_array[count($sum_array)-1];
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'ad', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '$x', "; #col1
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}	
+	}
+
+	function lot_filter_limit_kurt ($next_draw_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# sum limit all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+		
+		$sum_array = array();
+		$x = 0;
+
+		# get each row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			$sum_array[$x++] = $row[kurt];
+		}
+
+		sort($sum_array);
+
+		#print_r ($sum_array);
+
+		$low = $sum_array[0];
+		$mid = intval(($sum_array[4]+$sum_array[5])/2);
+		$high = $sum_array[count($sum_array)-1];
+
+		$range = $high - $low;
+		#echo "<p>range = $range</p>";
+
+		$query3 = "Insert INTO $draw_prefix";
+		$query3 .= "filter_limits ";
+		$query3 .= "VALUES ( '0', ";
+		$query3 .= "         '$next_draw_date', ";
+		$query3 .= "         'kt', ";
+		$query3 .= "         '$hml', ";
+		$query3 .= "         '0', "; #col1
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '$low', ";
+		$query3 .= "         '$mid', ";
+		$query3 .= "         '$high', ";
+		$query3 .= "         '$range') ";
+
+		#print "$query3<p>";
+		
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+			
+			$sum_array = array();
+			$y = 0;
+
+			# get each row
+			while($row = mysqli_fetch_array($mysqli_result))
+			{
+				$sum_array[$y++] = $row[kurt];
+			}
+
+			sort($sum_array);
+
+			#print_r ($sum_array);
+
+			$low = $sum_array[0];
+			$mid = intval(($sum_array[4]+$sum_array[5])/2);
+			$high = $sum_array[count($sum_array)-1];
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'kt', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '$x', "; #col1
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}	
+	}
+
+	function lot_filter_limit_skew ($next_draw_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# sum limit all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+		
+		$sum_array = array();
+		$x = 0;
+
+		# get each row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			$sum_array[$x++] = $row[skew];
+		}
+
+		sort($sum_array);
+
+		#print_r ($sum_array);
+
+		$low = $sum_array[0];
+		$mid = intval(($sum_array[4]+$sum_array[5])/2);
+		$high = $sum_array[count($sum_array)-1];
+
+		$range = $high - $low;
+		#echo "<p>range = $range</p>";
+
+		$query3 = "Insert INTO $draw_prefix";
+		$query3 .= "filter_limits ";
+		$query3 .= "VALUES ( '0', ";
+		$query3 .= "         '$next_draw_date', ";
+		$query3 .= "         'sk', ";
+		$query3 .= "         '$hml', ";
+		$query3 .= "         '0', "; #col1
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '$low', ";
+		$query3 .= "         '$mid', ";
+		$query3 .= "         '$high', ";
+		$query3 .= "         '$range') ";
+
+		#print "$query3<p>";
+		
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+			
+			$sum_array = array();
+			$y = 0;
+
+			# get each row
+			while($row = mysqli_fetch_array($mysqli_result))
+			{
+				$sum_array[$y++] = $row[skew];
+			}
+
+			sort($sum_array);
+
+			#print_r ($sum_array);
+
+			$low = $sum_array[0];
+			$mid = intval(($sum_array[4]+$sum_array[5])/2);
+			$high = $sum_array[count($sum_array)-1];
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'sk', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '$x', "; #col1
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}	
+	}
+
+	function lot_filter_limit_devsq ($next_draw_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes, $hml, $range_low, $range_high;
+	
+		require ("includes/mysqli.php");
+		require ("$game_includes/config.incl");
+
+		#echo "<p><b>Col1 = all</b></p>";
+
+		# sum limit all
+		$query = "SELECT * FROM $draw_table_name ";
+		$query .= "WHERE date < '$next_draw_date' ";
+		if ($hml)
+		{
+			$query .= "AND sum >= $range_low ";
+			$query .= "AND sum <= $range_high ";
+		}
+		$query .= "ORDER BY date DESC ";
+		$query .= "LIMIT 10 "; 
+	
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+		
+		$sum_array = array();
+		$x = 0;
+
+		# get each row
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+			if ($row[devsq] != 0.00)
+			{
+				$sum_array[$x++] = $row[devsq];
+			}
+		}
+
+		sort($sum_array);
+
+		#print_r ($sum_array);
+
+		$low = $sum_array[0];
+		$mid = intval(($sum_array[4]+$sum_array[5])/2);
+		$high = $sum_array[count($sum_array)-1];
+
+		$range = $high - $low;
+		#echo "<p>range = $range</p>";
+
+		$query3 = "Insert INTO $draw_prefix";
+		$query3 .= "filter_limits ";
+		$query3 .= "VALUES ( '0', ";
+		$query3 .= "         '$next_draw_date', ";
+		$query3 .= "         'ds', ";
+		$query3 .= "         '$hml', ";
+		$query3 .= "         '0', "; #col1
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '0', ";
+		$query3 .= "         '$low', ";
+		$query3 .= "         '$mid', ";
+		$query3 .= "         '$high', ";
+		$query3 .= "         '$range') ";
+
+		#print "$query3<p>";
+		
+		$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+		for ($x = 1; $x <= 20; $x++)
+		{
+			#echo "<p><b>Col1 = $x</b></p>";
+
+			# sum limit col1 = $x
+			$query = "SELECT * FROM $draw_table_name ";
+			$query .= "WHERE b1 = $x ";
+			$query .= "AND date < '$next_draw_date' ";
+			if ($hml)
+			{
+				$query .= "AND sum >= $range_low ";
+				$query .= "AND sum <= $range_high ";
+			}
+			$query .= "ORDER BY date DESC ";
+			$query .= "LIMIT 10 "; 
+		
+			$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));	
+			
+			$sum_array = array();
+			$y = 0;
+
+			# get each row
+			while($row = mysqli_fetch_array($mysqli_result))
+			{
+				if ($row[devsq] != 0.00)
+				{
+					$sum_array[$y++] = $row[devsq];
+				}
+			}
+
+			sort($sum_array);
+
+			#print_r ($sum_array);
+
+			$low = $sum_array[0];
+			$mid = intval(($sum_array[4]+$sum_array[5])/2);
+			$high = $sum_array[count($sum_array)-1];
+
+			$range = $high - $low;
+			#echo "<p>range = $range</p>";
+
+			$query3 = "Insert INTO $draw_prefix";
+			$query3 .= "filter_limits ";
+			$query3 .= "VALUES ( '0', ";
+			$query3 .= "         '$next_draw_date', ";
+			$query3 .= "         'ds', ";
+			$query3 .= "         '$hml', ";
+			$query3 .= "         '$x', "; #col1
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '0', ";
+			$query3 .= "         '$low', ";
+			$query3 .= "         '$mid', ";
+			$query3 .= "         '$high', ";
+			$query3 .= "         '$range') ";
+
+			#print "$query3<p>";
+			
+			$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+		}	
+	}
+
+	// ----------------------------------------------------------------------------------
+	function combo_table_update($date,$total2,$total3,$total4,$total5)
+	{
+		global $debug,$min_test,$max_test,$date_test,$draw_prefix,$balls_drawn;
+
+		require ("includes/mysqli.php"); 
+
+		$query_combo = "INSERT INTO $draw_prefix";
+		$query_combo .= "combo_table ";
+		$query_combo .= "VALUES ('$date', ";
+		$query_combo .= "'$total2', ";
+		$query_combo .= "'$total3', ";
+		$query_combo .= "'$total4', ";
+		$query_combo .= "'$total5')";
+
+		##echo "$query_combo<br>";
+
+		$mysqli_result_combo = mysqli_query($query_combo, $mysqli_link) or die (mysqli_error($mysqli_link));
+	}
+?>

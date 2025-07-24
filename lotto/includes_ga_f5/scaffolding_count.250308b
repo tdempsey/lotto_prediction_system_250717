@@ -1,0 +1,403 @@
+<?php
+/**
+ * Scaffolding Count Script
+ * 
+ * This script processes lottery data statistics and creates statistical tables
+ * with improved error handling and structure.
+ */
+
+// Initialize empty arrays and variables to prevent undefined variable errors
+$sumx_count = array_fill(0, 30, 0);
+$count_all = 0;
+
+/**
+ * Read sum data from database and calculate weights
+ * 
+ * @param object $mysqli_link Database connection
+ * @return array Sum count array
+ */
+function getSumxCount($mysqli_link) {
+    $sumx_count = array_fill(0, 30, 0);
+    
+    $query = "SELECT numx, percent_wa FROM ga_f5_sum 
+              WHERE percent_wa > 0.0 
+              ORDER BY percent_wa DESC";
+    
+    $mysqli_result = mysqli_query($mysqli_link, $query);
+    if (!$mysqli_result) {
+        error_log("Database error in getSumxCount: " . mysqli_error($mysqli_link));
+        return $sumx_count; // Return empty array on error
+    }
+    
+    while ($row = mysqli_fetch_assoc($mysqli_result)) {
+        $t = $row['numx'];
+        $sumx_count[$t] = $row['percent_wa'] * 10;
+    }
+    
+    $temp_count = array_sum($sumx_count);
+    
+    // Ensure count reaches 1000
+    $s = 9;
+    while ($temp_count < 1000) {
+        $sumx_count[$s]++;
+        $temp_count = array_sum($sumx_count);
+        $s = ($s < 29) ? $s + 1 : 9; // Reset to 9 if we reach the end of the array
+    }
+    
+    return $sumx_count;
+}
+
+/**
+ * Process data for specified range
+ * 
+ * @param object $mysqli_link Database connection
+ * @param array $sumx_count Sum count data
+ * @param int $start_range Range start
+ * @param int $end_range Range end
+ * @param string $temp_table1 Temporary table name
+ * @param int $dateDiff Date difference
+ * @param bool $drop_tables Whether to drop tables
+ * @param float $min_percent_wa Minimum percent_wa (optional)
+ * @return int Number of records processed
+ */
+function processRange($mysqli_link, $sumx_count, $start_range, $end_range, $temp_table1, $dateDiff, $drop_tables, $min_percent_wa = 0.0) {
+    $count_all = 0;
+    
+    for ($x = $start_range; $x <= $end_range; $x++) {
+        $y = $x * 10;
+        $z = $y + 9;
+        
+        $temp_dateDiff = $dateDiff - 1;
+        $query = "SELECT * FROM ga_f5_sum_count_sum_{$temp_dateDiff} 
+                 WHERE numx >= {$y} AND numx <= {$z}";
+        
+        // Add filter for percent_wa if provided
+        if ($min_percent_wa > 0) {
+            $query .= " AND percent_wa >= {$min_percent_wa}";
+        }
+        
+        $query .= " ORDER BY percent_wa DESC";
+        
+        $mysqli_result = mysqli_query($mysqli_link, $query);
+        if (!$mysqli_result) {
+            error_log("Database error in processRange: " . mysqli_error($mysqli_link));
+            continue; // Skip to next iteration on error
+        }
+        
+        // Calculate sum of percent_wa
+        $count = 0;
+        $wa_sum = 0.0;
+        $rows = [];
+        
+        while ($row = mysqli_fetch_assoc($mysqli_result)) {
+            $rows[] = $row;
+            $count++;
+            $wa_sum += $row['percent_wa'];
+        }
+        
+        if ($wa_sum <= 0) {
+            continue; // Skip if no valid data
+        }
+        
+        // Reset result pointer
+        mysqli_data_seek($mysqli_result, 0);
+        
+        $percent_sum = 0.00;
+        $k_sum = 0;
+        $k_array = array_fill(0, 65, 0);
+        $count = 0;
+        
+        while ($row = mysqli_fetch_assoc($mysqli_result)) {
+            $percent = $row['percent_wa'] / $wa_sum * 100;
+            $temp = number_format($percent, 2, '.', '');
+            $percent_sum += $temp;
+            $index_sumx_count = intval($row['numx'] / 10);
+            
+            // Safely access sumx_count with bounds checking
+            if (isset($sumx_count[$index_sumx_count])) {
+                $k = intval((intval($temp + 0.5) / 100) * $sumx_count[$index_sumx_count]);
+            } else {
+                $k = 0;
+            }
+            
+            $k_sum += $k;
+            
+            if ($k > 0) {
+                $k_array[$count] = $k;
+                $count++;
+                
+                if ($drop_tables) {
+                    $query_nc = "INSERT INTO {$temp_table1} 
+                                (id, sum, even, odd, k_count, last_updated) 
+                                VALUES (0, '{$row['numx']}', '{$row['even']}', '{$row['odd']}', '{$k}', '1962-08-07')";
+                    
+                    $mysqli_result_nc = mysqli_query($mysqli_link, $query_nc);
+                    if (!$mysqli_result_nc) {
+                        error_log("Insert error: " . mysqli_error($mysqli_link));
+                    }
+                }
+            }
+        }
+        
+        // Ensure k_array fills to required level
+        $s = 0;
+        while (array_sum($k_array) < (isset($sumx_count[$index_sumx_count]) ? $sumx_count[$index_sumx_count] : 0)) {
+            if ($s < count($k_array)) {
+                $k_array[$s]++;
+                $s++;
+            } else {
+                break; // Prevent infinite loop
+            }
+        }
+        
+        $count_all += array_sum($k_array);
+    }
+    
+    return $count_all;
+}
+
+/**
+ * Fix count totals to reach target
+ * 
+ * @param object $mysqli_link Database connection
+ * @param string $temp_table1 Temporary table name
+ * @return int Final count total
+ */
+function fixCounts($mysqli_link, $temp_table1) {
+    $query_tt = "SELECT SUM(k_count) AS total FROM {$temp_table1}";
+    $mysqli_result_tt = mysqli_query($mysqli_link, $query_tt);
+    
+    if (!$mysqli_result_tt) {
+        error_log("Query error in fixCounts: " . mysqli_error($mysqli_link));
+        return 0;
+    }
+    
+    $row_tt = mysqli_fetch_assoc($mysqli_result_tt);
+    $k_count_total = isset($row_tt['total']) ? $row_tt['total'] : 0;
+    
+    $query3 = "SELECT id, k_count FROM {$temp_table1} 
+               WHERE sum >= 80 AND sum <= 119 
+               AND even >= 2 AND even <= 3 
+               ORDER BY k_count DESC";
+    
+    $mysqli_result3 = mysqli_query($mysqli_link, $query3);
+    if (!$mysqli_result3) {
+        error_log("Query error in fixCounts(2): " . mysqli_error($mysqli_link));
+        return $k_count_total;
+    }
+    
+    while (($row3 = mysqli_fetch_assoc($mysqli_result3)) && $k_count_total < 1000) {
+        $k_temp = $row3['k_count'] + 5;
+        
+        $query_update = "UPDATE {$temp_table1} 
+                         SET k_count = {$k_temp} 
+                         WHERE id = {$row3['id']}";
+        
+        $mysqli_result_update = mysqli_query($mysqli_link, $query_update);
+        if (!$mysqli_result_update) {
+            error_log("Update error in fixCounts: " . mysqli_error($mysqli_link));
+            continue;
+        }
+        
+        $k_count_total += 5;
+    }
+    
+    return $k_count_total;
+}
+
+/**
+ * Build draws table based on sumeo combinations
+ * 
+ * @param object $mysqli_link Database connection
+ * @param string $temp_table1 Source table
+ * @param string $temp_table2 Target table
+ */
+function buildDrawsTable($mysqli_link, $temp_table1, $temp_table2) {
+    $query3 = "SELECT DISTINCT sum, even, odd, k_count FROM {$temp_table1} 
+               ORDER BY k_count DESC";
+    
+    $mysqli_result3 = mysqli_query($mysqli_link, $query3);
+    if (!$mysqli_result3) {
+        error_log("Query error in buildDrawsTable: " . mysqli_error($mysqli_link));
+        return;
+    }
+    
+    while ($row3 = mysqli_fetch_assoc($mysqli_result3)) {
+        for ($c = 1; $c <= $row3['k_count']; $c++) {
+            // Create base query with placeholders for 60 columns (adjust as needed)
+            $defaultValues = array_fill(0, 60, 0);
+            
+            // Set specific values
+            $defaultValues[6] = $row3['sum'];     // sum
+            $defaultValues[8] = $row3['even'];    // even
+            $defaultValues[9] = $row3['odd'];     // odd
+            
+            // Build value placeholders
+            $valuePlaceholders = implode(", ", array_fill(0, count($defaultValues) + 4, "'%s'"));
+            
+            $query7 = "INSERT INTO {$temp_table2} VALUES (0, {$valuePlaceholders})";
+            
+            // Prepare values for the query
+            $queryValues = $defaultValues;
+            $queryValues[] = '1962-08-17';  // draw_last
+            $queryValues[] = 0;             // draw_count
+            $queryValues[] = 0;             // y1_sum
+            $queryValues[] = '1962-08-17';  // last_updated
+            
+            // Format query with values
+            $formattedQuery = vsprintf($query7, $queryValues);
+            
+            $mysqli_result_7 = mysqli_query($mysqli_link, $formattedQuery);
+            if (!$mysqli_result_7) {
+                error_log("Insert error in buildDrawsTable: " . mysqli_error($mysqli_link));
+            }
+        }
+    }
+}
+
+/**
+ * Update columns with values from sumeo tables
+ * 
+ * @param object $mysqli_link Database connection
+ * @param string $temp_table1 Source table
+ * @param string $temp_table2 Target table
+ */
+function updateColumns($mysqli_link, $temp_table1, $temp_table2) {
+    $query3 = "SELECT DISTINCT sum, even, odd FROM {$temp_table1} ORDER BY k_count DESC";
+    
+    $mysqli_result3 = mysqli_query($mysqli_link, $query3);
+    if (!$mysqli_result3) {
+        error_log("Query error in updateColumns: " . mysqli_error($mysqli_link));
+        return;
+    }
+    
+    while ($row3 = mysqli_fetch_assoc($mysqli_result3)) {
+        $temp_table4 = "temp2_column_sumeo_{$row3['sum']}_{$row3['even']}_{$row3['odd']}_1";
+        
+        // Get col1 array
+        $query2 = "SELECT num FROM {$temp_table4} 
+                  WHERE percent_wa >= 0.100 
+                  ORDER BY percent_wa DESC";
+        
+        $mysqli_result_2 = mysqli_query($mysqli_link, $query2);
+        if (!$mysqli_result_2) {
+            error_log("Query error for {$temp_table4}: " . mysqli_error($mysqli_link));
+            continue;
+        }
+        
+        $num_rows_2 = mysqli_num_rows($mysqli_result_2);
+        
+        if ($num_rows_2 === 0) {
+            $query2 = "SELECT num FROM {$temp_table4} ORDER BY percent_wa DESC";
+            $mysqli_result_2 = mysqli_query($mysqli_link, $query2);
+            
+            if (!$mysqli_result_2) {
+                error_log("Query error for {$temp_table4} (retry): " . mysqli_error($mysqli_link));
+                continue;
+            }
+            
+            $num_rows_2 = mysqli_num_rows($mysqli_result_2);
+        }
+        
+        $col1_array = [];
+        while ($row2 = mysqli_fetch_assoc($mysqli_result_2)) {
+            $col1_array[] = $row2['num'];
+        }
+        
+        if (empty($col1_array)) {
+            continue; // Skip if no data
+        }
+        
+        // Read sumeo from temp_table2
+        $query8 = "SELECT id FROM {$temp_table2} 
+                  WHERE sum = {$row3['sum']} 
+                  AND even = {$row3['even']} 
+                  AND odd = {$row3['odd']}";
+        
+        $mysqli_result8 = mysqli_query($mysqli_link, $query8);
+        if (!$mysqli_result8) {
+            error_log("Query error in updateColumns (select): " . mysqli_error($mysqli_link));
+            continue;
+        }
+        
+        $q = 0;
+        while ($row8 = mysqli_fetch_assoc($mysqli_result8)) {
+            $query_update = "UPDATE {$temp_table2} 
+                            SET b1 = {$col1_array[$q]} 
+                            WHERE id = {$row8['id']}";
+            
+            $mysqli_result_update = mysqli_query($mysqli_link, $query_update);
+            if (!$mysqli_result_update) {
+                error_log("Update error in updateColumns: " . mysqli_error($mysqli_link));
+            }
+            
+            if ($q >= ($num_rows_2 - 1)) {
+                $q = 0;
+            } else {
+                $q++;
+            }
+        }
+    }
+}
+
+/**
+ * Main execution function
+ * 
+ * @param object $mysqli_link Database connection
+ * @param string $temp_table1 Temporary table 1
+ * @param string $temp_table2 Temporary table 2
+ * @param int $dateDiff Date difference
+ * @param bool $drop_tables Whether to drop tables
+ * @return array Execution results
+ */
+function executeScaffolding($mysqli_link, $temp_table1, $temp_table2, $dateDiff, $drop_tables) {
+    $results = [
+        'status' => 'success',
+        'counts' => [],
+        'errors' => []
+    ];
+    
+    try {
+        // Get sumx count data
+        $sumx_count = getSumxCount($mysqli_link);
+        $results['counts']['sumx_total'] = array_sum($sumx_count);
+        
+        // Process data for different ranges
+        $count_all = 0;
+        $count_range1 = processRange($mysqli_link, $sumx_count, 5, 7, $temp_table1, $dateDiff, $drop_tables);
+        $count_range2 = processRange($mysqli_link, $sumx_count, 8, 13, $temp_table1, $dateDiff, $drop_tables, 0.5);
+        $count_range3 = processRange($mysqli_link, $sumx_count, 14, 17, $temp_table1, $dateDiff, $drop_tables);
+        
+        $count_all = $count_range1 + $count_range2 + $count_range3;
+        $results['counts']['initial_total'] = $count_all;
+        
+        // Fix counts
+        $final_count = fixCounts($mysqli_link, $temp_table1);
+        $results['counts']['final_total'] = $final_count;
+        
+        // Build draws table
+        buildDrawsTable($mysqli_link, $temp_table1, $temp_table2);
+        
+        // Update columns
+        updateColumns($mysqli_link, $temp_table1, $temp_table2);
+        
+    } catch (Exception $e) {
+        $results['status'] = 'error';
+        $results['errors'][] = $e->getMessage();
+    }
+    
+    return $results;
+}
+
+// Execute if all required variables are set
+if (isset($mysqli_link) && isset($temp_table1) && isset($temp_table2) && isset($dateDiff) && isset($drop_tables)) {
+    $results = executeScaffolding($mysqli_link, $temp_table1, $temp_table2, $dateDiff, $drop_tables);
+    
+    // Debug output if needed
+    if (false) { // Set to true for debugging
+        echo "<pre>";
+        print_r($results);
+        echo "</pre>";
+    }
+}
+?>

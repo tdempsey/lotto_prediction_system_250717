@@ -1,0 +1,738 @@
+<?php
+
+	// Game ----------------------------- Game
+	//$game = 1; // Georgia Fantasy 5
+	#$game = 2; // Mega Millions
+	//$game = 3; // Georgia Lotto South
+	#$game = 4; // Florida Fantasy 5
+	//$game = 5; // Florida Mega Money
+	$game = 6; // Florida Lotto
+	#$game = 7; // Powerball
+	// Game ----------------------------- Game
+	
+	require ("includes/games_switch.incl");
+
+	require ("includes/mysqli.php");
+	
+	$debug = 0;
+	
+	$col1 = 7; # <-------------------------------------------------------------------
+
+	$temp_array = array_fill (0,5,0);
+	$matrix_array = array_fill (0,5,$temp_array);
+	$lock_array = array_fill (0,5,$temp_array);
+	$row_lock = array_fill (0,11,0);
+	$num_lock = array_fill (0,54,0);
+
+	#--------------------------------------------------------------------------------
+	# Seed matrix - col1 diag [0,0 - 4,4]
+	#--------------------------------------------------------------------------------
+		$query = "SELECT DISTINCT num2,sigma FROM fl_temp_2_5000 ";
+		$query .= "WHERE num1 = $col1 ";
+		$query .= "ORDER BY sigma DESC ";
+
+		print "$query<p>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		$row1 = mysqli_fetch_array($mysqli_result);
+
+		for ($x = 0; $x <= 4; $x++)
+		{
+			if (rank ???))
+			{
+			$row = mysqli_fetch_array($mysqli_result);
+			#die ("one");
+			$matrix_array[$x][$x] = $row[num2];
+		}
+
+		print_r ($matrix_array);
+
+	#--------------------------------------------------------------------------------
+	#--- Draw 1 - 0,0-0,4
+	#--------------------------------------------------------------------------------
+
+	$filter_table = "filter_b_6_53";
+	if ($draw_num[1] < 10)
+	{
+		$filter_table .= "_0$draw_num[1]";
+	} else {
+		$filter_table .= "_$draw_num[1]";
+	}
+	#$filter_table .= "_";
+	$filter_table .= "$col1";
+
+	#add sigma range ----------------------------------------------
+	/*
+	$query = "SELECT * FROM $filter_table  ";
+	$query .= "WHERE (b1 = $matrix_array[$x][$x] 
+					OR b2 = $matrix_array[$x][$x] 
+					OR b3 = $matrix_array[$x][$x] 
+					OR b4 = $matrix_array[$x][$x] 
+					OR b5 = $matrix_array[$x][$x] 
+					OR b6 = $matrix_array[$x][$x]) ";
+	$query .= "ORDER BY id DESC "; # ???
+	*/
+
+	$query = "SELECT * FROM $filter_table  ";
+	$query .= " WHERE (b1 = '{$matrix_array[0][0]}'  
+					OR b2 = '{$matrix_array[0][0]}' 
+					OR b3 = '{$matrix_array[0][0]}' 
+					OR b4 = '{$matrix_array[0][0]}' 
+					OR b5 = '{$matrix_array[0][0]}' 
+					OR b6 = '{$matrix_array[0][0]}') 
+					AND b6 > '49'
+					AND b6 != '{$matrix_array[4][4]}' "; # need code to calc sigma3 for 4,4
+	$query .= "ORDER BY b2,b3 ASC "; # ??? - sigma???
+	#$query .= "ORDER RAND "; # ??? - sigma???
+
+	print "$query<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$num_rows = mysqli_num_rows($mysqli_result);
+
+	print "num_rows = $num_rows<p>";
+
+	$temp_array = array_fill (0,$num_rows-1,0);
+	$a = 0;
+
+	while($row = mysqli_fetch_array($mysqli_result))
+	{
+		$temp_array[$a++] = $row[id];
+	}
+
+	mt_srand((float) microtime() * 10000000);
+
+	$r = mt_rand(0,$num_rows-1);
+
+	$query1 = "SELECT * FROM $filter_table  ";
+	$query1 .= "WHERE id = '$temp_array[$r]' ";	#------------ fix
+
+	print "$query1<p>";
+
+	$mysqli_result1 = mysqli_query($mysqli_link, $query1) or die (mysqli_error($mysqli_link));
+
+	$row_rand = mysqli_fetch_array($mysqli_result1);
+
+	$failed = 0;
+
+	if ($row_rand[b5] == $matrix_array[0][3])
+	{
+		$failed = 1;
+	} elseif ($row_rand[b4] == $matrix_array[0][2]) {
+		$failed = 1;
+	} elseif ($row_rand[b3] == $matrix_array[0][1]) {
+		$failed = 1;
+	} elseif ($row_rand[b2] == $matrix_array[0][0]) { # ???
+		$failed = 1;
+	}
+
+	$matrix_array[0][1] = $row_rand[b3]; 
+	$matrix_array[0][2] = $row_rand[b4]; 
+	$matrix_array[0][3] = $row_rand[b5]; 
+	$matrix_array[0][4] = $row_rand[b6]; 
+
+	$row_lock[1] = 1;
+
+	print "<h3>Draw 1 - $row_rand[b1],$row_rand[b2],$row_rand[b3],$row_rand[b4],$row_rand[b5],$row_rand[b6]</h3>";
+
+	#--------------------------------------------------------------------------------
+	#--- end - Draw 1 - 0,0-0,4
+	#--------------------------------------------------------------------------------
+	die ("die - draw 1");
+	#--------------------------------------------------------------------------------
+	#--- Draw 2 - 4,0-4,4
+	#--------------------------------------------------------------------------------
+
+	$filter_table = "filter_b_6_53";
+	if ($draw_num[1] < 10)
+	{
+		$filter_table .= "_0$draw_num[1]";
+	} else {
+		$filter_table .= "_$draw_num[1]";
+	}
+	$filter_table .= "_";
+	$filter_table .= "$col1";
+
+	$query = "SELECT * FROM $filter_table  ";
+	$query .= " WHERE (b1 = $matrix_array[4][0] 
+					OR b2 = $matrix_array[4][0] 
+					OR b3 = $matrix_array[4][0] 
+					OR b4 = $matrix_array[4][0] 
+					OR b5 = $matrix_array[4][0] 
+					OR b6 = $matrix_array[4][0])
+					AND (b1 = $matrix_array[4][4] 
+					  OR b2 = $matrix_array[4][4] 
+					  OR b3 = $matrix_array[4][4] 
+					  OR b4 = $matrix_array[4][4] 
+					  OR b5 = $matrix_array[4][4] 
+					  OR b6 = $matrix_array[4][4]) ";
+	$query .= "ORDER BY id DESC "; # ??? - sigma???
+	$query .= "ORDER BY RAND "; # ??? - sigma???
+
+	print "$query<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$num_rows = mysqli_num_rows($mysqli_result);
+
+	mt_srand((float) microtime() * 10000000);
+
+	$r = mt_rand(0,$num_rows);
+
+	$query1 = "SELECT * FROM $filter_table  ";
+	$query1 .= "WHERE id = '$r' ";	#---------------- fix
+
+	print "$query1<p>";
+
+	$mysqli_result1 = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$row_rand = mysqli_fetch_array($mysqli_result1);
+
+	$failed = 0;
+
+	if ($row_rand[b5] == $matrix_array[0][3])
+	{
+		$failed = 1;
+	} elseif ($row_rand[b4] == $matrix_array[0][2]) {
+		$failed = 1;
+	} elseif ($row_rand[b3] == $matrix_array[0][1]) {
+		$failed = 1;
+	} elseif ($row_rand[b2] == $matrix_array[0][0]) { # ???
+		$failed = 1;
+	}
+
+	$row_rand[b3] = $matrix_array[4][3]; 
+	$row_rand[b4] = $matrix_array[4][2]; 
+	$row_rand[b5] = $matrix_array[4][1]; 
+	$row_rand[b6] = $matrix_array[4][0]; # sigma??? 
+
+	print "<h3>Draw 2 - $row_rand[b1],$row_rand[b2],$row_rand[b3],$row_rand[b4],$row_rand[b5],$row_rand[b6]</h3>";
+
+	#--------------------------------------------------------------------------------
+	#--- end - Draw 2 - 4,0-4,4
+	#--------------------------------------------------------------------------------
+
+	#--------------------------------------------------------------------------------
+	#--- Draw 3 - 0,0-4,0
+	#--------------------------------------------------------------------------------
+
+	$filter_table = "filter_b_6_53";
+	if ($draw_num[1] < 10)
+	{
+		$filter_table .= "_0$draw_num[1]";
+	} else {
+		$filter_table .= "_$draw_num[1]";
+	}
+	$filter_table .= "_";
+	$filter_table .= "$col1";
+
+	$query = "SELECT * FROM $filter_table  ";
+	$query .= " WHERE (b1 = $matrix_array[0][0] 
+					OR b2 = $matrix_array[0][0] 
+					OR b3 = $matrix_array[0][0] 
+					OR b4 = $matrix_array[0][0] 
+					OR b5 = $matrix_array[0][0] 
+					OR b6 = $matrix_array[0][0])
+					AND (b1 = $matrix_array[4][0] 
+					  OR b2 = $matrix_array[4][0] 
+					  OR b3 = $matrix_array[4][0] 
+					  OR b4 = $matrix_array[4][0] 
+					  OR b5 = $matrix_array[4][0] 
+					  OR b6 = $matrix_array[4][0]) ";
+	$query .= "ORDER BY id DESC "; # ??? - sigma???
+	$query .= "ORDER BY RAND "; # ??? - sigma???
+
+	print "$query<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$num_rows = mysqli_num_rows($mysqli_result);
+
+	mt_srand((float) microtime() * 10000000);
+
+	$r = mt_rand(0,$num_rows);
+
+	$query1 = "SELECT * FROM $filter_table  ";
+	$query1 .= "WHERE id = '$r' ";	#---------------- fix
+
+	print "$query1<p>";
+
+	$mysqli_result1 = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$row_rand = mysqli_fetch_array($mysqli_result1);
+
+	if ($row_rand[b5] == $matrix_array[0][3])
+	{
+		$failed = 1;
+	} elseif ($row_rand[b4] == $matrix_array[0][2]) {
+		$failed = 1;
+	} elseif ($row_rand[b3] == $matrix_array[0][1]) {
+		$failed = 1;
+	} elseif ($row_rand[b2] == $matrix_array[0][0]) { # ???
+		$failed = 1;
+	}
+
+	$row_rand[b3] = $matrix_array[4][3]; 
+	$row_rand[b4] = $matrix_array[4][2]; 
+	$row_rand[b5] = $matrix_array[4][1]; 
+	$row_rand[b6] = $matrix_array[4][0]; # sigma??? 
+
+	print "<h3>Draw 2 - $row_rand[b1],$row_rand[b2],$row_rand[b3],$row_rand[b4],$row_rand[b5],$row_rand[b6]</h3>";
+
+	#--------------------------------------------------------------------------------
+	#--- end - Draw 3 - 0,0-4,0
+	#--------------------------------------------------------------------------------
+
+	#--------------------------------------------------------------------------------
+	#--- Draw 4 - 4,0-4,4
+	#--------------------------------------------------------------------------------
+
+	$filter_table = "filter_b_6_53";
+	if ($draw_num[1] < 10)
+	{
+		$filter_table .= "_0$draw_num[1]";
+	} else {
+		$filter_table .= "_$draw_num[1]";
+	}
+	$filter_table .= "_";
+	$filter_table .= "$col1";
+
+	$query = "SELECT * FROM $filter_table  ";
+	$query .= " WHERE (b1 = $matrix_array[4][4] 
+					OR b2 = $matrix_array[4][4] 
+					OR b3 = $matrix_array[4][4] 
+					OR b4 = $matrix_array[4][4] 
+					OR b5 = $matrix_array[4][4] 
+					OR b6 = $matrix_array[4][4])
+					AND (b1 = $matrix_array[0][4] 
+					  OR b2 = $matrix_array[0][4] 
+					  OR b3 = $matrix_array[0][4] 
+					  OR b4 = $matrix_array[0][4] 
+					  OR b5 = $matrix_array[0][4] 
+					  OR b6 = $matrix_array[0][4]) ";
+	$query .= "ORDER BY id DESC "; # ??? - sigma???
+	$query .= "ORDER BY RAND "; # ??? - sigma???
+
+	print "$query<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$num_rows = mysqli_num_rows($mysqli_result);
+
+	mt_srand((float) microtime() * 10000000);
+
+	$r = mt_rand(0,$num_rows);
+
+	$query1 = "SELECT * FROM $filter_table  ";
+	$query1 .= "WHERE id = '$r' ";	#---------------- fix
+
+	print "$query1<p>";
+
+	$mysqli_result1 = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$row_rand = mysqli_fetch_array($mysqli_result1);
+
+	if ($row_rand[b5] == $matrix_array[0][3])
+	{
+		$failed = 1;
+	} elseif ($row_rand[b4] == $matrix_array[0][2]) {
+		$failed = 1;
+	} elseif ($row_rand[b3] == $matrix_array[0][1]) {
+		$failed = 1;
+	} elseif ($row_rand[b2] == $matrix_array[0][0]) { # ???
+		$failed = 1;
+	}
+
+	$row_rand[b3] = $matrix_array[4][3]; 
+	$row_rand[b4] = $matrix_array[4][2]; 
+	$row_rand[b5] = $matrix_array[4][1]; 
+	$row_rand[b6] = $matrix_array[4][0]; # sigma??? 
+
+	print "<h3>Draw 2 - $row_rand[b1],$row_rand[b2],$row_rand[b3],$row_rand[b4],$row_rand[b5],$row_rand[b6]</h3>";
+
+	#--------------------------------------------------------------------------------
+	#--- end - Draw 4 - 4,0-4,4
+	#--------------------------------------------------------------------------------
+
+	#--------------------------------------------------------------------------------
+	#--- Draw 5 - 4,0-4,4
+	#--------------------------------------------------------------------------------
+
+	$filter_table = "filter_b_6_53";
+	if ($draw_num[1] < 10)
+	{
+		$filter_table .= "_0$draw_num[1]";
+	} else {
+		$filter_table .= "_$draw_num[1]";
+	}
+	$filter_table .= "_";
+	$filter_table .= "$col1";
+
+	$query = "SELECT * FROM $filter_table  ";
+	$query .= " WHERE (b1 = $matrix_array[4][4] 
+					OR b2 = $matrix_array[4][4] 
+					OR b3 = $matrix_array[4][4] 
+					OR b4 = $matrix_array[4][4] 
+					OR b5 = $matrix_array[4][4] 
+					OR b6 = $matrix_array[4][4])
+					AND (b1 = $matrix_array[0][4] 
+					  OR b2 = $matrix_array[0][4] 
+					  OR b3 = $matrix_array[0][4] 
+					  OR b4 = $matrix_array[0][4] 
+					  OR b5 = $matrix_array[0][4] 
+					  OR b6 = $matrix_array[0][4]) ";
+	$query .= "ORDER BY id DESC "; # ??? - sigma???
+	$query .= "ORDER BY RAND "; # ??? - sigma???
+
+	print "$query<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$num_rows = mysqli_num_rows($mysqli_result);
+
+	mt_srand((float) microtime() * 10000000);
+
+	$r = mt_rand(0,$num_rows);
+
+	$query1 = "SELECT * FROM $filter_table  ";
+	$query1 .= "WHERE id = '$r' ";	#---------------- fix
+
+	print "$query1<p>";
+
+	$mysqli_result1 = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$row_rand = mysqli_fetch_array($mysqli_result1);
+
+	if ($row_rand[b5] == $matrix_array[0][3])
+	{
+		$failed = 1;
+	} elseif ($row_rand[b4] == $matrix_array[0][2]) {
+		$failed = 1;
+	} elseif ($row_rand[b3] == $matrix_array[0][1]) {
+		$failed = 1;
+	} elseif ($row_rand[b2] == $matrix_array[0][0]) { # ???
+		$failed = 1;
+	}
+
+	$row_rand[b3] = $matrix_array[4][3]; 
+	$row_rand[b4] = $matrix_array[4][2]; 
+	$row_rand[b5] = $matrix_array[4][1]; 
+	$row_rand[b6] = $matrix_array[4][0]; # sigma??? 
+
+	print "<h3>Draw 2 - $row_rand[b1],$row_rand[b2],$row_rand[b3],$row_rand[b4],$row_rand[b5],$row_rand[b6]</h3>";
+
+	#--------------------------------------------------------------------------------
+	#--- end - Draw 5 - 4,0-4,4
+	#--------------------------------------------------------------------------------
+
+	#--------------------------------------------------------------------------------
+	#--- Draw 6 - 4,0-4,4
+	#--------------------------------------------------------------------------------
+
+	$filter_table = "filter_b_6_53";
+	if ($draw_num[1] < 10)
+	{
+		$filter_table .= "_0$draw_num[1]";
+	} else {
+		$filter_table .= "_$draw_num[1]";
+	}
+	$filter_table .= "_";
+	$filter_table .= "$col1";
+
+	$query = "SELECT * FROM $filter_table  ";
+	$query .= " WHERE (b1 = $matrix_array[4][4] 
+					OR b2 = $matrix_array[4][4] 
+					OR b3 = $matrix_array[4][4] 
+					OR b4 = $matrix_array[4][4] 
+					OR b5 = $matrix_array[4][4] 
+					OR b6 = $matrix_array[4][4])
+					AND (b1 = $matrix_array[0][4] 
+					  OR b2 = $matrix_array[0][4] 
+					  OR b3 = $matrix_array[0][4] 
+					  OR b4 = $matrix_array[0][4] 
+					  OR b5 = $matrix_array[0][4] 
+					  OR b6 = $matrix_array[0][4]) ";
+	$query .= "ORDER BY id DESC "; # ??? - sigma???
+	$query .= "ORDER BY RAND "; # ??? - sigma???
+
+	print "$query<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$num_rows = mysqli_num_rows($mysqli_result);
+
+	mt_srand((float) microtime() * 10000000);
+
+	$r = mt_rand(0,$num_rows);
+
+	$query1 = "SELECT * FROM $filter_table  ";
+	$query1 .= "WHERE id = '$r' ";	#---------------- fix
+
+	print "$query1<p>";
+
+	$mysqli_result1 = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$row_rand = mysqli_fetch_array($mysqli_result1);
+
+	if ($row_rand[b5] == $matrix_array[0][3])
+	{
+		$failed = 1;
+	} elseif ($row_rand[b4] == $matrix_array[0][2]) {
+		$failed = 1;
+	} elseif ($row_rand[b3] == $matrix_array[0][1]) {
+		$failed = 1;
+	} elseif ($row_rand[b2] == $matrix_array[0][0]) { # ???
+		$failed = 1;
+	}
+
+	$row_rand[b3] = $matrix_array[4][3]; 
+	$row_rand[b4] = $matrix_array[4][2]; 
+	$row_rand[b5] = $matrix_array[4][1]; 
+	$row_rand[b6] = $matrix_array[4][0]; # sigma??? 
+
+	print "<h3>Draw 2 - $row_rand[b1],$row_rand[b2],$row_rand[b3],$row_rand[b4],$row_rand[b5],$row_rand[b6]</h3>";
+
+	#--------------------------------------------------------------------------------
+	#--- end - Draw 6 - 4,0-4,4
+	#--------------------------------------------------------------------------------
+
+	#--------------------------------------------------------------------------------
+	#--- Draw 7 - 4,0-4,4
+	#--------------------------------------------------------------------------------
+
+	$filter_table = "filter_b_6_53";
+	if ($draw_num[1] < 10)
+	{
+		$filter_table .= "_0$draw_num[1]";
+	} else {
+		$filter_table .= "_$draw_num[1]";
+	}
+	$filter_table .= "_";
+	$filter_table .= "$col1";
+
+	$query = "SELECT * FROM $filter_table  ";
+	$query .= " WHERE (b1 = $matrix_array[4][4] 
+					OR b2 = $matrix_array[4][4] 
+					OR b3 = $matrix_array[4][4] 
+					OR b4 = $matrix_array[4][4] 
+					OR b5 = $matrix_array[4][4] 
+					OR b6 = $matrix_array[4][4])
+					AND (b1 = $matrix_array[0][4] 
+					  OR b2 = $matrix_array[0][4] 
+					  OR b3 = $matrix_array[0][4] 
+					  OR b4 = $matrix_array[0][4] 
+					  OR b5 = $matrix_array[0][4] 
+					  OR b6 = $matrix_array[0][4]) ";
+	$query .= "ORDER BY id DESC "; # ??? - sigma???
+	$query .= "ORDER BY RAND "; # ??? - sigma???
+
+	print "$query<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$num_rows = mysqli_num_rows($mysqli_result);
+
+	mt_srand((float) microtime() * 10000000);
+
+	$r = mt_rand(0,$num_rows);
+
+	$query1 = "SELECT * FROM $filter_table  ";
+	$query1 .= "WHERE id = '$r' ";	#---------------- fix
+
+	print "$query1<p>";
+
+	$mysqli_result1 = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$row_rand = mysqli_fetch_array($mysqli_result1);
+
+	if ($row_rand[b5] == $matrix_array[0][3])
+	{
+		$failed = 1;
+	} elseif ($row_rand[b4] == $matrix_array[0][2]) {
+		$failed = 1;
+	} elseif ($row_rand[b3] == $matrix_array[0][1]) {
+		$failed = 1;
+	} elseif ($row_rand[b2] == $matrix_array[0][0]) { # ???
+		$failed = 1;
+	}
+
+	$row_rand[b3] = $matrix_array[4][3]; 
+	$row_rand[b4] = $matrix_array[4][2]; 
+	$row_rand[b5] = $matrix_array[4][1]; 
+	$row_rand[b6] = $matrix_array[4][0]; # sigma??? 
+
+	print "<h3>Draw 2 - $row_rand[b1],$row_rand[b2],$row_rand[b3],$row_rand[b4],$row_rand[b5],$row_rand[b6]</h3>";
+
+	#--------------------------------------------------------------------------------
+	#--- end - Draw 7 - 4,0-4,4
+	#--------------------------------------------------------------------------------
+
+	#--------------------------------------------------------------------------------
+	#--- Draw 8 - 4,0-4,4
+	#--------------------------------------------------------------------------------
+
+	$filter_table = "filter_b_6_53";
+	if ($draw_num[1] < 10)
+	{
+		$filter_table .= "_0$draw_num[1]";
+	} else {
+		$filter_table .= "_$draw_num[1]";
+	}
+	$filter_table .= "_";
+	$filter_table .= "$col1";
+
+	$query = "SELECT * FROM $filter_table  ";
+	$query .= " WHERE (b1 = $matrix_array[4][4] 
+					OR b2 = $matrix_array[4][4] 
+					OR b3 = $matrix_array[4][4] 
+					OR b4 = $matrix_array[4][4] 
+					OR b5 = $matrix_array[4][4] 
+					OR b6 = $matrix_array[4][4])
+					AND (b1 = $matrix_array[0][4] 
+					  OR b2 = $matrix_array[0][4] 
+					  OR b3 = $matrix_array[0][4] 
+					  OR b4 = $matrix_array[0][4] 
+					  OR b5 = $matrix_array[0][4] 
+					  OR b6 = $matrix_array[0][4]) ";
+	$query .= "ORDER BY id DESC "; # ??? - sigma???
+	$query .= "ORDER BY RAND "; # ??? - sigma???
+
+	print "$query<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$num_rows = mysqli_num_rows($mysqli_result);
+
+	mt_srand((float) microtime() * 10000000);
+
+	$r = mt_rand(0,$num_rows);
+
+	$query1 = "SELECT * FROM $filter_table  ";
+	$query1 .= "WHERE id = '$r' ";	#---------------- fix
+
+	print "$query1<p>";
+
+	$mysqli_result1 = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$row_rand = mysqli_fetch_array($mysqli_result1);
+
+	if ($row_rand[b5] == $matrix_array[0][3])
+	{
+		$failed = 1;
+	} elseif ($row_rand[b4] == $matrix_array[0][2]) {
+		$failed = 1;
+	} elseif ($row_rand[b3] == $matrix_array[0][1]) {
+		$failed = 1;
+	} elseif ($row_rand[b2] == $matrix_array[0][0]) { # ???
+		$failed = 1;
+	}
+
+	$row_rand[b3] = $matrix_array[4][3]; 
+	$row_rand[b4] = $matrix_array[4][2]; 
+	$row_rand[b5] = $matrix_array[4][1]; 
+	$row_rand[b6] = $matrix_array[4][0]; # sigma??? 
+
+	print "<h3>Draw 2 - $row_rand[b1],$row_rand[b2],$row_rand[b3],$row_rand[b4],$row_rand[b5],$row_rand[b6]</h3>";
+
+	#--------------------------------------------------------------------------------
+	#--- end - Draw 8 - 4,0-4,4
+	#--------------------------------------------------------------------------------
+
+
+
+
+
+
+	$query = "SELECT * FROM $filter_table  ";
+	$query .= "WHERE id = '$r' ";
+	#$query .= "AND (b3 = 45 OR b4 = 45 OR b5 = 45) ";
+	#$query .= "AND (b4 = 53 OR b5 = 53 or b6 = 53) ";
+	#$query .= "AND (b4 = 44 OR b5 = 44 or b6 = 44) ";
+	#$query .= "AND (b4 = 36 OR b5 = 36 or b6 = 36) ";
+	#$query .= "AND (b4 = 52 OR b5 = 52 or b6 = 52) ";
+	#$query .= "OR (b4 =  OR b4 = ) ";
+	#$query .= "OR (b5 =  OR b4 = ) ";
+	#$query .= "OR (b6 =  OR b4 = ) ";
+
+	print "$query<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	$num_rows = mysqli_num_rows($mysqli_result);
+
+	mt_srand((float) microtime() * 10000000);
+
+	$y = mt_rand(0,$num_rows);
+
+	print "rand = $y<p>";
+
+	# look up rand function for mysql
+	$query1 = "SELECT  b1,b2,b3,b4,b5 FROM $filter_table ";
+	$query1 .= "LIMIT $y, 1 ";
+
+	print "$query1<p>";
+
+	$mysqli_result1 = mysqli_query($mysqli_link, $query1) or die (mysqli_error($mysqli_link));
+
+	$row1 = mysqli_fetch_array($mysqli_result1);
+
+	for ($x = 1; $x <= 5; $x++)
+	{
+		$square_array[0][$x] = $row[$x];
+	}
+
+	$row4_not_found = 0;
+
+	while ($row4_not_found)
+	{
+		mt_srand((float) microtime() * 10000000);
+
+		$y = mt_rand(0,$num_rows);
+
+		print "rand = $y<p>";
+
+		# look up rand function for mysql
+		$query5 = "SELECT  b1,b2,b3,b4,b5 FROM $filter_table ";
+		$query5 = "WHERE (b2 != $row[1] AND b3 != $row[1] AND b4 != $row[1] AND b5 != $row[1] AND b6 != $row[1]) "; 
+		$query5 = "AND (b2 != $row[2] AND b3 != $row[2] AND b4 != $row[2] AND b5 != $row[2] AND b6 != $row[2]) "; 
+		$query5 = "AND (b2 != $row[3] AND b3 != $row[3] AND b4 != $row[3] AND b5 != $row[3] AND b6 != $row[3]) "; 
+		$query5 = "AND (b2 != $row[4] AND b3 != $row[4] AND b4 != $row[4] AND b5 != $row[4] AND b6 != $row[4]) "; 
+		$query5 = "AND (b2 != $row[5] AND b3 != $row[5] AND b4 != $row[5] AND b5 != $row[5] AND b6 != $row[5]) "; 
+		$query5 = "AND (b2 != $row[6] AND b3 != $row[6] AND b4 != $row[6] AND b5 != $row[6] AND b6 != $row[6]) "; 
+		$query5 .= "LIMIT rand(), 1 ";
+
+		print "$query5<p>";
+
+		$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+		$row4_not_found = mysqli_num_rows($mysqli_result);
+	}
+	
+	$row5 = mysqli_fetch_array($mysqli_result5);
+
+	for ($x = 4; $x <= 1; $x--)
+	{
+		$square_array[4][$x] = $row[$x];
+	}
+
+	# find combined sigma for 0,2/4,3 for star
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	{
+		print "$x - $row[b1],$row[b2],$row[b3],$row[b4],$row[b5],$row[b6]<br>";
+		$x++;
+	}
+
+?>

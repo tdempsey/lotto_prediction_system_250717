@@ -1,0 +1,19 @@
+SELECT * FROM `combo_5_42_drange7` a JOIN combo_5_42 b ON a.combo_id = b.id ORDER BY `a`.`combo_id` DESC
+
+SELECT * FROM `ga_f5_draws` a JOIN ga_f5_draws_draw7 b ON a.date = b.draw_date WHERE `sum` = 113 AND `even` = 2 AND `odd` = 3
+
+SELECT * FROM `combo_5_42_drange7` a JOIN combo_5_42 b ON a.combo_id = b.id WHERE d6_1 = 1 AND d6_1 = 2 AND d6_1 = 3 AND d6_1 = 4 AND d6_1 = 5 AND d6_6 = 1 ORDER BY `a`.`combo_id` DESC
+
+SELECT * FROM `combo_5_42_drange6` a JOIN combo_5_42 b ON a.combo_id = b.id WHERE d6_1 = 1 AND d6_2 = 1 AND d6_3 = 0 AND d6_4 = 0 AND d6_5 = 1 AND d6_6 = 2 ORDER BY `a`.`combo_id` DESC
+
+SELECT d1, d2, d3, count(*) FROM `ga_f5_3_42` GROUP BY d1, d2, d3 ORDER BY `count(*)` DESC
+
+SELECT d1, d2, d3, combo, count(*) FROM `ga_f5_3_42` GROUP BY d1, d2, d3, combo ORDER BY `count(*)` DESC
+
+SELECT d1, d2, combo, count(*) FROM `ga_f5_2_42` GROUP BY d1, d2, combo ORDER BY `count(*)` DESC
+
+SELECT d1, d2, d3, d4, combo, count(*) FROM `ga_f5_4_42` GROUP BY d1, d2, d3, d4, combo ORDER BY `count(*)` DESC
+
+-----------------------------------------------------------------------------------------------------------------------
+
+- Cover b1 [1..9] - or top 5 per sumeo

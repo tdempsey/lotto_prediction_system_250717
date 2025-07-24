@@ -1,0 +1,240 @@
+<?php
+	// ----------------------------------------------------------------------------------
+	function print_sumeo_drange2()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sumeo_drange2.incl");
+
+		require ("includes/print_sumeo_table_drange2.incl");
+
+		require ("includes/print_sumeo_table_drange2_top25.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sumeo</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sumeo_drange3()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sumeo_drange3.incl");
+
+		require ("includes/print_sumeo_table_drange3.incl");
+
+		require ("includes/print_sumeo_table_drange3_top25.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sumeo</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sum_drange4()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sum_drange4.incl");
+
+		require ("includes/print_sum_table_drange4.incl");
+
+		require ("includes/print_sum_table_drange4_top25.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sumeo_drange4()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sumeo_drange4.incl");
+
+		require ("includes/print_sumeo_table_drange4.incl");
+
+		require ("includes/print_sumeo_table_drange4_top25.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sumeo</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sum_drange5()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sum_drange5.incl");
+
+		require ("includes/print_sum_table_drange5.incl");
+
+		require ("includes/print_sum_table_drange5_top25.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sumeo_drange5()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sumeo_drange5.incl");
+
+		require ("includes/print_sumeo_table_drange5.incl");
+
+		require ("includes/print_sumeo_table_drange5_top25.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sum_drange6()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sum_drange6.incl");
+
+		require ("includes/print_sum_table_drange6.incl");
+
+		require ("includes/print_sum_table_drange6_top25.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sumeo_drange6()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sumeo_drange6.incl");
+
+		require ("includes/print_sumeo_table_drange6.incl");
+
+		require ("includes/print_sumeo_table_drange6_top25.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sum_drange7()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sum_drange7.incl");
+
+		require ("includes/print_sum_table_drange7.incl");
+
+		require ("includes/print_sum_table_drange7_top25.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+
+	function print_sumeo_drange7()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sumeo_drange7.incl");
+
+		require ("includes/print_sumeo_table_drange7.incl");
+
+		require ("includes/print_sumeo_table_drange7_top25.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sum_drange8()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sum_drange8.incl");
+
+		require ("includes/print_sum_table_drange8.incl");
+
+		require ("includes/print_sum_table_drange8_top25.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sumeo_drange8()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sumeo_drange8.incl");
+
+		require ("includes/print_sumeo_table_drange8.incl");
+
+		require ("includes/print_sumeo_table_drange8_top25.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sumeo_drange9()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sumeo_drange9.incl");
+
+		require ("includes/print_sumeo_table_drange9.incl");
+
+		require ("includes/print_sumeo_table_drange9_top25.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sumeo_drange10()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sumeo_drange10.incl");
+
+		require ("includes/print_sumeo_table_drange10.incl");
+
+		require ("includes/print_sumeo_table_drange10_top25.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+
+	// ----------------------------------------------------------------------------------
+	function print_sumeo_drange_summary()
+	{
+		global $draw_table_name, $balls, $balls_drawn, $draw_prefix, $col1_select, $hml, $range_low, $range_high; 
+
+		require ("includes/mysqli.php");
+	
+		require ("includes/calculate_sumeo_drange_summary.incl");
+
+		require ("includes/print_sumeo_table_drange_summary.incl");
+
+		require ("includes/print_sumeo_table_drange_summary_top25.incl");
+
+		print "<h3>Table <font color=\"#ff0000\">{$draw_prefix}sum</font> Updated!</h3>";
+	}
+?>

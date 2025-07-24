@@ -1,0 +1,161 @@
+<?php
+
+	// add tables population for combos, pairs
+	// add test for missing draws
+	// recalcu;ate draw includes
+	// add db class
+	// error checking - all modules
+	// fix pair count
+
+	//////////////////////////////////////////
+	//////////// uncomment combin.incl ga f5
+	//////////////////////////////////////////
+
+	$game = 1; // Georgia Fantasy 5
+
+	$debug = 1;
+
+	if ($debug)
+	{
+		ini_set('display_errors', '1');
+		ini_set('display_startup_errors', '1');
+		error_reporting(E_ALL);
+	}
+	
+	require ("includes/games_switch.incl");
+
+	//require ("includes/mysqli.php");
+	require ("includes/mysqli.php");
+	
+	$debug = 0;
+
+	//start HTML page
+	print("<HTML>\n");
+	print("<HEAD>\n");
+	print("<TITLE>Lotto Update drange2 - $game_name - Rank Limit</TITLE>\n");
+	print("</HEAD>\n");
+	
+	print("<BODY>\n");
+
+	### build whell16_array exclude last two draws - 001
+
+	$wheel16_array = array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16); ###############################
+	/*
+	$query3 = "DROP TABLE IF EXISTS ga_f5_wheel16_draws ";
+	
+	print "$query3<p>";
+
+	$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+
+	$query4 = "CREATE TABLE `ga_f5_wheel16_draws` (
+				  `id` int UNSIGNED NOT NULL,
+				  `b1` tinyint UNSIGNED NOT NULL DEFAULT '0',
+				  `b2` tinyint UNSIGNED NOT NULL DEFAULT '0',
+				  `b3` tinyint UNSIGNED NOT NULL DEFAULT '0',
+				  `b4` tinyint UNSIGNED NOT NULL DEFAULT '0',
+				  `b5` tinyint UNSIGNED NOT NULL DEFAULT '0',
+				  `sum` smallint UNSIGNED NOT NULL DEFAULT '0',
+				  `even` tinyint UNSIGNED NOT NULL DEFAULT '0',
+				  `odd` tinyint UNSIGNED NOT NULL DEFAULT '0',
+				  `draw0` tinyint UNSIGNED NOT NULL DEFAULT '0',
+				  `draw1` tinyint UNSIGNED NOT NULL DEFAULT '0',
+				  `draw2` tinyint UNSIGNED NOT NULL DEFAULT '0',
+				  `draw3` tinyint UNSIGNED NOT NULL DEFAULT '0',
+				  `draw4` tinyint UNSIGNED NOT NULL DEFAULT '0',
+				  `rank0` tinyint UNSIGNED NOT NULL DEFAULT '0',
+				  `rank1` tinyint UNSIGNED NOT NULL DEFAULT '0',
+				  `rank2` tinyint UNSIGNED NOT NULL DEFAULT '0',
+				  `rank3` tinyint UNSIGNED NOT NULL DEFAULT '0',
+				  `rank4` tinyint UNSIGNED NOT NULL DEFAULT '0',
+				  `rank5` tinyint UNSIGNED NOT NULL DEFAULT '0',
+				  `rank6` tinyint UNSIGNED NOT NULL DEFAULT '0',
+				  `rank7` tinyint UNSIGNED NOT NULL DEFAULT '0',
+				  `pair_sum` tinyint UNSIGNED NOT NULL DEFAULT '0',
+				  `draw_average` float(4,2) UNSIGNED NOT NULL DEFAULT '0.00',
+				  `median` float(4,2) UNSIGNED NOT NULL DEFAULT '0.00',
+				  `harmean` float(4,2) UNSIGNED NOT NULL DEFAULT '0.00',
+				  `geomean` float(4,2) UNSIGNED NOT NULL DEFAULT '0.00',
+				  `quart1` float(4,2) UNSIGNED NOT NULL DEFAULT '0.00',
+				  `quart2` float(4,2) UNSIGNED NOT NULL DEFAULT '0.00',
+				  `quart3` float(4,2) UNSIGNED NOT NULL DEFAULT '0.00',
+				  `stdev` float(4,2) UNSIGNED NOT NULL DEFAULT '0.00',
+				  `variance` float(6,2) UNSIGNED NOT NULL,
+				  `avedev` float(4,2) UNSIGNED NOT NULL,
+				  `kurt` float(4,2) NOT NULL,
+				  `skew` float(4,2) NOT NULL,
+				  `devsq` float(7,2) UNSIGNED NOT NULL,
+				  `nums_total_2` smallint UNSIGNED NOT NULL,
+				  `combo_total_2` tinyint UNSIGNED NOT NULL,
+				  `nums_total_3` smallint UNSIGNED NOT NULL,
+				  `combo_total_3` tinyint UNSIGNED NOT NULL,
+				  `nums_total_4` tinyint UNSIGNED NOT NULL,
+				  `combo_total_4` tinyint UNSIGNED NOT NULL,
+				  `s1510` tinyint UNSIGNED NOT NULL,
+				  `s61510` tinyint UNSIGNED NOT NULL,
+				  `last_updated` date NOT NULL
+				) ENGINE=MyISAM DEFAULT CHARSET=latin1;";
+
+	#print "$query4<p>";
+
+	$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+	$query4b = "ALTER TABLE `ga_f5_wheel16_draws`
+				  ADD PRIMARY KEY (`id`),
+				  ADD UNIQUE KEY `id` (`id`); ";
+	
+	print "$query4b<p>";
+
+	$mysqli_result4b = mysqli_query($mysqli_link, $query4b) or die (mysqli_error($mysqli_link));
+
+	$query4c = "ALTER TABLE `ga_f5_wheel16_draws`
+					MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT; ";
+	
+	print "$query4c<p>";
+
+	$mysqli_result4c = mysqli_query($mysqli_link, $query4c) or die (mysqli_error($mysqli_link));
+	*/
+	###############################################################################################
+
+	### get count draw table
+	$query5 = "SELECT DISTINCT d1,d2,d3,d4,d5 FROM wheels16 ";
+	$query5 .= "ORDER BY d1 DESC, d2 DESC, d3 DESC, d4 DESC, d5 DESC, ";
+
+	echo "$query5<br>";
+
+	$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+	while ($row5 = mysqli_fetch_array($mysqli_result5))
+	{
+		$draw = array ();
+
+		$draw[0] = $wheel16_array[{$row5[b1]}];
+		$draw[1] = $wheel16_array[{$row5[b2]}];
+		$draw[2] = $wheel16_array[{$row5[b3]}];
+		$draw[3] = $wheel16_array[{$row5[b4]}];
+		$draw[4] = $wheel16_array[{$row5[b5]}];
+
+		sort($draw);
+
+		print "$draw[0] -$draw[0] - $draw[1] -$draw[2] -$draw[3] -$draw[4] <br>";
+
+		/*
+		require ("includes/update_sum_wheel16.incl");
+
+		require ("includes/update_even_odd_wheel16.incl");
+
+		$query4 = "INSERT INTO ga_f5_draws_draw2 ";
+		$query4 .= "VALUES('0', ";
+		$query4 .= "'$date', ";
+		$query4 .= "'$d1', ";
+		$query4 .= "'$d2') ";
+
+		#print("$query4<br>");
+
+		$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link)); 
+		*/
+	}
+
+	print("<h2>Completed!</h2>");
+
+	print("</BODY>\n");
+?>

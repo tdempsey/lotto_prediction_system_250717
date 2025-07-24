@@ -1,0 +1,97 @@
+<?php
+	
+	global $game;
+
+	//print "<h2>game = $game</h2>";
+	
+	// Game
+	//$game = 1; // Georgia Fantasy 5
+	//$game = 2; // Georgia Mega Millions
+	//$game = 3; // Georgia Lotto South
+	//$game = 4; // Florida Fantasy 5
+	//$game = 5; // Florida Mega Money
+	//$game = 6; // Florida Lotto
+	//$game = 7; // Powerball
+	
+	switch ($game):
+		case 1:
+			//$mysqli_link = mysqli_connect("localhost", "root", "") or die ('Not //connected : ' . mysqli_error());
+			//mysqli_select_db("ga_fantasy5", $mysqli_link) or die ('Can\'t use //Hawaii: ' . mysqli_error()); 
+			class DB {
+				function DB() {
+					$this->host = "localhost"; // your host
+					$this->db = "ga_fantasy5"; // your database
+					$this->user = "root"; // your username
+					$this->pass = ""; // your password
+
+					$this->link = mysqli_connect($this->host, $this->user, $this->pass);
+
+					mysqli_select_db($this->db);
+				}
+			}
+			break;
+		case 2:
+			//$mysqli_link = mysqli_connect("localhost", "root", "") or die ('Not connected : ' . mysqli_error());
+			//mysqli_select_db("megamillions", $mysqli_link) or die ('Can\'t use megamillions: ' . mysqli_error()); 
+			class DB {
+				function DB() {
+					$this->host = "localhost"; // your host
+					$this->db = "megamillions"; // your database
+					$this->user = "root"; // your username
+					$this->pass = ""; // your password
+
+					$this->link = mysqli_connect($this->host, $this->user, $this->pass);
+
+					mysqli_select_db($this->db);
+				}
+			}
+			break;
+		case 3:
+			$mysqli_link = mysqli_connect("localhost", "root", "") or die ('Not connected : ' . mysqli_error());
+			mysqli_select_db("lotto_south", $mysqli_link) or die ('Can\'t use Hawaii: ' . mysqli_error()); 
+			break;
+		case 4:
+			//$mysqli_link = mysqli_connect("localhost", "root", "") or die ('Not connected : ' . mysqli_error());
+			//mysqli_select_db("florida", $mysqli_link) or die ('Can\'t use Hawaii: ' . mysqli_error()); 
+			class DB {
+				function DB() {
+					$this->host = "localhost"; // your host
+					$this->db = "florida_fantasy_5"; // your database
+					$this->user = "root"; // your username
+					$this->pass = ""; // your password
+
+					$this->link = mysqli_connect($this->host, $this->user, $this->pass);
+
+					mysqli_select_db($this->db);
+				}
+			}
+			break;
+		case 5:
+			$mysqli_link = mysqli_connect("localhost", "root", "") or die ('Not connected : ' . mysqli_error());
+			mysqli_select_db("lotto", $mysqli_link) or die ('Can\'t use Hawaii: ' . mysqli_error()); 
+			break;
+		case 6:
+			//$mysqli_link = mysqli_connect("localhost", "root", "") or die ('Not connected : ' . mysqli_error());
+			//mysqli_select_db("florida", $mysqli_link) or die ('Can\'t use Hawaii: ' . mysqli_error()); 
+			class DB {
+				function DB() {
+					$this->host = "localhost"; // your host
+					$this->db = "florida"; // your database
+					$this->user = "root"; // your username
+					$this->pass = ""; // your password
+
+					$this->link = mysqli_connect($this->host, $this->user, $this->pass);
+
+					mysqli_select_db($this->db);
+				}
+			}
+			break;
+		case 7:
+			$mysqli_link = mysqli_connect("localhost", "root", "") or die ('Not connected : ' . mysqli_error());
+			mysqli_select_db("lotto", $mysqli_link) or die ('Can\'t use Hawaii: ' . mysqli_error()); 
+			break;
+		default:
+			$mysqli_link = mysqli_connect("localhost", "root", "") or die ('Not connected : ' . mysqli_error());
+			mysqli_select_db("lotto", $mysqli_link) or die ('Can\'t use Hawaii: ' . mysqli_error()); 
+	endswitch;
+?>

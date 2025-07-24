@@ -1,0 +1,11 @@
+<?php
+function factorial ($n)
+{
+	if ($n == 0 || $n == 1) // 0 or 1 is the exit condition
+	{
+		return 1;
+	} else { // recursive call
+		return ($n * factorial ($n-1));
+	}
+}
+?>

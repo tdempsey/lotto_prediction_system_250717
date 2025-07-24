@@ -1,0 +1,248 @@
+<?php
+	# select 1k_count for each sumeo
+	$query3 = "SELECT DISTINCT sum,even,odd,k_count FROM $temp_table1 ";
+	$query3 .= "ORDER BY `k_count` DESC  ";
+
+	echo "<p>$query3</p>";
+
+	$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+	
+	while($row3 = mysqli_fetch_array($mysqli_result3))
+	{	
+		### read sum_count_sum and each b1 
+		$query5 = "SELECT DISTINCT b1, b5 FROM $temp_table2 ";
+		$query5 .= "WHERE sum = $row3[sum] ";
+		$query5 .= "AND even = $row3[even] ";
+		$query5 .= "AND odd = $row3[odd] ";
+		#$query5 .= "AND b1 = $row4[b1] ";	### b1 ###
+
+		$num_rows5 = mysqli_num_rows($mysqli_result5);
+
+		echo "num_rows5 = $num_rows5<br>";
+
+		while($row5 = mysqli_fetch_array($mysqli_result5))
+		{
+				### read sum_count_sum and each b1 
+				$query5 = "SELECT DISTINCT b1, b5 FROM $temp_table2 ";
+				$query5 .= "WHERE sum = $row3[sum] ";
+				$query5 .= "AND even = $row3[even] ";
+				$query5 .= "AND odd = $row3[odd] ";
+				#$query5 .= "AND b1 = $row4[b1] ";	### b1 ###
+
+				$num_rows5 = mysqli_num_rows($mysqli_result5);
+
+				echo "num_rows5 = $num_rows5<br>";
+
+				while($row5 = mysqli_fetch_array($mysqli_result5))
+				{
+		
+				#SELECT * FROM `temp_column_sumeo_116_3_2_3` ORDER BY `temp_column_sumeo_116_3_2_3`.`percent_wa` DESC
+				$tableName = 'temp2_column_sumeo_' . $row3['sum'] . '_' . $row3['even'] . '_' . $row3['odd']. '_5' ;	### 240711 ###
+
+				$query9 = "SHOW TABLES LIKE '$tableName'";
+
+				$mysqli_result9 = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+
+				echo "<p>9a - $query9</p>";
+
+				$num_rows9 = mysqli_num_rows($mysqli_result9);
+
+				if ($num_rows9 > 0) {
+					### build col5 array
+						$col5_array = [];
+
+						if ($num_rows9 > 0) {
+						#echo "Table exists.";
+
+						### read sum_count_sum and b1 to build col5_array #####################################################
+						
+						$query6 = "SELECT * FROM $tableName ";	### 240711 ###
+						$query6 .= "WHERE percent_wa >= 0.100 ";	
+						$query6 .= "ORDER BY percent_wa DESC "; 
+
+						echo "<p>6 - $query6</p>";
+
+						$mysqli_result6 = mysqli_query($mysqli_link, $query6) or die (mysqli_error($mysqli_link));
+
+						$num_rows6 = mysqli_num_rows($mysqli_result6);
+
+						echo "num_rows6 = $num_rows6<br>";
+
+						while($row6 = mysqli_fetch_array($mysqli_result6))
+						{
+							$col5_array[] = $row6['num'];
+						}
+
+						print_r ($col5_array);
+
+						while($row5 = mysqli_fetch_array($mysqli_result5))	### build col5_array
+						{ 
+								
+
+								if ($num_rows6)	### 240430
+								{
+									$query_update = "UPDATE $temp_table2 ";
+									$query_update .= "SET b5 = $col5_array[$q] ";
+									$query_update .= "WHERE id = $row5[id] ";
+
+									if ($q > ($num_rows6-2))
+									{
+										$q = 0;
+									} else {
+										$q++;
+									}
+
+									echo "<p>update - $query_update<p>";
+
+									$mysqli_result_update = mysqli_query ($mysqli_link, $query_update) or die (mysqli_error($mysqli_link));
+								}
+						} 
+					}	
+				}
+			
+			
+				### read sum_count_sum and each b1 to build col3_array ################################################
+				### build col3 array
+
+				echo "row3 - ";
+				print_r ($row3);
+				echo "<br>";
+				$col3_array = [];
+
+				$tableName = 'temp_split_count_1_3_5_' . $row3['sum'] . '_' . $row3['even'] . '_' . $row3['odd'];	### 240630 ###
+				
+				$query4 = "SHOW TABLES LIKE '$tableName'";
+
+				echo "<p>4 - $query4</p>";
+
+				$mysqli_result4 = mysqli_query($mysqli_link, $query9) or die (mysqli_error($mysqli_link));
+
+				$num_rows4 = mysqli_num_rows($mysqli_result4);
+
+				echo "<p>num_rows4 - $num_rows4</p>";
+				
+				if ($num_rows4 > 0) {
+					echo "Table exists.";
+					$query7 = "SELECT DISTINCT b3 FROM temp_split_count_1_3_5_";
+					$query7 .= "$row3[sum]_";
+					$query7 .= "$row3[even]_";
+					$query7 .= "$row3[odd] ";
+					$query7 .= "WHERE  b1 = $row4[b1] ";	### b1 ### 240630 ###
+					$query7 .= "AND    b5 = $col5_value ";	### b5 ### 
+					$query7 .= "ORDER BY `y1_sum` DESC "; 
+
+					echo "<p>7a - $query7</p>";
+
+					$mysqli_result7 = mysqli_query($mysqli_link, $query7) or die (mysqli_error($mysqli_link));
+
+					$num_rows7 = mysqli_num_rows($mysqli_result7);
+
+					echo "num_rows7 = $num_rows7<br>";
+
+					while($row7 = mysqli_fetch_array($mysqli_result7))
+					{
+						$col3_array[] = $row7['b3'];
+					}
+
+					print_r ($col3_array);
+
+					$count_col3_array = count($col3_array);
+
+					echo "<br><b>count_col3_array = $count_col3_array</b><br>";
+
+					if ($count_col3_array) {
+						### read sum_count_sum and each b1 
+						$query5 = "SELECT * FROM $temp_table2 ";
+						$query5 .= "WHERE sum = $row3[sum] ";
+						$query5 .= "AND even = $row3[even] ";
+						$query5 .= "AND odd = $row3[odd] ";
+						$query5 .= "AND b1 = $row5[b1] ";	### b1 ### 240630 ###
+						$query5 .= "AND b3 = 0 ";	### b3 ###
+						$query5 .= "AND b5 = $col5_value ";	### b3 ### 240429 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+						echo "<p>5b - $query5</p>";
+
+						$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+						$num_rows5 = mysqli_num_rows($mysqli_result5);
+
+						echo "num_rows5 = $num_rows5<br>";
+
+						$q = 0;
+						$update5 = 0;
+
+						while($row5 = mysqli_fetch_array($mysqli_result5))
+						{
+							echo "q = $q<br>";
+
+							$query_update = "UPDATE $temp_table2 ";
+							$query_update .= "SET b3 = $col3_array[$q] ";
+							$query_update .= "WHERE id = $row5[id] ";
+
+							if ($q > ($num_rows7-2))
+							{
+								$q = 0;
+							} else {
+								$q++;
+							}
+
+							echo "<p>update - $query_update<p>";
+
+							$mysqli_result_update = mysqli_query ($mysqli_link, $query_update) or die (mysqli_error($mysqli_link));
+						}
+					}
+				}
+			}
+		}
+		###
+
+		###############################################################################################################
+		### select temp_sumeo_draw_
+		###############################################################################################################
+		$query7 = "SELECT * FROM $temp_table2  ";
+		$query7 .= "WHERE sum = $row3[sum] ";
+		$query7 .= "AND even = $row3[even] ";
+		$query7 .= "AND odd = $row3[odd] ";
+		$query7 .= "AND b1 = $row4[b1] ";	### b1 ### 
+
+		echo "<p>7b - $query7</p>";
+
+		$mysqli_result7 = mysqli_query($mysqli_link, $query7) or die (mysqli_error($mysqli_link));
+
+		$num_rows7 = mysqli_num_rows($mysqli_result7);
+
+		echo "num_rows7 = $num_rows7<br>";
+
+		while($row7 = mysqli_fetch_array($mysqli_result7))
+		{
+			$temp_table3 = 'temp_sumeo_draw_' . $row3['sum'] . '_' . $row3['even'] . '_' . $row3['odd'];
+
+			### filter $temp_table3 240325 ###
+			$query_dc = "SELECT * FROM $temp_table3  ";
+			$query_dc .= "WHERE sum = $row3[sum] ";
+			$query_dc .= "AND even = $row3[even] ";
+			$query_dc .= "AND odd = $row3[odd] ";
+			$query_dc .= "AND b1 = $row7[b1] ";	### b1 ### 
+			$query_dc .= "AND b3 = $row7[b3] ";	### b3 ###
+			$query_dc .= "AND b5 = $row7[b5] ";	### b5 ###
+			$query_dc .= "ORDER BY y1_sum DESC ";	### b5 ###
+			$query_dc .= "LIMIT 1 ";	### b5 ###
+
+			echo "$query_dc<br>";
+
+			$mysqli_result_dc = mysqli_query($mysqli_link, $query_dc) or die (mysqli_error($mysqli_link));
+
+			while($row_dc = mysqli_fetch_array($mysqli_result_dc))
+			{
+				$query_update = "UPDATE $temp_table2 ";
+				$query_update .= "SET b2 = $row_dc[b2], ";
+				$query_update .= "b4 = $row_dc[b4] ";
+				$query_update .= "WHERE id = $row7[id] ";
+
+				#echo "<p>update - $query_update<p>";
+
+				$mysqli_result_update = mysqli_query ($mysqli_link, $query_update) or die (mysqli_error($mysqli_link));
+			}
+		}
+	}
+?>

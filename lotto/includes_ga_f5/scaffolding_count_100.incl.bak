@@ -1,0 +1,180 @@
+<?php
+	###############################################################################################
+	### read sumeo
+	###############################################################################################
+
+	$sumx_count = array_fill (0,30,0);
+	
+	$query = "SELECT * FROM ga_f5_sum_count_sum ";
+	#@$query .= "$temp_dateDiif ";
+	$query .= "ORDER BY percent_wa DESC, percent_y4 DESC, percent_y1 DESC, year5 DESC, year4 DESC, year3 DESC, year2 DESC, year1 DESC ";
+	$query .= "LIMIT 10 "; ### 250317 ############################################################################# 
+
+	echo "$query<p>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+	
+	while($row = mysqli_fetch_array($mysqli_result))
+	{
+		$query6 = "INSERT INTO $temp_table1 ";
+		$query6 .= "VALUES ('0', ";
+		$query6 .= "'$row[numx]',";
+		$query6 .= "'$row[even]',";
+		$query6 .= "'$row[odd]',";
+		$query6 .= "'10', ";
+		$query6 .= "'1962-08-07')";
+
+		#echo "query6 = $query6<br>";
+
+		$mysqli_result6 = mysqli_query($mysqli_link, $query6) or die (mysqli_error($mysqli_link));
+		
+		for ($g = 1; $g <= 10; $g++)	### 241210 ############################################################ 
+		{		 	
+			$query7= "INSERT INTO $temp_table2 ";
+			$query7.= "VALUES ('0', ";
+			$query7.= "'0', ";
+			$query7.= "'0', ";
+			$query7.= "'0', ";
+			$query7.= "'0', ";
+			$query7.= "'0', ";
+			$query7.= "'$row[numx]', ";
+			$query7.= "'0', ";
+			$query7.= "'$row[even]', ";
+			$query7.= "'$row[odd]', ";
+			for ($t = 6; $t <= 52; $t++)
+			{
+				$query7.= "'0', ";
+			}
+			$query7.= "'1962-08-17', ";
+			$query7.= "'0', ";
+			$query7.= "'0', ";
+			$query7.= "'1962-08-17') ";
+
+			#echo "$query7<br>";
+
+			$mysqli_result_7 = mysqli_query($mysqli_link, $query7) or die (mysqli_error($mysqli_link));
+		}
+
+	}
+	
+	$query3 = "SELECT * FROM $temp_table1 ORDER BY sum ASC ";
+
+	echo "<p>$query3</p>";
+
+	$mysqli_result3 = mysqli_query($mysqli_link, $query3) or die (mysqli_error($mysqli_link));
+	
+	### reread sum_count_sum and add col1 based on temp_count
+	while($row3 = mysqli_fetch_array($mysqli_result3))	
+	{
+		$temp_table4 = 'temp2_column_sumeo_' . $row3['sum'] . '_' . $row3['even'] . '_' . $row3['odd'] . '_1';
+
+		### build col1 array
+		$col1_array = [];
+
+		#$temp_table4 = 'temp2_column_sumeo_' . $row3['sum'] . '_' . $row3['even'] . '_' . $row3['odd'] . '_1';
+
+		$query2 = "SELECT * FROM $temp_table4 ";
+		#$query2 .= "WHERE percent_wa >= 0.1 ";
+		$query2 .= "WHERE percent_wa >= 0.100 ";	###240629
+		$query2 .= "ORDER BY percent_wa DESC ";
+
+		#echo "<p>$query2</p>";
+
+		$mysqli_result_2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+
+		$num_rows_2 = mysqli_num_rows($mysqli_result_2);
+
+		if (!$num_rows_2)
+		{
+			$query2 = "SELECT * FROM $temp_table4 ";
+			#$query2 .= "WHERE percent_wa >= 0.1 ";
+			#$query2 .= "WHERE year1 > 0 ";	### 242608
+			$query2 .= "ORDER BY percent_wa DESC ";
+
+			#echo "<p>$query2</p>";
+
+			$mysqli_result_2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+
+			$num_rows_2 = mysqli_num_rows($mysqli_result_2);
+		}
+
+		while($row2 = mysqli_fetch_array($mysqli_result_2))
+		{	
+			$col1_array[] = $row2['num'];
+		}
+
+		#print_r ($col1_array);	### fix 240618
+
+		### read sumeo from $temp_table2
+		$d = 0;
+
+		$query8 = "SELECT * FROM $temp_table2  ";
+		$query8 .= "WHERE sum = $row3[sum] ";
+		$query8 .= "AND even = $row3[even] ";
+		$query8 .= "AND odd = $row3[odd] ";
+
+		#echo "<p>$query8</p>";
+
+		$mysqli_result8 = mysqli_query($mysqli_link, $query8) or die (mysqli_error($mysqli_link));
+
+		$q = 0;
+
+		while($row8 = mysqli_fetch_array($mysqli_result8))
+		{
+			#echo "id = $row8[id]<br>";
+
+			$query_update = "UPDATE $temp_table2 ";
+			$query_update .= "SET b1 = $col1_array[$q] ";
+			$query_update .= "WHERE id = $row8[id] ";
+
+			#echo "$query_update<p>";
+
+			$mysqli_result_update = mysqli_query ($mysqli_link, $query_update) or die (mysqli_error($mysqli_link));
+
+			if ($q > ($num_rows_2-2))
+			{
+				$q = 0;
+			} else {
+				$q++;
+			}
+		}
+	}
+	
+	#########################################################################################################
+	### echo sum count
+	#########################################################################################################
+	print("<H3>Sum Count by Sumeo - $game_name</H3>\n");
+	
+	// Begin the table
+	print "<p><table border='1'></p>"; // Add table border for visibility
+	print "<tr><th>Col1</th><th>Count</th></tr>"; // Table headers
+
+	$query2 = "SELECT `sum`, count(`sum`)  
+	FROM $temp_table2  
+	GROUP BY sum ORDER BY sum ASC";
+
+	echo "<p>[sum] query2 - $query2</p>";
+
+	$mysqli_result_2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+	
+	$count = 1;
+
+	while($row2 = mysqli_fetch_array($mysqli_result_2))
+	{
+		if ($count > 12)
+		{
+			print "<tr><th>Sum</th><th>Count</th></tr>";
+			$count = 1;
+
+		} else {
+			$count++;
+		}
+
+		print "<tr><td align=center><b>$row2[0]</b></td><td align=center>$row2[1]</td></tr>";
+	}
+
+	print "<tr><th>Col1</th><th>Count</th></tr>";
+
+	// End the table
+	print "</table>";
+?>

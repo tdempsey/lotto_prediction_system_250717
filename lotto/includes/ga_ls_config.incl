@@ -1,0 +1,102 @@
+<?php
+//$dup_count_minim = array (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0); // no 0
+
+// play 1st // 10%
+/*
+$dup_count_limit = array 
+(0,1,2,4,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6); 
+// 1 2 3 4 5 6 7 8 9 1011121314151617181920212223242526272829303132333435363738394041424344454647484950
+$dup_count_minim = array (0,0,0,1,2,2,2,2,3,3,3,4,4,4,4,4,4,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6);
+*/
+
+// aggressive limits // 20%
+
+$dup_count_limit = array 
+(0,1,2,3,4,4,4,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6); 
+// 1 2 3 4 5 6 7 8 9 1011121314151617181920212223242526272829303132333435363738394041424344454647484950
+$dup_count_minim = array (0,1,1,1,2,2,2,2,3,3,3,4,4,4,4,4,4,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6);
+
+$dup_count_limit4 = array 
+(0,1,2,3,4,4,4,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6); 
+// 1 2 3 4 5 6 7 8 9 1011121314151617181920212223242526272829303132333435363738394041424344454647484950
+$dup_count_minim4 = array (0,1,1,1,2,2,2,2,3,3,3,4,4,4,4,4,4,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6);
+
+$look_back = 1; // 0
+
+$mod_limit = 2;          // by pairs - multiple by 2 // 4
+$mod_two_count_limit = 1; 
+
+$due_count_limit = 1;
+$soon_count_limit = 1;
+
+$delete_combin = 0; // <============================================================
+$filter_range = 1; 
+
+$wheel_count = 0; // <========================================================
+$wheel_percent = 0.12;
+
+$hot_min = 1;
+$hot_max = 3;
+$warm_min = 1;
+$warm_max = 3;
+$cold_min = 0;
+$cold_max = 2; 
+
+$combin5min = 0;
+$combin5max = 0; 
+$combin4min = 0;
+$combin4max = 0; 
+$combin3min = 6; 
+$combin3max = 9; 
+$combin2min = 15; 
+$combin2max = 15; 
+
+$combin5maxsave = 0; // test this theroy 
+$combin4maxsave = 0; 
+$combin3maxsave = 3; 
+$combin2maxsave = 6; 
+
+$exclude_count_limit_1 = 6;
+$exclude_count_limit_2 = 3;
+$exclude_count_limit_3 = 2; 
+
+$exclude_sum = array ();
+
+// remove previous numbers
+$exclude_numbers_col_one = array (3,4); 
+$exclude_numbers_col_two = array (11,22,24,25,26); 
+$exclude_numbers_col_three = array (2,3,4,9,28,32,33,34,39,40); 
+$exclude_numbers_col_four = array (16,31,34,35,40,43,44); 
+$exclude_numbers_col_five = array (23,30,42,48);
+$exclude_numbers_col_six = array (31,41,44,45);
+/*
+$exclude_numbers_col_one = array (3,4); 
+$exclude_numbers_col_two = array (); 
+$exclude_numbers_col_three = array (); 
+$exclude_numbers_col_four = array (); 
+$exclude_numbers_col_five = array ();
+$exclude_numbers_col_six = array ();
+*/
+
+$exclude_numbers = array (3,11,12,22,25,30,31,32,34,39,46,48);
+$exclude_num_limit = 1;
+
+$required_numbers = array (); 
+$required_numbers_min = 0;
+
+$rank_count_range[0][0] = 0;
+$rank_count_range[0][1] = 0;	
+$rank_count_range[1][0] = 0;
+$rank_count_range[1][1] = 2;
+$rank_count_range[2][0] = 0;
+$rank_count_range[2][1] = 2; 
+$rank_count_range[3][0] = 0;
+$rank_count_range[3][1] = 2; 
+$rank_count_range[4][0] = 0;
+$rank_count_range[4][1] = 2;
+$rank_count_range[5][0] = 0;
+$rank_count_range[5][1] = 1;
+$rank_count_range[6][0] = 0;
+$rank_count_range[6][1] = 1;
+
+?>

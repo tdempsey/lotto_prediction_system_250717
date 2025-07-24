@@ -1,0 +1,65 @@
+<?php
+	//start table
+	print("<P>");
+	print("<TABLE BORDER=\"1\">\n");
+
+	//create header row
+	print("<TR><B>\n");
+
+	print("<TD BGCOLOR=\"#CCCCCC\">Num1</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\">Num2</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\">Total</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=center>Last Match</TD>\n");
+	print("</B></TR>\n");
+
+	for ($x = 1; $x <= $balls; $x++)
+	{
+		for ($y = ($x+1); $y <= $balls; $y++)
+		{
+			$query5 = "SELECT * FROM $table_temp ";
+			$query5 .= "WHERE num1 = $x AND num2 = $y "; 
+			$query5 .= "ORDER BY last_date DESC ";
+
+			//print("$query5<br>");
+			
+			$mysqli_result5 = mysqli_query($mysqli_link, $query5) or die (mysqli_error($mysqli_link));
+
+			$num_rows = mysqli_num_rows($mysqli_result5);
+
+			$row = mysqli_fetch_array($mysqli_result5);
+
+			if ($num_rows)
+			{
+				print("<TR>\n");
+				print("<TD align=center>$x</TD>\n");
+				print("<TD align=center>$y</TD>\n");
+				if ($num_rows == 3 || $num_rows > 30)
+				{
+					print("<TD align=center><b>$num_rows</b></TD>\n");
+				} else {
+					print("<TD align=center>$num_rows</TD>\n"); 
+				}
+				if ($row[last_date] < "2007-01-27")
+				{
+					print("<TD align=center><font color=\"#ff0000\">$row[last_date]</font></TD>\n");
+				} else {
+					print("<TD align=center>$row[last_date]</TD>\n");
+				}
+				print("</TR>\n");
+			}
+
+			$query2 = "UPDATE $table_temp ";
+			$query2 .= "SET count = $num_rows ";
+			$query2 .= "WHERE num1 = $x AND num2 = $y ";
+
+			//print("$query2<br>");
+
+			$mysqli_result2 = mysqli_query($mysqli_link, $query2) or die (mysqli_error($mysqli_link));
+		}
+	}
+
+	//end table
+	print("</TABLE>\n");
+
+	print "<h3>Table <font color=\"#ff0000\">$table_temp</font> Updated!</h3>";
+?>

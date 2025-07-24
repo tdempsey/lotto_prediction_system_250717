@@ -1,0 +1,42 @@
+<?php
+	print "<TR>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Sum</TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\" align=\"center\">eo60</TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Even</TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Odd</TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\" align=\"center\">d7_1</TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\" align=\"center\">d7_2</TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\" align=\"center\">d7_3</TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\" align=\"center\">d7_4</TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\" align=\"center\">d7_5</TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\" align=\"center\">d7_6</TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\" align=\"center\">d7_7</TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Rows</TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>Week1</center></TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>Week2</center></TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>Month1</center></TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>Month3</center></TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>Month6</center></TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>Year1</center></TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>Year2</center></TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>Year3</center></TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>D1510</center></TD>\n"; 
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>Year4</center></TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>Year5</center></TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>Year6</center></TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>Year7</center></TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>Year8</center></TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>Year9</center></TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>Year10</center></TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>Total</center></TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>Prev</center></TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>Sigma</center></TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>wa1</center></TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>wa5</center></TD>\n";
+	print "<TD BGCOLOR=\"#CCCCCC\"><center>wa</center></TD>\n";
+	print("<TD BGCOLOR=\"#CCCCCC\"><center>wa</center></TD>\n");
+	print "</TR>\n";
+
+?>

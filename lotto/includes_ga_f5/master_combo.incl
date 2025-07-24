@@ -1,0 +1,338 @@
+<?php
+	#combooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+
+	$debug = 0;
+
+	function lot_update_combin_4 ($update_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes;
+	
+		require ("includes/mysqli.php");
+
+		require ("$game_includes/config.incl");
+		
+		print("<H2>Lotto Combo 4 Update - $game_name</H2>\n");
+	
+		$dcount = 0;
+
+		$curr_date = date("Y-m-d");
+		#$curr_date = '2012-07-10';
+
+		$query_d = "SELECT * FROM ga_f5_4_42 ";
+		$query_d .= "WHERE nums_count <=  '2' ";
+		$query_d .= "AND   date >= '$update_date' ";
+		$query_d .= "ORDER BY date DESC ";
+
+		print "$query_d<p>";
+
+		$mysqli_result_d = mysqli_query($query_d, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$num_rows_d = mysqli_num_rows($mysqli_result_d);
+
+		echo "num_rows_d = $num_rows_d<p>";
+	
+		// get each row
+		while($row = mysqli_fetch_array($mysqli_result_d))
+		{	
+			$query_combo = "SELECT * FROM combo_5_42 ";
+			$query_combo .= "WHERE (b1 =  $row[d1] ";
+			$query_combo .= "    or b2 =  $row[d1] ";
+			$query_combo .= "    or b3 =  $row[d1] ";
+			$query_combo .= "    or b4 =  $row[d1] ";
+			$query_combo .= "    or b5 =  $row[d1]) ";
+			$query_combo .= "AND   (b1 =  $row[d2] ";
+			$query_combo .= "    or b2 =  $row[d2] ";
+			$query_combo .= "    or b3 =  $row[d2] ";
+			$query_combo .= "    or b4 =  $row[d2] ";
+			$query_combo .= "    or b5 =  $row[d2]) ";
+			$query_combo .= "AND   (b1 =  $row[d3] ";
+			$query_combo .= "    or b2 =  $row[d3] ";
+			$query_combo .= "    or b3 =  $row[d3] ";
+			$query_combo .= "    or b4 =  $row[d3] ";
+			$query_combo .= "    or b5 =  $row[d3]) ";
+			$query_combo .= "AND   (b1 =  $row[d4] ";
+			$query_combo .= "    or b2 =  $row[d4] ";
+			$query_combo .= "    or b3 =  $row[d4] ";
+			$query_combo .= "    or b4 =  $row[d4] ";
+			$query_combo .= "    or b5 =  $row[d4]) ";
+			$query_combo .= "AND   b1 <= '20' ";
+			$query_combo .= "AND   last_updated < '$row[0]' ";
+			$query_combo .= "ORDER BY id ASC ";
+
+			print "$query_combo<p>";
+
+			$mysqli_result_combo = mysqli_query($query_combo, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+			$num_rows_combo = mysqli_num_rows($mysqli_result_combo);
+
+			echo "num_rows_combo = $num_rows_combo<p>";
+
+			while($row_combo = mysqli_fetch_array($mysqli_result_combo))
+			{
+				$total_combin = array();
+				$draw_array = array(0);
+
+				#print_r ($row);
+
+				for ($v = 1; $v <= $balls_drawn; $v++)
+				{
+					array_push($draw_array, $row_combo[$v]);
+				}
+
+				$total_combin = test_combin($draw_array);
+
+				$query7 = "UPDATE combo_5_42 ";
+				$query7 .= "SET   comb2 = '10', ";
+				$query7 .= "      comb3 = $total_combin[3], ";
+				$query7 .= "      comb4 = $total_combin[4], ";
+				#$query7 .= "      comb5 = $total_combin[5], ";
+				$query7 .= "      last_updated = '$row[0]' ";
+				$query7 .= "WHERE b1 = $row_combo[b1] ";
+				$query7 .= "AND   b2 = $row_combo[b2] ";
+				$query7 .= "AND   b3 = $row_combo[b3] ";
+				$query7 .= "AND   b4 = $row_combo[b4] ";
+				$query7 .= "AND   b5 = $row_combo[b5] ";
+
+				print "$query7<p>";
+
+				#die();
+				
+				$mysqli_result7 = mysqli_query($query7, $mysqli_link) or die (mysqli_error($mysqli_link));
+			}
+		}
+	}
+
+	function lot_update_combin_3 ($update_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes;
+	
+		require ("includes/mysqli.php");
+
+		require ("$game_includes/config.incl");
+		
+		print("<H2>Lotto Combo 3 Update - $game_name</H2>\n");
+	
+		$dcount = 0;
+
+		$curr_date = date("Y-m-d");
+		#$curr_date = '2012-07-10';
+
+		$query_d = "SELECT * FROM ga_f5_3_42 ";
+		$query_d .= "WHERE nums_count <=  '2' ";
+		$query_d .= "AND   date >= '$update_date' ";
+		$query_d .= "ORDER BY date DESC ";
+
+		print "$query_d<p>";
+
+		$mysqli_result_d = mysqli_query($query_d, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$num_rows_d = mysqli_num_rows($mysqli_result_d);
+
+		echo "num_rows_d = $num_rows_d<p>";
+	
+		// get each row
+		while($row = mysqli_fetch_array($mysqli_result_d))
+		{	
+			$query_combo = "SELECT * FROM combo_5_42 ";
+			$query_combo .= "WHERE (b1 =  $row[d1] ";
+			$query_combo .= "    or b2 =  $row[d1] ";
+			$query_combo .= "    or b3 =  $row[d1] ";
+			$query_combo .= "    or b4 =  $row[d1] ";
+			$query_combo .= "    or b5 =  $row[d1]) ";
+			$query_combo .= "AND   (b1 =  $row[d2] ";
+			$query_combo .= "    or b2 =  $row[d2] ";
+			$query_combo .= "    or b3 =  $row[d2] ";
+			$query_combo .= "    or b4 =  $row[d2] ";
+			$query_combo .= "    or b5 =  $row[d2]) ";
+			$query_combo .= "AND   (b1 =  $row[d3] ";
+			$query_combo .= "    or b2 =  $row[d3] ";
+			$query_combo .= "    or b3 =  $row[d3] ";
+			$query_combo .= "    or b4 =  $row[d3] ";
+			$query_combo .= "    or b5 =  $row[d3]) ";
+			$query_combo .= "AND   b1 <= '20' ";
+			$query_combo .= "AND   last_updated < '$row[0]' ";
+			$query_combo .= "ORDER BY id ASC ";
+
+			print "$query_combo<p>";
+
+			$mysqli_result_combo = mysqli_query($query_combo, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+			$num_rows_combo = mysqli_num_rows($mysqli_result_combo);
+
+			echo "num_rows_combo = $num_rows_combo<p>";
+
+			while($row_combo = mysqli_fetch_array($mysqli_result_combo))
+			{
+				$total_combin = array();
+				$draw_array = array(0);
+
+				#print_r ($row);
+
+				for ($v = 1; $v <= $balls_drawn; $v++)
+				{
+					array_push($draw_array, $row_combo[$v]);
+				}
+
+				$total_combin = test_combin($draw_array);
+
+				$query7 = "UPDATE combo_5_42 ";
+				$query7 .= "SET   comb2 = '10', ";
+				$query7 .= "      comb3 = $total_combin[3], ";
+				$query7 .= "      comb4 = $total_combin[4], ";
+				#$query7 .= "      comb5 = $total_combin[5], ";
+				$query7 .= "      last_updated = '$row[0]' ";
+				$query7 .= "WHERE b1 = $row_combo[b1] ";
+				$query7 .= "AND   b2 = $row_combo[b2] ";
+				$query7 .= "AND   b3 = $row_combo[b3] ";
+				$query7 .= "AND   b4 = $row_combo[b4] ";
+				$query7 .= "AND   b5 = $row_combo[b5] ";
+
+				print "$query7<p>";
+
+				#die();
+				
+				$mysqli_result7 = mysqli_query($query7, $mysqli_link) or die (mysqli_error($mysqli_link));
+			}
+		}
+	}
+
+	function lot_update_combin_5 ($update_date)
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes;
+	
+		require ("includes/mysqli.php");
+
+		require ("$game_includes/config.incl");
+		
+		print("<H2>Lotto Combo 5 Update - $game_name</H2>\n");
+	
+		$dcount = 0;
+
+		$curr_date = date("Y-m-d");
+		#$curr_date = '2012-07-10';
+
+		$query_d = "SELECT * FROM ga_f5_draws ";
+		$query_d .= "WHERE date >= '$update_date' ";
+		$query_d .= "ORDER BY date DESC ";
+
+		print "$query_d<p>";
+
+		$mysqli_result_d = mysqli_query($query_d, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$num_rows_d = mysqli_num_rows($mysqli_result_d);
+
+		echo "num_rows_d = $num_rows_d<p>";
+	
+		// get each row
+		while($row = mysqli_fetch_array($mysqli_result_d))
+		{	
+			$query_combo = "SELECT * FROM ga_f5_draws ";
+			$query_combo .= "WHERE b1 = $row[b1] ";
+			$query_combo .= "AND   b2 = $row[b2] ";
+			$query_combo .= "AND   b3 = $row[b3] ";
+			$query_combo .= "AND   b4 = $row[b4] ";
+			$query_combo .= "AND   b5 = $row[b5] ";
+
+			print "$query_combo<p>";
+
+			$mysqli_result_combo = mysqli_query($query_combo, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+			$num_rows_combo = mysqli_num_rows($mysqli_result_combo);
+
+			echo "num_rows_combo = $num_rows_combo<p>";
+
+			$row_combo = mysqli_fetch_array($mysqli_result_combo);
+
+			$query7 = "UPDATE combo_5_42 ";
+			$query7 .= "SET   comb5 = '$num_rows_combo', ";
+			$query7 .= "      last_updated = '$row[0]' ";
+			$query7 .= "WHERE b1 = $row_combo[b1] ";
+			$query7 .= "AND   b2 = $row_combo[b2] ";
+			$query7 .= "AND   b3 = $row_combo[b3] ";
+			$query7 .= "AND   b4 = $row_combo[b4] ";
+			$query7 .= "AND   b5 = $row_combo[b5] ";
+
+			print "$query7<p>";
+
+			#die();
+			
+			$mysqli_result7 = mysqli_query($query7, $mysqli_link) or die (mysqli_error($mysqli_link));
+		}
+	}
+
+	function lot_update_combin_2 ()
+	{ 
+		global $debug, $game, $game_name, $balls, $balls_drawn, $mega_balls, $draw_table_name, $draw_prefix, $game_includes;
+	
+		require ("includes/mysqli.php");
+
+		require ("$game_includes/config.incl");
+		
+		print("<H2>Lotto Combo 2 Update - $game_name</H2>\n");
+	
+		$dcount = 0;
+
+		$curr_date = date("Y-m-d");
+		#$curr_date = '2012-07-10';
+
+		$query_d = "SELECT * FROM combo_5_42 ";
+		$query_d .= "WHERE comb2 = 0 ";
+		#$query_d .= "ORDER BY date DESC ";
+
+		print "$query_d<p>";
+
+		$mysqli_result_d = mysqli_query($query_d, $mysqli_link) or die (mysqli_error($mysqli_link));
+
+		$num_rows_d = mysqli_num_rows($mysqli_result_d);
+
+		echo "num_rows_d = $num_rows_d<p>";
+	
+		// get each row
+		while($row = mysqli_fetch_array($mysqli_result_d))
+		{	
+			$total_combin = array();
+			$draw_array = array(0);
+
+			#print_r ($row);
+
+			for ($v = 1; $v <= $balls_drawn; $v++)
+			{
+				array_push($draw_array, $row[$v]);
+			}
+
+			$total_combin = test_combin($draw_array);
+
+			$query7 = "UPDATE combo_5_42 ";
+			$query7 .= "SET   comb5 = '$total_combin[5]', ";
+			$query7 .= "      comb4 = '$total_combin[4]', ";
+			$query7 .= "      comb3 = '$total_combin[3]', ";
+			$query7 .= "      comb2 = '$total_combin[2]', ";
+			$query7 .= "      last_updated = '$curr_date' ";
+			$query7 .= "WHERE id = $row[id] ";
+
+			print "$query7<p>";
+
+			#die();
+			
+			$mysqli_result7 = mysqli_query($query7, $mysqli_link) or die (mysqli_error($mysqli_link));
+		}
+	}
+
+	//start HTML page
+	print("<HTML>\n");
+	print("<HEAD>\n");
+	print("<TITLE>Lotto Update Comb 2 - $game_name - Combo</TITLE>\n");
+	print("</HEAD>\n");
+	
+	print("<BODY>\n");
+
+	$update_date = "2013-05-01";
+
+	#lot_update_combin_2();
+
+	lot_update_combin_3 ($update_date); # Georgia Fantasy 5
+
+	lot_update_combin_4 ($update_date); # Georgia Fantasy 5
+
+	lot_update_combin_5 ($update_date);
+?>

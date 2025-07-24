@@ -1,0 +1,216 @@
+<?php
+	//start sorted table --------------------------------------------------------
+	//start table
+	print("<h3>Sum Table Sum - Top 100 - Combin All</h3>\n");
+	print("<TABLE BORDER=\"1\">\n");
+
+	$query4 = "DROP TABLE IF EXISTS $draw_prefix";
+	$query4 .= "sum_count_sum4_all ";
+	
+	#print "$query4<p>";
+
+	$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+	$query4 = "CREATE TABLE $draw_prefix";
+	$query4 .= "sum_count_sum4_all (";
+	$query4 .= "id int(5) unsigned NOT NULL auto_increment,";
+	$query4 .= "numx tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "combin tinyint(3) unsigned NOT NULL default '0',";
+	$query4 .= "day1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "week1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "week2 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "month1 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "month3 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "month6 tinyint(3) unsigned NOT NULL default '0', ";
+	$query4 .= "year1 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year2 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year3 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year4 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year5 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year6 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year7 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year8 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year9 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "year10 int(5) unsigned NOT NULL default '0', ";
+	$query4 .= "count int(5) unsigned NOT NULL,";
+	$query4 .= "percent_y1 float(4,1) unsigned NOT NULL,";
+	$query4 .= "percent_y8 float(4,1) unsigned NOT NULL,";
+	$query4 .= "percent_wa float(4,1) unsigned NOT NULL,";
+	$query4 .= "PRIMARY KEY  (id),";
+	$query4 .= "UNIQUE KEY `id_2` (id),";
+	$query4 .= "KEY id (id)";
+	$query4 .= ") ENGINE=InnoDB DEFAULT CHARSET=latin1;";
+
+	#print "$query4<p>";
+
+	$mysqli_result4 = mysqli_query($mysqli_link, $query4) or die (mysqli_error($mysqli_link));
+
+	//create header row
+	print("<TR>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Sum</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Combin</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Even</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Odd</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Last</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Week1</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Week2</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Month1</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Month3</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Month6</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year1</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year2</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year3</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year4</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year5</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year6</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year7</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year8</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year9</TD>\n");
+	#print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Year10</TD>\n");
+	#print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Count</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=center>y1</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=center>y4</TD>\n");
+	print("<TD BGCOLOR=\"#CCCCCC\" align=center>wa</TD>\n");
+	print("</TR>\n");
+
+	for ($c = 1; $c <= 5; $c++)
+	{
+		#$table_temp = $draw_prefix . "temp_pairs_" . $limit;
+		$query = "SELECT * FROM $draw_prefix";
+		$query .= "sum_count_sum4_";
+		$query .= "$c ";
+		$query .= "ORDER BY percent_wa DESC, percent_y4 DESC, percent_y1 DESC ";
+		$query .= "LIMIT 50 ";
+
+		#echo "query = $query<br>";
+
+		$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+		while($row = mysqli_fetch_array($mysqli_result))
+		{
+
+			#$query_sql = "INSERT INTO `ga_f5_sum_count_sum4_all` (`id`, `numx`, `combin`, `even`, `odd`, `day1`, `week1`, `week2`, `month1`, `month3`, `month6`, `year1`, `year2`, `year3`, `year4`, `year5`, `year6`, `year7`, `year8`, `year9`, `year10`, `count`, `percent_y1`, `percent_y4`, `percent_wa`) VALUES (0, $row[numx], $c, `$row[even]`, `$row[odd]`, `$row[day1]`, `$row[week1]`, `$row[week2]`, `$row[month1]`, `$row[month3]`, `$row[month6]`, `$row[year1]`, `$row[year2]`, `$row[year3]`, `$row[year4]`, `$row[year5]`, `$row[year6]`, `$row[year7]`, `$row[year8]`, `$row[year9]`, `$row[year10]`, `$row[count]`, `$row[percent_y1]`, `$row[percent_y4]`, `$row[percent_wa]`)";
+
+			$query_sql = "INSERT INTO `ga_f5_sum_count_sum4_all` VALUES (0, $row[numx], $c, $row[even], $row[odd], $row[day1], $row[week1], $row[week2], $row[month1], $row[month3], $row[month6], $row[year1], $row[year2], $row[year3], $row[year4], $row[year5], $row[year6], $row[year7], $row[year8], $row[year9], $row[percent_y1], $row[percent_y4], $row[percent_wa])";
+
+			#echo "query_sql = $query_sql<br>";
+
+			$mysqli_result_sql = mysqli_query($mysqli_link, $query_sql) or die (mysqli_error($mysqli_link));
+		}
+
+	}
+
+	#die();
+
+	$dcount = 0;
+
+	$query = "SELECT * FROM $draw_prefix";
+	$query .= "sum_count_sum4_all ";
+	#$query .= "ORDER BY percent_wa DESC, percent_y8 DESC, percent_y1 DESC ";
+	$query .= "ORDER BY percent_wa DESC, year1 DESC, month6 DESC, month3 DESC ";
+	$query .= "LIMIT 100 ";
+
+	#echo "query = $query<br>";
+
+	$mysqli_result = mysqli_query($mysqli_link, $query) or die (mysqli_error($mysqli_link));
+
+	// get each row
+	while($row = mysqli_fetch_array($mysqli_result))
+	{
+		if ($row[9] > 1)
+		{
+			print("<TR>\n");
+
+			for ($t = 1; $t <= 4; $t++)
+			{
+				print("<TD align=center>$row[$t]</TD>\n");
+			}
+
+			for ($t = 3; $t <= 22; $t++)
+			{
+				if ($row[$t] > 10)
+				{
+					print("<TD bgcolor=\"#FF0033\" align=center>$row[$t]</TD>\n");
+				} elseif ($row[$t] > 7) {
+					print("<TD bgcolor=\"#CCFFFF\" align=center>$row[$t]</TD>\n");
+				} elseif ($row[$t] > 1) {
+					print("<TD bgcolor=\"#CCFF66\" align=center>$row[$t]</TD>\n");
+				} elseif ($row[$t] == 1) {
+					print("<TD bgcolor=\"#F1F1F1\" align=center>$row[$t]</TD>\n");
+				} else {
+					print("<TD align=center>$row[$t]</TD>\n");
+				}
+			}
+
+			print("</TR>\n");
+
+			if ($dcount > 8)
+			{
+				print("<TR><B>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Sum</TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Combin</TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Even</TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Odd</TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Week1</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Week2</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Month1</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Month3</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Month6</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year1</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year2</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year3</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year4</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year5</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year6</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year7</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year8</center></TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\"><center>Year9</center></TD>\n");
+				#print("<TD BGCOLOR=\"#CCCCCC\"><center>Year10</center></TD>\n");
+				#print("<TD BGCOLOR=\"#CCCCCC\">Count</TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\" align=center>y1</TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\" align=center>y4</TD>\n");
+				print("<TD BGCOLOR=\"#CCCCCC\" align=center>wa</TD>\n");
+				print("</B></TR>\n");
+
+				$dcount = 0;
+			} else {
+				$dcount++;
+			}
+		}
+	}
+
+	if ($dcount != 0)
+	{
+		//create footer row
+		print("<TR><B>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Sum</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Combin</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Even</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" align=\"center\">Odd</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Last</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Week1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Week2</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Month1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Month3</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Month6</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year1</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year2</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year3</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year4</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year5</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year6</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year7</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year8</center></TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\"><center>Year9</center></TD>\n");
+		#print("<TD BGCOLOR=\"#CCCCCC\"><center>Year10</center></TD>\n");
+		#print("<TD BGCOLOR=\"#CCCCCC\">Count</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" align=center>y1</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" align=center>y4</TD>\n");
+		print("<TD BGCOLOR=\"#CCCCCC\" align=center>wa</TD>\n");
+		print("</B></TR>\n");
+	}
+
+	//end table
+	print("</TABLE>\n");
+?>

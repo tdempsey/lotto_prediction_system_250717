@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <script>
+        function openInNewWindow(event) {
+            event.preventDefault();
+            window.open(event.target.href, '_blank', 'width=600,height=400');
+        }
+        document.addEventListener("DOMContentLoaded", function() {
+            var link = document.getElementById("myLink");
+            link.addEventListener("click", openInNewWindow);
+        });
+    </script>
+  <title>Lotto Launch</title>
+ </head>
+ <body>
+  <h2>Lotto Launch Page - Georgia Fantasy 5</h2>
+  <h3>All</h3>
+	<a href="http://localhost:81/phpmyadmin/index.php" target="_blank">phpMyAdmin</a></br></br>
+
+	<a href="http://localhost:81/phpmyadmin/index.php?route=/database/structure&server=1&db=ga_f5_lotto" target="_blank">phpMyAdmin GA_F5_Lotto</a></br></br>
+
+	<a href="http://localhost:81/lotto/" target="_blank">Localhost Lotto</a></br></br>
+
+	<a href="http://localhost:81/lotto/lot_scrape_ga_f5.php" target="_blank">Scrape Georgia Fantasy 5</a></br></br>
+	<a href="http://localhost:81/lotto_django/lotto250309\lotto250309scrape_ga_f5_enhanced.py" target="_blank">Scrape Georgia Fantasy 5 Django</a></br></br>
+
+	<a href="http://localhost:81/lotto/lot_display.php" target="_blank">Lotto Display - Georgia Fantasy 5</a></br>
+	<a href="http://localhost:81/lotto/lot_analyze.php" target="_blank">Lotto Analyze - Georgia Fantasy 5</a></br>
+	<a href="http://localhost:81/lotto/lot_test.php" target="_blank">Lotto Test - Georgia Fantasy 5</a></br>
+	<a href="http://localhost:81/lotto/lot_verify.php" target="_blank">Lotto Verify - Georgia Fantasy 5</a></br>
+	</br>
+	<a href="http://localhost:81/lotto/lot_cover_ga_f5_top_10.php?drop_tables=1" target="_blank">Lotto Cover 100 - Georgia Fantasy 5 - drop=1</a></br>
+	</br>
+	<a href="http://localhost:81/lotto/lot_cover_ga_f5_1k.php?drop_tables=1" target="_blank">Lotto Cover 1K - Georgia Fantasy 5 - drop=1</a></br>
+	<a href="http://localhost:81/lotto/lot_cover_ga_f5_1k_1_3_5.php?drop_tables=1" target="_blank">Lotto Cover 1K 1_3_5 - Georgia Fantasy 5 - drop=1</a></br>
+	<a href="http://localhost:81/lotto/lot_cover_ga_f5_1k_draws.php?drop_tables=1" target="_blank">Lotto Cover 1K	Draws- Georgia Fantasy 5 - drop=1</a></br>
+	<a href="http://localhost:81/lotto/lot_cover_ga_f5_1k.php?drop_tables=0" target="_blank">Lotto Cover 1k - Georgia Fantasy 5 - drop=0</a></br>
+	<a href="http://localhost:81/lotto/lot_cover_ga_f5_1k_scaffolding.php" target="_blank">Lotto Cover 1K Scaffolding - Georgia Fantasy 5</a></br>
+	</br>
+	<a href="http://localhost:81/lotto/lot_update2.php" target="_blank">Lotto Update2 - Georgia Fantasy 5</a></br>
+	<a href="http://localhost:81/lotto/lot_update3.php" target="_blank">Lotto Update3 - Georgia Fantasy 5</a></br>
+	<a href="http://localhost:81/lotto/lot_update4.php" target="_blank">Lotto Update4 - Georgia Fantasy 5</a></br>
+	</br>
+	<a href="http://localhost:81/lotto/lot_drange_update2.php" target="_blank">Lotto Drange Update2 - Georgia Fantasy 5</a></br>
+	<a href="http://localhost:81/lotto/lot_drange_update3.php" target="_blank">Lotto Drange Update3 - Georgia Fantasy 5</a></br>
+	<a href="http://localhost:81/lotto/lot_drange_update4.php" target="_blank">Lotto Drange Update4 - Georgia Fantasy 5</a></br>
+	<a href="http://localhost:81/lotto/lot_drange_update5.php" target="_blank">Lotto Drange Update5 - Georgia Fantasy 5</a></br>
+	<a href="http://localhost:81/lotto/lot_drange_update6.php" target="_blank">Lotto Drange Update6 - Georgia Fantasy 5</a></br>
+	<a href="http://localhost:81/lotto/lot_drange_update7.php" target="_blank">Lotto Drange Update7 - Georgia Fantasy 5</a></br>
+	<a href="http://localhost:81/lotto/lot_drange_update8.php" target="_blank">Lotto Drange Update8 - Georgia Fantasy 5</a></br>
+	<a href="http://localhost:81/lotto/lot_drange_update9.php" target="_blank">Lotto Drange Update9 - Georgia Fantasy 5</a></br>
+
+	<h3>Verify</h3>
+
+	 <h3>draw vs. filter (where is filter getting percent_wa?)</h3>
+	
+	<a href="https://docs.google.com/spreadsheets/d/1vWUlP4Xcyon3C9MrziXIvHW6tsOGG25tN4niMnRY7z8/edit#gid=0" target="_blank"><b>Google Doc</b> - Georgia Fantasy 5 Verify </a></br>
+
+	</br>
+	<hr>
+
+ 
+ </body>
+</html>

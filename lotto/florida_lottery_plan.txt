@@ -1,0 +1,16 @@
+Lotto Plan
+----------
+
+1)	Sequential 1-6
+				48
+
+2)	Sum
+	Col12
+
+
+
+
+Filter
+------
+
+1) no combin5
