@@ -1,0 +1,56 @@
+# === Python bytecode ===
+__pycache__/
+*.py[cod]
+*$py.class
+
+# === Virtual environments ===
+.venv/
+env/
+venv/
+ENV/
+*.env
+*.venv
+
+# === Environment & config files ===
+*.env
+*.ini
+*.cfg
+*.toml
+*.log
+
+# === OS-specific ===
+.DS_Store
+Thumbs.db
+
+# === IDEs and editors ===
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# === PyInstaller ===
+*.spec
+dist/
+build/
+
+# === Unit test / coverage ===
+htmlcov/
+.tox/
+.nox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# === Jupyter Notebooks Checkpoints ===
+.ipynb_checkpoints
+
+# === MyPy, Pyre, Pytype ===
+.mypy_cache/
+.pyre/
+.pytype/
+
+# === Exclude Windows batch files ===
+*.bat
